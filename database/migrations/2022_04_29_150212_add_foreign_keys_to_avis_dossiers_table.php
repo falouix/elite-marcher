@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddForeignKeysToAvisDossiersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('avis_dossiers', function (Blueprint $table) {
+            $table->foreign('dossiers_achats_id', 'fk_avis_dossiers_dossiers_achats1')->references('id')->on('dossiers_achats')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('avis_dossiers', function (Blueprint $table) {
+            $table->dropForeign('fk_avis_dossiers_dossiers_achats1');
+        });
+    }
+}
