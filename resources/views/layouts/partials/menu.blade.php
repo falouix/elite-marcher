@@ -75,8 +75,8 @@
             <span class="pcoded-mtext">المعطيات الأساسية</span>
         </a>
         <ul class="pcoded-submenu" style="display: none;">
-            <li class=""><a href={{route('service')}} class="" >المصالح/الدوائر/المؤسسات</a></li>
-            <li class=""><a href="{{route('soumissionnaire')}}" class="" >المتعهدين</a></li>
+            <li class=""><a href={{route('services.index')}} class="" >المصالح/الدوائر/المؤسسات</a></li>
+            <li class=""><a href="{{route('soumissionnaires.index')}}" class="" >المتعهدين</a></li>
         </ul>
     </li>
       <!-- settings menu -->

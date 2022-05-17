@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\ISoumissionnaireRepository;
+use App\Http\Controllers\Controller;
+use App\Models\Service;
+use App\Repositories\Interfaces\IServiceRepository;
 use Illuminate\Http\Request;
 use Validator;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-class SoumissionnaireController extends Controller
+class ServiceController extends Controller
 {
-    public function __construct(ISoumissionnaireRepository $repository)
+    public function __construct(IServiceRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -20,7 +23,7 @@ class SoumissionnaireController extends Controller
      */
     public function index()
     {
-        return view('soumissionnaires.index');
+        return view('services.index');
     }
 
     /**
@@ -34,12 +37,7 @@ class SoumissionnaireController extends Controller
         $validator = Validator::make($request->all(), [
             'libelle' => 'required',
             'contact' => 'required',
-            'adresse' => 'required',
-            'code_postal' => 'required',
-            'ville' => 'required',
-            'tel_fax' => 'required',
-            'email' => 'required',
-            'matricule_fiscale' => 'required'
+            'responsable' => 'required'
         ]);
         $this->repository->create($request->all());
     }
@@ -67,12 +65,7 @@ class SoumissionnaireController extends Controller
         $validator = Validator::make($request->all(), [
             'libelle' => 'required',
             'contact' => 'required',
-            'adresse' => 'required',
-            'code_postal' => 'required',
-            'ville' => 'required',
-            'tel_fax' => 'required',
-            'email' => 'required',
-            'matricule_fiscale' => 'required'
+            'responsable' => 'required'
         ]);
         $this->repository->update($request, $id);
     }
@@ -88,10 +81,10 @@ class SoumissionnaireController extends Controller
         $this->repository->destroy($id);
     }
 
-    public function getAllSoumissionnairesDatatable(Request $request)
+    public function getAllServicesDatatable(Request $request)
     {
         if ($request->ajax()) {
-            return $this->repository->getAllSoumissionnaires();
+            return $this->repository->getAllServices();
         }
     }
 }

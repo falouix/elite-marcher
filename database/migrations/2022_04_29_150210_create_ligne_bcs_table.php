@@ -20,10 +20,6 @@ class CreateLigneBcsTable extends Migration
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-            $table->bigInteger('created_by')->nullable();
-            $table->bigInteger('updated_by')->nullable();
 
         });
     }

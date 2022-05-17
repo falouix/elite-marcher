@@ -33,9 +33,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BesoinController;
 use App\Http\Controllers\EtablissementController;
 use App\Http\Controllers\LigneBesoinController;
-use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SoumissionnaireController;
 use App\Http\Controllers\ProjetController;
+use App\Http\Controllers\ParagrapheController;
+use App\Http\Controllers\SparagrapheController;
+use App\Http\Controllers\TitreController;
+use App\Http\Controllers\ChapitreController;
+
 /************************************************************************* */
 
 /*
@@ -53,13 +58,13 @@ Route::post('logout', function () {
     auth()->logout();
 
     Session()->flush();
-  //if(!$user) {return Redirect::to('/customer/login');}
-   return Redirect::to('/login');
-
+    //if(!$user) {return Redirect::to('/customer/login');}
+    return Redirect::to('/login');
 })->name('logout');
 
 Route::group(
-    ['prefix' => LaravelLocalization::setLocale(),
+    [
+        'prefix' => LaravelLocalization::setLocale(),
         'middleware' => ['XSS', 'localize', 'localizationRedirect', 'localeSessionRedirect', 'localeCookieRedirect', 'localeViewPath'],
     ],
 
@@ -72,11 +77,14 @@ Route::group(
             return redirect('/customer/login');
         });
         Auth::routes(['logout' => false]);
-    });
+    }
+);
 
-Route::group(['prefix' => LaravelLocalization::setLocale(),
-    'middleware' => ['XSS', 'auth', 'localize', 'localizationRedirect', 'localeSessionRedirect', 'localeCookieRedirect', 'localeViewPath'],
-],
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => ['XSS', 'auth', 'localize', 'localizationRedirect', 'localeSessionRedirect', 'localeCookieRedirect', 'localeViewPath'],
+    ],
     function () {
 
         Route::resource('roles', RoleController::class);
@@ -92,261 +100,269 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
         /// Routes SANA
         Route::get('/home', [HomeController::class, 'index'])->name('home');
+        
+        Route::resource('paragraphes', ParagrapheController::class);
+        Route::post('paragraphes/datatable', [ParagrapheController::class, 'getAllParagraphesDatatable'])->name('paragraphes.datatable');
 
-//-----------------------------route bilel----------------------------
-//route besoin
-Route::resource('besoins',BesoinController::class);
-Route::post('besoin/createOrUpdate',[BesoinController::class,'createOrUpdate'])->name('besoin.createOrUpdate');
-Route::post('besoin/datatable', [BesoinController::class, 'getAllBesoinDatatable'])->name('besoin.datatable');
-Route::post('besoin/edit',[BesoinController::class,'edit'])->name('besoinDataTable.edit');
-Route::post('besoin/destroy',[BesoinController::class,'destroy'])->name('besoinDataTable.destroy');
-Route::post('/besoins-multi-delete',[BesoinController::class,'/users-multi-delete'])->name('besoins_datatable.multidestroy');
+        Route::resource('Sparagraphes', SparagrapheController::class);
+        Route::post('Sparagraphes/datatable', [SparagrapheController::class, 'getAllSparagraphesDatatable'])->name('Sparagraphes.datatable');
 
-//route ligneBesoin
-Route::get('/ligneBesoin',[LigneBesoinController::class,'index'])->name('ligneBesoin');
-Route::post('ligneBesoin/createOrUpdate',[LigneBesoinController::class,'createOrUpdate'])->name('ligneBesoin.createOrUpdate');
-Route::post('ligneBesoin/datatable', [LigneBesoinController::class, 'getAllLigneBesoinDatatable'])->name('ligneBesoin.datatable');
-Route::post('ligneBesoin/edit',[LigneBesoinController::class,'edit'])->name('ligneBesoin.edit');
-Route::post('ligneBesoin/destroy',[LigneBesoinController::class,'destroy'])->name('ligneBesoin.destroy');
+        Route::resource('titres', TitreController::class);
+        Route::post('titres/datatable', [TitreController::class, 'getAllTitresDatatable'])->name('titres.datatable');
 
-Route::get('/modifier_demande/1',function(){
-    return view('demande_budget.edit1');
-})->name('modifier_demande1');
-Route::get('/modifier_demande/2',function(){
-    return view('demande_budget.edit2');
-})->name('modifier_demande2');
+        Route::resource('chapitres', ChapitreController::class);
+        Route::post('chapitres/datatable', [ChapitreController::class, 'getAllChapitresDatatable'])->name('chapitres.datatable');
 
-//route confirmationBudget
-Route::get('/confirmationBudget', function () {return view('demande_budget.confirmationBudget');})->name('confirmationBudget');
-Route::get('/confirmationDemande', function () {return view('demande_budget.confirmationDemande');})->name('confirmationDemande');
-Route::post('/confirmationDemande/getBesoinSelected',[BesoinController::class,'getBesoinSelected'])->name('confirmationDemande.getBesoinSelected');
+        Route::resource('services', ServiceController::class);
+        Route::post('services/datatable', [ServiceController::class, 'getAllServicesDatatable'])->name('services.datatable');
 
-//route projet
-Route::get('/projet', function () {return view('demande_budget.projet');})->name('projet');
-Route::get('projet/datatable', [ProjetController::class, 'getAllProjetDatatable'])->name('projet.datatable');
+        Route::resource('soumissionnaires', SoumissionnaireController::class);
+        Route::post('soumissionnaires/datatable', [SoumissionnaireController::class, 'getAllSoumissionnairesDatatable'])->name('soumissionnaires.datatable');
+       
+        //-----------------------------route bilel----------------------------
+        //route besoin
+        Route::resource('besoins', BesoinController::class);
+        Route::post('besoin/createOrUpdate', [BesoinController::class, 'createOrUpdate'])->name('besoin.createOrUpdate');
+        Route::post('besoin/datatable', [BesoinController::class, 'getAllBesoinDatatable'])->name('besoin.datatable');
+        Route::post('besoin/edit', [BesoinController::class, 'edit'])->name('besoinDataTable.edit');
+        Route::post('besoin/destroy', [BesoinController::class, 'destroy'])->name('besoinDataTable.destroy');
+        Route::post('/besoins-multi-delete', [BesoinController::class, '/users-multi-delete'])->name('besoins_datatable.multidestroy');
 
-//route ligneProjet
-Route::get('/ligneProjet', function () {return view('demande_budget.ligneProjet');})->name('ligneProjet');
+        //route ligneBesoin
+        Route::get('/ligneBesoin', [LigneBesoinController::class, 'index'])->name('ligneBesoin');
+        Route::post('ligneBesoin/createOrUpdate', [LigneBesoinController::class, 'createOrUpdate'])->name('ligneBesoin.createOrUpdate');
+        Route::post('ligneBesoin/datatable', [LigneBesoinController::class, 'getAllLigneBesoinDatatable'])->name('ligneBesoin.datatable');
+        Route::post('ligneBesoin/edit', [LigneBesoinController::class, 'edit'])->name('ligneBesoin.edit');
+        Route::post('ligneBesoin/destroy', [LigneBesoinController::class, 'destroy'])->name('ligneBesoin.destroy');
 
-Route::get('/projet_approvisionnement', function () {
-    return view('projets_approvisionnement.index');
-})->name('approvisionnement');
+        Route::get('/modifier_demande/1', function () {
+            return view('demande_budget.edit1');
+        })->name('modifier_demande1');
+        Route::get('/modifier_demande/2', function () {
+            return view('demande_budget.edit2');
+        })->name('modifier_demande2');
 
-Route::get('/projet_approvisionnement_edit/1', function () {
-    return view('projets_approvisionnement.edit1');
-})->name('approvisionnement_edit1');
-Route::get('/projet_approvisionnement_edit/2', function () {
-    return view('projets_approvisionnement.edit2');
-})->name('approvisionnement_edit2');
+        //route confirmationBudget
+        Route::get('/confirmationBudget', function () {
+            return view('demande_budget.confirmationBudget');
+        })->name('confirmationBudget');
+        Route::get('/confirmationDemande', function () {
+            return view('demande_budget.confirmationDemande');
+        })->name('confirmationDemande');
+        Route::post('/confirmationDemande/getBesoinSelected', [BesoinController::class, 'getBesoinSelected'])->name('confirmationDemande.getBesoinSelected');
+
+        //route projet
+        Route::get('/projet', function () {
+            return view('demande_budget.projet');
+        })->name('projet');
+        Route::get('projet/datatable', [ProjetController::class, 'getAllProjetDatatable'])->name('projet.datatable');
+
+        //route ligneProjet
+        Route::get('/ligneProjet', function () {
+            return view('demande_budget.ligneProjet');
+        })->name('ligneProjet');
+
+        Route::get('/projet_approvisionnement', function () {
+            return view('projets_approvisionnement.index');
+        })->name('approvisionnement');
+
+        Route::get('/projet_approvisionnement_edit/1', function () {
+            return view('projets_approvisionnement.edit1');
+        })->name('approvisionnement_edit1');
+        Route::get('/projet_approvisionnement_edit/2', function () {
+            return view('projets_approvisionnement.edit2');
+        })->name('approvisionnement_edit2');
+
+        Route::get('/Dossier_achat', function () {
+            return view('Dossier_achat');
+        })->name('Dossier_achat');
 
 
-Route::get('/Dossier_achat',function(){
-    return view('Dossier_achat');
-})->name('Dossier_achat');
+        Route::get('/confirmation_rapports', function () {
+            return view('confirmation_des _rapports');
+        })->name('confirmation');
 
+        Route::get('/entreprendre/consultation', function () {
+            return view('EntreprendreConsultation');
+        })->name('entrependreConsultation');
 
-Route::get('/confirmation_rapports', function () {
-    return view('confirmation_des _rapports');
-})->name('confirmation');
+        Route::get('/entreprendre/appelOffres', function () {
+            return view('EntreprendreAppelOffres');
+        })->name('entrependreAppelOffres');
 
-Route::get('/entreprendre/consultation', function () {
-    return view('EntreprendreConsultation');
-})->name('entrependreConsultation');
+        Route::get('/consulations', function () {
+            return view('consultation');
+        })->name('consultations');
 
-Route::get('/entreprendre/appelOffres', function () {
-    return view('EntreprendreAppelOffres');
-})->name('entrependreAppelOffres');
+        Route::get('/procédures_simplifiées', function () {
+            return view('appel_offres.procédures_simplifiées');
+        })->name('simplifiées');
 
-Route::get('/consulations',function(){
-    return view('consultation');
-})->name('consultations');
+        Route::get('/procédures_normales', function () {
+            return view('appel_offres.procédures_normales');
+        })->name('normales');
 
-Route::get('/procédures_simplifiées',function(){
-    return view('appel_offres.procédures_simplifiées');
-})->name('simplifiées');
+        Route::get('/négociations_directe', function () {
+            return view('appel_offres.négociations_directes');
+        })->name('négociations_directes');
 
-Route::get('/procédures_normales',function(){
-    return view('appel_offres.procédures_normales');
-})->name('normales');
+        Route::get('/criée_fournisseur', function () {
+            return view('fournisseur.create');
+        })->name('create_fournisseur');
 
-Route::get('/négociations_directe',function(){
-    return view('appel_offres.négociations_directes');
-})->name('négociations_directes');
+        Route::get('/edit_fournisseur', function () {
+            return view('fournisseur.edit');
+        })->name('editFournisseur');
 
-// route soumissionnaire
-Route::get('/soumissionnaire',function(){return view('soumissionnaire');})->name('soumissionnaire');
-Route::get('soumissionnaire/datatable', [SoumissionnaireController::class, 'getAllSoumissionnaireDatatable'])->name('soumissionnaire.datatable');
-Route::post('soumissionnaire/createOrUpdate',[SoumissionnaireController::class,'createOrUpdate'])->name('soumissionnaire.createOrUpdate');
-Route::post('soumissionnaire/edit',[SoumissionnaireController::class,'edit'])->name('soumissionnaireDataTable.edit');
-Route::post('soumissionnaire/destroy',[SoumissionnaireController::class,'destroy'])->name('soumissionnaireDataTable.destroy');
+        //route reglages
+        Route::get('/reglages', function () {
+            return view('etablissement.reglagesGeneraux');
+        })->name('reglages');
+        Route::post('reglages/createOrUpdate', [EtablissementController::class, 'createOrUpdate'])->name('reglages.createOrUpdate');
+        Route::get('reglages/getEtablissement', [EtablissementController::class, 'getEtablissement'])->name('reglages.getEtablissement');
 
-Route::get('/criée_fournisseur',function(){
-    return view('fournisseur.create');
-})->name('create_fournisseur');
+        Route::get('/recevoirOffres/consutation', function () {
+            return view('recevoirOffres.consultation');
+        })->name('recevoirOffresConsultation');
 
-Route::get('/edit_fournisseur',function(){
-    return view('fournisseur.edit');
-})->name('editFournisseur');
+        Route::get('/recevoirOffres/appel_offres', function () {
+            return view('recevoirOffres.appel_offres');
+        })->name('recevoirOffresAppelOffres');
 
-//route reglages
-Route::get('/reglages',function(){return view('etablissement.reglagesGeneraux');})->name('reglages');
-Route::post('reglages/createOrUpdate',[EtablissementController::class,'createOrUpdate'])->name('reglages.createOrUpdate');
-Route::get('reglages/getEtablissement',[EtablissementController::class,'getEtablissement'])->name('reglages.getEtablissement');
+        Route::get('/ouvrirEnveloppes/consultation', function () {
+            return view('ouvrirEnveloppes.consultation');
+        })->name('ouvrirEnveloppesConsultation');
 
- Route::get('/recevoirOffres/consutation',function(){
-    return view('recevoirOffres.consultation');
-})->name('recevoirOffresConsultation');
+        Route::get('/ouvrirEnveloppes/appelOffres', function () {
+            return view('ouvrirEnveloppes.appel_offres');
+        })->name('ouvrirEnveloppesAppelOffres');
 
-Route::get('/recevoirOffres/appel_offres',function(){
-    return view('recevoirOffres.appel_offres');
-})->name('recevoirOffresAppelOffres');
+        Route::get('/RapportSelctionOffres/appelOffres', function () {
+            return view('RapportSelectionOffres.appelOfffres');
+        })->name('RapportSelctionOffresAppelOffres');
 
-Route::get('/ouvrirEnveloppes/consultation',function(){
-    return view('ouvrirEnveloppes.consultation');
-})->name('ouvrirEnveloppesConsultation');
+        Route::get('/RapportSelctionOffres/consultation', function () {
+            return view('RapportSelectionOffres.consultation');
+        })->name('RapportSelctionOffresConsultation');
 
-Route::get('/ouvrirEnveloppes/appelOffres',function(){
-    return view('ouvrirEnveloppes.appel_offres');
-})->name('ouvrirEnveloppesAppelOffres');
+        //-----------------------------route sana----------------------------
 
-Route::get('/RapportSelctionOffres/appelOffres',function(){
-    return view('RapportSelectionOffres.appelOfffres');
-})->name('RapportSelctionOffresAppelOffres');
+        Route::get('/dossierConsultation', function () {
+            return view('dossierConsultation');
+        })->name('dossierConsultation');
 
-Route::get('/RapportSelctionOffres/consultation',function(){
-    return view('RapportSelectionOffres.consultation');
-})->name('RapportSelctionOffresConsultation');
+        Route::get('/dossierAppelOffreS', function () {
+            return view('dossierAppelOffreS');
+        })->name('dossierAppelOffreS');
 
- //-----------------------------route sana----------------------------
+        Route::get('/dossierAppelOffreN', function () {
+            return view('dossierAppelOffreN');
+        })->name('dossierAppelOffreN');
 
-Route::get('/dossierConsultation', function () {
-    return view('dossierConsultation');
- })->name('dossierConsultation');
+        Route::get('/dossierAppelOffreNegociationD', function () {
+            return view('dossierAppelOffreNegociationD');
+        })->name('dossierAppelOffreNegociationD');
 
- Route::get('/dossierAppelOffreS', function () {
-    return view('dossierAppelOffreS');
- })->name('dossierAppelOffreS');
+        Route::get('/enregistrementCahierCharges', function () {
+            return view('dossiers_achats.consultations.enregistrementCahierCharges');
+        })->name('enregistrementCahierCharges');
 
- Route::get('/dossierAppelOffreN', function () {
-    return view('dossierAppelOffreN');
- })->name('dossierAppelOffreN');
+        Route::get('/enregistrementPub', function () {
+            return view('dossiers_achats.consultations.enregistrementPub');
+        })->name('enregistrementPub');
 
- Route::get('/dossierAppelOffreNegociationD', function () {
-    return view('dossierAppelOffreNegociationD');
- })->name('dossierAppelOffreNegociationD');
+        Route::get('/recevoirOffres', function () {
+            return view('dossiers_achats.consultations.recevoirOffres');
+        })->name('recevoirOffres');
 
-//**routes dossiers d'achats : consultation**
+        Route::get('/recevoirOffresN1', function () {
+            return view('dossiers_achats.consultations.recevoirOffresN1');
+        })->name('recevoirOffresN1');
 
- Route::get('/enregistrementCahierCharges', function () {
-    return view('dossiers_achats.consultations.enregistrementCahierCharges');
- })->name('enregistrementCahierCharges');
+        Route::get('/recevoirOffresN2', function () {
+            return view('dossiers_achats.consultations.recevoirOffresN2');
+        })->name('recevoirOffresN2');
 
- Route::get('/enregistrementPub', function () {
-    return view('dossiers_achats.consultations.enregistrementPub');
- })->name('enregistrementPub');
+        Route::get('/recevoirOffresN3', function () {
+            return view('dossiers_achats.consultations.recevoirOffresN3');
+        })->name('recevoirOffresN3');
 
- Route::get('/recevoirOffres', function () {
-    return view('dossiers_achats.consultations.recevoirOffres');
- })->name('recevoirOffres');
+        Route::get('/ouvertureEnveloppesN06', function () {
+            return view('dossiers_achats.consultations.ouvertureEnveloppesN06');
+        })->name('consultationOuvertureEnveloppesN06');
 
- Route::get('/recevoirOffresN1', function () {
-    return view('dossiers_achats.consultations.recevoirOffresN1');
- })->name('recevoirOffresN1');
+        Route::get('/ouvrirEnveloppes', function () {
+            return view('dossiers_achats.consultations.ouvrirEnveloppes');
+        })->name('ouvrirEnveloppes');
 
- Route::get('/recevoirOffresN2', function () {
-    return view('dossiers_achats.consultations.recevoirOffresN2');
- })->name('recevoirOffresN2');
+        Route::get('/enregistrementMarche', function () {
+            return view('dossiers_achats.consultations.enregistrementMarche');
+        })->name('enregistrementMarche');
 
- Route::get('/recevoirOffresN3', function () {
-    return view('dossiers_achats.consultations.recevoirOffresN3');
- })->name('recevoirOffresN3');
+        Route::get('/autorisationDebutTravaux', function () {
+            return view('dossiers_achats.consultations.autorisationDebutTravaux');
+        })->name('autorisationDebutTravaux');
 
- Route::get('/ouvertureEnveloppesN06', function () {
-    return view('dossiers_achats.consultations.ouvertureEnveloppesN06');
- })->name('consultationOuvertureEnveloppesN06');
+        Route::get('/acceptationTemporaire', function () {
+            return view('dossiers_achats.consultations.acceptationTemporaire');
+        })->name('acceptationTemporaire');
 
- Route::get('/ouvrirEnveloppes', function () {
-    return view('dossiers_achats.consultations.ouvrirEnveloppes');
- })->name('ouvrirEnveloppes');
+        Route::get('/acceptationFinale', function () {
+            return view('dossiers_achats.consultations.acceptationFinale');
+        })->name('acceptationFinale');
 
- Route::get('/enregistrementMarche', function () {
-    return view('dossiers_achats.consultations.enregistrementMarche');
- })->name('enregistrementMarche');
+        Route::get('/reglementFinal', function () {
+            return view('dossiers_achats.consultations.reglementFinal');
+        })->name('reglementFinal');
 
- Route::get('/autorisationDebutTravaux', function () {
-    return view('dossiers_achats.consultations.autorisationDebutTravaux');
- })->name('autorisationDebutTravaux');
+        Route::get('/annulationConsultation', function () {
+            return view('dossiers_achats.consultations.annulationConsultation');
+        })->name('annulationConsultation');
 
- Route::get('/acceptationTemporaire', function () {
-    return view('dossiers_achats.consultations.acceptationTemporaire');
- })->name('acceptationTemporaire');
+        Route::get('/AppelOffresEnregistrementMarche', function () {
+            return view('dossiers_achats.appel_offres.enregistrementMarche');
+        })->name('AppelOffresEnregistrementMarche');
 
- Route::get('/acceptationFinale', function () {
-    return view('dossiers_achats.consultations.acceptationFinale');
- })->name('acceptationFinale');
+        Route::get('/AppelOffresAutorisationDebutTravaux', function () {
+            return view('dossiers_achats.appel_offres.autorisationDebutTravaux');
+        })->name('AppelOffresAutorisationDebutTravaux');
 
- Route::get('/reglementFinal', function () {
-    return view('dossiers_achats.consultations.reglementFinal');
- })->name('reglementFinal');
+        Route::get('/AppelOffresAcceptationTemporaire', function () {
+            return view('dossiers_achats.appel_offres.acceptationTemporaire');
+        })->name('AppelOffresAcceptationTemporaire');
 
-Route::get('/annulationConsultation', function () {
-    return view('dossiers_achats.consultations.annulationConsultation');
- })->name('annulationConsultation');
+        Route::get('/AppelOffresAcceptationFinale', function () {
+            return view('dossiers_achats.appel_offres.acceptationFinale');
+        })->name('AppelOffresAcceptationFinale');
 
-//**routes dossiers d'achats : appel d'offres **
+        Route::get('/AppelOffresReglementFinal', function () {
+            return view('dossiers_achats.appel_offres.reglementFinal');
+        })->name('AppelOffresReglementFinal');
 
-Route::get('/AppelOffresEnregistrementMarche', function () {
-   return view('dossiers_achats.appel_offres.enregistrementMarche');
-})->name('AppelOffresEnregistrementMarche');
+        Route::get('/appelOffresRecevoirOffresN1', function () {
+            return view('dossiers_achats.appel_offres.recevoirOffresN1');
+        })->name('appelOffresRecevoirOffresN1');
 
-Route::get('/AppelOffresAutorisationDebutTravaux', function () {
-   return view('dossiers_achats.appel_offres.autorisationDebutTravaux');
-})->name('AppelOffresAutorisationDebutTravaux');
+        Route::get('/appelOffresOuvertureEnveloppesN04', function () {
+            return view('dossiers_achats.appel_offres.ouvertureEnveloppesN04');
+        })->name('appelOffresOuvertureEnveloppesN04');
 
-Route::get('/AppelOffresAcceptationTemporaire', function () {
-   return view('dossiers_achats.appel_offres.acceptationTemporaire');
-})->name('AppelOffresAcceptationTemporaire');
+        Route::get('/appelOffresEnregistrementCahierCharges', function () {
+            return view('dossiers_achats.appel_offres.enregistrementCahierCharges');
+        })->name('appelOffresEnregistrementCahierCharges');
 
-Route::get('/AppelOffresAcceptationFinale', function () {
-   return view('dossiers_achats.appel_offres.acceptationFinale');
-})->name('AppelOffresAcceptationFinale');
+        Route::get('/appelOffresEnregistrementPub', function () {
+            return view('dossiers_achats.appel_offres.enregistrementPub');
+        })->name('appelOffresEnregistrementPub');
 
-Route::get('/AppelOffresReglementFinal', function () {
-   return view('dossiers_achats.appel_offres.reglementFinal');
-})->name('AppelOffresReglementFinal');
+        Route::get('/annexe', function () {
+            return view('annexe');
+        })->name('annexe');
 
-Route::get('/appelOffresRecevoirOffresN1', function () {
-    return view('dossiers_achats.appel_offres.recevoirOffresN1');
- })->name('appelOffresRecevoirOffresN1');
-
- Route::get('/appelOffresOuvertureEnveloppesN04', function () {
-    return view('dossiers_achats.appel_offres.ouvertureEnveloppesN04');
- })->name('appelOffresOuvertureEnveloppesN04');
-
- Route::get('/appelOffresEnregistrementCahierCharges', function () {
-   return view('dossiers_achats.appel_offres.enregistrementCahierCharges');
-})->name('appelOffresEnregistrementCahierCharges');
-
-Route::get('/appelOffresEnregistrementPub', function () {
-   return view('dossiers_achats.appel_offres.enregistrementPub');
-})->name('appelOffresEnregistrementPub');
-
-//**fin route appel d'offres**
-
- Route::get('/annexe', function () {
-   return view('annexe');
-})->name('annexe');
-
-// route Services
-Route::get('/service', function () {return view('service');})->name('service');
-Route::get('service/datatable', [ServicesController::class, 'getAllServiceDatatable'])->name('service.datatable');
-Route::post('service/createOrUpdate',[ServicesController::class,'createOrUpdate'])->name('service.createOrUpdate');
-Route::post('service/edit',[ServicesController::class,'edit'])->name('serviceDataTable.edit');
-Route::post('service/destroy',[ServicesController::class,'destroy'])->name('serviceDataTable.destroy');
-
-// route parametreAvertissement
-Route::get('/parametreAvertissement', function () {return view('etablissement.parametreAvertissement');})->name('parametreAvertissement');
-
+        // route parametreAvertissement
+        Route::get('/parametreAvertissement', function () {
+            return view('etablissement.parametreAvertissement');
+        })->name('parametreAvertissement');
 
         Route::get('file-upload/show/{id}/{param}', [FileUploadController::class, 'fileUploadGet'])->name('file.upload.get');
         Route::post('file-upload', [FileUploadController::class, 'fileUploadPost'])->name('file.upload.post');
@@ -354,8 +370,5 @@ Route::get('/parametreAvertissement', function () {return view('etablissement.pa
         Route::delete('file-delete', [FileUploadController::class, 'fileUploadDelete'])->name('files.delete');
         //Log Viewer
         Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
-
-    });
-
-
-
+    }
+);
