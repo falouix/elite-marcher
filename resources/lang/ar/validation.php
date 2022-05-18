@@ -168,6 +168,7 @@ return [
         'description'                  => '"ملاحظات/التفاصيل"',
         'payement_status_id'                  => '"طريقة الدفع"',
         'url'                  => '"الرابط"',
+        'captcha'                  => 'رمز التحقق'
 
     ],
 

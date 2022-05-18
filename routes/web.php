@@ -81,6 +81,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
         Route::resource('roles', RoleController::class);
         Route::resource('settings', SettingController::class);
+       // Route::resource('titres', TitreController::class);
         /*****************users routes******************/
         Route::resource('users', UserController::class);
 
