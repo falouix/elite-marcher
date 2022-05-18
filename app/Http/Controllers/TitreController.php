@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Titre;
 use Illuminate\Http\Request;
+use App\Repositories\Interfaces\ITitreRepository;
+use Validator;
 
 class TitreController extends Controller
 {
+    public function __construct(ITitreRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,17 +21,7 @@ class TitreController extends Controller
      */
     public function index()
     {
-        return view("titres.index");
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('titres.index');
     }
 
     /**
@@ -34,18 +32,10 @@ class TitreController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $validator = Validator::make($request->all(), [
+            'libelle' => 'required'
+        ]);
+        $this->repository->create($request->all());
     }
 
     /**
@@ -56,7 +46,8 @@ class TitreController extends Controller
      */
     public function edit($id)
     {
-        //
+        $titre = Titre::find($id);
+        return response()->json($titre);
     }
 
     /**
@@ -68,7 +59,10 @@ class TitreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'libelle' => 'required',
+        ]);
+        $this->repository->update($request, $id);
     }
 
     /**
@@ -79,6 +73,13 @@ class TitreController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->repository->destroy($id);
+    }
+
+    public function getAllTitresDatatable(Request $request)
+    {
+        if ($request->ajax()) {
+            return $this->repository->getAllTitres();
+        }
     }
 }

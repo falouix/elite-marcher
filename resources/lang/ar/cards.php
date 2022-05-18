@@ -17,6 +17,18 @@ return [
     'user_list' => 'قائمة المستعملين',
     // Card Besoins
     'besoins_list' => 'قائمة ظبط الحاجيات',
-
+    //Card Paragraphes
+    'paragraphes_list' => 'قائمة الفقرات',
+    //Card Sparagraphes
+    'sparagraphes_list' => 'قائمة الفقرات الفرعية ',
+    //Card Titres
+    'titres_list' => 'قائمة العنوانين  ',
+    //Card Chapitres
+    'chapitres_list' => 'قائمة المحاور  ',
+    //Card Services
+    'services_list' => 'قائمة المصالح/الدوائر/المؤسسات  ',
+    
+    //Card Soumissionnaires
+    'soumissionnaires_list' => 'قائمة المتعهدين  ',
 
 ];

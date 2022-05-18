@@ -41,7 +41,37 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Interfaces\IBesoinRepository',
             'App\Repositories\Services\BesoinRepository'
         );
-
+        
+        // Register Paragraphe Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\IParagrapheRepository',
+            'App\Repositories\Services\ParagrapheRepository'
+        );
+        // Register Sparagraphe Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\ISparagrapheRepository',
+            'App\Repositories\Services\SparagrapheRepository'
+        );
+        // Register Titre Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\ITitreRepository',
+            'App\Repositories\Services\TitreRepository'
+        );
+        // Register Chapitre Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\IChapitreRepository',
+            'App\Repositories\Services\ChapitreRepository'
+        );
+        // Register Service Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\IServiceRepository',
+            'App\Repositories\Services\ServiceRepository'
+        );
+        // Register Service Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\ISoumissionnaireRepository',
+            'App\Repositories\Services\SoumissionnaireRepository'
+        );
         // FileUpload Repository
         $this->app->bind(
            'App\Repositories\IFileUploadRepository',

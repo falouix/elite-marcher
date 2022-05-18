@@ -156,7 +156,17 @@ return [
     'tbl_suspended' => 'غير مفعل',
     'cases_numbers' => 'عدد القضايا',
     'tbl_libelle_type' => 'اسم النوع',
+    
     'tbl_libelle' => 'التسمية',
+    'tbl_contact' => 'جهة الإتصال',
+    'tbl_responsable' => 'المسؤول',
+     'tbl_adresse'=> 'العنوان',
+     'tbl_code_postal'=> 'الترقيم البريدي ',
+     'tbl_ville'=> 'المدينة',
+     'tbl_tel_fax'=> 'الفاكس',
+     'tbl_email'=> 'العنوان الإلكتروني',
+     'tbl_matricule_fiscale'=> 'المعرف الجبائي',
+
     'tbl_libelle_status' => 'اسم الحالة',
     'tbl_email' => 'البريد الإلكتروني',
     'tbl_email_abr' => 'إيميل',

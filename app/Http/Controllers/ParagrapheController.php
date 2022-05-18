@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\ISoumissionnaireRepository;
+use App\Models\Paragraphe;
 use Illuminate\Http\Request;
+use App\Repositories\Interfaces\IParagrapheRepository;
 use Validator;
-
-class SoumissionnaireController extends Controller
+class ParagrapheController extends Controller
 {
-    public function __construct(ISoumissionnaireRepository $repository)
+    public function __construct(IParagrapheRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -20,7 +20,7 @@ class SoumissionnaireController extends Controller
      */
     public function index()
     {
-        return view('soumissionnaires.index');
+        return view('paragraphes.index');
     }
 
     /**
@@ -32,14 +32,7 @@ class SoumissionnaireController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'libelle' => 'required',
-            'contact' => 'required',
-            'adresse' => 'required',
-            'code_postal' => 'required',
-            'ville' => 'required',
-            'tel_fax' => 'required',
-            'email' => 'required',
-            'matricule_fiscale' => 'required'
+            'libelle' => 'required'
         ]);
         $this->repository->create($request->all());
     }
@@ -52,7 +45,9 @@ class SoumissionnaireController extends Controller
      */
     public function edit($id)
     {
-        return $this->repository->edit($id);
+
+        $paragraphe = Paragraphe::find($id);
+        return response()->json($paragraphe);
     }
 
     /**
@@ -66,13 +61,6 @@ class SoumissionnaireController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'libelle' => 'required',
-            'contact' => 'required',
-            'adresse' => 'required',
-            'code_postal' => 'required',
-            'ville' => 'required',
-            'tel_fax' => 'required',
-            'email' => 'required',
-            'matricule_fiscale' => 'required'
         ]);
         $this->repository->update($request, $id);
     }
@@ -88,10 +76,10 @@ class SoumissionnaireController extends Controller
         $this->repository->destroy($id);
     }
 
-    public function getAllSoumissionnairesDatatable(Request $request)
+    public function getAllParagraphesDatatable(Request $request)
     {
         if ($request->ajax()) {
-            return $this->repository->getAllSoumissionnaires();
+            return $this->repository->getAllParagraphes();
         }
     }
 }

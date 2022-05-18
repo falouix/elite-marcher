@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-liste des titres
-=======
 @php
 
-$breadcrumb = __('breadcrumb.bread_titres_list');
+$breadcrumb = __('breadcrumb.bread_services_list');
 if ($locale == 'ar') {
     $lang = asset('/plugins/i18n/Arabic.json');
 } else {
@@ -42,7 +39,7 @@ $tbl_action = __('labels.tbl_action');
         <div class="card">
 
             <div class="card-header">
-                <h5>{{ __('cards.titres_list') }}</h5>
+                <h5>{{ __('cards.services_list') }}</h5>
                 <div class="card-header-right">
                     @can('case-delete')
                         <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>
@@ -52,7 +49,7 @@ $tbl_action = __('labels.tbl_action');
                         </button>
                     @endcan
                     @can('case-type-create')
-                        <button type="button" class="btn btn-primary" href="" data-toggle="modal" data-target="#add_titre">
+                        <button type="button" class="btn btn-primary" href="" data-toggle="modal" data-target="#add_service">
                             <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}
                         </button>
                     @endcan
@@ -61,11 +58,13 @@ $tbl_action = __('labels.tbl_action');
             </div>
             <div class="card-body">
                 <div class="dt-responsive table-responsive">
-                    <table id="titre-table" class="table table-striped table-bordered nowrap">
+                    <table id="service-table" class="table table-striped table-bordered nowrap">
                         <thead>
                             <th style="width: 30px"><input type="checkbox" class="select-checkbox" /> </th>
                             <th>id</th>
-                            <th>التسمية</th>
+                            <th>المصلحة/الدائرة/ المؤسسة</th>
+                            <th>جهة الإتصال</th>
+                            <th>المسؤول</th>
                             <th>{{ $tbl_action }}</th>
                         </thead>
 
@@ -73,7 +72,9 @@ $tbl_action = __('labels.tbl_action');
                             <tr>
                                 <th style="width: 30px"></th>
                                 <th>id</th>
-                                <th>التسمية</th>
+                                <th>المصلحة/الدائرة/ المؤسسة</th>
+                                <th>جهة الإتصال</th>
+                                <th>المسؤول</th>
                                 <th>{{ $tbl_action }}</th>
                             </tr>
                         </tfoot>
@@ -84,19 +85,19 @@ $tbl_action = __('labels.tbl_action');
     </div>
     <!-- Column Selector table end -->
     <!-- Modal Create or edit status -->
-    <div class="modal fade show" id="add_titre" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
+    <div class="modal fade show" id="add_service" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
         style="display: none;">
         <div class="modal-dialog ">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-title"> {{ __('modals.titre_modal') }} </h5>
+                    <h5 class="modal-title" id="modal-title"> {{ __('modals.service_modal') }} </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form id="form_id">
-                        <input type="text" name="titre_id" id="titre_id" value="0" hidden>
+                        <input type="text" name="service_id" id="service_id" value="0" hidden>
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label for="lbl_libelle"> {{ __('labels.tbl_libelle') }} </label>
@@ -107,12 +108,32 @@ $tbl_action = __('labels.tbl_action');
                                     for="libelle"></label>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="lbl_contact"> {{ __('labels.tbl_contact') }} </label>
+                                <input type="text" class="form-control" id='contact' name="contact"
+                                    placeholder="{{ __('labels.tbl_contact') }}" value="">
+                                <label id="contact-error"
+                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                    for="contact"></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="lbl_responsable"> {{ __('labels.tbl_responsable') }} </label>
+                                <input type="text" class="form-control" id='responsable' name="responsable"
+                                    placeholder="{{ __('labels.tbl_responsable') }}" value="">
+                                <label id="responsable-error"
+                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                    for="responsable"></label>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         {{ __('inputs.btn_close') }}</button>
-                    <button class="btn btn-primary" id='btn_add_titre'> {{ __('inputs.btn_create') }}
+                    <button class="btn btn-primary" id='btn_add_service'> {{ __('inputs.btn_create') }}
                     </button>
                 </div>
 
@@ -137,7 +158,7 @@ $tbl_action = __('labels.tbl_action');
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var table = $('#titre-table').DataTable({
+            var table = $('#service-table').DataTable({
                 dom: 'frltipB',
                 "lengthMenu": [
                     [10, 25, 50, -1],
@@ -190,7 +211,7 @@ $tbl_action = __('labels.tbl_action');
                 serverSide: true,
                 serverMethod: 'POST',
                 ajax: {
-                    url: "{{ route('titres.datatable') }}"
+                    url: "{{ route('services.datatable') }}"
                 },
                 language: {
                     url: "{{ $lang }}"
@@ -206,6 +227,14 @@ $tbl_action = __('labels.tbl_action');
                     {
                         data: "libelle",
                         className: "libelle"
+                    },
+                    {
+                        data: "contact",
+                        className: "contact"
+                    },
+                    {
+                        data: "responsable",
+                        className: "responsable"
                     },
                     {
                         data: 'action',
@@ -229,13 +258,10 @@ $tbl_action = __('labels.tbl_action');
                     style: 'os',
                     selector: 'td:first-child'
                 },
-                // select: { style: 'multi+shift' },
 
             });
             table
                 .on('select', function(e, dt, type, indexes) {
-                    // var rowData = table.rows( indexes ).data().toArray();
-                    //console.log( rowData );
                     SelectedRowCountBtnDelete(table)
                 })
                 .on('deselect', function(e, dt, type, indexes) {
@@ -246,69 +272,62 @@ $tbl_action = __('labels.tbl_action');
 
             // Setup - add a text input to each footer cell
 
-            addSearchFooterDataTable("#titre-table")
+            addSearchFooterDataTable("#service-table")
         });
 
-        // Create new titre from modal
-        $('#btn_add_titre').click(() => {
-            var id = $("#titre_id").val()
+        // Create new service from modal
+        $('#btn_add_service').click(() => {
+            var id = $("#service_id").val()
             var libelle = $('#libelle').val();
-            var url = "{{ route('titres.store') }}";
+            var contact = $('#contact').val();
+            var responsable = $('#responsable').val();
+
+            var url = "{{ route('services.store') }}";
             var type = 'POST';
             if (id != 0) {
-                url = "{{ route('titres.update', ['titre' => ':id']) }}"
+                url = "{{ route('services.update', ['service' => ':id']) }}"
                 url = url.replace(':id', id);
                 type = 'PUT';
             }
             $.ajax({
                 data: {
-                    libelle: libelle
+                    libelle: libelle,
+                    contact: contact,
+                    responsable: responsable
                 },
                 url: url,
                 type: type,
                 success: function(response) {
-                    $('#titre-table').DataTable().ajax.reload();
-                    $('#add_titre').modal('toggle');
-                    $("#titre_id").val('0');
+                    $('#service-table').DataTable().ajax.reload();
+                    $('#add_service').modal('toggle');
+                    $("#service_id").val('0');
                     $('#form_id').trigger("reset");
                     PnotifyCustom(response);
-                },
-                error: function(errors) {
-                    $('#libelle').removeClass('is-invalid')
-                    if (errors.responseJSON.message.libelle != null) {
-                        $('#libelle').addClass('is-invalid')
-                        $('#libelle-error').text(errors.responseJSON.message.libelle);
-                    }
-                    $('#titre_num').removeClass('is-invalid')
-                    if (errors.responseJSON.message.titre_num != null) {
-                        $('#titre_num').addClass('is-invalid')
-                        $('#titre_num-error').text(errors.responseJSON.message.titre_num);
-                    }
                 }
             }); // ajax end
         });
-
-        // Edite titre
-        function editTitre(id) {
+        // Edite service
+        function editService(id) {
 
             $.ajax({
                 type: "GET",
-                url: "titres/" + id + "/edit",
+                url: "services/" + id + "/edit",
                 success: function(data) {
-                    $('#add_titre').modal('show');
+                    $('#add_service').modal('show');
                     $('#libelle').val(data.libelle);
-                    $("#titre_id").val(id);
+                    $('#contact').val(data.contact);
+                    $('#responsable').val(data.responsable);
+                    $("#service_id").val(id);
                 },
                 error: function(response) {
                     alert(response.responseJSON.message)
                 }
             }); // ajax end
-
+            
         }
 
         function deleteFromDataTableBtn(id) {
-
-            var url = "{{ route('titres.destroy', ['titre' => ':id']) }}";
+            var url = "{{ route('services.destroy', ['service' => ':id']) }}";
             url = url.replace(':id', id);
             swal({
                     title: "{{ __('labels.swal_delete_title') }}",
@@ -319,27 +338,28 @@ $tbl_action = __('labels.tbl_action');
                 })
                 .then((willDelete) => {
                     if (willDelete) {
+
                         $.ajax({
                             url: url,
                             type: 'DELETE',
                             success: function(response) {
-                                console.log(response);
-                                deleteSingleRowDataTable("#titre-table");
+                                console.log(response)
+                                deleteSingleRowDataTable("#service-table");
                                 PnotifyCustom(response);
                             }
                         }); // ajax end
+
                     }
                 });
         }
 
         /*
         function multipleDelete(locale) {
-            var table = $('#titre-table').DataTable();
+            var table = $('#service-table').DataTable();
             var ids = table.rows('.selected').data();
-            var url = "";//titres_datatable.multidestroy
-            multipleDeleteG(locale, "#titre-table", ids, url);
+            var url = "";//services_datatable.multidestroy
+            multipleDeleteG(locale, "#service-table", ids, url);
         }
         */
     </script>
 @endsection
->>>>>>> 1b4768ba1b6060958d0e73cf25b2aa19238bf3a0

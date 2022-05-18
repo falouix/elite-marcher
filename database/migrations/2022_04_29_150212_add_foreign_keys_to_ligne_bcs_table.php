@@ -14,8 +14,8 @@ class AddForeignKeysToLigneBcsTable extends Migration
     public function up()
     {
         Schema::table('ligne_bcs', function (Blueprint $table) {
-            $table->foreign('bcs_engagements_id', 'fk_ligne_bcs_bcs_engagements1')->references('id')->on('bcs_engagements')->onUpdate('NO ACTION')->onDelete('NO ACTION');
-        });
+           $table->foreign('bcs_engagements_id', 'fk_ligne_bcs_bcs_engagements1')->references('id')->on('bcs_engagements')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+        }); 
     }
 
     /**
