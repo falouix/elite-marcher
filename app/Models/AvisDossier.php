@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class AvisDossier
@@ -22,6 +23,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $ref_avis
  * @property string|null $texte_avis
  * @property int $dossiers_achats_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
  * 
  * @property DossiersAchat $dossiers_achat
  *
@@ -29,12 +35,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AvisDossier extends Model
 {
+	use SoftDeletes;
 	protected $table = 'avis_dossiers';
-	public $timestamps = false;
 
 	protected $casts = [
 		'duree_avis' => 'int',
-		'dossiers_achats_id' => 'int'
+		'dossiers_achats_id' => 'int',
+		'created_by' => 'int',
+		'updated_by' => 'int'
 	];
 
 	protected $dates = [
@@ -53,7 +61,9 @@ class AvisDossier extends Model
 		'date_ouverture_plis',
 		'ref_avis',
 		'texte_avis',
-		'dossiers_achats_id'
+		'dossiers_achats_id',
+		'created_by',
+		'updated_by'
 	];
 
 	public function dossiers_achat()

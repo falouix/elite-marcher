@@ -29,7 +29,7 @@
         <ul class="pcoded-submenu" style="display: none;">
             <li class=""><a href="{{route('besoins.index')}}" class="">ضبط الحاجيات </a></li>
             <li class=""><a href="{{route('confirmationBudget')}}" class="" >المصادقة على الحاجيات</a></li>
-            <li class=""><a href="{{route('approvisionnement')}}" class="" >مشاريع شراءات</a></li>
+            <li class=""><a href="{{route('approvisionnement')}}" class="" >مشاريع الشراءات</a></li>
             <li class=""><a href="{{route('Dossier_achat')}}" class="" >إعداد ملف شراءات </a></li>
         </ul>
     </li>
@@ -41,7 +41,7 @@
             <span class="pcoded-mtext">ملفات الشراءات</span>
         </a>
         <ul class="pcoded-submenu" style="display: none;">
-            <li class=""><a href="{{route('consultations')}}" class="" >استشارات</a></li>
+            <li class=""><a href="{{route('consultations')}}" class="" >الإستشارات</a></li>
             <li class="pcoded-hasmenu"><a href="#!" class="">طلبات العروض </a>
                 <ul class="pcoded-submenu" style="display: none;">
                     <li class=""><a href="{{route('simplifiées')}}" class="" >إجراءات مبسطة </a></li>

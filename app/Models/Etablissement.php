@@ -6,7 +6,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Etablissement
@@ -36,13 +38,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $notif_duree_rp
  * @property bool|null $notif_delais_rd
  * @property int|null $notif_duree_rd
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
  *
  * @package App\Models
  */
 class Etablissement extends Model
 {
+	use SoftDeletes;
 	protected $table = 'etablissements';
-	public $timestamps = false;
 
 	protected $casts = [
 		'ajouter_annee' => 'bool',
@@ -59,7 +66,9 @@ class Etablissement extends Model
 		'notif_delais_rp' => 'bool',
 		'notif_duree_rp' => 'int',
 		'notif_delais_rd' => 'bool',
-		'notif_duree_rd' => 'int'
+		'notif_duree_rd' => 'int',
+		'created_by' => 'int',
+		'updated_by' => 'int'
 	];
 
 	protected $fillable = [
@@ -86,6 +95,8 @@ class Etablissement extends Model
 		'notif_delais_rp',
 		'notif_duree_rp',
 		'notif_delais_rd',
-		'notif_duree_rd'
+		'notif_duree_rd',
+		'created_by',
+		'updated_by'
 	];
 }

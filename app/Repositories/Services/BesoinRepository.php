@@ -17,17 +17,9 @@ class BesoinRepository implements IBesoinRepository
                 'libelle' => 'required',
                 'annee_gestion' => 'required|max:4|min:4'
             ],
-            [
-                'date_besoin.required' => 'حقل التاريخ مطلوب.',
-                'demandeur.required' => 'حقل الطالب مطلوب.',
-                'libelle.required' => 'حقل المصلحة/الدائرة/المؤسسة مطلوب.',
 
-                'annee_gestion.required' => 'حقل السنة المالية مطلوب.',
-                'annee_gestion.max' => ' يجب أن لا تزيد السنة المالية عن 4 ارقام .',
-                'annee_gestion.min' => ' يجب أن لا تقل السنة المالية عن 4 ارقام.',
-            ]
         );
-        Besoin::updateOrCreate(
+        $besoin = Besoin::updateOrCreate(
             ['id' => $request->besoinsId],
             [
                 'date_besoin' => $request->date_besoin,
@@ -39,33 +31,26 @@ class BesoinRepository implements IBesoinRepository
                 'services_id' => $request->services_id,
             ]
         );
-        return back()->with('success', 'تم حفظ ضبط الحاجيات بنجاح.');
+        return $besoin;
     }
 
-    public function getAllBesoin($viewSource)
+    public function getAllBesoin()
     {
-        $query = Besoin::select('*');
-        if ($viewSource != 'besoin') {
-            return datatables()
-                ->of($query)
-                ->addColumn('action', function ($row) {
-                    $actionBtn = '<a href="/confirmationDemande?id=' . $row->id . '&valider=' . $row->valider . '" class="btn btn-success feather icon-check-circle">المصادقة
-                    </a>';
-                    return $actionBtn;
-                })->rawColumns(['action'])
-                ->make(true);
-        } else {
-            return datatables()
-                ->of($query)
-                ->addColumn('action', function ($row) {
+        $query = Besoin::select('*')->with('lignes_besoins')->with('service');
+        Log::info($query->get());
+        return datatables()
+        ->of($query)
+        ->addColumn('select', static function () {
+            return null;
+        })
+        ->addColumn('demandeur', static function () {
+            return null;
+        })
+        ->addColumn('action', 'besoins.datatable-actions')
 
-                    $actionBtn = '<a href="/ligneBesoin?id=' . $row->id . '"  class="edit btn btn-success btn-sm btnEdit">تحيين
-                    </a> <a href="javascript:void(0)"  data-id="' . $row->id . '" class="delete btn btn-danger btn-sm btnDelete">حذف
-                    </a> ';
-                    return $actionBtn;
-                })->rawColumns(['action'])
-                ->make(true);
-        }
+        ->rawColumns(['id', 'action'])
+
+        ->make(true);
     }
 
     public function delete($id)

@@ -6,7 +6,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class LignesBesoin
@@ -19,6 +21,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $qte_valide
  * @property int $besoins_id
  * @property int|null $projets_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
  * 
  * @property Besoin $besoin
  *
@@ -26,9 +33,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class LignesBesoin extends Model
 {
+	use SoftDeletes;
 	protected $table = 'lignes_besoins';
 	public $incrementing = false;
-	public $timestamps = false;
 
 	protected $casts = [
 		'id' => 'int',
@@ -37,7 +44,9 @@ class LignesBesoin extends Model
 		'cout_total_ttc' => 'float',
 		'qte_valide' => 'int',
 		'besoins_id' => 'int',
-		'projets_id' => 'int'
+		'projets_id' => 'int',
+		'created_by' => 'int',
+		'updated_by' => 'int'
 	];
 
 	protected $fillable = [
@@ -47,7 +56,9 @@ class LignesBesoin extends Model
 		'cout_total_ttc',
 		'qte_valide',
 		'besoins_id',
-		'projets_id'
+		'projets_id',
+		'created_by',
+		'updated_by'
 	];
 
 	public function besoin()

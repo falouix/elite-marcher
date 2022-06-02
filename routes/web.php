@@ -101,7 +101,7 @@ Route::group(
 
         /// Routes SANA
         Route::get('/home', [HomeController::class, 'index'])->name('home');
-        
+
         Route::resource('paragraphes', ParagrapheController::class);
         Route::post('paragraphes/datatable', [ParagrapheController::class, 'getAllParagraphesDatatable'])->name('paragraphes.datatable');
 
@@ -119,7 +119,7 @@ Route::group(
 
         Route::resource('soumissionnaires', SoumissionnaireController::class);
         Route::post('soumissionnaires/datatable', [SoumissionnaireController::class, 'getAllSoumissionnairesDatatable'])->name('soumissionnaires.datatable');
-       
+
         //-----------------------------route bilel----------------------------
         //route besoin
         Route::resource('besoins', BesoinController::class);
@@ -369,7 +369,6 @@ Route::group(
         Route::post('file-upload', [FileUploadController::class, 'fileUploadPost'])->name('file.upload.post');
         Route::post('file-data', [FileUploadController::class, 'getAllFilesByType'])->name('files.datatable');
         Route::delete('file-delete', [FileUploadController::class, 'fileUploadDelete'])->name('files.delete');
-        //Log Viewer
-        Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+
     }
 );

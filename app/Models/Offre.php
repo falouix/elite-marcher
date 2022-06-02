@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Offre
@@ -28,6 +29,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $commissions_ops_id
  * @property string|null $decision_technique
  * @property int $commissions_techniques_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
  * 
  * @property CommissionsOp $commissions_op
  * @property CommissionsTechnique $commissions_technique
@@ -37,8 +43,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Offre extends Model
 {
+	use SoftDeletes;
 	protected $table = 'offres';
-	public $timestamps = false;
 
 	protected $casts = [
 		'source_offre' => 'int',
@@ -47,7 +53,9 @@ class Offre extends Model
 		'nbr_lots' => 'int',
 		'prix_offre' => 'float',
 		'commissions_ops_id' => 'int',
-		'commissions_techniques_id' => 'int'
+		'commissions_techniques_id' => 'int',
+		'created_by' => 'int',
+		'updated_by' => 'int'
 	];
 
 	protected $dates = [
@@ -70,7 +78,9 @@ class Offre extends Model
 		'observations',
 		'commissions_ops_id',
 		'decision_technique',
-		'commissions_techniques_id'
+		'commissions_techniques_id',
+		'created_by',
+		'updated_by'
 	];
 
 	public function commissions_op()

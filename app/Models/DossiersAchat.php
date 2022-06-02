@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class DossiersAchat
@@ -26,6 +27,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $type_commission
  * @property Carbon|null $date_cloture
  * @property string|null $dossiers_achatscol
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
  * 
  * @property Annulation $annulation
  * @property Collection|AvisDossier[] $avis_dossiers
@@ -45,16 +51,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class DossiersAchat extends Model
 {
+	use SoftDeletes;
 	protected $table = 'dossiers_achats';
 	public $incrementing = false;
-	public $timestamps = false;
 
 	protected $casts = [
 		'id' => 'int',
 		'code_projet' => 'int',
 		'situation_dossier' => 'int',
 		'source_finance' => 'int',
-		'type_dossier' => 'bool'
+		'type_dossier' => 'bool',
+		'created_by' => 'int',
+		'updated_by' => 'int'
 	];
 
 	protected $dates = [
@@ -73,7 +81,9 @@ class DossiersAchat extends Model
 		'type_demande',
 		'type_commission',
 		'date_cloture',
-		'dossiers_achatscol'
+		'dossiers_achatscol',
+		'created_by',
+		'updated_by'
 	];
 
 	public function annulation()

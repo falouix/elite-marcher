@@ -6,6 +6,7 @@ use App\Models\Besoin;
 
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\IBesoinRepository;
+use Log;
 
 class BesoinController extends Controller
 {
@@ -30,7 +31,7 @@ class BesoinController extends Controller
      */
     public function create()
     {
-        //
+        return view('besoins.create');
     }
 
     /**
@@ -41,7 +42,16 @@ class BesoinController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->repository->createOrUpdate($request->all());
+        $locale = LaravelLocalization::getCurrentLocale();
+        if ($locale == 'en') {
+            $notification = $this->notifyArr('Success [create new Client]', 'Client created successfully!', 'success', false);
+        } else {
+            $notification = $this->notifyArr('إضافة الحاجيات', '!تم إضافة الحاجيات بنجاح', 'success', true);
+        }
+
+        return redirect()->route('clients.index')
+            ->with('notification', $notification);
     }
 
     /**
@@ -100,12 +110,17 @@ class BesoinController extends Controller
      {
          return $this->repository->createOrUpdate($request);
      }
-     // return all Besoin to dataTable
+      /**
+     * Process datatables ajax request.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
      public function getAllBesoinDatatable(Request $request)
      {
+        Log::info($request);
          if ($request->ajax())
-         { $viewSource=$request->nameView;
-             return $this->repository->getAllBesoin($viewSource);
+         {
+             return $this->repository->getAllBesoin();
          }
      }
      public function multidestroy(Request $request)

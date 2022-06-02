@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Besoin
@@ -19,6 +20,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool|null $valider
  * @property Carbon|null $date_validation
  * @property int $services_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
  * 
  * @property Service $service
  * @property Collection|LignesBesoin[] $lignes_besoins
@@ -27,12 +33,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Besoin extends Model
 {
+	use SoftDeletes;
 	protected $table = 'besoins';
-	public $timestamps = false;
 
 	protected $casts = [
 		'valider' => 'bool',
-		'services_id' => 'int'
+		'services_id' => 'int',
+		'created_by' => 'int',
+		'updated_by' => 'int'
 	];
 
 	protected $dates = [
@@ -45,7 +53,9 @@ class Besoin extends Model
 		'date_besoin',
 		'valider',
 		'date_validation',
-		'services_id'
+		'services_id',
+		'created_by',
+		'updated_by'
 	];
 
 	public function service()

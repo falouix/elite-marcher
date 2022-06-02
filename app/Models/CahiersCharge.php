@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class CahiersCharge
@@ -26,6 +27,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $duree_autres_caution
  * @property Carbon|null $date_pub_prevu
  * @property int $dossiers_achats_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
  * 
  * @property DossiersAchat $dossiers_achat
  * @property Collection|CcDoc[] $cc_docs
@@ -34,8 +40,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CahiersCharge extends Model
 {
+	use SoftDeletes;
 	protected $table = 'cahiers_charges';
-	public $timestamps = false;
 
 	protected $casts = [
 		'type_reception' => 'int',
@@ -48,7 +54,9 @@ class CahiersCharge extends Model
 		'duree_caution_def' => 'int',
 		'autres_caution' => 'float',
 		'duree_autres_caution' => 'int',
-		'dossiers_achats_id' => 'int'
+		'dossiers_achats_id' => 'int',
+		'created_by' => 'int',
+		'updated_by' => 'int'
 	];
 
 	protected $dates = [
@@ -67,7 +75,9 @@ class CahiersCharge extends Model
 		'autres_caution',
 		'duree_autres_caution',
 		'date_pub_prevu',
-		'dossiers_achats_id'
+		'dossiers_achats_id',
+		'created_by',
+		'updated_by'
 	];
 
 	public function dossiers_achat()

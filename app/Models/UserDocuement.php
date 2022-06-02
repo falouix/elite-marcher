@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class UserDocuement
@@ -15,9 +16,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string|null $file_name
  * @property string|null $path
+ * @property int $user_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property int $user_id
+ * @property string|null $deleted_at
  * @property int|null $created_by
  * @property int|null $updated_by
  * 
@@ -27,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserDocuement extends Model
 {
+	use SoftDeletes;
 	protected $table = 'user_docuements';
 
 	protected $casts = [

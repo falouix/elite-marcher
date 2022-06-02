@@ -6,7 +6,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class LignesProjet
@@ -18,6 +20,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $cout_unite_ttc
  * @property float|null $cout_total_ttc
  * @property int $projets_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
  * 
  * @property Projet $projet
  *
@@ -25,9 +32,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class LignesProjet extends Model
 {
+	use SoftDeletes;
 	protected $table = 'lignes_projets';
 	public $incrementing = false;
-	public $timestamps = false;
 
 	protected $casts = [
 		'id' => 'int',
@@ -36,7 +43,9 @@ class LignesProjet extends Model
 		'qte' => 'int',
 		'cout_unite_ttc' => 'float',
 		'cout_total_ttc' => 'float',
-		'projets_id' => 'int'
+		'projets_id' => 'int',
+		'created_by' => 'int',
+		'updated_by' => 'int'
 	];
 
 	protected $fillable = [
@@ -45,7 +54,9 @@ class LignesProjet extends Model
 		'qte',
 		'cout_unite_ttc',
 		'cout_total_ttc',
-		'projets_id'
+		'projets_id',
+		'created_by',
+		'updated_by'
 	];
 
 	public function projet()

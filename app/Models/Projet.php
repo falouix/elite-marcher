@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Projet
@@ -21,6 +22,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $type_demande
  * @property string|null $nature_passation
  * @property int|null $services_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
  * 
  * @property Collection|LignesProjet[] $lignes_projets
  *
@@ -28,11 +34,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Projet extends Model
 {
+	use SoftDeletes;
 	protected $table = 'projets';
-	public $timestamps = false;
 
 	protected $casts = [
-		'services_id' => 'int'
+		'services_id' => 'int',
+		'created_by' => 'int',
+		'updated_by' => 'int'
 	];
 
 	protected $dates = [
@@ -47,7 +55,9 @@ class Projet extends Model
 		'date_action_prevu',
 		'type_demande',
 		'nature_passation',
-		'services_id'
+		'services_id',
+		'created_by',
+		'updated_by'
 	];
 
 	public function lignes_projets()

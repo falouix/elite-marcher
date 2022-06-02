@@ -62,24 +62,20 @@ $tbl_action = __('labels.tbl_action');
                 <div class="dt-responsive table-responsive">
                     <table id="besoins-table" class="table table-striped table-bordered nowrap">
                         <thead>
-                            <th style="width: 30px"><input type="checkbox" class="select-checkbox" /> </th>
+                            <th class="not-export-col" style="width: 30px"><input type="checkbox" class="select-checkbox" /> </th>
                             <th>id</th>
                             <th>التاريخ</th>
-                            <th>الطالب</th>
-                            <th>المصلحة/الدائرة/المؤسسة</th>
                             <th>السنة المالية</th>
-                            <th>{{ $tbl_action }}</th>
+                            <th class="not-export-col">{{ $tbl_action }}</th>
                         </thead>
 
                         <tfoot>
                             <tr>
-                                <th style="width: 30px"></th>
-                                <th>id</th>
+                                <th class="not-export-col" style="width: 30px"></th>
+                                <th class="not-export-col">id</th>
                                 <th>التاريخ</th>
-                                <th>الطالب</th>
-                                <th>المصلحة/الدائرة/المؤسسة</th>
                                 <th>السنة المالية</th>
-                                <th>{{ $tbl_action }}</th>
+                                <th class="not-export-col">{{ $tbl_action }}</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -228,16 +224,12 @@ $tbl_action = __('labels.tbl_action');
                         className: "date_besoin"
                     },
                     {
-                        data: "demandeur",
-                        className: "demandeur"
-                    },
-                    {
-                        data: "libelle",
-                        className: "libelle"
-                    },
-                    {
                         data: "annee_gestion",
                         className: "annee_gestion"
+                    },
+                    {
+                        data: "created_at",
+                        className: 'created_at'
                     },
                     {
                         data: 'action',

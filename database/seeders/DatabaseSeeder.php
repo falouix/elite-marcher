@@ -29,11 +29,12 @@ class DatabaseSeeder extends Seeder
             'user_type' => 'lawyer',
           ]
         ); */
-  
-      User::factory()
+
+     /* User::factory()
         ->count(30000)
         ->create([
             'user_type' => 'ِchairman',
         ]);
+        */
     }
 }
