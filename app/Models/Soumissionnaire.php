@@ -36,7 +36,7 @@ class Soumissionnaire extends Model
 		'adresse',
 		'contact',
 		'code_postal',
-		//'gouvernorat',
+		'gouvernorat',
 		'ville',
 		'tel_fax'
 	];

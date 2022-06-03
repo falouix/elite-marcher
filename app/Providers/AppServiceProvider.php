@@ -72,6 +72,12 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Interfaces\ISoumissionnaireRepository',
             'App\Repositories\Services\SoumissionnaireRepository'
         );
+        // Register Service Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\IEtablissementRepository',
+            'App\Repositories\Services\EtablissementRepository'
+        );
+
         // FileUpload Repository
         $this->app->bind(
            'App\Repositories\IFileUploadRepository',

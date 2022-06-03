@@ -1,6 +1,6 @@
 @can('case-type-edit')
-    <a href="#" class="btn btn-icon btn-rounded btn-success" data-id="{{  $id }}"
-        title="{{ __('inputs.btn_edit') }}" onclick="editSoumissionnaire({{ $id }})">
+    <a href='soumissionnaires/{{ $id }}/edit' class="btn btn-icon btn-rounded btn-success" data-id="{{  $id }}"
+        title="{{ __('inputs.btn_edit') }}">
         <i class="feather icon-edit"></i>
     </a>
 @endcan

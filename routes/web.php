@@ -118,7 +118,9 @@ Route::group(
 
         Route::resource('soumissionnaires', SoumissionnaireController::class);
         Route::post('soumissionnaires/datatable', [SoumissionnaireController::class, 'getAllSoumissionnairesDatatable'])->name('soumissionnaires.datatable');
-       
+
+        Route::resource('etablissements', EtablissementController::class); 
+        
         //-----------------------------route bilel----------------------------
         //route besoin
         Route::resource('besoins', BesoinController::class);
@@ -214,13 +216,7 @@ Route::group(
             return view('fournisseur.edit');
         })->name('editFournisseur');
 
-        //route reglages
-        Route::get('/reglages', function () {
-            return view('etablissement.reglagesGeneraux');
-        })->name('reglages');
-        Route::post('reglages/createOrUpdate', [EtablissementController::class, 'createOrUpdate'])->name('reglages.createOrUpdate');
-        Route::get('reglages/getEtablissement', [EtablissementController::class, 'getEtablissement'])->name('reglages.getEtablissement');
-
+    
         Route::get('/recevoirOffres/consutation', function () {
             return view('recevoirOffres.consultation');
         })->name('recevoirOffresConsultation');
@@ -359,11 +355,7 @@ Route::group(
             return view('annexe');
         })->name('annexe');
 
-        // route parametreAvertissement
-        Route::get('/parametreAvertissement', function () {
-            return view('etablissement.parametreAvertissement');
-        })->name('parametreAvertissement');
-
+    
         Route::get('file-upload/show/{id}/{param}', [FileUploadController::class, 'fileUploadGet'])->name('file.upload.get');
         Route::post('file-upload', [FileUploadController::class, 'fileUploadPost'])->name('file.upload.post');
         Route::post('file-data', [FileUploadController::class, 'getAllFilesByType'])->name('files.datatable');

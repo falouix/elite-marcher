@@ -49,10 +49,8 @@ $tbl_action = __('labels.tbl_action');
                         </button>
                     @endcan
                     @can('case-type-create')
-                        <button type="button" class="btn btn-primary" href="" data-toggle="modal"
-                            data-target="#add_soumissionnaire">
-                            <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}
-                        </button>
+                        <a type="button" class="btn btn-primary" href="{{ route('soumissionnaires.create') }}">
+                            <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}</a>
                     @endcan
                 </div>
 
@@ -64,10 +62,11 @@ $tbl_action = __('labels.tbl_action');
                             <th style="width: 30px"><input type="checkbox" class="select-checkbox" /> </th>
                             <th>id</th>
                             <th>الاسم</th>
-                            <th>جهة الإتصال</th>
+                            <th>جهة الإتصال</th>gouvernorat
                             <th>العنوان</th>
                             <th>الترقيم البريدي</th>
                             <th>المدينة</th>
+                            <th>المحافظة</th>
                             <th>الفاكس</th>
                             <th>العنوان الإلكتروني</th>
                             <th>المعرف الجبائي</th>
@@ -83,6 +82,7 @@ $tbl_action = __('labels.tbl_action');
                                 <th>العنوان</th>
                                 <th>الترقيم البريدي</th>
                                 <th>المدينة</th>
+                                <th>المحافظة</th>
                                 <th>الفاكس</th>
                                 <th>العنوان الإلكتروني</th>
                                 <th>المعرف الجبائي</th>
@@ -95,113 +95,6 @@ $tbl_action = __('labels.tbl_action');
         </div>
     </div>
     <!-- Column Selector table end -->
-    <!-- Modal Create or edit status -->
-    <div class="modal fade show" id="add_soumissionnaire" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-modal="true" style="display: none;">
-        <div class="modal-dialog ">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-title"> {{ __('modals.soumissionnaire_modal') }} </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="form_id">
-                        <input type="text" name="soumissionnaire_id" id="soumissionnaire_id" value="0" hidden>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label for="lbl_libelle"> {{ __('labels.tbl_libelle') }} </label>
-                                <input type="text" class="form-control" id='libelle' name="libelle"
-                                    placeholder="{{ __('labels.tbl_libelle') }}" value="">
-                                <label id="libelle-error"
-                                    class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="libelle"></label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label for="lbl_contact"> {{ __('labels.tbl_contact') }} </label>
-                                <input type="text" class="form-control" id='contact' name="contact"
-                                    placeholder="{{ __('labels.tbl_contact') }}" value="">
-                                <label id="contact-error"
-                                    class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="contact"></label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label for="lbl_adresse"> {{ __('labels.tbl_adresse') }} </label>
-                                <input type="text" class="form-control" id='adresse' name="adresse"
-                                    placeholder="{{ __('labels.tbl_adresse') }}" value="">
-                                <label id="adresse-error"
-                                    class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="adresse"></label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label for="lbl_code_postal"> {{ __('labels.tbl_code_postal') }} </label>
-                                <input type="text" class="form-control" id='code_postal' name="code_postal"
-                                    placeholder="{{ __('labels.tbl_code_postal') }}" value="">
-                                <label id="code_postal-error"
-                                    class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="code_postal"></label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label for="lbl_ville"> {{ __('labels.tbl_ville') }} </label>
-                                <input type="text" class="form-control" id='ville' name="ville"
-                                    placeholder="{{ __('labels.tbl_ville') }}" value="">
-                                <label id="ville-error"
-                                    class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="ville"></label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label for="lbl_tel_fax"> {{ __('labels.tbl_tel_fax') }} </label>
-                                <input type="text" class="form-control" id='tel_fax' name="tel_fax"
-                                    placeholder="{{ __('labels.tbl_tel_fax') }}" value="">
-                                <label id="tel_fax-error"
-                                    class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="tel_fax"></label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label for="lbl_email"> {{ __('labels.tbl_email') }} </label>
-                                <input type="text" class="form-control" id='email' name="email"
-                                    placeholder="{{ __('labels.tbl_email') }}" value="">
-                                <label id="email-error"
-                                    class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="email"></label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label for="lbl_matricule_fiscale"> {{ __('labels.tbl_matricule_fiscale') }} </label>
-                                <input type="text" class="form-control" id='matricule_fiscale' name="matricule_fiscale"
-                                    placeholder="{{ __('labels.tbl_matricule_fiscale') }}" value="">
-                                <label id="matricule_fiscale-error"
-                                    class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="matricule_fiscale"></label>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        {{ __('inputs.btn_close') }}</button>
-                    <button class="btn btn-primary" id='btn_add_soumissionnaire'> {{ __('inputs.btn_create') }}
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!-- Modal Create or edit status end-->
 @endsection
 @section('srcipt-js')
     <!-- datatable Js -->
@@ -306,6 +199,10 @@ $tbl_action = __('labels.tbl_action');
                         className: "ville"
                     },
                     {
+                        data: "gouvernorat",
+                        className: "gouvernorat"
+                    },
+                    {
                         data: "tel_fax",
                         className: "tel_fax"
                     },
@@ -356,47 +253,6 @@ $tbl_action = __('labels.tbl_action');
             addSearchFooterDataTable("#soumissionnaire-table")
         });
 
-        // Create new soumissionnaire from modal
-        $('#btn_add_soumissionnaire').click(() => {
-            var id = $("#soumissionnaire_id").val()
-            var libelle = $('#libelle').val();
-            var contact = $('#contact').val();
-            var adresse = $('#adresse').val();
-            var code_postal = $('#code_postal').val();
-            var ville = $('#ville').val();
-            var tel_fax = $('#tel_fax').val();
-            var email = $('#email').val();
-            var matricule_fiscale = $('#matricule_fiscale').val();
-
-            var url = "{{ route('soumissionnaires.store') }}";
-            var type = 'POST';
-            if (id != 0) {
-                url = "{{ route('soumissionnaires.update', ['soumissionnaire' => ':id']) }}"
-                url = url.replace(':id', id);
-                type = 'PUT';
-            }
-            $.ajax({
-                data: {
-                    libelle: libelle,
-                    contact: contact,
-                    adresse: adresse,
-                    code_postal: code_postal,
-                    ville: ville,
-                    tel_fax: tel_fax,
-                    email: email,
-                    matricule_fiscale: matricule_fiscale
-                },
-                url: url,
-                type: type,
-                success: function(response) {
-                    $('#soumissionnaire-table').DataTable().ajax.reload();
-                    $('#add_soumissionnaire').modal('toggle');
-                    $("#soumissionnaire_id").val('0');
-                    $('#form_id').trigger("reset");
-                    PnotifyCustom(response);
-                }
-            }); // ajax end
-        });
         // Edite soumissionnaire
         function editSoumissionnaire(id) {
 
@@ -411,7 +267,8 @@ $tbl_action = __('labels.tbl_action');
                     $('#adresse').val(data.adresse);
                     $('#code_postal').val(data.code_postal);
                     $('#ville').val(data.ville);
-                    $('#tel_fax').val(data.tel_fax);
+                    $('#gouvernorat').val(data.gouvernorat);
+                    $('#tel_fax').val(data.tel_fax); 
                     $('#email').val(data.email);
                     $('#matricule_fiscale').val(data.matricule_fiscale);
                 },
@@ -421,9 +278,9 @@ $tbl_action = __('labels.tbl_action');
             }); // ajax end
 
         }
- 
+
         function deleteFromDataTableBtn(id) {
-           
+
             var url = "{{ route('soumissionnaires.destroy', ['soumissionnaire' => ':id']) }}";
             url = url.replace(':id', id);
             swal({
