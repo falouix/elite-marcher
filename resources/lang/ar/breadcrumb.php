@@ -35,6 +35,11 @@ return [
     'bread_services_list' => 'المصالح/الدوائر/المؤسسات',
     // BreadCrumb Soumissionnaires
     'bread_soumissionnaires_list' => 'المتعهدين',
-
-
+    // BreadCrumb Soumissionnaires create
+    'bread_soumissionnaires' => ' منطقة المتعهدين',
+    'bread_soumissionnaires_create' => 'إضافة متعهد جديد',
+    // BreadCrumb Soumissionnaires edit
+    'bread_soumissionnaires_edit'=> 'تعديل متعهد',
+     // BreadCrumb Etablissements create
+     'bread_etablissements'=> 'إعدادات النظام',
 ];

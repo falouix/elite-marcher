@@ -15,9 +15,10 @@ class SoumissionnaireRepository implements ISoumissionnaireRepository
         $soumissionnaire = Soumissionnaire::create($input);
         return $soumissionnaire;
     }
-    public function edit($id)
+    
+    public function getSoumissionnairetByParam($key, $value)
     {
-        return Response()->json(Soumissionnaire::find($id));
+        return Soumissionnaire::Select('*')->where($key, '=', $value)->get()->first();
     }
 
     public function update($request, $id)
@@ -31,7 +32,7 @@ class SoumissionnaireRepository implements ISoumissionnaireRepository
     {
         Soumissionnaire::find($id)->delete();
     }
-
+ 
     public function getAllSoumissionnaires()
     {
         $query = Soumissionnaire::select('*');

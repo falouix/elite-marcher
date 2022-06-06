@@ -28,6 +28,10 @@ return [
     'btn_save_changes' => 'تسجيل التعديلات',
     'btn_view' => 'عرض التفاصيل',
     'btn_view_file' => 'عرض المستند',
+
+    // Return Back to list Buttons
+    'btn_back_soumissionnaires'=>'العودة لكل المتعهدين',
+    
     // specific buttons
     /**** Users ****/
     'btn_create_user' =>'إضافة مستعمل جديد',

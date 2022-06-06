@@ -4,23 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Etablissement;
 use Illuminate\Http\Request;
-use App\Repositories\IEtablissementRepository;
+use App\Repositories\Interfaces\IEtablissementRepository;
 class EtablissementController extends Controller
 {
 
     public function __construct(IEtablissementRepository $repository)
     {
         $this->repository = $repository;
-    }
-
-    public function getEtablissement(Request $request)
-    { 
-        return $this->repository->getEtablissement();
-    }
-
-    public function createOrUpdate(Request $request)
-    { 
-        return $this->repository->createOrUpdate($request);
     }
     
     /** 
@@ -30,17 +20,8 @@ class EtablissementController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $etablissement = Etablissement::find(1);
+        return view('etablissements.index', compact('etablissement')); 
     }
 
     /**
@@ -50,19 +31,9 @@ class EtablissementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Etablissement  $etablissement
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Etablissement $etablissement)
-    {
-        //
+    {    
+        $this->repository->create($request->all());
+        return view('etablissements.index');
     }
 
     /**
@@ -71,9 +42,9 @@ class EtablissementController extends Controller
      * @param  \App\Models\Etablissement  $etablissement
      * @return \Illuminate\Http\Response
      */
-    public function edit(Etablissement $etablissement)
+    public function edit($id)
     {
-        //
+        // 
     }
 
     /**
@@ -83,19 +54,9 @@ class EtablissementController extends Controller
      * @param  \App\Models\Etablissement  $etablissement
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Etablissement $etablissement)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Etablissement  $etablissement
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Etablissement $etablissement)
-    {
-        //
+    public function update(Request $request, $id)
+    {   
+        $this->repository->update($request->all(), $id);
+        return redirect()->route('etablissements.index');
     }
 }

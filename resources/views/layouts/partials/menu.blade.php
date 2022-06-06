@@ -105,19 +105,11 @@
       <!-- settings menu end-->
       <!-- case-settings menu -->
       @if (\Auth::user()->can('case-type-list') || \Auth::user()->can('case-status-list') || \Auth::user()->can('case-stage-list') && \Auth::user()->can('court-list'))
-      <li data-username="Case Settings ui" class="nav-item pcoded-hasmenu">
-          <a href="#" class="nav-link"><span class="pcoded-micon"><i
+      <li data-username=" Settings ui" >
+          <a href="{{route('etablissements.index')}}" class="nav-link"><span class="pcoded-micon"><i
                       class="feather icon-sliders"></i></span><span
                   class="pcoded-mtext">{{ __('menu.settings') }}</span></a>
-          <ul class="pcoded-submenu">
-              @can('case-type-list')
-              <li class=""><a href={{route('parametreAvertissement')}} class="" >اعداد التنبيهات</a></li>
-              @endcan
-             @can('case-status-list')
-             <li class=""><a href="{{route('reglages')}}" class="" >اعدادات عامة</a></li>
-             @endcan
 
-          </ul>
       </li>
       @endif
       <!-- case-settings menu end-->
