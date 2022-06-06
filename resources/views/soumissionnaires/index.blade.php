@@ -41,14 +41,14 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>{{ __('cards.soumissionnaires_list') }}</h5>
                 <div class="card-header-right">
-                    @can('case-delete')
+                    @can('besoins-list')
                         <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>
                             <i class="feather icon-trash-2"></i>
                             {{ __('inputs.btn_delete') }}
                             <i id="btn_count"></i>
                         </button>
                     @endcan
-                    @can('case-type-create')
+                    @can('besoins-list')
                         <button type="button" class="btn btn-primary" href="" data-toggle="modal"
                             data-target="#add_soumissionnaire">
                             <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}
@@ -421,9 +421,9 @@ $tbl_action = __('labels.tbl_action');
             }); // ajax end
 
         }
- 
+
         function deleteFromDataTableBtn(id) {
-           
+
             var url = "{{ route('soumissionnaires.destroy', ['soumissionnaire' => ':id']) }}";
             url = url.replace(':id', id);
             swal({
