@@ -14,7 +14,7 @@ class CreateLignesBesoinsTable extends Migration
     public function up()
     {
         Schema::create('lignes_besoins', function (Blueprint $table) {
-            $table->bigInteger('id')->primary();
+            $table->bigIncrements('id');
             $table->text('libelle')->nullable();
             $table->integer('qte_demande')->nullable();
             $table->decimal('cout_unite_ttc', 12, 3)->nullable();
@@ -22,6 +22,7 @@ class CreateLignesBesoinsTable extends Migration
             $table->integer('qte_valide')->nullable();
             $table->bigInteger('besoins_id')->index('fk_lignes_besoins_besoins1_idx');
             $table->bigInteger('projets_id')->nullable();
+            $table->bigInteger('docs_id')->nullable(); // document spec besoins
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

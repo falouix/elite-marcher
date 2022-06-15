@@ -14,7 +14,7 @@ return [
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
- 
+
     'user_documents' => 'user_documents',
 
     'case_documents' => 'case_documents',
@@ -24,9 +24,10 @@ return [
     'prosecution_docuements' => 'prosecution_docuements',
 
     'event_docuements' => 'event_docuements',
-    
+
     'poa_docuements' => 'poa_docuements',
 
     'legal_docuements' => 'legal_links',
+    'besoin_documents' => 'besoin_documents',
 
 ];

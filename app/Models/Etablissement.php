@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Etablissement
- * 
+ *
  * @property int $id
  * @property string|null $libelle
  * @property string|null $matricule_fiscale
@@ -38,6 +38,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $notif_duree_rp
  * @property bool|null $notif_delais_rd
  * @property int|null $notif_duree_rd
+ * @property Carbon|null $datedeb_besoin
+ * @property Carbon|null $datefin_besoin
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -70,6 +72,10 @@ class Etablissement extends Model
 		'created_by' => 'int',
 		'updated_by' => 'int'
 	];
+    protected $dates = [
+		'datedeb_besoin',
+		'datefin_besoin'
+	];
 
 	protected $fillable = [
 		'libelle',
@@ -96,6 +102,8 @@ class Etablissement extends Model
 		'notif_duree_rp',
 		'notif_delais_rd',
 		'notif_duree_rd',
+        'datedeb_besoin',
+        'datefin_besoin',
 		'created_by',
 		'updated_by'
 	];

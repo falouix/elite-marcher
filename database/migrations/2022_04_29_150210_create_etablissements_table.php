@@ -39,6 +39,8 @@ class CreateEtablissementsTable extends Migration
             $table->integer('notif_duree_rp')->nullable();
             $table->boolean('notif_delais_rd')->nullable()->comment('Reception defenitive');
             $table->integer('notif_duree_rd')->nullable();
+            $table->date('datedeb_besoin')->nullable();
+            $table->date('datefin_besoin')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

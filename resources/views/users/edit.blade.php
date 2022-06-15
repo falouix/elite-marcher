@@ -80,7 +80,7 @@ $mode = isset($user);
                         <div class="form-group">
                             <label class="form-label">{{ __('labels.tbl_name') }}</label>
                             <input type="text" class="form-control" name="name"
-                                placeholder="{{ __('labels.tbl_name') }}..." 
+                                placeholder="{{ __('labels.tbl_name') }}..."
                                @if (isset($user))  value="{{ $user->name }}" @else value="{{ old('name') }}" @endif>
                         </div>
                     </div>
@@ -105,24 +105,6 @@ $mode = isset($user);
                         </div>
                     </div>
 
-                    
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{{ __('labels.tbl_qin') }}</label>
-                            <input type="text" class="form-control" name="qin"
-                                placeholder="{{ __('labels.tbl_qin') }}..." 
-                               @if (isset($user) && ($user->qin != null)) value="{{ $user->qin }}"  @else value="{{ old('qin') }}" @endif>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{{ __('labels.tbl_passport') }}</label>
-                            <input type="text" class="form-control" name="passport"
-                                placeholder="{{ __('labels.tbl_passport') }}..." 
-                                @if (isset($user) && ($user->passport != null)) value="{{ $user->passport }}" @else value="{{ old('passport') }}" @endif>
-                        </div>
-                    </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">{{ __('labels.tbl_phone') }}</label>
@@ -166,8 +148,18 @@ $mode = isset($user);
 
                     <div class="col-md-6">
 
-                        @component('components.user_type', ['userType' => $userType])
-                        @endcomponent
+                        <div class="form-group">
+                            <label class="form-label">المصلحة/ المؤسسة</label>
+                            <select class="form-control" name="services_id">
+                                <option value="">المصلحة أو المؤسسة ...</option>
+
+                                @foreach ($services as $item)
+                                <option value="{{ $item->id }}" {{ $item->id == $user->services_id ? 'selected' : '' }}>
+                                    {{ $item->libelle }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
 
                     <div class="col-md-12">
@@ -176,7 +168,7 @@ $mode = isset($user);
                         @endcomponent
                     </div>
 
-                    
+
                 </div>
                 @if (isset($user))
                     <button type="submit" class="btn btn-primary" style="float: right;">
@@ -230,14 +222,14 @@ $mode = isset($user);
                                 'email': {
                                     required: true,
                                     email: true
-                                }, 
+                                },
                                 'phone': {
                                     required: true,
                                     phone_format: true
                                 },
                                 'user_type': {
                                     required: true
-                                },                            
+                                },
                         },
 
                         // Errors //

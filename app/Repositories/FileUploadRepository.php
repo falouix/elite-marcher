@@ -2,12 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Models\CaseDocuement;
-use App\Models\EventDocuement;
-use App\Models\LegalLink;
-use App\Models\Poa;
-use App\Models\ProsecutionDocuement;
-use App\Models\SessionDocuement;
+use App\Models\Besoin;
+use App\Models\BesoinsDoc;
 use App\Models\UserDocuement;
 use Auth;
 use Config;
@@ -38,69 +34,25 @@ class FileUploadRepository implements IFileUploadRepository
                 ]);
 
                 break;
-            case 'case_documents':
+            case 'besoin_documents':
                 Log::info($request);
-                $fileName = 'case_doc_' . time() . '.' . $request->file->extension();
-                $path = 'app/documents/' . Config::get('constants.case_documents') . '/' . $request->cases_id . '/';
+                $fileName = 'besoin_doc_' . time() . '.' . $request->file->extension();
+                $path = 'app/documents/' . Config::get('constants.besoin_documents') . '/' . $request->besoins_id . '/';
                 $request->file->move(storage_path($path), $fileName);
                 // Storage::move($request->file, $fileName);
-                return CaseDocuement::create([
+                $besoinsDoc =  BesoinsDoc::create([
                     'file_name' => $request->file_name,
-                    'cases_id' => $request->cases_id,
+                    'besoins_id' => $request->besoins_id,
                     'path' => $path . $fileName,
                     'created_by' => Auth::user()->id,
                 ]);
-                break;
+                if($besoinsDoc){
+                    Besoin::find( $besoinsDoc->besoins_id)->update([
+                        'docs_id'=>$besoinsDoc->id
+                    ]);
+                }
+                return $besoinsDoc;
 
-            case 'session_docuements':
-                $fileName = 'session_doc_' . time() . '.' . $request->file->extension();
-                $path = 'app/documents/' . Config::get('constants.case_documents') . '/' . $request->cases_id . '/' .
-                $request->case_sessions_id . '/';
-                //$path = storage_path('app/documents/' . $file->path);
-                $request->file->move(storage_path($path), $fileName);
-                return SessionDocuement::create([
-                    'file_name' => $request->file_name,
-                    'case_sessions_id' => $request->case_sessions_id,
-                    'path' => $path . $fileName,
-                    'provided_other_party' => $request->provided_other_party,
-                    'case_sessions_id' => $request->case_sessions_id,
-                    'created_by' => Auth::user()->id,
-                ]);
-                break;
-
-            case 'prosecution_docuements':
-                $fileName = 'prosecution_doc_' . time() . '.' . $request->file->extension();
-                $path = 'app/documents/' . Config::get('constants.prosecution_docuements') . '/' . $request->prosecutions_id . '/';
-                $request->file->move(storage_path($path), $fileName);
-                return ProsecutionDocuement::create([
-                    'file_name' => $request->file_name,
-                    'prosecutions_id' => $request->prosecutions_id,
-                    'path' => $path . $fileName,
-                    'created_by' => Auth::user()->id,
-                ]);
-                break;
-
-            case 'event_docuements':
-                $fileName = 'event_doc_' . time() . '.' . $request->file->extension();
-                $path = 'app/documents/' . Config::get('constants.event_docuements') . '/' . $request->event_id . '/';
-                $request->file->move(storage_path($path), $fileName);
-                return EventDocuement::create([
-                    'file_name' => $request->file_name,
-                    'event_id' => $request->event_id,
-                    'path' => $path . $fileName,
-                    'created_by' => Auth::user()->id,
-                ]);
-                break;
-            case 'legal_links':
-                $fileName = 'contract_doc_' . time() . '.' . $request->file->extension();
-                $path = 'app/documents/' . Config::get('constants.legal_docuements') . '/' . $request->legalLink_id . '/';
-                $request->file->move(storage_path($path), $fileName);
-                return LegalLink::create([
-                    'libelle' => $request->file_name,
-                    'description' => $request->description,
-                    'url' => $path . $fileName,
-                    'created_by' => Auth::user()->id,
-                ]);
                 break;
         }
     }
@@ -289,9 +241,9 @@ class FileUploadRepository implements IFileUploadRepository
                 return UserDocuement::select('*')->where('id', $id)->first();
 
                 break;
-            case 'case_documents':
+            case 'besoin_documents':
                 // dd(CaseDocuement::select('*')->where('id', $id)->first());
-                return CaseDocuement::select('*')->where('id', $id)->first();
+                return BesoinsDoc::select('*')->where('id', $id)->first();
 
                 break;
             case 'session_docuements':

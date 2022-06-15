@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Interfaces\IBesoinRepository',
             'App\Repositories\Services\BesoinRepository'
         );
-        
+
         // Register Paragraphe Repository
         $this->app->bind(
             'App\Repositories\Interfaces\IParagrapheRepository',
@@ -95,11 +95,12 @@ class AppServiceProvider extends ServiceProvider
 
 
         Schema::defaultStringLength(191);
+
         view()->composer('*', function ($view) {
             $locale = LaravelLocalization::getCurrentLocale();
           //  $settings = Setting::first();
             $view->with('locale', $locale);
-                // ->with('settings', $settings);
+                // ->with('service', $service);
         });
 
 

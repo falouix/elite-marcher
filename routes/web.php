@@ -31,6 +31,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 //************************************************* USES FOR ROUTES SANA */
 use App\Http\Controllers\BesoinController;
+use App\Http\Controllers\BesoinValidationController;
 use App\Http\Controllers\EtablissementController;
 use App\Http\Controllers\LigneBesoinController;
 use App\Http\Controllers\ServiceController;
@@ -121,22 +122,22 @@ Route::group(
         Route::post('soumissionnaires/datatable', [SoumissionnaireController::class, 'getAllSoumissionnairesDatatable'])->name('soumissionnaires.datatable');
 
         Route::resource('etablissements', EtablissementController::class);
-        
+
         //-----------------------------route bilel----------------------------
         //route besoin
         Route::resource('besoins', BesoinController::class);
-        Route::post('besoin/createOrUpdate', [BesoinController::class, 'createOrUpdate'])->name('besoin.createOrUpdate');
         Route::post('besoin/datatable', [BesoinController::class, 'getAllBesoinDatatable'])->name('besoin.datatable');
-        Route::post('besoin/edit', [BesoinController::class, 'edit'])->name('besoinDataTable.edit');
-        Route::post('besoin/destroy', [BesoinController::class, 'destroy'])->name('besoinDataTable.destroy');
+       // Route::post('besoin/edit', [BesoinController::class, 'edit'])->name('besoinDataTable.edit');
+       // Route::post('besoin/destroy', [BesoinController::class, 'destroy'])->name('besoinDataTable.destroy');
         Route::post('/besoins-multi-delete', [BesoinController::class, '/users-multi-delete'])->name('besoins_datatable.multidestroy');
-
-        //route ligneBesoin
-        Route::get('/ligneBesoin', [LigneBesoinController::class, 'index'])->name('ligneBesoin');
-        Route::post('ligneBesoin/createOrUpdate', [LigneBesoinController::class, 'createOrUpdate'])->name('ligneBesoin.createOrUpdate');
-        Route::post('ligneBesoin/datatable', [LigneBesoinController::class, 'getAllLigneBesoinDatatable'])->name('ligneBesoin.datatable');
-        Route::post('ligneBesoin/edit', [LigneBesoinController::class, 'edit'])->name('ligneBesoin.edit');
-        Route::post('ligneBesoin/destroy', [LigneBesoinController::class, 'destroy'])->name('ligneBesoin.destroy');
+            //route ligneBesoin
+            Route::post('lignes-besoin/datatable', [BesoinController::class, 'getLigneBesoinsByBesoin'])->name('ligne_besoin.datatable');
+            Route::post('lignes-besoin', [BesoinController::class, 'storeLigneBesoin'])->name('lignes_besoin.store');
+            Route::put('lignes-besoin', [BesoinController::class, 'updateLigneBesoin'])->name('lignes_besoin.update');
+            Route::get('lignes-besoin', [BesoinController::class, 'editLigneBesoin'])->name('ligne_besoins.edit');
+            Route::delete('lignes-besoin-delete', [BesoinController::class, 'destroyLigneBesoin'])->name('ligne_besoins_datatable.destroy');
+            // Validation Besoins
+            Route::resource('besoins-validation', BesoinValidationController::class);
 
         Route::get('/modifier_demande/1', function () {
             return view('demande_budget.edit1');

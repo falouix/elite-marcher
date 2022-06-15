@@ -16,6 +16,7 @@ use Illuminate\Support\Arr;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Services\DataTable;
+use App\Models\Service;
 use App\Common\Utility;
 
 class UserController extends Controller
@@ -50,7 +51,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('users.create', compact('roles'));
+        $services = Service::select('id','libelle')->get();
+        return view('users.create', compact('roles', 'services'));
     }
 
     /**
@@ -67,7 +69,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'qin' => 'unique:users,qin',
+           // 'qin' => 'unique:users,qin',
            // 'passport' => 'unique:users,passport',
            // 'password' => 'required|same:confirm-password',
             'roles' => 'required',
@@ -98,9 +100,10 @@ class UserController extends Controller
 
          $user = $this->repository->getUserByParam('id', $id);
         $roles = Role::all();
+        $services = Service::select('id','libelle')->get();
         $userRole = $user->roles->pluck('name')->all();
 
-        return view('users.edit', compact('user', 'roles', 'userRole'));
+        return view('users.edit', compact('user', 'roles', 'userRole', 'services'));
     }
 
     /**
@@ -115,11 +118,11 @@ class UserController extends Controller
     {
         // Prevent XSS Attack
         Utility::stripXSS($request);
-       
+
         $this->validate($request, [
             'name' => 'required',
-            'qin' => 'unique:users,qin,' . $id,
-            'passport' => 'unique:users,passport,' . $id,
+           // 'qin' => 'unique:users,qin,' . $id,
+           // 'passport' => 'unique:users,passport,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
         ]);
        $user = $this->repository->update($request, $id);

@@ -1,30 +1,26 @@
 @php
 //dd($userService);
 if ($locale == 'ar') {
-    $name = 'name_' . $locale;
+    $lang = asset('/plugins/i18n/Arabic.json');
 } else {
-    $name = 'name';
+    $lang = '';
 }
+
 $breadcrumb = "ضبط الحاجيات";
-$sub_breadcrumb = "إضافة الحاجيات";
+$sub_breadcrumb = "تحيين الحاجيات";
+$tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
 @section('head-script')
+<!-- data tables css -->
+<link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/select.dataTables.min.css') }}">
+<!-- pnotify css -->
+<link rel="stylesheet" href="{{ asset('/plugins/pnotify/css/pnotify.custom.min.css') }}">
+<!-- pnotify-custom css -->
+<link rel="stylesheet" href="{{ asset('/css/pages/pnotify.css') }}">
 
-    <!-- Bootstrap datetimepicker css -->
-    <link rel="stylesheet" href="{{ asset('/plugins/bootstrap-datetimepicker/css/bootstrap-datepicker3.min.css') }}">
-
-    <style>
-        .datepicker>.datepicker-days {
-            display: block;
-        }
-
-        ol.linenums {
-            margin: 0 0 0 -8px;
-        }
-
-    </style>
 @endsection
 
 
@@ -66,10 +62,10 @@ $sub_breadcrumb = "إضافة الحاجيات";
 
 
                         {{-- Case Other Parties --}}
-                        {!! Form::open(['route' => 'besoins.store', 'method' => 'POST',
+                        {!! Form::open(['route' =>  ['besoins.update', $besoin->id], 'method' => 'patch',
                         'files' => 'true','enctype'=>'multipart/form-data',
                         'id' => 'validation-client_form']) !!}
-                         <input type="hidden" name="ligne_besoin" id="ligne_besoin"  value="">
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group ">
@@ -82,7 +78,7 @@ $sub_breadcrumb = "إضافة الحاجيات";
                                 <div class="form-group">
                                     <label for="date_besoin"> التاريخ </label>
                                     <input type="date" class="form-control" id='date_besoin' name="date_besoin"
-                                        placeholder="أدخل التاريخ" value="{{ \Carbon\Carbon::now()->toDateString() }}">
+                                        placeholder="أدخل التاريخ" value="{{ $besoin->date_besoin}}">
                                     @if ($errors->has('date_besoin'))
                                         <span class="text-danger">{{ $errors->first('date_besoin') }}</span>
                                     @endif
@@ -92,24 +88,13 @@ $sub_breadcrumb = "إضافة الحاجيات";
                                 <div class="form-group">
                                     <label for="annee_gestion"> السنة المالية </label>
                                     <input type="number" class="form-control" id='annee_gestion' name="annee_gestion"
-                                        placeholder="أدخل السنة المالية" value='{{ strftime("%Y"); }}' readonly>
+                                        placeholder="أدخل السنة المالية" value='{{ $besoin->annee_gestion }}' readonly>
                                    {{-- @if ($errors->has('annee_gestion'))
                                         <span class="text-danger">{{ $errors->first('annee_gestion') }}</span>
                                     @endif --}}
                                 </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"> إسم الملف المرفق (الخصائص الفنية) </label>
-                                <input type="text" class="form-control" name="file_name" id="file_name"
-                                    placeholder="إسم الملف المرفق" value="">
 
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1">الملف/الوثيقة</label>
-                                <input type="file" id="file" name="file" class="form-control form-control-file" id="file">
-                                <label id="file-error" class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="file"></label>
-                            </div>
 
                         </div>
                         <button type="submit" id="btn_submit" class="btn btn-primary" style="float: right;" hidden>
@@ -117,6 +102,7 @@ $sub_breadcrumb = "إضافة الحاجيات";
                         {!! Form::close() !!}
                         {{-- Contact from company  start --}}
                         <form id="cp_form" action="#">
+                            <input type="hidden" name="lignebesoin_id" id="lignebesoin_id" value="0">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -160,27 +146,39 @@ $sub_breadcrumb = "إضافة الحاجيات";
 
 
                                 <div class="col-md-12">
+                                    @if($besoin->valider == false)
                                     <a href="javascript:void(0);" class="btn btn-rounded btn-info" id='add'
                                         for-table='#table-cp'>
                                         <i class="feather icon-plus"></i>
                                         إضافة إلى الجدول
                                     </a>
-                                    <div class="table-responsive">
-                                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span id="coutTotal"> 0</span></h6>
-                                        <table class="table table-striped table-bordered" id="table-cp">
+                                    @endif
+
+                                    <div class="dt-responsive table-responsive">
+                                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span id="coutTotal"> </span></h6>
+
+                                            <table id="table-cp" class="table table-striped table-bordered nowrap">
                                             <thead>
-                                                <tr>
-                                                    <thead>
-                                                        <th>المادة</th>
-                                                        <th>الكمية المطلوبة</th>
-                                                        <th>الكلفة التقديرية للوحدة</th>
-                                                        <th>الكلفة التقديرية الجملية</th>
-                                                        <th>حذف</th>
-                                                    </thead>
-                                                </tr>
+                                                <th class="not-export-col" style="width: 30px"><input type="checkbox" class="select-checkbox not-export-col" /> </th>
+                                                <th class="not-export-col">id</th>
+                                                <th>المادة</th>
+                                                <th>الكمية المطلوبة</th>
+                                                <th>الكلفة التقديرية للوحدة</th>
+                                                <th>الكلفة التقديرية الجملية</th>
+                                                <th class="not-export-col">{{ $tbl_action }}</th>
                                             </thead>
-                                            <tbody>
-                                            </tbody>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="not-export-col" style="width: 30px"><input type="checkbox" class="select-checkbox not-export-col" /> </th>
+                                                    <th class="not-export-col">id</th>
+                                                    <th>المادة</th>
+                                                    <th>الكمية المطلوبة</th>
+                                                    <th>الكلفة التقديرية للوحدة</th>
+                                                    <th>الكلفة التقديرية الجملية</th>
+                                                    <th class="not-export-col">{{ $tbl_action }}</th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -190,10 +188,12 @@ $sub_breadcrumb = "إضافة الحاجيات";
 
 
                 <div class="row mt-4">
+                    @if($besoin->valider == false)
                     <button type="button" id="btn_create" class="btn btn-primary" style="float: right;">
                         <i class="feather icon-client-plus"></i>
-                        {{ __('inputs.btn_create') }}
+                        {{ __('inputs.btn_edit') }}
                     </button>
+                    @endif
                     <a href="{{ route('besoins.index') }}" class="btn btn-danger" style="float: left;">
                         <i class="feather icon-minus-circle"></i>
                         {{ __('inputs.btn_cancel') }}
@@ -210,16 +210,27 @@ $sub_breadcrumb = "إضافة الحاجيات";
     <script src="{{ asset('/plugins/jquery-validation/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('/plugins/inputmask/js/jquery.inputmask.min.js') }}"></script>
     <script src="{{ asset('/plugins/inputmask/js/autoNumeric.js') }}"></script>
-    <!-- datepicker js -->
-    <script src="{{ asset('/plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <!-- editable Js -->
-    <script src="{{ asset('/plugins/editable/js/jquery.tabledit.js') }}"></script>
+        <!-- datatable Js -->
+        <script src="{{ asset('/plugins/data-tables/js/datatables.min.js') }}"></script>
+        <script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
+        <!-- sweet alert Js -->
+        <script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
+        <!-- pnotify Js -->
+        <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
+            <!-- form-select-custom Js -->
+            <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
+            <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
+            <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
 
     <script>
         'use strict';
         $(document).ready(function() {
             $(function() {
-
+                $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+                });
                 // [ Initialize client-form validation ]
                 $('#validation-client_form').validate({
                     ignore: '.ignore, .select2-input',
@@ -329,128 +340,250 @@ $sub_breadcrumb = "إضافة الحاجيات";
                             'is-invalid');
                     }
                 });
+
+                var table = $('#table-cp').DataTable({
+                dom: 'frltipB',
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                buttons: [{
+                        text: '{{ __('inputs.btn_copy') }}',
+                        extend: 'copyHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_excel') }}',
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_pdf') }}',
+                        extend: 'pdfHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_print') }}',
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                ],
+                initComplete: function() {
+                    // Apply the search
+                    this.api().columns().every(function() {
+                        var that = this;
+
+                        $('input', this.footer()).on('keyup change clear', function() {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                processing: true,
+               // serverSide: true,
+                serverMethod: 'POST',
+                ajax: {
+                    url: "{{ route('ligne_besoin.datatable') }}",
+                    data: function(data) {
+
+                        data.besoins_id = "{{ $besoin->id }}";
+                        data.mode = "all";
+                    },
+                },
+                language: {
+                    url: "{{ $lang }}"
+                },
+                columns: [{
+                        data: "select",
+                        className: "select-checkbox"
+                    },
+                    {
+                        data: "id",
+                        className: "id",
+                    },
+                    {
+                        data: "libelle",
+                        className: "libelle"
+                    },
+                    {
+                        data: "qte_demande",
+                        className: "qte_demande"
+                    },
+                    {
+                        data: "cout_unite_ttc",
+                        className: "cout_unite_ttc"
+                    },
+                    {
+                        data: "cout_total_ttc",
+                        className: "cout_total_ttc"
+                    },
+                    {
+                        data: 'action',
+                        className: 'action',
+                        visible: 'false'
+                    }
+                ],
+                responsive: true,
+
+                columnDefs: [{
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0
+                    },
+                    {
+                        visible: false,
+                        targets: 1
+                    }
+                ],
+                select: {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+                // select: { style: 'multi+shift' },
+
             });
-            // [ day-week ]
-            $('#start_date').datepicker({
-                daysOfWeekDisabled: "2"
+            table
+                .on('select', function(e, dt, type, indexes) {
+                    // var rowData = table.rows( indexes ).data().toArray();
+                    //console.log( rowData );
+                    SelectedRowCountBtnDelete(table)
+                })
+                .on('deselect', function(e, dt, type, indexes) {
+                    SelectedRowCountBtnDelete(table)
+                });
+
+            $('.dataTables_length').addClass('bs-select');
+
+            // Setup - add a text input to each footer cell
+
+            addSearchFooterDataTable("#table-cp")
             });
-            // [ day-week ]
-            $('#end_date').datepicker({
-                daysOfWeekDisabled: "2"
-            });
+
         });
-        $("#table-cp").on("click", ".tabledit-confirm-button", function() {
-            $(this).closest("tr").remove();
-            var myTableArray = [];
-            myTableArray = add_cp();
-            $('#ligne_besoin').val(JSON.stringify(myTableArray))
-        });
-        $("#table-cp").on("click", ".tabledit-delete-button", function() {
-            $(".tabledit-confirm-button").show();
-        });
-        $('#btn_create').on("click",()=>{
-            var myTableArray = [];
-            myTableArray = add_cp();
-            $('#ligne_besoin').val(JSON.stringify(myTableArray))
+
+        $('#btn_create').on("click", () => {
             $("#btn_submit").click()
         })
 
-        $("#add").click(function(e) {
-
+        $("#add").click(() => {
+         //   if ($("#cp_form").valid()) { // test for validity
+                let id = $("#lignebesoin_id").val();
                 let libelle = $("input[name=libelle]").val()
                 let qte_demande = $("input[name=qte_demande]").val()
                 let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
                 let cout_total_ttc = $("input[name=cout_total_ttc]").val()
-                if(qte_demande === "0" ) {
-                    return false;
+
+                var $type = 'POST'
+                var $url = "{{ route('lignes_besoin.store') }}"
+                if (id != 0) {
+                    $type = 'PUT'
+                    $url = "{{ route('lignes_besoin.update') }}"
+
                 }
-            var myTableArray = [];
-            var verif = true;
-            myTableArray = add_cp();
-            myTableArray.find(function(value, index) {
+                $.ajax({
+                    url: $url,
+                    type: $type,
+                    data: {
+                        libelle: libelle,
+                        qte_demande: qte_demande,
+                        cout_unite_ttc: cout_unite_ttc,
+                        cout_total_ttc: cout_total_ttc,
+                        id: id,
+                        besoins_id: {{ $besoin->id }},
+                    },
+                    success: function(response) {
 
-                if(value[0] == libelle ) {
-                    verif = false;
-                  return ;
-                }
-
-                if(value[1] === 0 ) {
-                    verif = false;
-                  return ;
-                }
-
-              })
-            if(verif){
-                //  alert(JSON.stringify(myTableArray));
-            var table = $(this).attr('for-table'); //get the target table selector
-            $(table + ">tbody").append(newRow()); //add the row to the table
-            //alert(JSON.stringify(myTableArray));
-            // Calcul Total TTC
-            var coutTotal = 0;
-            $(".tabledit-total").each(function(){
-                coutTotal += parseFloat($(this).text());
-            });
-            $('#coutTotal').text(coutTotal);
-             // Clear form
-             $("#cp_form")[0].reset()
-            }
-
-
-
+                        $('#table-cp').DataTable().ajax.reload();
+                        $('#cp_form')[0].reset()
+                        //$("#cp_form").get(0).reset()
+                        $('#add').html("{{ __('inputs.btn_add_row_cp') }}")
+                        $('#pr_mail').removeClass('is-invalid')
+                        $('#pr_phone').removeClass('is-invalid')
+                        PnotifyCustom(response)
+                    },
+                    error: function(errors) {
+                        $('#libelle').removeClass('is-invalid')
+                        //alert(JSON.stringify(errors.responseJSON.message.libelle))
+                        if (errors.responseJSON.message.libelle != null) {
+                            $('#libelle').addClass('is-invalid')
+                            $('#libelle-error').text(errors.responseJSON.message.libelle);
+                        }
+                    }
+                }); // ajax end
+        //    }
         });
 
-        function newRow() {
-            if ($("#cp_form").valid()) { // test for validity
-                // do stuff if form is valid
-                let libelle = $("input[name=libelle]").val()
-                let qte_demande = $("input[name=qte_demande]").val()
-                let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
-                let cout_total_ttc = $("input[name=cout_total_ttc]").val()
-
-                var text = "<tr>" +
-                    "<td class='tabledit-view-mode'><span class='tabledit-span'>" + libelle + "</span>" +
-                    "<td class='tabledit-view-mode'><span class='tabledit-span'>" + qte_demande + "</span>" +
-                    "<td class='tabledit-view-mode'><span class='tabledit-span'>" + cout_unite_ttc + "</span>" +
-                    "<td class='tabledit-view-mode'><span class='tabledit-total'>" + cout_total_ttc + "</span></td>" +
-                    "<td style='white-space: nowrap; width: 1%;'>" +
-                    "<div class='tabledit-toolbar btn-toolbar' style='text-align: left;'>" +
-                    "<div class='btn-group btn-group-sm' style='float: none;'>" +
-                    "<button type='button' class='tabledit-delete-button btn btn-sm btn-default' style='float: none;'>" +
-                    "<span class='feather icon-trash-2'></span></button></div>" +
-                    "<button type='button' class='tabledit-confirm-button btn btn-sm btn-danger' style='display: none; float: none;'>Confirm</button>" +
-                    "</div>" +
-                    "</td></tr>";
-
-                return text;
-
-            } else {
-                return false;
-            }
-        }
-
-        function add_cp() {
-            var myTableArray = [];
-            $("table#table-cp tr").each(function() {
-                var arrayOfThisRow = [];
-                var tableData = $(this).find('td');
-
-                if (tableData.length > 0) {
-                    tableData.each(function() {
-                        arrayOfThisRow.push($(this).text());
-
-                    });
-                    myTableArray.push(arrayOfThisRow);
-                }
-            });
-
-            return (myTableArray);
-        }
         function calculTotal(){
             let qte_demande = $("input[name=qte_demande]").val()
                 let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
                 let cout_total_ttc = qte_demande * cout_unite_ttc
                 $("input[name=cout_total_ttc]").val(cout_total_ttc)
 
+        }
+
+        function editLigneBesoin(id){
+            $.ajax({
+                url: "{{ route('ligne_besoins.edit') }}",
+                type: 'GET',
+                data: {
+                    id: id,
+                },
+                success: function(response) {
+                    // alert(JSON.stringify(response))
+                    $("#lignebesoin_id").val(response.id);
+                $("input[name=libelle]").val(response.libelle)
+                $("input[name=qte_demande]").val(response.qte_demande)
+                $("input[name=cout_unite_ttc]").val(response.cout_unite_ttc)
+                $("input[name=cout_total_ttc]").val(response.cout_total_ttc)
+                    $('#add').html("تحيين الجدول")
+                },
+                error: function(errors) {
+                    $('#add').html("{{ __('inputs.btn_add_row_cp') }}")
+
+                    swal("{{ __('labels.swal_warning_title') }}", errors.responseJSON.message,
+                        "warning");
+                }
+            }); // ajax end
+        }
+
+         // Delete contact_cp
+         function deleteFromDataTableLigneBesoinBtn(id) {
+            //  let id = $('#tbl_btn_delete').attr('data-id');
+            var url = "{{ route('ligne_besoins_datatable.destroy') }}";
+            swal({
+                    title: "{{ __('labels.swal_delete_title') }}",
+                    text: "{{ __('labels.swal_delete_text') }}",
+                    icon: "warning",
+                    buttons: ["{{ __('labels.swal_cancel_btn') }}", "{{ __('labels.swal_confirm_btn') }}"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: 'DELETE',
+                            dataType: 'JSON',
+                            url: url,
+                            data: {
+                                id: id,
+                            },
+                            success: function(response) {
+                                console.log(response)
+                                //alert(JSON.stringify(response))
+                                // refresh data or remove only tr
+                                $('#table-cp').DataTable().ajax.reload();
+                                PnotifyCustom(response)
+                            }
+                        }); // ajax end
+                    }
+                });
         }
     </script>
 @endsection

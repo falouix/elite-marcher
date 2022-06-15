@@ -32,6 +32,7 @@ class CreateUsersTable extends Migration
             $table->string('messenger_color')->default('#2180f3');
             $table->boolean('dark_mode')->default(0);
             $table->boolean('active_status')->default(0);
+            $table->bigInteger('services_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

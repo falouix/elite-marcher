@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBesoinsTable extends Migration
+class CreateBesoinsDocsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,14 @@ class CreateBesoinsTable extends Migration
      */
     public function up()
     {
-        Schema::create('besoins', function (Blueprint $table) {
+        Schema::create('besoins_docs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('annee_gestion', 4)->nullable();
-            $table->date('date_besoin')->nullable();
-            $table->boolean('valider')->nullable();
-            $table->dateTime('date_validation')->nullable();
-            $table->bigInteger('services_id')->index('fk_besoins_services_idx');
+            $table->string('file_name')->nullable();
+            $table->string('path')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();
-
         });
     }
 
@@ -35,6 +31,6 @@ class CreateBesoinsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('besoins');
+        Schema::dropIfExists('besoins_docs');
     }
 }

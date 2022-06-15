@@ -14,7 +14,7 @@ use Log;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Validator;
 
-class BesoinController extends Controller
+class BesoinValidationController extends Controller
 {
     use ApiResponser;
     public function __construct(IBesoinRepository $repository, IFileUploadRepository $fileRepository)
@@ -30,19 +30,9 @@ class BesoinController extends Controller
     public function index()
     {
         $services = Service::select('id', 'libelle')->get();
-        return view('besoins.index', compact('services'));
+        return view('besoins.validation.index', compact('services'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $userService = Service::select('*')->where('id', Auth::user()->services_id)->first();
-        return view('besoins.create', compact('userService'));
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -112,7 +102,7 @@ class BesoinController extends Controller
         $besoin = $this->repository->getBesoinByParam('id', $id);
         $userService = Service::select('*')->where('id', $besoin->services_id)->first();
 
-        return view('besoins.edit', compact('userService', 'besoin'));
+        return view('besoins.validation.edit', compact('userService', 'besoin'));
     }
 
     /**
@@ -193,7 +183,7 @@ class BesoinController extends Controller
         Log::info("controller");
         Log::info($request);
         if ($request->ajax()) {
-            return $this->repository->getLigneBesoinsByBesoin($request->besoins_id , $request->mode);
+            return $this->repository->getLigneBesoinsByBesoin($request->besoins_id, $request->mode);
         }
     }
     public function multidestroy(Request $request)
@@ -240,9 +230,6 @@ class BesoinController extends Controller
         }
 
         $locale = LaravelLocalization::getCurrentLocale();
-        if(!$request->qte_valide){
-            $request->qte_valide = 0;
-        }
         if ($request->ajax()) {
             Log::info("Store Ligne besoin ضتضء");
             Log::info($request);
@@ -251,7 +238,6 @@ class BesoinController extends Controller
                 'qte_demande' => $request->qte_demande,
                 'cout_unite_ttc' => $request->cout_unite_ttc,
                 'cout_total_ttc' => $request->cout_total_ttc,
-                'qte_valide' => $request->qte_valide,
                 'besoins_id' => $request->besoins_id,
             ]);
             if ($locale == 'en') {
@@ -282,9 +268,6 @@ class BesoinController extends Controller
         if ($validator->fails()) {
             return $this->error($validator->errors(), 403);
         }
-        if(!$request->qte_valide){
-            $request->qte_valide = 0;
-        }
         if ($request->ajax()) {
             $locale = LaravelLocalization::getCurrentLocale();
             LignesBesoin::find($request->id)->update([
@@ -292,7 +275,6 @@ class BesoinController extends Controller
                 'qte_demande' => $request->qte_demande,
                 'cout_unite_ttc' => $request->cout_unite_ttc,
                 'cout_total_ttc' => $request->cout_total_ttc,
-                'qte_valide' => $request->qte_valide,
             ]);
             if ($locale == 'en') {
                 return $this->notify('Client Party update', 'Client Party updated successfully!', 'success', false);

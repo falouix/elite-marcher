@@ -1,6 +1,7 @@
 @php
 
 $breadcrumb = __('breadcrumb.bread_besoins_list');
+$subbreadcrumb = "المصادقة على الحاجيات";
 if ($locale == 'ar') {
     $lang = asset('/plugins/i18n/Arabic.json');
     $rtl = 'rtl';
@@ -28,7 +29,7 @@ $tbl_action = __('labels.tbl_action');
 @section('breadcrumb')
     @include('layouts.partials.breadcrumb', [
     'bread_title'=> $breadcrumb,
-    'bread_subtitle'=> $breadcrumb
+    'bread_subtitle'=> $subbreadcrumb
     ])
 @endsection
 
@@ -46,18 +47,7 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>{{ __('cards.besoins_list') }}</h5>
                 <div class="card-header-right">
-                    @can('besoins-list')
-                        <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>
-                            <i class="feather icon-trash-2"></i>
-                            {{ __('inputs.btn_delete') }}
-                            <i id="btn_count"></i>
-                        </button>
-                    @endcan
-                    @can('besoins-list')
-                        <a type="button" class="btn btn-primary" href="{{ route('besoins.create') }}">
-                            <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}
-                        </a>
-                    @endcan
+
                 </div>
 
             </div>
@@ -199,13 +189,14 @@ $tbl_action = __('labels.tbl_action');
                     data: function(data) {
                         if ($("#services_id").val()[0] === undefined) {
                             data.services_id = 'all';
+
                         } else {
                             data.services_id = $("#services_id").val()[0]
                         }
                         data.start_date = $('#start_date').val();
                         data.end_date = $('#end_date').val();
-                        data.status = 'all';
-                        data.mode = "all";
+                        data.status = false;
+                        data.mode = "validation";
                     },
                 },
                 language: {

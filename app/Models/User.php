@@ -8,10 +8,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Auth;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -37,6 +36,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $messenger_color
  * @property bool $dark_mode
  * @property bool $active_status
+ * @property int $services_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -51,52 +51,57 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
 
-	use SoftDeletes;
-	protected $table = 'users';
+    use SoftDeletes;
+    protected $table = 'users';
 
-	protected $casts = [
-		'active' => 'int',
-		'dark_mode' => 'bool',
-		'active_status' => 'bool',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $casts = [
+        'active' => 'int',
+        'dark_mode' => 'bool',
+        'active_status' => 'bool',
+        'created_by' => 'int',
+        'updated_by' => 'int',
+    ];
 
-	protected $dates = [
-		'start_date',
-		'end_date',
-		'email_verified_at'
-	];
+    protected $dates = [
+        'start_date',
+        'end_date',
+        'email_verified_at',
+    ];
 
-	protected $hidden = [
-		'password',
-		'remember_token'
-	];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-	protected $fillable = [
-		'name',
-		'full_name',
-		'email',
-		'password',
-		'adress',
-		'phone_num',
-		'active',
-		'user_type',
-		'start_date',
-		'end_date',
-		'description',
-		'email_verified_at',
-		'remember_token',
-		'avatar',
-		'messenger_color',
-		'dark_mode',
-		'active_status',
-		'created_by',
-		'updated_by'
-	];
+    protected $fillable = [
+        'name',
+        'full_name',
+        'email',
+        'password',
+        'adress',
+        'phone_num',
+        'active',
+        'user_type',
+        'start_date',
+        'end_date',
+        'description',
+        'email_verified_at',
+        'remember_token',
+        'avatar',
+        'messenger_color',
+        'dark_mode',
+        'active_status',
+        'services_id',
+        'created_by',
+        'updated_by',
+    ];
 
-	public function user_docuements()
-	{
-		return $this->hasMany(UserDocuement::class);
-	}
+    public function user_docuements()
+    {
+        return $this->hasMany(UserDocuement::class);
+    }
+    public function service()
+    {
+        return $this->belongsTo('App\Models\Service', 'services_id');
+    }
 }

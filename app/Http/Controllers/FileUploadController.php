@@ -36,8 +36,8 @@ class FileUploadController extends Controller
         //dd($file);
         if($file){
             switch ($param) {
-                case 'poa_docuements':
-                    $path = storage_path($file->poa_file_path);
+                case 'besoin_documents':
+                    $path = storage_path($file->path);
                     break;
 
                 case 'legal_links':
