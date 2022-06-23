@@ -151,7 +151,21 @@ $mode = isset($user);
                        @endcomponent
                     </div>
                     --}}
+                    <div class="col-md-6">
 
+                        <div class="form-group">
+                            <label class="form-label">المصلحة/ المؤسسة</label>
+                            <select class="form-control" name="services_id">
+                                <option value="NULL" selected>المصلحة أو المؤسسة ...</option>
+
+                                @foreach ($services as $item)
+                                <option value="{{ $item->id }}">
+                                    {{ $item->libelle }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="col-md-12">
                         @component('components.user_role', ['roles' => $roles, 'name' => $name, 'userRole' => $userRole])

@@ -7,8 +7,10 @@ use App\Models\LignesBesoin;
 use App\Models\Service;
 use App\Repositories\IFileUploadRepository;
 use App\Repositories\Interfaces\IBesoinRepository;
+use App\Repositories\Interfaces\INatureDemandeRepository;
 use App\Traits\ApiResponser;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Log;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -17,10 +19,11 @@ use Validator;
 class BesoinController extends Controller
 {
     use ApiResponser;
-    public function __construct(IBesoinRepository $repository, IFileUploadRepository $fileRepository)
+    public function __construct(IBesoinRepository $repository, IFileUploadRepository $fileRepository, INatureDemandeRepository $natureDemandeRepository)
     {
         $this->repository = $repository;
         $this->fileRepository = $fileRepository;
+        $this->natureDemandeRepository = $natureDemandeRepository;
     }
     /**
      * Display a listing of the resource.
@@ -29,7 +32,13 @@ class BesoinController extends Controller
      */
     public function index()
     {
-        $services = Service::select('id', 'libelle')->get();
+        if (Auth::user()->user_type == 'user') {
+            $services = Service::select('id', 'libelle')->where('id', Auth::user()->services_id)->get();
+        }
+        if (Auth::user()->user_type == 'admin') {
+            $services = Service::select('id', 'libelle')->get();
+        }
+
         return view('besoins.index', compact('services'));
     }
 
@@ -40,8 +49,23 @@ class BesoinController extends Controller
      */
     public function create()
     {
+        // Create Record for besoin
+        $besoin = Besoin::select('*')->where('services_id', Auth::user()->services_id)
+            ->where('annee_gestion', strftime('%Y'))
+            ->first();
+        // Si besoin existe ouvrir on mode edition sinon create new besoin
         $userService = Service::select('*')->where('id', Auth::user()->services_id)->first();
-        return view('besoins.create', compact('userService'));
+        if (!$besoin) {
+            $besoin = Besoin::create([
+                'annee_gestion' => strftime('%Y'),
+                'date_besoin' => Carbon::now()->format('d-m-Y'),
+                'services_id' => Auth::user()->services_id,
+            ]);
+
+        }
+        //dd($besoin);
+        return view('besoins.edit', compact('userService', 'besoin'));
+
     }
 
     /**
@@ -54,36 +78,11 @@ class BesoinController extends Controller
     {
         //dd($request);
         $this->validate($request, [
-            'file' => 'file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
             'date_besoin' => 'required',
             'annee_gestion' => 'required|max:4|min:4',
         ]);
         $besoin = $this->repository->create($request->all());
-        if ($besoin) {
-            if ($request->ligne_besoin) {
-                // create LigneBesoin if Besoin exists
-                foreach (json_decode($request->ligne_besoin) as $item) {
-                    $ligneBesoin = LignesBesoin::create([
-                        'libelle' => $item[0],
-                        'qte_demande' => $item[1],
-                        'cout_unite_ttc' => $item[2],
-                        'cout_total_ttc' => $item[3],
-                        'besoins_id' => $besoin->id,
-                    ]);
-                    // dd($rpis);
-                }
-            }
-            $request['path'] = "besoin_documents";
-            $request['besoins_id'] = $besoin->id;
-            $file = $this->fileRepository->fileUploadPost($request);
-
-        }
-        $locale = LaravelLocalization::getCurrentLocale();
-        if ($locale == 'en') {
-            $notification = $this->notifyArr('Success [create new Client]', 'Client created successfully!', 'success', false);
-        } else {
-            $notification = $this->notifyArr('إضافة الحاجيات', '!تم إضافة الحاجيات بنجاح', 'success', true);
-        }
+        $notification = $this->notifyArr('إضافة الحاجيات', '!تم إضافة الحاجيات بنجاح', 'success', true);
 
         return redirect()->route('besoins.index')
             ->with('notification', $notification);
@@ -108,10 +107,9 @@ class BesoinController extends Controller
      */
     public function edit($id)
     {
-
-        $besoin = $this->repository->getBesoinByParam('id', $id);
+        //$besoin = $this->repository->getBesoinByParam('id', $id);
+        $besoin = Besoin::select('*')->where('id', $id)->first();
         $userService = Service::select('*')->where('id', $besoin->services_id)->first();
-
         return view('besoins.edit', compact('userService', 'besoin'));
     }
 
@@ -128,13 +126,14 @@ class BesoinController extends Controller
             'date_besoin' => 'required|date',
             'annee_gestion' => 'required|min:4|max:4',
         ]);
-        $user = $this->repository->update($request, $id);
+
+        $besoin = $this->repository->update($request, $id);
         /*$locale = LaravelLocalization::getCurrentLocale();
         if ($locale == 'en') {
-            $notification = $this->notifyArr('Success [Update Client]', 'Client updated successfully!', 'success', false);
+        $notification = $this->notifyArr('Success [Update Client]', 'Client updated successfully!', 'success', false);
         } else {
-            */
-            $notification = $this->notifyArr('', '!تم تحيين ضبط الحاجيات بنجاح', 'success', true);
+         */
+        $notification = $this->notifyArr('', '!تم تحيين ضبط الحاجيات بنجاح', 'success', true);
         //}
 
         return redirect()->route('besoins.index')
@@ -179,7 +178,7 @@ class BesoinController extends Controller
     {
         Log::info($request);
         if ($request->ajax()) {
-            return $this->repository->getAllBesoin($request->services_id, $request->start_date, $request->end_date, $request->status, $request->mode);
+            return $this->repository->getAllBesoin($request->services_id, $request->annee_gestion, $request->status, $request->mode);
         }
     }
 
@@ -190,10 +189,10 @@ class BesoinController extends Controller
      */
     public function getLigneBesoinsByBesoin(Request $request)
     {
-        Log::info("controller");
+        Log::info("Ligne besoin datatable");
         Log::info($request);
         if ($request->ajax()) {
-            return $this->repository->getLigneBesoinsByBesoin($request->besoins_id , $request->mode);
+            return $this->repository->getLigneBesoinsByBesoin($request->besoins_id, $request->mode);
         }
     }
     public function multidestroy(Request $request)
@@ -217,7 +216,7 @@ class BesoinController extends Controller
     public function editLigneBesoin(Request $request)
     {
         if ($request->ajax()) {
-            return LignesBesoin::select('*')->where('id', $request->id)->first();
+            return LignesBesoin::select('*')->with('document')->where('id', $request->id)->first();
         }
     }
     /**
@@ -231,37 +230,49 @@ class BesoinController extends Controller
 
         Log::info("Store Ligne besoin");
         Log::info($request);
-        $validator = Validator::make($request->all(), [
-            'libelle' => 'required',
-        ]);
+        if ($request->file == 'undefined') {
+            $validator = Validator::make($request->all(), [
+                'libelle' => 'required',
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'libelle' => 'required',
+                'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
+            ]);
+        }
+
         Log::info($validator->errors());
         if ($validator->fails()) {
             return $this->error($validator->errors(), 403);
         }
-
-        $locale = LaravelLocalization::getCurrentLocale();
-        if(!$request->qte_valide){
+        if (!$request->qte_valide) {
             $request->qte_valide = 0;
         }
         if ($request->ajax()) {
-            Log::info("Store Ligne besoin ضتضء");
+            Log::info("Store Ligne besoin");
             Log::info($request);
             $ligneBesoin = LignesBesoin::create([
                 'libelle' => $request->libelle,
+                'description' => $request->description,
+                'type_demande' => $request->type_demande,
+                'nature_demandes_id' => $request->nature_demandes_id,
                 'qte_demande' => $request->qte_demande,
                 'cout_unite_ttc' => $request->cout_unite_ttc,
                 'cout_total_ttc' => $request->cout_total_ttc,
                 'qte_valide' => $request->qte_valide,
                 'besoins_id' => $request->besoins_id,
             ]);
-            if ($locale == 'en') {
-                return $this->notify('Success [Add new Party]', 'New Party added successfully!', 'success', false);
+            // ajout de document s'il existe
+            if ($request->file != 'undefined') {
+                if($ligneBesoin){
+                    $request['path'] = "besoin_documents";
+                    $request['besoins_id'] = $ligneBesoin->id;
+                    $file = $this->fileRepository->fileUploadPost($request);
+                }
             }
+
             return $this->notify('ضبط الحاجيات', '!تم إضافة مادة جديدة للحاجيات بنجاح', 'success', true);
         } else {
-            if ($locale == 'en') {
-                return $this->notify('Error', 'New Party added successfully!', 'error', false);
-            }
             return $this->notify('ضبط الحاجيات', '!خطأ داخلي الرجاء إعادة المحاولة', 'error', true);
         }
     }
@@ -275,33 +286,44 @@ class BesoinController extends Controller
     public function updateLigneBesoin(Request $request)
     {
         Log::info($request);
-        $validator = Validator::make($request->all(), [
-            'libelle' => 'required',
-            // 'pr_mail' => 'required|email|unique:pris,pr_mail,' . $request->id,
-        ]);
+        if ($request->file == 'undefined') {
+            $validator = Validator::make($request->all(), [
+                'libelle' => 'required',
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'libelle' => 'required',
+                'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
+            ]);
+        }
         if ($validator->fails()) {
             return $this->error($validator->errors(), 403);
         }
-        if(!$request->qte_valide){
+        if (!$request->qte_valide) {
             $request->qte_valide = 0;
         }
         if ($request->ajax()) {
             $locale = LaravelLocalization::getCurrentLocale();
             LignesBesoin::find($request->id)->update([
                 'libelle' => $request->libelle,
+                'description' => $request->description,
+                'type_demande' => $request->type_demande,
+                'nature_demandes_id' => $request->nature_demandes_id,
                 'qte_demande' => $request->qte_demande,
                 'cout_unite_ttc' => $request->cout_unite_ttc,
                 'cout_total_ttc' => $request->cout_total_ttc,
                 'qte_valide' => $request->qte_valide,
             ]);
-            if ($locale == 'en') {
-                return $this->notify('Client Party update', 'Client Party updated successfully!', 'success', false);
+            if ($request->file != 'undefined') {
+                if($ligneBesoin){
+                    $request['path'] = "besoin_documents";
+                    $request['besoins_id'] = $ligneBesoin->id;
+                    $file = $this->fileRepository->fileUploadPost($request);
+                }
             }
             return $this->notify('ضبط الحاجيات', '!تم تحيين للحاجيات بنجاح', 'success', true);
         } else {
-            if ($locale == 'en') {
-                return $this->notify('Client Party update Error', 'ِClient Party update error!', 'error', false);
-            }
+
             return $this->notify('!  خطأ', 'خطأ عند تحيين الحاجيات', 'error');
         }
 
@@ -312,9 +334,9 @@ class BesoinController extends Controller
         LignesBesoin::find($request->id)->delete();
         /*$locale = LaravelLocalization::getCurrentLocale();
         if ($locale == 'en') {
-            return $this->notify('Notification', 'ِِClient Contact deleted successfully', 'success', false);
+        return $this->notify('Notification', 'ِِClient Contact deleted successfully', 'success', false);
         }
-        */
+         */
         return $this->notify('ضبط الحاجيات', 'تم حذف المادة من الحاجيات بنجاح');
         // return $this->notify('حذف عميل',  session()->get('delete_error'));
     }

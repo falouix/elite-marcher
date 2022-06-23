@@ -2,32 +2,79 @@
 //dd($userService);
 if ($locale == 'ar') {
     $lang = asset('/plugins/i18n/Arabic.json');
+    $rtl = 'rtl';
 } else {
     $lang = '';
 }
 
-$breadcrumb = "ضبط الحاجيات";
-$sub_breadcrumb = "المصادقة على الحاجيات الحاجيات";
+$breadcrumb = 'تحديد الحاجيات';
+$sub_breadcrumb = 'المصادقة على الحاجيات';
 $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
 @section('head-script')
-<!-- data tables css -->
-<link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/datatables.min.css') }}">
-<link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/select.dataTables.min.css') }}">
-<!-- pnotify css -->
-<link rel="stylesheet" href="{{ asset('/plugins/pnotify/css/pnotify.custom.min.css') }}">
-<!-- pnotify-custom css -->
-<link rel="stylesheet" href="{{ asset('/css/pages/pnotify.css') }}">
+    <!-- data tables css -->
+    <link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/select.dataTables.min.css') }}">
+    <!-- pnotify css -->
+    <link rel="stylesheet" href="{{ asset('/plugins/pnotify/css/pnotify.custom.min.css') }}">
+    <!-- pnotify-custom css -->
+    <link rel="stylesheet" href="{{ asset('/css/pages/pnotify.css') }}">
+    <!-- select2 css -->
+    <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
+    <style>
+        .qte_valide{
+            background-color: lightgoldenrodyellow;
+        }
+        <style>
+        .my-input-class {
+            padding: 3px 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
+        .my-confirm-class {
+            padding: 3px 6px;
+            font-size: 12px;
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 4px;
+            background-color: #337ab7;
+            text-decoration: none;
+        }
+
+        .my-cancel-class {
+            padding: 3px 6px;
+            font-size: 12px;
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 4px;
+            background-color: #a94442;
+            text-decoration: none;
+        }
+
+        .error {
+            border: solid 1px;
+            border-color: #a94442;
+        }
+
+        .destroy-button{
+            padding:5px 10px 5px 10px;
+            border: 1px blue solid;
+            background-color:lightgray;
+        }
+
+    </style>
 @endsection
 
 
 @section('breadcrumb')
     @include('layouts.partials.breadcrumb', [
-    'bread_title'=> $breadcrumb,
-    'bread_subtitle'=> $sub_breadcrumb
+        'bread_title' => $breadcrumb,
+        'bread_subtitle' => $sub_breadcrumb,
     ])
 @endsection
 
@@ -38,7 +85,7 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>{{ $sub_breadcrumb }}</h5>
                 <div class="card-header-right">
-                    <a href="{{ route('besoins.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('besoins-validation.index') }}" class="btn btn-secondary">
                         العودة لضبط الحاجيات
                         <i class="feather icon-corner-down-left"></i>
                     </a>
@@ -58,156 +105,92 @@ $tbl_action = __('labels.tbl_action');
                     </div>
                 @endif
                 <!-- [ Form Validation ] start -->
+                {{-- Case Other Parties --}}
 
-
-
-                        {{-- Case Other Parties --}}
-                        {!! Form::open(['route' =>  ['besoins.update', $besoin->id], 'method' => 'patch',
-                        'files' => 'true','enctype'=>'multipart/form-data',
-                        'id' => 'validation-client_form']) !!}
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group ">
-                                    <label> المصلحة/الدائرة/المؤسسة </label>
-                                   <input type="text" class="form-control" value="{{$userService->libelle}}" readonly>
-                                   <input type="hidden" name="services_id" value="{{ $userService->id }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="date_besoin"> التاريخ </label>
-                                    <input type="date" class="form-control" id='date_besoin' name="date_besoin"
-                                        placeholder="أدخل التاريخ" value="{{ $besoin->date_besoin}}">
-                                    @if ($errors->has('date_besoin'))
-                                        <span class="text-danger">{{ $errors->first('date_besoin') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="annee_gestion"> السنة المالية </label>
-                                    <input type="number" class="form-control" id='annee_gestion' name="annee_gestion"
-                                        placeholder="أدخل السنة المالية" value='{{ $besoin->annee_gestion }}' readonly>
-                                   {{-- @if ($errors->has('annee_gestion'))
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group ">
+                            <label> المصلحة/الدائرة/المؤسسة </label>
+                            <input type="text" class="form-control" value="{{ $userService->libelle }}" readonly>
+                            <input type="hidden" name="services_id" value="{{ $userService->id }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="date_besoin"> التاريخ </label>
+                            <input type="date" class="form-control" id='date_besoin' name="date_besoin"
+                                placeholder="أدخل التاريخ" value="{{ $besoin->date_besoin }}" readonly>
+                            @if ($errors->has('date_besoin'))
+                                <span class="text-danger">{{ $errors->first('date_besoin') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="annee_gestion"> السنة المالية </label>
+                            <input type="number" class="form-control" id='annee_gestion' name="annee_gestion"
+                                placeholder="أدخل السنة المالية" value='{{ $besoin->annee_gestion }}' readonly>
+                            {{-- @if ($errors->has('annee_gestion'))
                                         <span class="text-danger">{{ $errors->first('annee_gestion') }}</span>
                                     @endif --}}
-                                </div>
-                            </div>
-
-
                         </div>
-                        <button type="submit" id="btn_submit" class="btn btn-primary" style="float: right;" hidden>
-                        </button>
-                        {!! Form::close() !!}
-                        {{-- Contact from company  start --}}
-                        <form id="cp_form" action="#">
-                            <input type="hidden" name="lignebesoin_id" id="lignebesoin_id" value="0">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <h3 class="form-label"> الحاجيات</h3>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label
-                                            class="form-label">المادة (التسمية)</label>
-                                        <input type="text" class="form-control" name="libelle"
-                                            placeholder="المادة..."
-                                            value="{{ old('libelle') }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label">الكمية المطلوية</label>
-                                        <input type="number" class="form-control" name="qte_demande"
-                                            placeholder="الكمية..."
-                                            value="{{ old('qte_demande') }}" onchange="calculTotal()" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label" style="color: red">الكمية المصادق عليها</label>
-                                        <input type="number" class="form-control" name="qte_valide"
-                                            placeholder="الكمية..."
-                                            value="{{ old('qte_valide') }}" onchange="calculTotal()">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label">الكلفة التقديرية للوحدة</label>
-                                        <input type="number" class="form-control" name="cout_unite_ttc"
-                                            placeholder="كلفة الوحدة..."
-                                            value="{{ old('cout_unite_ttc')  }}" onchange="calculTotal()"  readonly>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label">الكلفة التقديرية الجملية</label>
-                                        <input type="number" class="form-control" name="cout_total_ttc"
-                                            placeholder="الكلفة التقديرية الجملية..."
-                                            value="0" readonly>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+                {{-- Contact from company  start --}}
 
 
-                                <div class="col-md-12">
-                                    @if($besoin->valider == false)
-                                    <a href="javascript:void(0);" class="btn btn-rounded btn-info" id='add'
-                                        for-table='#table-cp'>
-                                        <i class="feather icon-plus"></i>
-                                        إضافة إلى الجدول
-                                    </a>
-                                    @endif
+                        <div class="col-md-12">
 
-                                    <div class="dt-responsive table-responsive">
-                                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span id="coutTotal"> </span></h6>
+                            <div class="dt-responsive table-responsive">
+                                <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span
+                                        id="coutTotal"> </span></h6>
 
-                                            <table id="table-cp" class="table table-striped table-bordered nowrap">
-                                            <thead>
-                                                <th class="not-export-col" style="width: 30px"><input type="checkbox" class="select-checkbox not-export-col" /> </th>
-                                                <th class="not-export-col">id</th>
-                                                <th>المادة</th>
-                                                <th>الكمية المطلوبة</th>
-                                                <th>الكمية المصادقة</th>
-                                                <th>الكلفة التقديرية للوحدة</th>
-                                                <th>الكلفة التقديرية الجملية</th>
-                                                <th class="not-export-col">{{ $tbl_action }}</th>
-                                            </thead>
+                                <table id="table-cp" class="table table-striped table-bordered nowrap">
+                                    <thead>
+                                        <th class="not-export-col" style="width: 30px"><input type="checkbox"
+                                                class="select-checkbox not-export-col" /> </th>
+                                        <th class="not-export-col">id</th>
+                                        <th>المادة</th>
+                                        <th>طبيعة الطلب</th>
+                                        <th>نوع الطلب</th>
+                                        <th>الكمية المطلوبة</th>
+                                        <th>الكمية المصادقة</th>
+                                        <th>الكلفة التقديرية للوحدة</th>
+                                        <th>الكلفة التقديرية الجملية</th>
+                                        <th>الملاحظات</th>
+                                        <th>الملف/الوثيقة</th>
+                                        <th class="not-export-col">{{ $tbl_action }}</th>
+                                    </thead>
 
-                                            <tfoot>
-                                                <tr>
-                                                    <th class="not-export-col" style="width: 30px"><input type="checkbox" class="select-checkbox not-export-col" /> </th>
-                                                    <th class="not-export-col">id</th>
-                                                    <th>المادة</th>
-                                                    <th>الكمية المطلوبة</th>
-                                                    <th>الكمية المصادقة</th>
-                                                    <th>الكلفة التقديرية للوحدة</th>
-                                                    <th>الكلفة التقديرية الجملية</th>
-                                                    <th class="not-export-col">{{ $tbl_action }}</th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="not-export-col" style="width: 30px"><input type="checkbox"
+                                                    class="select-checkbox not-export-col" /> </th>
+                                            <th class="not-export-col">id</th>
+                                            <th>المادة</th>
+                                            <th>طبيعة الطلب</th>
+                                            <th>نوع الطلب</th>
+                                            <th>الكمية المطلوبة</th>
+                                            <th>الكمية المصادقة</th>
+                                            <th>الكلفة التقديرية للوحدة</th>
+                                            <th>الكلفة التقديرية الجملية</th>
+                                            <th>الملاحظات</th>
+                                            <th>الملف/الوثيقة</th>
+                                            <th class="not-export-col">{{ $tbl_action }}</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                             </div>
-                        </form>
-                        {{-- Contact from company  end --}}
+                        </div>
+                    </div>
+                {{-- Contact from company  end --}}
 
 
                 <div class="row mt-4">
-                    @if($besoin->valider == false)
-                    <button type="button" id="btn_create" class="btn btn-primary" style="float: right;">
-                        <i class="feather icon-client-plus"></i>
-                        {{ __('inputs.btn_edit') }}
-                    </button>
-                    @endif
-                    <a href="{{ route('besoins.index') }}" class="btn btn-danger" style="float: left;">
-                        <i class="feather icon-minus-circle"></i>
-                        {{ __('inputs.btn_cancel') }}
-                    </a>
+                        <a href="{{ route('besoins.index') }}" id="btn_create" class="btn btn-primary" style="float: right;">
+                            <i class="feather icon-client-plus"></i>
+                            {{ __('inputs.btn_edit') }}
+                        </a>
                 </div>
                 <!-- [ Form Validation ] end -->
 
@@ -220,333 +203,270 @@ $tbl_action = __('labels.tbl_action');
     <script src="{{ asset('/plugins/jquery-validation/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('/plugins/inputmask/js/jquery.inputmask.min.js') }}"></script>
     <script src="{{ asset('/plugins/inputmask/js/autoNumeric.js') }}"></script>
-        <!-- datatable Js -->
-        <script src="{{ asset('/plugins/data-tables/js/datatables.min.js') }}"></script>
-        <script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
-        <!-- sweet alert Js -->
-        <script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
-        <!-- pnotify Js -->
-        <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
-            <!-- form-select-custom Js -->
-            <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
-            <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
-            <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
+    <!-- datatable Js -->
+    <script src="{{ asset('/plugins/data-tables/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
+    <!-- sweet alert Js -->
+    <script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
+    <!-- pnotify Js -->
+    <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
+    <!-- form-select-custom Js -->
+    <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/dataTables.cellEdit.js') }}"></script>
 
     <script>
         'use strict';
         $(document).ready(function() {
             $(function() {
                 $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-                });
-                // [ Initialize client-form validation ]
-                $('#validation-client_form').validate({
-                    ignore: '.ignore, .select2-input',
-                    focusInvalid: false,
-                    rules: {
-                        'full_name': {
-                            required: true,
-                        },
-                        'cp_registration': {
-                            required: true,
-                        },
-
-                        'email': {
-                            required: true,
-                            email: true
-                        },
-                        'cp_contact_email': {
-                            required: false,
-                            email: true
-                        },
-                        'pr_mail': {
-                            required: true,
-                            email: true
-                        },
-                        'pr_name': {
-                            required: true,
-                        },
-
-                    },
-
-                    // Errors //
-
-                    errorPlacement: function errorPlacement(error, element) {
-                        var $parent = $(element).parents('.form-group');
-
-                        // Do not duplicate errors
-                        if ($parent.find('.jquery-validation-error').length) {
-                            return;
-                        }
-
-                        $parent.append(
-                            error.addClass(
-                                'jquery-validation-error small form-text invalid-feedback')
-                        );
-                    },
-                    highlight: function(element) {
-                        var $el = $(element);
-                        var $parent = $el.parents('.form-group');
-
-                        $el.addClass('is-invalid');
-
-                        // Select2 and Tagsinput
-                        if ($el.hasClass('select2-hidden-accessible') || $el.attr(
-                                'data-role') === 'tagsinput') {
-                            $el.parent().addClass('is-invalid');
-                        }
-                    },
-                    unhighlight: function(element) {
-                        $(element).parents('.form-group').find('.is-invalid').removeClass(
-                            'is-invalid');
-                    }
-                });
-                // [ Initialize client-form validation ]
-                $('#cp_form').validate({
-                    ignore: '.ignore, .select2-input',
-                    focusInvalid: false,
-                    rules: {
-                        'libelle': {
-                            required: true,
-                        },
-                        'qte_demande': {
-                            required: true,
-                        },
-                        'qte_valide': {
-                            required: true,
-                        },
-                        'cout_unite_ttc': {
-                            required: true,
-                        },
-                    },
-                    // Errors //
-
-                    errorPlacement: function errorPlacement(error, element) {
-                        var $parent = $(element).parents('.form-group');
-
-                        // Do not duplicate errors
-                        if ($parent.find('.jquery-validation-error').length) {
-                            return;
-                        }
-
-                        $parent.append(
-                            error.addClass(
-                                'jquery-validation-error small form-text invalid-feedback')
-                        );
-                    },
-                    highlight: function(element) {
-                        var $el = $(element);
-                        var $parent = $el.parents('.form-group');
-
-                        $el.addClass('is-invalid');
-
-                        // Select2 and Tagsinput
-                        if ($el.hasClass('select2-hidden-accessible') || $el.attr(
-                                'data-role') === 'tagsinput') {
-                            $el.parent().addClass('is-invalid');
-                        }
-                    },
-                    unhighlight: function(element) {
-                        $(element).parents('.form-group').find('.is-invalid').removeClass(
-                            'is-invalid');
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
 
                 var table = $('#table-cp').DataTable({
-                dom: 'frltipB',
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
-                buttons: [{
-                        text: '{{ __('inputs.btn_copy') }}',
-                        extend: 'copyHtml5',
-                        exportOptions: {
-                            columns: ':visible:not(.not-export-col)'
-                        }
-                    },
-                    {
-                        text: '{{ __('inputs.btn_excel') }}',
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: ':visible:not(.not-export-col)'
-                        }
-                    },
-                    {
-                        text: '{{ __('inputs.btn_pdf') }}',
-                        extend: 'pdfHtml5',
-                        exportOptions: {
-                            columns: ':visible:not(.not-export-col)'
-                        }
-                    },
-                    {
-                        text: '{{ __('inputs.btn_print') }}',
-                        extend: 'print',
-                        exportOptions: {
-                            columns: ':visible:not(.not-export-col)'
-                        }
-                    },
-                ],
-                initComplete: function() {
-                    // Apply the search
-                    this.api().columns().every(function() {
-                        var that = this;
-
-                        $('input', this.footer()).on('keyup change clear', function() {
-                            if (that.search() !== this.value) {
-                                that
-                                    .search(this.value)
-                                    .draw();
+                    dom: 'frltipB',
+                    "lengthMenu": [
+                        [10, 25, 50, -1],
+                        [10, 25, 50, "{{ __('labels.all') }}"]
+                    ],
+                    buttons: [{
+                            text: '{{ __('inputs.btn_copy') }}',
+                            extend: 'copyHtml5',
+                            exportOptions: {
+                                columns: ':visible:not(.not-export-col)'
                             }
+                        },
+                        {
+                            text: '{{ __('inputs.btn_excel') }}',
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible:not(.not-export-col)'
+                            }
+                        },
+                        {
+                            text: '{{ __('inputs.btn_pdf') }}',
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible:not(.not-export-col)'
+                            }
+                        },
+                        {
+                            text: '{{ __('inputs.btn_print') }}',
+                            extend: 'print',
+                            exportOptions: {
+                                columns: ':visible:not(.not-export-col)'
+                            }
+                        },
+                    ],
+
+                    scrollY: true,
+                    scrollX: true,
+                    scrollCollapse: true,
+                    paging: false,
+                    fixedColumns: {
+                        leftColumns: 1,
+                        rightColumns: 1
+                    },
+                    initComplete: function() {
+                        // Apply the search
+                        this.api().columns().every(function() {
+                            var that = this;
+
+                            $('input', this.footer()).on('keyup change clear',
+                                function() {
+                                    if (that.search() !== this.value) {
+                                        that
+                                            .search(this.value)
+                                            .draw();
+                                    }
+                                });
                         });
-                    });
-                },
-                processing: true,
-               // serverSide: true,
-                serverMethod: 'POST',
-                ajax: {
-                    url: "{{ route('ligne_besoin.datatable') }}",
-                    data: function(data) {
-                        data.besoins_id = "{{ $besoin->id }}";
-                        data.mode = "validation";
                     },
-                },
-                language: {
-                    url: "{{ $lang }}"
-                },
-                columns: [{
-                        data: "select",
-                        className: "select-checkbox"
+                    processing: true,
+                    // serverSide: true,
+                    serverMethod: 'POST',
+                    ajax: {
+                        url: "{{ route('ligne_besoin.datatable') }}",
+                        data: function(data) {
+
+                            data.besoins_id = "{{ $besoin->id }}";
+                            data.mode = "all";
+                        },
                     },
-                    {
-                        data: "id",
-                        className: "id",
+                    language: {
+                        url: "{{ $lang }}"
                     },
-                    {
-                        data: "libelle",
-                        className: "libelle"
-                    },
-                    {
-                        data: "qte_demande",
-                        className: "qte_demande"
-                    },
-                    {
-                        data: "qte_valide",
-                        className: "qte_valide"
-                    },
-                    {
-                        data: "cout_unite_ttc",
-                        className: "cout_unite_ttc"
-                    },
-                    {
-                        data: "cout_total_ttc",
-                        className: "cout_total_ttc"
-                    },
-                    {
-                        data: 'action',
-                        className: 'action',
-                        visible: 'false'
-                    }
-                ],
-                responsive: true,
+                    columns: [{
+                            data: "select",
+                            className: "select-checkbox"
+                        },
+                        {
+                            data: "id",
+                            className: "id",
+                        },
+                        {
+                            data: "libelle",
+                            className: "libelle"
+                        },
+                        {
+                            data: "type_demande",
+                            className: "type_demande"
+                        },
+                        {
+                            data: "nature_demandes_id",
+                            className: "nature_demandes_id"
+                        },
+                        {
+                            data: "qte_demande",
+                            className: "qte_demande"
+                        },
+                        {
+                            data: "qte_valide",
+                            className: "qte_valide"
+                        },
+                        {
+                            data: "cout_unite_ttc",
+                            className: "cout_unite_ttc"
+                        },
+                        {
+                            data: "cout_total_ttc",
+                            className: "cout_total_ttc"
+                        },
+                        {
+                            data: 'description',
+                            className: 'description',
+                        },
+                        {
+                            data: 'action_file',
+                            className: 'action_file',
+                            visible: 'false'
+                        },
 
-                columnDefs: [{
-                        orderable: false,
-                        className: 'select-checkbox',
-                        targets: 0
-                    },
-                    {
-                        visible: false,
-                        targets: 1
-                    }
-                ],
-                select: {
-                    style: 'os',
-                    selector: 'td:first-child'
-                },
-                // select: { style: 'multi+shift' },
-
-            });
-            table
-                .on('select', function(e, dt, type, indexes) {
-                    // var rowData = table.rows( indexes ).data().toArray();
-                    //console.log( rowData );
-                    SelectedRowCountBtnDelete(table)
-                })
-                .on('deselect', function(e, dt, type, indexes) {
-                    SelectedRowCountBtnDelete(table)
-                });
-
-            $('.dataTables_length').addClass('bs-select');
-
-            // Setup - add a text input to each footer cell
-
-            addSearchFooterDataTable("#table-cp")
-            });
-
-        });
-
-        $('#btn_create').on("click", () => {
-            $("#btn_submit").click()
-        })
-
-        $("#add").click(() => {
-         //   if ($("#cp_form").valid()) { // test for validity
-                let id = $("#lignebesoin_id").val();
-                let libelle = $("input[name=libelle]").val()
-                let qte_demande = $("input[name=qte_demande]").val()
-                let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
-                let cout_total_ttc = $("input[name=cout_total_ttc]").val()
-                let qte_valide = $("input[name=qte_valide]").val()
-
-                var $type = 'POST'
-                var $url = "{{ route('lignes_besoin.store') }}"
-                if (id != 0) {
-                    $type = 'PUT'
-                    $url = "{{ route('lignes_besoin.update') }}"
-
-                }
-                $.ajax({
-                    url: $url,
-                    type: $type,
-                    data: {
-                        libelle: libelle,
-                        qte_demande: qte_demande,
-                        cout_unite_ttc: cout_unite_ttc,
-                        cout_total_ttc: cout_total_ttc,
-                        qte_valide: qte_valide,
-                        id: id,
-                        besoins_id: {{ $besoin->id }},
-                    },
-                    success: function(response) {
-
-                        $('#table-cp').DataTable().ajax.reload();
-                        $('#cp_form')[0].reset()
-                        //$("#cp_form").get(0).reset()
-                        $('#add').html("{{ __('inputs.btn_add_row_cp') }}")
-                        $('#libelle').removeClass('is-invalid')
-                        PnotifyCustom(response)
-                    },
-                    error: function(errors) {
-                        $('#libelle').removeClass('is-invalid')
-                        //alert(JSON.stringify(errors.responseJSON.message.libelle))
-                        if (errors.responseJSON.message.libelle != null) {
-                            $('#libelle').addClass('is-invalid')
-                            $('#libelle-error').text(errors.responseJSON.message.libelle);
+                        {
+                            data: 'action',
+                            className: 'action',
+                            visible: 'false'
                         }
-                    }
-                }); // ajax end
-        //    }
+                    ],
+
+                    columnDefs: [{
+                            orderable: false,
+                            className: 'select-checkbox',
+                            targets: 0
+                        },
+                        {
+                            visible: false,
+                            targets: 1
+                        }
+                    ],
+                    select: {
+                        style: 'os',
+                        selector: 'td:first-child'
+                    },
+                    // select: { style: 'multi+shift' },
+
+                });
+                table
+                    .on('select', function(e, dt, type, indexes) {
+                        // var rowData = table.rows( indexes ).data().toArray();
+                        //console.log( rowData );
+                        SelectedRowCountBtnDelete(table)
+                    })
+                    .on('deselect', function(e, dt, type, indexes) {
+                        SelectedRowCountBtnDelete(table)
+                    });
+
+                $('.dataTables_length').addClass('bs-select');
+                // Setup - add a text input to each footer cell
+                addSearchFooterDataTable("#table-cp")
+
+                $("#natures_demande").select2({
+                    dir: "{{ $rtl }}",
+                    // minimumInputLength: 3, // only start searching when the user has input 3 or more characters
+                    placeholder: "{{ __('labels.choose') }} ",
+                    ajax: {
+                        url: "{{ route('natures-demande.select') }}",
+                        type: "post",
+                        delay: 250,
+                        dataType: 'json',
+                        data: {
+                            type: $('#type_demande').val()
+                        },
+                    },
+                    processResults: function(response) {
+                        // alert(JSON.stringify(response))
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+
+                });
+                table.MakeCellsEditable({
+                    "onValidate": validationCallbackFunction,
+                    "onUpdate": updateCallbackFunction,
+                    "inputCss": 'my-input-class',
+                    "columns": [6],
+                    "allowNulls": {
+                        "columns": [6],
+                        "errorClass": 'error'
+                    },
+                    "confirmationButton": {
+                        "confirmCss": 'my-confirm-class',
+                        "cancelCss": 'my-cancel-class'
+                    },
+                    "inputTypes": [{
+                        "column": 3,
+                        "type": "number",
+                        "options": null
+                    }, ]
+                });
+            });
+
         });
 
-        function calculTotal(){
-            let qte_demande = $("input[name=qte_valide]").val()
-                let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
-                let cout_total_ttc = qte_demande * cout_unite_ttc
-                $("input[name=cout_total_ttc]").val(cout_total_ttc)
-
+        function updateCallbackFunction(updatedCell, updatedRow, oldValue) {
+            console.log("The new value for the cell is: " + updatedCell.data());
+            //ajax call to update lignebesoin by id
+            console.log("The values for each cell in that row are: " + JSON.stringify(updatedRow.data()));
+        }
+        function validationCallbackFunction(cell, row, newValue) {
+            console.log("Validation; The new value for the cell is: " + newValue);
+            //ajax call to update lignebesoin by id
+            console.log("Validation; The values for each cell in that row are: " + JSON.stringify(row.data()));
         }
 
-        function editLigneBesoin(id){
+        $('#type_demande').on('change', function(e) {
+            var type = e.target.value;
+            $.ajax({
+                url: "{{ route('natures-demande.select') }}",
+                type: "POST",
+
+                data: {
+                    type: type
+                },
+                success: function(data) {
+                    $('#natures_demande').empty();
+                    $('#natures_demande').append('<option value="NULL">إختر من القائمة</option>');
+                    $.each(data.results, function(index, naturdemande) {
+                        $('#natures_demande').append('<option value="' + naturdemande.id +
+                            '">' +
+                            naturdemande.text + '</option>');
+                    })
+                    $('#natures_demande').select2({
+                        dir: "{{ $rtl }}",
+                    });
+                }
+            })
+        });
+
+
+       
+
+        function editLigneBesoin(id) {
             $.ajax({
                 url: "{{ route('ligne_besoins.edit') }}",
                 type: 'GET',
@@ -556,11 +476,18 @@ $tbl_action = __('labels.tbl_action');
                 success: function(response) {
                     // alert(JSON.stringify(response))
                     $("#lignebesoin_id").val(response.id);
-                $("input[name=libelle]").val(response.libelle)
-                $("input[name=qte_demande]").val(response.qte_demande)
-                $("input[name=qte_valide]").val(response.qte_valide)
-                $("input[name=cout_unite_ttc]").val(response.cout_unite_ttc)
-                $("input[name=cout_total_ttc]").val(response.cout_total_ttc)
+                    $("input[name=libelle]").val(response.libelle)
+                    $("input[name=description]").val(response.description)
+                    $("input[name=qte_demande]").val(response.qte_demande)
+                    $("input[name=cout_unite_ttc]").val(response.cout_unite_ttc)
+                    $("input[name=cout_total_ttc]").val(response.cout_total_ttc)
+                    // Set selected
+                    $('#natures_demande').val(response.nature_demandes_id);
+                    $('#natures_demande').select2().trigger('change');
+                    $("#type_demande").val(response.type_demande)
+                    if (response.document) {
+                        $("input[name=file_name]").val(response.document.libelle);
+                    }
                     $('#add').html("تحيين الجدول")
                 },
                 error: function(errors) {
@@ -572,8 +499,8 @@ $tbl_action = __('labels.tbl_action');
             }); // ajax end
         }
 
-         // Delete contact_cp
-         function deleteFromDataTableLigneBesoinBtn(id) {
+        // Delete contact_cp
+        function deleteFromDataTableLigneBesoinBtn(id) {
             //  let id = $('#tbl_btn_delete').attr('data-id');
             var url = "{{ route('ligne_besoins_datatable.destroy') }}";
             swal({

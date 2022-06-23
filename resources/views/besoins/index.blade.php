@@ -23,6 +23,7 @@ $tbl_action = __('labels.tbl_action');
     <link rel="stylesheet" href="{{ asset('/css/pages/pnotify.css') }}">
         <!-- select2 css -->
         <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
+
 @endsection
 
 @section('breadcrumb')
@@ -63,26 +64,36 @@ $tbl_action = __('labels.tbl_action');
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-3">
-                        <label> {{ __('labels.date_deb') }}</label>
-                        <input name="start_date" id="start_date" class="form-control " type="date"
-                            value="{{ \Carbon\Carbon::now()->firstOfMonth()->toDateString() }}">
+                    <div class="col-md-1">
+                        <label> السنة المالية</label>
+                        <input type="text" class="form-control" id="annee_gestion" maxlength="4"  id="pin" pattern="\d{4}" value="{{ strftime("%Y"); }}" required/>
                     </div>
+
+                    @if (\Auth::user()->user_type =='admin')
                     <div class="col-md-3">
-                        <label> {{ __('labels.date_fin') }} </label>
-                        <input name="end_date" id="end_date" class="form-control " type="date"
-                            value="{{ \Carbon\Carbon::now()->toDateString() }}">
-                    </div>
-                    <div class="col-md-3">
+
                         <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
 
                         <select class="js-example-basic-multiple-limit col-sm-12" multiple="multiple" id="services_id"
                             name="services_id">
                             @foreach ($services as $item)
                             <option value="{{ $item->id }}">{{ $item->libelle }}</option>
-                        @endforeach
+                            @endforeach
                         </select>
                     </div>
+                    @else
+                    <div class="col-md-3">
+
+                        <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
+
+                        <select class="col-sm-12"  id="services_id"
+                            name="services_id" readonly>
+                            @foreach ($services as $item)
+                            <option value="{{ $item->id }}" selected>{{ $item->libelle }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
                     <div class="col-md-3">
                         <button class="btn btn-primary-gradient " id="btn_search_besoins" type="submit"
                             style="margin-top: 32px">
@@ -202,8 +213,7 @@ $tbl_action = __('labels.tbl_action');
                         } else {
                             data.services_id = $("#services_id").val()[0]
                         }
-                        data.start_date = $('#start_date').val();
-                        data.end_date = $('#end_date').val();
+                        data.annee_gestion = $('#annee_gestion').val();
                         data.status = 'all';
                         data.mode = "all";
                     },
@@ -282,30 +292,8 @@ $tbl_action = __('labels.tbl_action');
         // Search button click event (reload dtatable)
         $('#btn_search_besoins').on('click', (e) => {
             e.preventDefault();
-            var start_date = Date.parse($('#start_date').val());
-            var end_date = Date.parse($('#end_date').val());
+            var annee_gestion = $('#annee_gestion').val();
 
-            if (start_date > end_date) {
-                var swal_title = "{{ __('labels.swal_error_title') }}"
-                swal_text = "{{ __('labels.swal_error_event_star_end_date') }}"
-                swal({
-                    icon: 'error',
-                    title: swal_title,
-                    text: swal_text,
-                })
-                return false;
-            }
-
-            if ((isNaN(start_date) || isNaN(end_date)) == true) {
-                var swal_title = "{{ __('labels.swal_error_title') }}"
-                swal_text = "{{ __('labels.swal_error_event_star_end_date') }}"
-                swal({
-                    icon: 'error',
-                    title: swal_title,
-                    text: swal_text,
-                })
-                return false;
-            }
             $('#besoins-table').DataTable().ajax.reload();
 
         })

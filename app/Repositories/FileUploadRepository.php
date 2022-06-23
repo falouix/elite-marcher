@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Besoin;
+use App\Models\LigneBesoin;
 use App\Models\BesoinsDoc;
 use App\Models\UserDocuement;
 use Auth;
@@ -47,7 +47,7 @@ class FileUploadRepository implements IFileUploadRepository
                     'created_by' => Auth::user()->id,
                 ]);
                 if($besoinsDoc){
-                    Besoin::find( $besoinsDoc->besoins_id)->update([
+                    LigneBesoin::find( $besoinsDoc->besoins_id)->update([
                         'docs_id'=>$besoinsDoc->id
                     ]);
                 }

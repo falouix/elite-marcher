@@ -21,7 +21,6 @@ use Auth;
  * @property bool|null $valider
  * @property Carbon|null $date_validation
  * @property int $services_id
- * @property int $docs_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -56,7 +55,6 @@ class Besoin extends Model
 		'valider',
 		'date_validation',
 		'services_id',
-		'docs_id',
 		'created_by',
 		'updated_by'
 	];
@@ -76,6 +74,7 @@ class Besoin extends Model
 	{
 		return $this->belongsTo(Service::class, 'services_id');
 	}
+
 
 	public function lignes_besoins()
 	{

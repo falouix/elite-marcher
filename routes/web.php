@@ -32,8 +32,10 @@ use Illuminate\Support\Facades\Route;
 //************************************************* USES FOR ROUTES SANA */
 use App\Http\Controllers\BesoinController;
 use App\Http\Controllers\BesoinValidationController;
+use App\Http\Controllers\NatureDemandeController;
 use App\Http\Controllers\EtablissementController;
 use App\Http\Controllers\LigneBesoinController;
+use App\Http\Controllers\PaiController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SoumissionnaireController;
 use App\Http\Controllers\ProjetController;
@@ -138,6 +140,21 @@ Route::group(
             Route::delete('lignes-besoin-delete', [BesoinController::class, 'destroyLigneBesoin'])->name('ligne_besoins_datatable.destroy');
             // Validation Besoins
             Route::resource('besoins-validation', BesoinValidationController::class);
+            Route::post('besoins-validation/datatable', [BesoinValidationController::class, 'getLigneBesoinsByBesoin'])->name('ligne_besoin_v.datatable');
+            Route::post('lignes-besoin-validation', [BesoinValidationController::class, 'storeLigneBesoin'])->name('lignes_besoin_v.store');
+            Route::put('besoins-validation/{id}/valider', [BesoinValidationController::class, 'validerBesoin'])->name('besoins-validation.valider');
+            Route::put('lignes-besoin-validation', [BesoinValidationController::class, 'updateLigneBesoin'])->name('lignes_besoin_v.update');
+            Route::get('lignes-besoin-validation', [BesoinValidationController::class, 'editLigneBesoin'])->name('ligne_besoins_v.edit');
+
+        //route besoin
+        Route::resource('natures-demande', NatureDemandeController::class);
+        Route::post('natures-demande/datatable', [NatureDemandeController::class, 'getAllNatureDemandeDataTable'])->name('natures-demande.data');
+        Route::post('natures-demande/select', [NatureDemandeController::class, 'getAllNatureDemandeToSelect'])->name('natures-demande.select');
+        Route::delete('natures-demande/multidestroy', [NatureDemandeController::class, 'multidestroy'])->name('natures-demandes-datatable.multidestroy');
+
+        //route Pai : Générateur du plan d'investissement annulle des achats
+        Route::resource('pais', PaiController::class);
+        Route::post('pais/datatable', [PaiController::class, 'getAllPaiDatatable'])->name('pais.datatable');
 
         Route::get('/modifier_demande/1', function () {
             return view('demande_budget.edit1');

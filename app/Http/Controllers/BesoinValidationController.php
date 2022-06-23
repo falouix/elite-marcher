@@ -127,8 +127,31 @@ class BesoinValidationController extends Controller
             $notification = $this->notifyArr('', '!تم تحيين ضبط الحاجيات بنجاح', 'success', true);
         //}
 
-        return redirect()->route('besoins.index')
+        return redirect()->route('besoins-validation.index')
             ->with('notification', $notification);
+    }
+        /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function validerBesoin($id)
+    {
+        Log::info("Validation besoin " .$id);
+        $this->repository->validerBesoin($id);
+        $locale = LaravelLocalization::getCurrentLocale();
+        /*if (session()->has('delete_error')) {
+        if ($locale == 'en') {
+        return $this->notify('Error', 'ِِOnly Clients without relations can be deleted', 'error', false);
+        } else {
+        return $this->notify('خطأ عند الحذف ', 'لا يمكن حذف عميل له تسجيلات مرتبطة');
+        }
+        }*/
+        if ($locale == 'en') {
+            return $this->notify('Notification', 'ِِClient deleted successfully', 'success', false);
+        }
+        return $this->notify('المصادقة على الحاجيات', 'تمت المصادقة على الحاجيات  بنجاح');
     }
 
     /**

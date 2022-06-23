@@ -5,13 +5,12 @@ if ($locale == 'ar') {
 } else {
     $name = 'name';
 }
-$breadcrumb = "ضبط الحاجيات";
-$sub_breadcrumb = "إضافة الحاجيات";
+$breadcrumb = 'ضبط الحاجيات';
+$sub_breadcrumb = 'إضافة الحاجيات';
 @endphp
 
 @extends('layouts.app')
 @section('head-script')
-
     <!-- Bootstrap datetimepicker css -->
     <link rel="stylesheet" href="{{ asset('/plugins/bootstrap-datetimepicker/css/bootstrap-datepicker3.min.css') }}">
 
@@ -23,15 +22,14 @@ $sub_breadcrumb = "إضافة الحاجيات";
         ol.linenums {
             margin: 0 0 0 -8px;
         }
-
     </style>
 @endsection
 
 
 @section('breadcrumb')
     @include('layouts.partials.breadcrumb', [
-    'bread_title'=> $breadcrumb,
-    'bread_subtitle'=> $sub_breadcrumb
+        'bread_title' => $breadcrumb,
+        'bread_subtitle' => $sub_breadcrumb,
     ])
 @endsection
 
@@ -65,128 +63,151 @@ $sub_breadcrumb = "إضافة الحاجيات";
 
 
 
-                        {{-- Case Other Parties --}}
-                        {!! Form::open(['route' => 'besoins.store', 'method' => 'POST',
-                        'files' => 'true','enctype'=>'multipart/form-data',
-                        'id' => 'validation-client_form']) !!}
-                         <input type="hidden" name="ligne_besoin" id="ligne_besoin"  value="">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group ">
-                                    <label> المصلحة/الدائرة/المؤسسة </label>
-                                   <input type="text" class="form-control" value="{{$userService->libelle}}" readonly>
-                                   <input type="hidden" name="services_id" value="{{ $userService->id }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="date_besoin"> التاريخ </label>
-                                    <input type="date" class="form-control" id='date_besoin' name="date_besoin"
-                                        placeholder="أدخل التاريخ" value="{{ \Carbon\Carbon::now()->toDateString() }}">
-                                    @if ($errors->has('date_besoin'))
-                                        <span class="text-danger">{{ $errors->first('date_besoin') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="annee_gestion"> السنة المالية </label>
-                                    <input type="number" class="form-control" id='annee_gestion' name="annee_gestion"
-                                        placeholder="أدخل السنة المالية" value='{{ strftime("%Y"); }}' readonly>
-                                   {{-- @if ($errors->has('annee_gestion'))
+                {{-- Case Other Parties --}}
+                {!! Form::open(['route' => 'besoins.store', 'method' => 'POST', 'files' => 'true', 'enctype' => 'multipart/form-data', 'id' => 'validation-client_form']) !!}
+                <input type="hidden" name="ligne_besoin" id="ligne_besoin" value="">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group ">
+                            <label> المصلحة/الدائرة/المؤسسة </label>
+                            <input type="text" class="form-control" value="{{ $userService->libelle }}" readonly>
+                            <input type="hidden" name="services_id" value="{{ $userService->id }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="date_besoin"> التاريخ </label>
+                            <input type="date" class="form-control" id='date_besoin' name="date_besoin"
+                                placeholder="أدخل التاريخ" value="{{ \Carbon\Carbon::now()->toDateString() }}">
+                            @if ($errors->has('date_besoin'))
+                                <span class="text-danger">{{ $errors->first('date_besoin') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="annee_gestion"> السنة المالية </label>
+                            <input type="number" class="form-control" id='annee_gestion' name="annee_gestion"
+                                placeholder="أدخل السنة المالية" value='{{ strftime('%Y') }}' readonly>
+                            {{-- @if ($errors->has('annee_gestion'))
                                         <span class="text-danger">{{ $errors->first('annee_gestion') }}</span>
                                     @endif --}}
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"> إسم الملف المرفق (الخصائص الفنية) </label>
-                                <input type="text" class="form-control" name="file_name" id="file_name"
-                                    placeholder="إسم الملف المرفق" value="">
+                        </div>
+                    </div>
 
+
+                </div>
+                <button type="submit" id="btn_submit" class="btn btn-primary" style="float: right;" hidden>
+                </button>
+                {!! Form::close() !!}
+                {{-- Contact from company  start --}}
+                <form id="cp_form" action="#">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <h3 class="form-label"> الحاجيات</h3>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1">الملف/الوثيقة</label>
-                                <input type="file" id="file" name="file" class="form-control form-control-file" id="file">
-                                <label id="file-error" class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="file"></label>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">طبيعة الطلب</label>
+                                <select class="form-control" id="type_demande">
+                                    <option value="1">مواد وخدمات</option>
+                                    <option value="2">أشغال</option>
+                                    <option value="3">دراسات</option>
+                                </select>
                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">نوع الطلب</label>
+                                <select class="form-control" id="type_demande">
+                                    <option value="1">مواد وخدمات</option>
+                                    <option value="2">أشغال</option>
+                                    <option value="3">دراسات</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">المادة (التسمية)</label>
+                                <input type="text" class="form-control" name="libelle" placeholder="المادة..."
+                                    value="{{ old('libelle') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">الكمية المطلوية</label>
+                                <input type="number" class="form-control" name="qte_demande" placeholder="الكمية..."
+                                    value="{{ old('qte_demande') }}" onchange="calculTotal()">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">الكلفة التقديرية للوحدة</label>
+                                <input type="number" class="form-control" name="cout_unite_ttc"
+                                    placeholder="كلفة الوحدة..." value="{{ old('cout_unite_ttc') }}"
+                                    onchange="calculTotal()">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">الكلفة التقديرية الجملية</label>
+                                <input type="number" class="form-control" name="cout_total_ttc"
+                                    placeholder="الكلفة التقديرية الجملية..." value="0" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputEmail1"> إسم الملف المرفق (الخصائص الفنية) </label>
+                            <input type="text" class="form-control" name="file_name" id="file_name"
+                                placeholder="إسم الملف المرفق" value="">
 
                         </div>
-                        <button type="submit" id="btn_submit" class="btn btn-primary" style="float: right;" hidden>
-                        </button>
-                        {!! Form::close() !!}
-                        {{-- Contact from company  start --}}
-                        <form id="cp_form" action="#">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <h3 class="form-label"> الحاجيات</h3>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label
-                                            class="form-label">المادة (التسمية)</label>
-                                        <input type="text" class="form-control" name="libelle"
-                                            placeholder="المادة..."
-                                            value="{{ old('libelle') }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">الكمية المطلوية</label>
-                                        <input type="number" class="form-control" name="qte_demande"
-                                            placeholder="الكمية..."
-                                            value="{{ old('qte_demande') }}" onchange="calculTotal()">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">الكلفة التقديرية للوحدة</label>
-                                        <input type="number" class="form-control" name="cout_unite_ttc"
-                                            placeholder="كلفة الوحدة..."
-                                            value="{{ old('cout_unite_ttc')  }}" onchange="calculTotal()">
-                                    </div>
-                                </div>
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputEmail1">الملف/الوثيقة</label>
+                            <input type="file" id="file" name="file" class="form-control form-control-file"
+                                id="file">
+                            <label id="file-error" class="error jquery-validation-error small form-text invalid-feedback"
+                                for="file"></label>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="exampleInputEmail1"> المبررات </label>
+                            <input type="text" class="form-control" name="description" id="description"
+                                placeholder="المبررات" value="">
 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">الكلفة التقديرية الجملية</label>
-                                        <input type="number" class="form-control" name="cout_total_ttc"
-                                            placeholder="الكلفة التقديرية الجملية..."
-                                            value="0" readonly>
-                                    </div>
-                                </div>
+                        </div>
 
 
-                                <div class="col-md-12">
-                                    <a href="javascript:void(0);" class="btn btn-rounded btn-info" id='add'
-                                        for-table='#table-cp'>
-                                        <i class="feather icon-plus"></i>
-                                        إضافة إلى الجدول
-                                    </a>
-                                    <div class="table-responsive">
-                                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span id="coutTotal"> 0</span></h6>
-                                        <table class="table table-striped table-bordered" id="table-cp">
+                        <div class="col-md-12">
+                            <a href="javascript:void(0);" class="btn btn-rounded btn-info" id='add'
+                                for-table='#table-cp'>
+                                <i class="feather icon-plus"></i>
+                                إضافة إلى الجدول
+                            </a>
+                            <div class="table-responsive">
+                                <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span
+                                        id="coutTotal"> 0</span></h6>
+                                <table class="table table-striped table-bordered" id="table-cp">
+                                    <thead>
+                                        <tr>
                                             <thead>
-                                                <tr>
-                                                    <thead>
-                                                        <th>المادة</th>
-                                                        <th>الكمية المطلوبة</th>
-                                                        <th>الكلفة التقديرية للوحدة</th>
-                                                        <th>الكلفة التقديرية الجملية</th>
-                                                        <th>حذف</th>
-                                                    </thead>
-                                                </tr>
+                                                <th>المادة</th>
+                                                <th>الكمية المطلوبة</th>
+                                                <th>الكلفة التقديرية للوحدة</th>
+                                                <th>الكلفة التقديرية الجملية</th>
+                                                <th>حذف</th>
                                             </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
-                        </form>
-                        {{-- Contact from company  end --}}
+                        </div>
+                    </div>
+                </form>
+                {{-- Contact from company  end --}}
 
 
                 <div class="row mt-4">
@@ -348,7 +369,7 @@ $sub_breadcrumb = "إضافة الحاجيات";
         $("#table-cp").on("click", ".tabledit-delete-button", function() {
             $(".tabledit-confirm-button").show();
         });
-        $('#btn_create').on("click",()=>{
+        $('#btn_create').on("click", () => {
             var myTableArray = [];
             myTableArray = add_cp();
             $('#ligne_besoin').val(JSON.stringify(myTableArray))
@@ -357,42 +378,42 @@ $sub_breadcrumb = "إضافة الحاجيات";
 
         $("#add").click(function(e) {
 
-                let libelle = $("input[name=libelle]").val()
-                let qte_demande = $("input[name=qte_demande]").val()
-                let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
-                let cout_total_ttc = $("input[name=cout_total_ttc]").val()
-                if(qte_demande === "0" ) {
-                    return false;
-                }
+            let libelle = $("input[name=libelle]").val()
+            let qte_demande = $("input[name=qte_demande]").val()
+            let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
+            let cout_total_ttc = $("input[name=cout_total_ttc]").val()
+            if (qte_demande === "0") {
+                return false;
+            }
             var myTableArray = [];
             var verif = true;
             myTableArray = add_cp();
             myTableArray.find(function(value, index) {
 
-                if(value[0] == libelle ) {
+                if (value[0] == libelle) {
                     verif = false;
-                  return ;
+                    return;
                 }
 
-                if(value[1] === 0 ) {
+                if (value[1] === 0) {
                     verif = false;
-                  return ;
+                    return;
                 }
 
-              })
-            if(verif){
+            })
+            if (verif) {
                 //  alert(JSON.stringify(myTableArray));
-            var table = $(this).attr('for-table'); //get the target table selector
-            $(table + ">tbody").append(newRow()); //add the row to the table
-            //alert(JSON.stringify(myTableArray));
-            // Calcul Total TTC
-            var coutTotal = 0;
-            $(".tabledit-total").each(function(){
-                coutTotal += parseFloat($(this).text());
-            });
-            $('#coutTotal').text(coutTotal);
-             // Clear form
-             $("#cp_form")[0].reset()
+                var table = $(this).attr('for-table'); //get the target table selector
+                $(table + ">tbody").append(newRow()); //add the row to the table
+                //alert(JSON.stringify(myTableArray));
+                // Calcul Total TTC
+                var coutTotal = 0;
+                $(".tabledit-total").each(function() {
+                    coutTotal += parseFloat($(this).text());
+                });
+                $('#coutTotal').text(coutTotal);
+                // Clear form
+                $("#cp_form")[0].reset()
             }
 
 
@@ -445,11 +466,12 @@ $sub_breadcrumb = "إضافة الحاجيات";
 
             return (myTableArray);
         }
-        function calculTotal(){
+
+        function calculTotal() {
             let qte_demande = $("input[name=qte_demande]").val()
-                let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
-                let cout_total_ttc = qte_demande * cout_unite_ttc
-                $("input[name=cout_total_ttc]").val(cout_total_ttc)
+            let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
+            let cout_total_ttc = qte_demande * cout_unite_ttc
+            $("input[name=cout_total_ttc]").val(cout_total_ttc)
 
         }
     </script>

@@ -63,16 +63,32 @@ $tbl_action = __('labels.tbl_action');
                         <input name="end_date" id="end_date" class="form-control " type="date"
                             value="{{ \Carbon\Carbon::now()->toDateString() }}">
                     </div>
+
+                    @if (\Auth::user()->user_type =='admin')
                     <div class="col-md-3">
+
                         <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
 
                         <select class="js-example-basic-multiple-limit col-sm-12" multiple="multiple" id="services_id"
                             name="services_id">
                             @foreach ($services as $item)
                             <option value="{{ $item->id }}">{{ $item->libelle }}</option>
-                        @endforeach
+                            @endforeach
                         </select>
                     </div>
+                    @else
+                    <div class="col-md-3">
+
+                        <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
+
+                        <select class="col-sm-12"  id="services_id"
+                            name="services_id" readonly>
+                            @foreach ($services as $item)
+                            <option value="{{ $item->id }}" selected>{{ $item->libelle }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
                     <div class="col-md-3">
                         <button class="btn btn-primary-gradient " id="btn_search_besoins" type="submit"
                             style="margin-top: 32px">
@@ -300,43 +316,8 @@ $tbl_action = __('labels.tbl_action');
             $('#besoins-table').DataTable().ajax.reload();
 
         })
-        function deleteFromDataTableBtn(id) {
-            //  let id = $('#tbl_btn_delete').attr('data-id');
 
-            var url = "{{ route('besoins.destroy', ['besoin' => ':id']) }}";
-            url = url.replace(':id', id);
-            swal({
-                    title: "{{ __('labels.swal_delete_title') }}",
-                    text: "{{ __('labels.swal_delete_text') }}",
-                    icon: "warning",
-                    buttons: ["{{ __('labels.swal_cancel_btn') }}", "{{ __('labels.swal_confirm_btn') }}"],
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
 
-                        $.ajax({
-                            type: 'DELETE',
-                            dataType: 'JSON',
-                            url: url,
-                            success: function(response) {
-                                console.log(response)
-                                //alert(JSON.stringify(response))
-                                // refresh data or remove only tr
-                                deleteSingleRowDataTable("#besoins-table")
-                                $('#besoins-table').DataTable().ajax.reload();
-                                PnotifyCustom(response)
-                            }
-                        }); // ajax end
-                    }
-                });
-        }
-         function multipleDelete(locale) {
-            var table = $('#besoins-table').DataTable();
-            var ids = table.rows('.selected').data();
-            var url = "{{ route('besoins_datatable.multidestroy') }}";
-            multipleDeleteG(locale, "#besoins-table", ids, url);
-        }
 
     </script>
 @endsection

@@ -6,4 +6,5 @@ interface ILigneBesoinRepository {
     public function f_edit($id);
     public function createOrUpdate($request);
     public function delete($id);
+   
 }

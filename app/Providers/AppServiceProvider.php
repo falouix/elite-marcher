@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Models\BesoinsParam;
+use Carbon\Carbon;
 use DB;
-use App\Models\Setting;
-
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,10 +36,20 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\IUserRepository',
             'App\Repositories\UserRepository'
         );
-         // Register Besoin Repository
-         $this->app->bind(
+        // Register Besoin Repository
+        $this->app->bind(
             'App\Repositories\Interfaces\IBesoinRepository',
             'App\Repositories\Services\BesoinRepository'
+        );
+        // Register NatureDemande Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\INatureDemandeRepository',
+            'App\Repositories\Services\NatureDemandeRepository'
+        );
+        // Register Pai Generator Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\IPaiRepository',
+            'App\Repositories\Services\PaiRepository'
         );
 
         // Register Paragraphe Repository
@@ -80,30 +90,31 @@ class AppServiceProvider extends ServiceProvider
 
         // FileUpload Repository
         $this->app->bind(
-           'App\Repositories\IFileUploadRepository',
-           'App\Repositories\FileUploadRepository'
-       );
-
-
+            'App\Repositories\IFileUploadRepository',
+            'App\Repositories\FileUploadRepository'
+        );
 
         // Event Repository
-       /* $this->app->bind(
-            'App\Repositories\ICalendarRepository',
-            'App\Repositories\CalendarRepository'
+        /* $this->app->bind(
+        'App\Repositories\ICalendarRepository',
+        'App\Repositories\CalendarRepository'
         );*/
-
-
 
         Schema::defaultStringLength(191);
 
+        //dd($besoins_actif);
         view()->composer('*', function ($view) {
             $locale = LaravelLocalization::getCurrentLocale();
-          //  $settings = Setting::first();
-            $view->with('locale', $locale);
-                // ->with('service', $service);
+            $besoins_actif = false;
+            $paramBesoin = BesoinsParam::select('*')->where('annee_gestion', strftime("%Y"))->first();
+            if ($paramBesoin) {
+                $besoins_actif = Carbon::now()->between($paramBesoin->date_debut, $paramBesoin->date_fin);
+            }
+            //  $settings = Setting::first();
+            $view->with('locale', $locale)
+                ->with('besoins_actif', $besoins_actif)
+                ->with('paramBesoin', $paramBesoin);
         });
-
-
 
     }
 }
