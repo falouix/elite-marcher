@@ -556,7 +556,7 @@ $tbl_action = __('labels.tbl_action');
                             results: response
                         };
                     },
-                    cache: true
+                    //cache: true
 
                 });
 
@@ -622,7 +622,6 @@ $tbl_action = __('labels.tbl_action');
                 $url = "{{ route('lignes_besoin.update') }}"
                 formData.append('_method', 'PUT');
             }
-            alert($type + ' fffff ' + $url)
             $.ajax({
                 url: $url,
                 type: 'POST',
@@ -686,13 +685,19 @@ $tbl_action = __('labels.tbl_action');
                     $("input[name=cout_unite_ttc]").val(response.cout_unite_ttc)
                     $("input[name=cout_total_ttc]").val(response.cout_total_ttc)
                     // Set selected
+                    $("#type_demande").val(response.type_demande)
+                    $('#type_demande').trigger('change');
+                    console.log("dfdf " +response.nature_demandes_id);
                     $('#natures_demande').val(response.nature_demandes_id);
                     $('#natures_demande').select2().trigger('change');
-                    $("#type_demande").val(response.type_demande)
+
+
                     if (response.document) {
                         $("input[name=file_name]").val(response.document.libelle);
                     }
                     $('#add').html("تحيين الجدول")
+
+
                 },
                 error: function(errors) {
                     $('#add').html("{{ __('inputs.btn_add_row_cp') }}")
@@ -702,6 +707,42 @@ $tbl_action = __('labels.tbl_action');
                 }
             }); // ajax end
         }
+
+        // Delete session + event
+        function deleteFile(id) {
+            swal({
+                    title: "{{ __('labels.swal_delete_title') }}",
+                    text: "{{ __('labels.swal_delete_text') }}",
+                    icon: "warning",
+                    buttons: ["{{ __('labels.swal_cancel_btn') }}", "{{ __('labels.swal_confirm_btn') }}"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            type: 'DELETE',
+                            dataType: 'JSON',
+                            data: {
+                                id: id,
+                                param: 'besoin_documents'
+                            },
+                            url: "{{ route('files.delete') }}",
+                            success: function(response) {
+                                //console.log(response)
+                                //alert(JSON.stringify(response))
+                                // refresh data or remove only tr
+                                $('#table-cp').DataTable().ajax.reload();
+                                PnotifyCustom(response)
+
+
+                            }
+                        }); // ajax end
+
+                    }
+                });
+        }
+
 
         // Delete contact_cp
         function deleteFromDataTableLigneBesoinBtn(id) {

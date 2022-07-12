@@ -110,6 +110,7 @@ $tbl_action = __('labels.tbl_action');
                             <th>التاريخ</th>
                             <th>المؤسسة/المصلحة</th>
                             <th>السنة المالية</th>
+                            <th>المصادقة النهائية</th>
                             <th class="not-export-col">{{ $tbl_action }}</th>
                         </thead>
 
@@ -120,6 +121,7 @@ $tbl_action = __('labels.tbl_action');
                                 <th>التاريخ</th>
                                 <th>المؤسسة/المصلحة</th>
                                 <th>السنة المالية</th>
+                                <th>المصادقة النهائية</th>
                                 <th class="not-export-col">{{ $tbl_action }}</th>
                             </tr>
                         </tfoot>
@@ -240,6 +242,10 @@ $tbl_action = __('labels.tbl_action');
                     {
                         data: "annee_gestion",
                         className: "annee_gestion"
+                    },
+                    {
+                        data: "valide",
+                        className: "valide"
                     },
                     {
                         data: 'action',

@@ -304,7 +304,7 @@ class BesoinController extends Controller
         }
         if ($request->ajax()) {
             $locale = LaravelLocalization::getCurrentLocale();
-            LignesBesoin::find($request->id)->update([
+             LignesBesoin::find($request->id)->update([
                 'libelle' => $request->libelle,
                 'description' => $request->description,
                 'type_demande' => $request->type_demande,
@@ -315,6 +315,7 @@ class BesoinController extends Controller
                 'qte_valide' => $request->qte_valide,
             ]);
             if ($request->file != 'undefined') {
+                $ligneBesoin = LignesBesoin::find($request->id);
                 if($ligneBesoin){
                     $request['path'] = "besoin_documents";
                     $request['besoins_id'] = $ligneBesoin->id;

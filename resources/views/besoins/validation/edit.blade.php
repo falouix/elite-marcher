@@ -24,11 +24,11 @@ $tbl_action = __('labels.tbl_action');
     <!-- select2 css -->
     <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
     <style>
-        .qte_valide{
+        .qte_valide {
             background-color: lightgoldenrodyellow;
         }
-        <style>
-        .my-input-class {
+
+        <style>.my-input-class {
             padding: 3px 6px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -61,12 +61,11 @@ $tbl_action = __('labels.tbl_action');
             border-color: #a94442;
         }
 
-        .destroy-button{
-            padding:5px 10px 5px 10px;
+        .destroy-button {
+            padding: 5px 10px 5px 10px;
             border: 1px blue solid;
-            background-color:lightgray;
+            background-color: lightgray;
         }
-
     </style>
 @endsection
 
@@ -108,14 +107,14 @@ $tbl_action = __('labels.tbl_action');
                 {{-- Case Other Parties --}}
 
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group ">
+                    <div class="col-md-4">
+                        <div class="form-group">
                             <label> المصلحة/الدائرة/المؤسسة </label>
                             <input type="text" class="form-control" value="{{ $userService->libelle }}" readonly>
                             <input type="hidden" name="services_id" value="{{ $userService->id }}">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="date_besoin"> التاريخ </label>
                             <input type="date" class="form-control" id='date_besoin' name="date_besoin"
@@ -125,7 +124,7 @@ $tbl_action = __('labels.tbl_action');
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="annee_gestion"> السنة المالية </label>
                             <input type="number" class="form-control" id='annee_gestion' name="annee_gestion"
@@ -139,58 +138,51 @@ $tbl_action = __('labels.tbl_action');
                 {{-- Contact from company  start --}}
 
 
-                        <div class="col-md-12">
+                <div class="col-md-12">
+                    <div class="dt-responsive table-responsive">
 
-                            <div class="dt-responsive table-responsive">
-                                <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span
-                                        id="coutTotal"> </span></h6>
+                        <table id="table-cp" class="table table-striped table-bordered nowrap">
+                            <thead>
+                                <th class="not-export-col">id</th>
+                                <th>المادة</th>
+                                <th>طبيعة الطلب</th>
+                                <th>نوع الطلب</th>
+                                <th>الكمية المطلوبة</th>
+                                <th>الكمية المصادقة</th>
+                                <th>الكلفة التقديرية للوحدة</th>
+                                <th>الكلفة التقديرية الجملية</th>
+                                <th>الملاحظات</th>
+                                <th class="not-export-col">الملف/الوثيقة</th>
+                            </thead>
 
-                                <table id="table-cp" class="table table-striped table-bordered nowrap">
-                                    <thead>
-                                        <th class="not-export-col" style="width: 30px"><input type="checkbox"
-                                                class="select-checkbox not-export-col" /> </th>
-                                        <th class="not-export-col">id</th>
-                                        <th>المادة</th>
-                                        <th>طبيعة الطلب</th>
-                                        <th>نوع الطلب</th>
-                                        <th>الكمية المطلوبة</th>
-                                        <th>الكمية المصادقة</th>
-                                        <th>الكلفة التقديرية للوحدة</th>
-                                        <th>الكلفة التقديرية الجملية</th>
-                                        <th>الملاحظات</th>
-                                        <th>الملف/الوثيقة</th>
-                                        <th class="not-export-col">{{ $tbl_action }}</th>
-                                    </thead>
-
-                                    <tfoot>
-                                        <tr>
-                                            <th class="not-export-col" style="width: 30px"><input type="checkbox"
-                                                    class="select-checkbox not-export-col" /> </th>
-                                            <th class="not-export-col">id</th>
-                                            <th>المادة</th>
-                                            <th>طبيعة الطلب</th>
-                                            <th>نوع الطلب</th>
-                                            <th>الكمية المطلوبة</th>
-                                            <th>الكمية المصادقة</th>
-                                            <th>الكلفة التقديرية للوحدة</th>
-                                            <th>الكلفة التقديرية الجملية</th>
-                                            <th>الملاحظات</th>
-                                            <th>الملف/الوثيقة</th>
-                                            <th class="not-export-col">{{ $tbl_action }}</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
+                            <tfoot>
+                                <tr>
+                                    <th class="not-export-col">id</th>
+                                    <th>المادة</th>
+                                    <th>طبيعة الطلب</th>
+                                    <th>نوع الطلب</th>
+                                    <th>الكمية المطلوبة</th>
+                                    <th>الكمية المصادقة</th>
+                                    <th>الكلفة التقديرية للوحدة</th>
+                                    <th>الكلفة التقديرية الجملية</th>
+                                    <th>الملاحظات</th>
+                                    <th class="not-export-col">الملف/الوثيقة</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span id="coutTotal">
+                            </span></h6>
                     </div>
+                </div>
                 {{-- Contact from company  end --}}
 
 
                 <div class="row mt-4">
-                        <a href="{{ route('besoins.index') }}" id="btn_create" class="btn btn-primary" style="float: right;">
-                            <i class="feather icon-client-plus"></i>
-                            {{ __('inputs.btn_edit') }}
-                        </a>
+                    <a href="{{ route('besoins-validation.index') }}" id="btn_create" class="btn btn-primary"
+                        style="float: right;">
+                        <i class="feather icon-client-plus"></i>
+                        العودة لقائمة الحاجيات
+                    </a>
                 </div>
                 <!-- [ Form Validation ] end -->
 
@@ -215,9 +207,12 @@ $tbl_action = __('labels.tbl_action');
     <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
     <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
     <script src="{{ asset('/plugins/data-tables/js/dataTables.cellEdit.js') }}"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>`
+
 
     <script>
         'use strict';
+
         $(document).ready(function() {
             $(function() {
                 $.ajaxSetup({
@@ -291,7 +286,6 @@ $tbl_action = __('labels.tbl_action');
                     ajax: {
                         url: "{{ route('ligne_besoin.datatable') }}",
                         data: function(data) {
-
                             data.besoins_id = "{{ $besoin->id }}";
                             data.mode = "all";
                         },
@@ -299,10 +293,8 @@ $tbl_action = __('labels.tbl_action');
                     language: {
                         url: "{{ $lang }}"
                     },
-                    columns: [{
-                            data: "select",
-                            className: "select-checkbox"
-                        },
+
+                    columns: [
                         {
                             data: "id",
                             className: "id",
@@ -345,40 +337,34 @@ $tbl_action = __('labels.tbl_action');
                             visible: 'false'
                         },
 
-                        {
-                            data: 'action',
-                            className: 'action',
-                            visible: 'false'
-                        }
                     ],
-
-                    columnDefs: [{
-                            orderable: false,
-                            className: 'select-checkbox',
-                            targets: 0
-                        },
+                    columnDefs: [
                         {
                             visible: false,
                             targets: 1
                         }
                     ],
-                    select: {
-                        style: 'os',
-                        selector: 'td:first-child'
+                    drawCallback: function() {
+                        var api = this.api();
+                        $('#coutTotal').html(
+                            api.column(8, {
+                                page: 'current'
+                            }).data().sum()
+                        )
                     },
                     // select: { style: 'multi+shift' },
-
                 });
-                table
-                    .on('select', function(e, dt, type, indexes) {
-                        // var rowData = table.rows( indexes ).data().toArray();
-                        //console.log( rowData );
-                        SelectedRowCountBtnDelete(table)
-                    })
-                    .on('deselect', function(e, dt, type, indexes) {
-                        SelectedRowCountBtnDelete(table)
-                    });
 
+
+                    table.on('click', 'tr', function (e, dt, type, indexes) {
+
+                        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        } else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    });
                 $('.dataTables_length').addClass('bs-select');
                 // Setup - add a text input to each footer cell
                 addSearchFooterDataTable("#table-cp")
@@ -405,38 +391,75 @@ $tbl_action = __('labels.tbl_action');
                     cache: true
 
                 });
-                table.MakeCellsEditable({
-                    "onValidate": validationCallbackFunction,
-                    "onUpdate": updateCallbackFunction,
-                    "inputCss": 'my-input-class',
-                    "columns": [6],
-                    "allowNulls": {
-                        "columns": [6],
-                        "errorClass": 'error'
-                    },
-                    "confirmationButton": {
-                        "confirmCss": 'my-confirm-class',
-                        "cancelCss": 'my-cancel-class'
-                    },
-                    "inputTypes": [{
-                        "column": 3,
-                        "type": "number",
-                        "options": null
-                    }, ]
-                });
+                let besoins_valider = "{{ $besoin->valider }}"
+
+                if (besoins_valider != 1) {
+                    table.MakeCellsEditable({
+                        "onValidate": validationCallbackFunction,
+                        "onUpdate": updateCallbackFunction,
+
+                        "inputCss": 'my-input-class',
+                        "columns": [6,7],
+                        "allowNulls": {
+                            "columns": [6,7],
+                            "errorClass": 'error'
+
+                        },
+                        "confirmationButton": {
+                            "confirmCss": 'my-confirm-class',
+                            "cancelCss": 'my-cancel-class'
+                        },
+                        "inputTypes": [{
+                            "column": 6,
+                            "type": "number",
+                            "options": null
+                        }, ]
+                    });
+                }
+
             });
 
         });
 
         function updateCallbackFunction(updatedCell, updatedRow, oldValue) {
             console.log("The new value for the cell is: " + updatedCell.data());
-            //ajax call to update lignebesoin by id
             console.log("The values for each cell in that row are: " + JSON.stringify(updatedRow.data()));
-        }
-        function validationCallbackFunction(cell, row, newValue) {
-            console.log("Validation; The new value for the cell is: " + newValue);
             //ajax call to update lignebesoin by id
-            console.log("Validation; The values for each cell in that row are: " + JSON.stringify(row.data()));
+            $.ajax({
+                url: "{{ route('lignes_besoin_v.update') }}",
+                type: "PUT",
+                data: {
+                    id: updatedRow.data().id,
+                    qte_valide: updatedCell.data(),
+                    cout_unite_ttc: updatedRow.data().cout_unite_ttc,
+                },
+                success: function(response) {
+                    $('#table-cp').DataTable().ajax.reload();
+                    PnotifyCustom(response)
+                }
+            })
+
+
+        }
+
+        function validationCallbackFunction(cell, row, newValue) {
+             console.log("Validation; The old value for the cell is: " + JSON.stringify(row.data()));
+            // console.log("Validation; The new value for the cell is: " + newValue);
+            if (newValue < 0) {
+                swal("{{ __('labels.swal_warning_title') }}", 'الرجاء التثبت من الكمية المصادق عليها',
+                    "warning");
+                return false;
+            }
+            if (newValue > row.data().qte_demande) {
+                swal("{{ __('labels.swal_warning_title') }}", 'الكمية المصادق عليها لا يكمن ان تتجاوز : ' + row.data()
+                    .qte_demande,
+                    "warning");
+                return false;
+            }
+            //ajax call to update lignebesoin by id
+            //console.log("Validation; The values for each cell in that row are: " + JSON.stringify(row.data()));
+            return true;
+
         }
 
         $('#type_demande').on('change', function(e) {
@@ -464,7 +487,7 @@ $tbl_action = __('labels.tbl_action');
         });
 
 
-       
+
 
         function editLigneBesoin(id) {
             $.ajax({

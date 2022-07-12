@@ -8,8 +8,9 @@
 
 @if($valider == false)
 @can('user-delete')
-    <button type="button" data-id='{{ $id }}' id="tbl_btn_delete" class="btn btn-icon btn-rounded btn-danger"
-        title="{{ __('inputs.btn_delete') }}" onclick="deleteFileFromDataTableBtn({{ $id }})">
+
+    <button type="button" data-id='{{ $docs_id }}' id="tbl_btn_delete" class="btn btn-icon btn-rounded btn-danger"
+        title="{{ __('inputs.btn_delete') }}" onclick="deleteFile({{ $docs_id }})">
         <i class="feather icon-trash-2"></i>
     </button>
 @endcan

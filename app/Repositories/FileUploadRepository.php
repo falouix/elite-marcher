@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\LigneBesoin;
+use App\Models\LignesBesoin;
 use App\Models\BesoinsDoc;
 use App\Models\UserDocuement;
 use Auth;
@@ -47,7 +47,7 @@ class FileUploadRepository implements IFileUploadRepository
                     'created_by' => Auth::user()->id,
                 ]);
                 if($besoinsDoc){
-                    LigneBesoin::find( $besoinsDoc->besoins_id)->update([
+                    LignesBesoin::find( $besoinsDoc->besoins_id)->update([
                         'docs_id'=>$besoinsDoc->id
                     ]);
                 }
@@ -69,9 +69,14 @@ class FileUploadRepository implements IFileUploadRepository
                 return UserDocuement::where('id', $id)->delete();
 
                 break;
-            case 'case_documents':
+            case 'besoin_documents':
                 // dd(CaseDocuement::select('*')->where('id', $id)->first());
-                return CaseDocuement::where('id', $id)->delete();
+
+                 $besoisdoc = BesoinsDoc::where('id', $id)->delete();
+                 LignesBesoin::where('docs_id', $id)->update([
+                    'docs_id'=>NULL
+                ]);
+                return $besoisdoc;
 
                 break;
             case 'session_docuements':

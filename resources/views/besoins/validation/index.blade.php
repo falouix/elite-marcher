@@ -1,7 +1,7 @@
 @php
 
 $breadcrumb = __('breadcrumb.bread_besoins_list');
-$subbreadcrumb = "المصادقة على الحاجيات";
+$subbreadcrumb = 'المصادقة على الحاجيات';
 if ($locale == 'ar') {
     $lang = asset('/plugins/i18n/Arabic.json');
     $rtl = 'rtl';
@@ -14,7 +14,6 @@ $tbl_action = __('labels.tbl_action');
 
 @extends('layouts.app')
 @section('head-script')
-
     <!-- data tables css -->
     <link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/select.dataTables.min.css') }}">
@@ -22,14 +21,14 @@ $tbl_action = __('labels.tbl_action');
     <link rel="stylesheet" href="{{ asset('/plugins/pnotify/css/pnotify.custom.min.css') }}">
     <!-- pnotify-custom css -->
     <link rel="stylesheet" href="{{ asset('/css/pages/pnotify.css') }}">
-        <!-- select2 css -->
-        <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
+    <!-- select2 css -->
+    <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
 @endsection
 
 @section('breadcrumb')
     @include('layouts.partials.breadcrumb', [
-    'bread_title'=> $breadcrumb,
-    'bread_subtitle'=> $subbreadcrumb
+        'bread_title' => $breadcrumb,
+        'bread_subtitle' => $subbreadcrumb,
     ])
 @endsection
 
@@ -53,41 +52,33 @@ $tbl_action = __('labels.tbl_action');
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-3">
-                        <label> {{ __('labels.date_deb') }}</label>
-                        <input name="start_date" id="start_date" class="form-control " type="date"
-                            value="{{ \Carbon\Carbon::now()->firstOfMonth()->toDateString() }}">
-                    </div>
-                    <div class="col-md-3">
-                        <label> {{ __('labels.date_fin') }} </label>
-                        <input name="end_date" id="end_date" class="form-control " type="date"
-                            value="{{ \Carbon\Carbon::now()->toDateString() }}">
+                    <div class="col-md-1">
+                        <label> السنة المالية</label>
+                        <input type="text" class="form-control" id="annee_gestion" maxlength="4" id="pin"
+                            pattern="\d{4}" value="{{ strftime('%Y') }}" required />
                     </div>
 
-                    @if (\Auth::user()->user_type =='admin')
-                    <div class="col-md-3">
+                    @if (\Auth::user()->user_type == 'admin')
+                        <div class="col-md-3">
 
-                        <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
+                            <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
 
-                        <select class="js-example-basic-multiple-limit col-sm-12" multiple="multiple" id="services_id"
-                            name="services_id">
-                            @foreach ($services as $item)
-                            <option value="{{ $item->id }}">{{ $item->libelle }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                            <select class="js-example-basic-multiple-limit col-sm-12" multiple="multiple" id="services_id"
+                                name="services_id">
+                                @foreach ($services as $item)
+                                    <option value="{{ $item->id }}">{{ $item->libelle }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     @else
-                    <div class="col-md-3">
-
-                        <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
-
-                        <select class="col-sm-12"  id="services_id"
-                            name="services_id" readonly>
-                            @foreach ($services as $item)
-                            <option value="{{ $item->id }}" selected>{{ $item->libelle }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <div class="col-md-3">
+                            <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
+                            <select class="col-sm-12" id="services_id" name="services_id" readonly>
+                                @foreach ($services as $item)
+                                    <option value="{{ $item->id }}" selected>{{ $item->libelle }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     @endif
                     <div class="col-md-3">
                         <button class="btn btn-primary-gradient " id="btn_search_besoins" type="submit"
@@ -100,21 +91,25 @@ $tbl_action = __('labels.tbl_action');
                 <div class="dt-responsive table-responsive">
                     <table id="besoins-table" class="table table-striped table-bordered nowrap">
                         <thead>
-                            <th class="not-export-col" style="width: 30px"><input type="checkbox" class="select-checkbox not-export-col" /> </th>
+                            <th class="not-export-col" style="width: 30px"><input type="checkbox"
+                                    class="select-checkbox not-export-col" /> </th>
                             <th class="not-export-col">id</th>
                             <th>التاريخ</th>
                             <th>المؤسسة/المصلحة</th>
                             <th>السنة المالية</th>
+                            <th>المصادقة النهائية</th>
                             <th class="not-export-col">{{ $tbl_action }}</th>
                         </thead>
 
                         <tfoot>
                             <tr>
-                                <th class="not-export-col" style="width: 30px"><input type="checkbox" class="select-checkbox not-export-col" /> </th>
+                                <th class="not-export-col" style="width: 30px"><input type="checkbox"
+                                        class="select-checkbox not-export-col" /> </th>
                                 <th class="not-export-col">id</th>
                                 <th>التاريخ</th>
                                 <th>المؤسسة/المصلحة</th>
                                 <th>السنة المالية</th>
+                                <th>المصادقة النهائية</th>
                                 <th class="not-export-col">{{ $tbl_action }}</th>
                             </tr>
                         </tfoot>
@@ -137,10 +132,10 @@ $tbl_action = __('labels.tbl_action');
     <script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
     <!-- pnotify Js -->
     <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
-        <!-- form-select-custom Js -->
-        <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
-        <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
-        <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
+    <!-- form-select-custom Js -->
+    <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
 
     <script>
         $(document).ready(function() {
@@ -153,7 +148,10 @@ $tbl_action = __('labels.tbl_action');
             var end_date = $('#end_date').val();
             var table = $('#besoins-table').DataTable({
                 dom: 'frltipB',
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "{{ __('labels.all') }}"]
+                ],
                 buttons: [{
                         text: '{{ __('inputs.btn_copy') }}',
                         extend: 'copyHtml5',
@@ -198,7 +196,7 @@ $tbl_action = __('labels.tbl_action');
                     });
                 },
                 processing: true,
-               // serverSide: true,
+                // serverSide: true,
                 serverMethod: 'POST',
                 ajax: {
                     url: "{{ route('besoin.datatable') }}",
@@ -209,8 +207,7 @@ $tbl_action = __('labels.tbl_action');
                         } else {
                             data.services_id = $("#services_id").val()[0]
                         }
-                        data.start_date = $('#start_date').val();
-                        data.end_date = $('#end_date').val();
+                        data.annee_gestion = $('#annee_gestion').val();
                         data.status = false;
                         data.mode = "validation";
                     },
@@ -237,6 +234,10 @@ $tbl_action = __('labels.tbl_action');
                     {
                         data: "annee_gestion",
                         className: "annee_gestion"
+                    },
+                    {
+                        data: "valide",
+                        className: "valide"
                     },
                     {
                         data: 'action',
@@ -289,6 +290,7 @@ $tbl_action = __('labels.tbl_action');
         // Search button click event (reload dtatable)
         $('#btn_search_besoins').on('click', (e) => {
             e.preventDefault();
+            /*
             var start_date = Date.parse($('#start_date').val());
             var end_date = Date.parse($('#end_date').val());
 
@@ -313,11 +315,49 @@ $tbl_action = __('labels.tbl_action');
                 })
                 return false;
             }
+            */
             $('#besoins-table').DataTable().ajax.reload();
 
         })
 
-
-
+        function validerBesoin(id) {
+            var url = "{{ route('besoins-validation.valider', ':id') }}";
+            url = url.replace(':id', id);
+            swal({
+                    title: "المصادقة النهائية على الحاجيات",
+                    text: "عند المصادقة النهائية, لايمكن تحيين أو حذف المعلومات",
+                    icon: "warning",
+                    buttons: ["{{ __('labels.swal_cancel_btn') }}", "نعم, تأكيد المصادقة"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal({
+                                title: "أنت بصدد المصادقة النهائية على الحاجيات",
+                                text: "هل تريد فعلا المصادقة؟",
+                                icon: "warning",
+                                buttons: ["{{ __('labels.swal_cancel_btn') }}", "نعم,أريد تأكيد المصادقة"],
+                                dangerMode: true,
+                            })
+                            .then((willDelete) => {
+                                if (willDelete) {
+                                    $.ajax({
+                                        type: 'PUT',
+                                        dataType: 'JSON',
+                                        url: url,
+                                        success: function(response) {
+                                            console.log(response)
+                                            //alert(JSON.stringify(response))
+                                            // refresh data or remove only tr
+                                            //deleteSingleRowDataTable("#besoins-table")
+                                            $('#besoins-table').DataTable().ajax.reload();
+                                            PnotifyCustom(response)
+                                        }
+                                    }); // ajax end
+                                }
+                            });
+                    }
+                });
+        }
     </script>
 @endsection

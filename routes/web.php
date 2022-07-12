@@ -140,8 +140,6 @@ Route::group(
             Route::delete('lignes-besoin-delete', [BesoinController::class, 'destroyLigneBesoin'])->name('ligne_besoins_datatable.destroy');
             // Validation Besoins
             Route::resource('besoins-validation', BesoinValidationController::class);
-            Route::post('besoins-validation/datatable', [BesoinValidationController::class, 'getLigneBesoinsByBesoin'])->name('ligne_besoin_v.datatable');
-            Route::post('lignes-besoin-validation', [BesoinValidationController::class, 'storeLigneBesoin'])->name('lignes_besoin_v.store');
             Route::put('besoins-validation/{id}/valider', [BesoinValidationController::class, 'validerBesoin'])->name('besoins-validation.valider');
             Route::put('lignes-besoin-validation', [BesoinValidationController::class, 'updateLigneBesoin'])->name('lignes_besoin_v.update');
             Route::get('lignes-besoin-validation', [BesoinValidationController::class, 'editLigneBesoin'])->name('ligne_besoins_v.edit');

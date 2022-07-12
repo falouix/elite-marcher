@@ -44,7 +44,6 @@ class BesoinRepository implements IBesoinRepository
         if ($services_id != 'all') {
             if($status == 'all'){
                 $query = Besoin::select('*')
-                // ->with('lignes_besoins')
                     ->with('service')
                     ->where('services_id', $services_id)
                     ->where('annee_gestion', $annee_gestion)
@@ -59,10 +58,7 @@ class BesoinRepository implements IBesoinRepository
                 ->where('valider', $status)
                 ->where('annee_gestion', $annee_gestion)
                 ->orderByDesc('id');
-
             }
-
-
         } else {
             if($status == 'all'){
             $query = Besoin::select('*')
@@ -71,26 +67,18 @@ class BesoinRepository implements IBesoinRepository
                 //->where('valider', $status)
                 ->where('annee_gestion', $annee_gestion)
                 ->orderByDesc('id');
-                Log::info("144444");
             }else{
-
                 $query = Besoin::select('*')
                 // ->with('lignes_besoins')
                     ->with('service')
                     ->where('valider', $status)
                     ->where('annee_gestion', $annee_gestion)
                     ->orderByDesc('id');
-                    Log::info("15555555");
             }
         }
         Log::alert("query besoins");
-
-
         return datatables()
             ->of($query)
-            /* ->editColumn('created_at', function ($caseSession) {
-        return $caseSession->created_at->format('Y-m-d');
-        })*/
             ->addColumn('select', static function () {
                 return null;
             })
@@ -100,8 +88,18 @@ class BesoinRepository implements IBesoinRepository
                 }
                 return null;
             })
+            ->addColumn('valide', function ($lignesBesoin) {
+                if ($lignesBesoin->besoin) {
+                    if($lignesBesoin->besoin->valider == true){
+                        return '<label class="badge badge-info">تمت المصادقة النهائية</label>';
+                    }else{
+                        return '<label class="badge badge-info"> لم تتم المصادقة النهائية </label>';
+                    }
+                }
+                return '<label class="badge badge-info"> لم تتم المصادقة النهائية </label>';
+            })
             ->addColumn('action', $dataAction)
-            ->rawColumns(['id', 'service', 'action'])
+            ->rawColumns(['id', 'valide', 'service', 'action'])
             ->make(true);
     }
     public function getLigneBesoinsByBesoin($besoin_id, $mode)
@@ -145,15 +143,29 @@ class BesoinRepository implements IBesoinRepository
                 }
                 return "";
             })
+            ->addColumn('valide', function ($lignesBesoin) {
+                if ($lignesBesoin->besoin) {
+                    if($lignesBesoin->besoin->valider == true){
+                        return '<label class="badge badge-info">تمت المصادقة النهائية</label>';
+                    }else{
+                        return '<label class="badge badge-info"> لم تتم المصادقة النهائية </label>';
+                    }
+                }
+                return "";
+            })
             ->addColumn('valider', function ($lignesBesoin) {
                 if ($lignesBesoin->besoin) {
-                    return $lignesBesoin->besoin->valider;
+                    if($lignesBesoin->besoin->valider == true){
+                        return true;
+                    }else{
+                        return false;
+                    }
                 }
                 return false;
             })
             ->addColumn('action_file', 'besoins.file-actions')
             ->addColumn('action', $dataAction)
-            ->rawColumns(['id', 'valider', 'type_demande', 'nature_demandes_id', 'action_file', 'action'])
+            ->rawColumns(['id', 'valide', 'type_demande', 'nature_demandes_id', 'action_file', 'action'])
             ->make(true);
     }
 

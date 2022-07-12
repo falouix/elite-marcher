@@ -6,6 +6,8 @@
 
 namespace App\Models;
 
+use Auth;
+use DB;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Projet
- * 
+ *
  * @property int $id
  * @property string|null $code_pa
  * @property Carbon|null $date_projet
@@ -27,7 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property int|null $created_by
  * @property int|null $updated_by
- * 
+ *
  * @property Collection|LignesProjet[] $lignes_projets
  *
  * @package App\Models
@@ -59,6 +61,17 @@ class Projet extends Model
 		'created_by',
 		'updated_by'
 	];
+    protected static function boot()
+    {
+        parent::boot();
+        // auto-sets values on creation
+        static::creating(function ($model) {
+            $model->created_by = Auth::user()->id;
+        });
+        static::updating(function ($model) {
+            $model->updated_by = Auth::user()->id;
+        });
+    }
 
 	public function lignes_projets()
 	{
