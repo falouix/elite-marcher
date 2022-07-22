@@ -44,6 +44,11 @@ $sub_breadcrumb = 'إضافة الحاجيات';
                         العودة لضبط الحاجيات
                         <i class="feather icon-corner-down-left"></i>
                     </a>
+                    @can('besoins-list')
+                        <a type="button" class="btn btn-primary" href="{{ route('articles.create') }}">
+                            <i class="feather icon-plus-circle"></i>  إضافة مادة جديدة
+                        </a>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">

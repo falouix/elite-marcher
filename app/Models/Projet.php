@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property string|null $code_pa
  * @property Carbon|null $date_projet
+ * @property string|null $annee_gestion
  * @property string|null $objet
  * @property Carbon|null $date_action_prevu
  * @property string|null $type_demande
@@ -53,6 +54,7 @@ class Projet extends Model
 	protected $fillable = [
 		'code_pa',
 		'date_projet',
+        'annee_gestion',
 		'objet',
 		'date_action_prevu',
 		'type_demande',
@@ -67,14 +69,34 @@ class Projet extends Model
         // auto-sets values on creation
         static::creating(function ($model) {
             $model->created_by = Auth::user()->id;
+            $model->date_projet =Carbon::now()->format('Y-m-d');
+        });
+        static::created(function ($model) {
+            $count = \DB::table('projets')
+            ->select(\DB::raw('count(*) as count'))
+            ->count();
+            $model->code_pa = 'PA'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
+            $model->save();
         });
         static::updating(function ($model) {
             $model->updated_by = Auth::user()->id;
         });
     }
+    public function service()
+	{
+		return $this->belongsTo(Service::class, 'services_id');
+	}
 
 	public function lignes_projets()
 	{
 		return $this->hasMany(LignesProjet::class, 'projets_id');
 	}
+    public function getCreatedAtAttribute()
+    {
+        return (new Carbon($this->attributes['created_at']))->format('Y-m-d');
+    }
+    public function getDateActionPrevuAttribute()
+    {
+        return (new Carbon($this->attributes['date_action_prevu']))->format('Y-m-d');
+    }
 }

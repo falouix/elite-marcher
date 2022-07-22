@@ -232,11 +232,11 @@ class BesoinController extends Controller
         Log::info($request);
         if ($request->file == 'undefined') {
             $validator = Validator::make($request->all(), [
-                'libelle' => 'required',
+                'articles_id' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'libelle' => 'required',
+                'articles_id' => 'required',
                 'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
             ]);
         }
@@ -253,6 +253,7 @@ class BesoinController extends Controller
             Log::info($request);
             $ligneBesoin = LignesBesoin::create([
                 'libelle' => $request->libelle,
+                'articles_id' => $request->articles_id,
                 'description' => $request->description,
                 'type_demande' => $request->type_demande,
                 'nature_demandes_id' => $request->nature_demandes_id,
@@ -288,11 +289,11 @@ class BesoinController extends Controller
         Log::info($request);
         if ($request->file == 'undefined') {
             $validator = Validator::make($request->all(), [
-                'libelle' => 'required',
+                'articles_id' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'libelle' => 'required',
+                'articles_id' => 'required',
                 'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
             ]);
         }
@@ -306,6 +307,7 @@ class BesoinController extends Controller
             $locale = LaravelLocalization::getCurrentLocale();
              LignesBesoin::find($request->id)->update([
                 'libelle' => $request->libelle,
+                'articles_id' => $request->articles_id,
                 'description' => $request->description,
                 'type_demande' => $request->type_demande,
                 'nature_demandes_id' => $request->nature_demandes_id,

@@ -61,6 +61,7 @@ class LignesBesoin extends Model
 		'docs_id' => 'int',
 		'besoins_id' => 'int',
 		'projets_id' => 'int',
+		'articles_id' => 'int',
 		'type_demande' => 'int',
 		'nature_demandes_id' => 'int',
 		'created_by' => 'int',
@@ -69,6 +70,7 @@ class LignesBesoin extends Model
 
 	protected $fillable = [
 		'libelle',
+        'articles_id',
 		'qte_demande',
 		'cout_unite_ttc',
 		'cout_total_ttc',
@@ -90,6 +92,10 @@ class LignesBesoin extends Model
     public function nature_demande()
 	{
 		return $this->belongsTo(NatureDemande::class, 'nature_demandes_id');
+	}
+    public function article()
+	{
+		return $this->belongsTo(Article::class, 'articles_id');
 	}
     public function document()
 	{

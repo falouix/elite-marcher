@@ -15,7 +15,7 @@ use Carbon\Carbon;
 class NatureDemandeController extends Controller
 {
     use ApiResponser;
-    
+
     public function __construct(INatureDemandeRepository $repository)
     {
         $this->repository = $repository;
@@ -27,6 +27,7 @@ class NatureDemandeController extends Controller
      */
     public function index()
     {
+        //dd(NatureDemande::select('id', 'libelle')->where('id', 1)->first());
         return view('natures_demande.index');
     }
 
@@ -149,7 +150,6 @@ class NatureDemandeController extends Controller
             return $this->repository->getNatureDemandeSelect($request->type);
         }
     }
-
     /**
      * Process datatables ajax request.
      *
@@ -157,9 +157,8 @@ class NatureDemandeController extends Controller
      */
     public function getNatureDemandeById(Request $request)
     {
-        if ($request->ajax()) {
-            return NatureDemande::select('id', 'libelle')->where('id', $request->id)->first();
-        }
+        //if ($request->ajax()) {
+        return NatureDemande::select('id', 'libelle')->where('id',$request->nature_demandes_id)->first();
     }
 
 }

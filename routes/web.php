@@ -43,6 +43,7 @@ use App\Http\Controllers\ParagrapheController;
 use App\Http\Controllers\SparagrapheController;
 use App\Http\Controllers\TitreController;
 use App\Http\Controllers\ChapitreController;
+use App\Http\Controllers\ArticleController;
 
 /************************************************************************* */
 
@@ -64,11 +65,11 @@ Route::post('logout', function () {
     //if(!$user) {return Redirect::to('/customer/login');}
     return Redirect::to('/login');
 })->name('logout');
-
+//'localize', 'localizationRedirect', 'localeSessionRedirect', 'localeCookieRedirect', 'localeViewPath'
 Route::group(
     [
-        'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => ['XSS', 'localize', 'localizationRedirect', 'localeSessionRedirect', 'localeCookieRedirect', 'localeViewPath'],
+        //'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => ['XSS'],
     ],
 
     function () {
@@ -82,11 +83,11 @@ Route::group(
         Auth::routes(['logout' => false]);
     }
 );
-
+//, 'localize', 'localizationRedirect', 'localeSessionRedirect', 'localeCookieRedirect', 'localeViewPath'
 Route::group(
     [
-        'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => ['XSS', 'auth', 'localize', 'localizationRedirect', 'localeSessionRedirect', 'localeCookieRedirect', 'localeViewPath'],
+        //'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => ['XSS', 'auth'],
     ],
     function () {
 
@@ -148,11 +149,22 @@ Route::group(
         Route::resource('natures-demande', NatureDemandeController::class);
         Route::post('natures-demande/datatable', [NatureDemandeController::class, 'getAllNatureDemandeDataTable'])->name('natures-demande.data');
         Route::post('natures-demande/select', [NatureDemandeController::class, 'getAllNatureDemandeToSelect'])->name('natures-demande.select');
+        Route::get('/natures_demande/Select2/{nature_demandes_id}', [NatureDemandeController::class, 'getNatureDemandeById'])
+                                                                        ->name('natures-demande.NatureDemandeByIdToSelect');
         Route::delete('natures-demande/multidestroy', [NatureDemandeController::class, 'multidestroy'])->name('natures-demandes-datatable.multidestroy');
 
         //route Pai : Générateur du plan d'investissement annulle des achats
         Route::resource('pais', PaiController::class);
         Route::post('pais/datatable', [PaiController::class, 'getAllPaiDatatable'])->name('pais.datatable');
+
+        // route projets d'approvisionnement
+        Route::resource('projets', ProjetController::class);
+        Route::post('projets/datatable', [ProjetController::class, 'getAllProjetsDatatable'])->name('projets.data');
+        Route::delete('projets/multidestroy', [ProjetController::class, 'multidestroy'])->name('projets.multidestroy');
+
+         //route Pai : Générateur du plan d'investissement annulle des achats
+         Route::resource('articles', ArticleController::class);
+         Route::post('articles/select', [ArticleController::class, 'getAllArticlesToSelect'])->name('articles.select');
 
         Route::get('/modifier_demande/1', function () {
             return view('demande_budget.edit1');

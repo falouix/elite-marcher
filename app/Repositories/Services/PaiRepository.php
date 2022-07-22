@@ -17,7 +17,7 @@ class PaiRepository implements IPaiRepository
     {
 
         $dataAction = "besoins.pais.file-actions";
-        if($mode ='paiprojets'){
+        if($mode =='projets'){
             $dataAction = "Projets_approvisionnement.datatable-actions";
         }
 
@@ -54,6 +54,7 @@ class PaiRepository implements IPaiRepository
         if($type_demande != 'all'){
             $grouped->where('type_demande', $type_demande);
         }
+        
         //->get();
         Log::alert("Pai grouped query");
         Log::info($grouped->get());

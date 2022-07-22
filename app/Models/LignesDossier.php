@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int|null $num_lot
  * @property int|null $libelle
+ * @property int $articles_id
  * @property int|null $qte
  * @property float|null $cout_unite_ttc
  * @property float|null $cout_total_ttc
@@ -40,6 +41,7 @@ class LignesDossier extends Model
 		'id' => 'int',
 		'num_lot' => 'int',
 		'libelle' => 'int',
+		'articles_id' => 'int',
 		'qte' => 'int',
 		'cout_unite_ttc' => 'float',
 		'cout_total_ttc' => 'float',
@@ -51,6 +53,7 @@ class LignesDossier extends Model
 	protected $fillable = [
 		'num_lot',
 		'libelle',
+		'articles_id',
 		'qte',
 		'cout_unite_ttc',
 		'cout_total_ttc',

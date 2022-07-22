@@ -40,6 +40,15 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>{{ $sub_breadcrumb }}</h5>
                 <div class="card-header-right">
+
+                    @if($besoin->valider == false)
+                        @can('besoins-list')
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#add_article">
+                            <i class="feather icon-plus-circle"></i> إضافة مادة جديدة
+                        </button>
+                        @endcan
+                    @endif
                     <a href="{{ route('besoins.index') }}" class="btn btn-secondary">
                         العودة لضبط الحاجيات
                         <i class="feather icon-corner-down-left"></i>
@@ -121,7 +130,6 @@ $tbl_action = __('labels.tbl_action');
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">نوع الطلب</label>
-
                                 <select class="form-control " id="natures_demande" name="natures_demande">
                                 </select>
                             </div>
@@ -129,8 +137,8 @@ $tbl_action = __('labels.tbl_action');
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">المادة (التسمية)</label>
-                                <input type="text" class="form-control" name="libelle" placeholder="المادة..."
-                                    value="{{ old('libelle') }}">
+                                    <select class="form-control " id="articles_id" name="articles_id">
+                                    </select>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -248,6 +256,66 @@ $tbl_action = __('labels.tbl_action');
             </div>
         </div>
     </div>
+
+
+     <!-- Modal Create or edit status -->
+     <div class="modal fade show" id="add_article" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
+     style="display: none;">
+     <div class="modal-dialog ">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="modal-title"> إضافة مادة جديدة </h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">×</span>
+                 </button>
+             </div>
+             <div class="modal-body">
+                 <form id="form_id">
+
+                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">طبيعة الطلب</label>
+                                <select class="form-control" id="modal_type_demande" name="modal_type_demande">
+                                    <option value="1">مواد وخدمات</option>
+                                    <option value="2">أشغال</option>
+                                    <option value="3">دراسات</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">نوع الطلب</label>
+
+                                <select class="form-control" id="modal_natures_demande">
+                                </select>
+                                <label id="modal_natures_demande-error"
+                                class="error jquery-validation-error small form-text invalid-feedback"
+                                for="libelle"></label>
+                            </div>
+                        </div>
+                         <div class="form-group col-md-12">
+                             <label for="lbl_libelle"> المادة</label>
+                             <input type="text" class="form-control" id='modal_libelle' name="modal_libelle"
+                                 placeholder="إسم المادة..." value="">
+                             <label id="libelle-error"
+                                 class="error jquery-validation-error small form-text invalid-feedback"
+                                 for="libelle"></label>
+                         </div>
+                     </div>
+                 </form>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                     {{ __('inputs.btn_close') }}</button>
+                 <button  class="btn btn-primary" id='btn_add_article'> {{ __('inputs.btn_create') }}
+                 </button>
+             </div>
+
+         </div>
+     </div>
+ </div>
+ <!-- Modal Create or edit status end-->
 @endsection
 @section('srcipt-js')
     <!-- jquery-validation Js -->
@@ -425,7 +493,7 @@ $tbl_action = __('labels.tbl_action');
                     scrollCollapse: true,
                     paging: false,
                     fixedColumns: {
-                        leftColumns: 1,
+                        leftColumns: 0,
                         rightColumns: 1
                     },
                     initComplete: function() {
@@ -557,6 +625,49 @@ $tbl_action = __('labels.tbl_action');
                         };
                     },
                     //cache: true
+                });
+                $("#articles_id").select2({
+                    dir: "{{ $rtl }}",
+                    // minimumInputLength: 3, // only start searching when the user has input 3 or more characters
+                    placeholder: "{{ __('labels.choose') }} ",
+                    ajax: {
+                        url: "{{ route('articles.select') }}",
+                        type: "post",
+                        delay: 250,
+                        dataType: 'json',
+                        data: {
+                            natures_demande_id : $('#natures_demande').val()
+                        },
+                    },
+                    processResults: function(response) {
+                        // alert(JSON.stringify(response))
+                        return {
+                            results: response
+                        };
+                    },
+                    //cache: true
+                });
+                $("#modal_natures_demande").select2({
+                    dir: "{{ $rtl }}",
+                    // minimumInputLength: 3, // only start searching when the user has input 3 or more characters
+                    placeholder: "{{ __('labels.choose') }} ",
+                    dropdownParent: $("#add_article"),
+                    ajax: {
+                        url: "{{ route('natures-demande.select') }}",
+                        type: "post",
+                        delay: 250,
+                        dataType: 'json',
+                        data: {
+                            type: $('#modal_type_demande').val()
+                        },
+                    },
+                    processResults: function(response) {
+                        // alert(JSON.stringify(response))
+                        return {
+                            results: response
+                        };
+                    },
+                    //cache: true
 
                 });
 
@@ -588,14 +699,66 @@ $tbl_action = __('labels.tbl_action');
                 }
             })
         });
+        $('#natures_demande').on('change', function(e) {
+            var type = e.target.value;
+            $.ajax({
+                url: "{{ route('articles.select') }}",
+                type: "POST",
+                data: {
+                    natures_demande_id: type
+                },
+                success: function(data) {
+                    $('#articles_id').empty();
+                    $('#articles_id').append('<option value="NULL">إختر من القائمة</option>');
+                    $.each(data.results, function(index, article) {
+                        $('#articles_id').append('<option value="' + article.id +
+                            '">' +
+                            article.text + '</option>');
+                    })
+                    $('#articles_id').select2({
+                        dir: "{{ $rtl }}",
+                    });
+                }
+            })
+        });
+        $('#modal_type_demande').on('change', function(e) {
+            var type = e.target.value;
+            $.ajax({
+                url: "{{ route('natures-demande.select') }}",
+                type: "POST",
+
+                data: {
+                    type: type
+                },
+                success: function(data) {
+                    $('#modal_natures_demande').empty();
+                    $.each(data.results, function(index, naturdemande) {
+                        $('#modal_natures_demande').append('<option value="' + naturdemande.id +
+                            '">' +
+                            naturdemande.text + '</option>');
+                    })
+                    $('#modal_natures_demande').select2({
+                        dir: "{{ $rtl }}",
+                        dropdownParent: $("#add_article"),
+                    });
+                }
+            })
+        });
 
         $('#add').click(() => {
             //$('#libelle').removeClass('is-invalid')
             $('.spinner-border').removeAttr('hidden');
+            var article = $('#articles_id').select2('data')
+            if(!article){
+                swal("{{ __('labels.swal_warning_title') }}", 'الرجاء تحديد المادة',
+                        "warning");
+                return false;
+            }
             let id = $("#lignebesoin_id").val();
-            let libelle = $("input[name=libelle]").val()
+            let libelle = article.text
             let type_demande = $("#type_demande").val()
             let natures_demande = $("#natures_demande").val()
+            let articles_id = article.id
             let file_name = $("input[name=file_name]").val();
             let qte_demande = $("input[name=qte_demande]").val()
             let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
@@ -606,6 +769,7 @@ $tbl_action = __('labels.tbl_action');
             formData.append('libelle', libelle)
             formData.append('type_demande', type_demande)
             formData.append('nature_demandes_id', natures_demande)
+            formData.append('articles_id', natures_demande)
             formData.append('description', description)
             formData.append('file_name', file_name)
             formData.append('qte_demande', qte_demande)
@@ -654,12 +818,46 @@ $tbl_action = __('labels.tbl_action');
 
                 }
             }); // ajax end
-
         })
         $('#btn_create').on("click", () => {
             $("#btn_submit").click()
         })
 
+        $('#btn_add_article').click(() => {
+            let natures_demande_id = $("#modal_natures_demande").val();
+            let libelle = $("input[name=modal_libelle]").val();
+            $.ajax({
+                url: "{{ route('articles.store')}}",
+                type: "POST",
+                data: {
+                    'natures_demande_id': $("#modal_natures_demande").val(),
+                    'libelle':  $("input[name=modal_libelle]").val(),
+                },
+                success: function(response) {
+                    $('#libelle').removeClass('is-invalid')
+                    $('#modal_natures_demande').removeClass('is-invalid')
+                    $('#add_article').modal('toggle');
+                    PnotifyCustom(response)
+
+                },
+                error: function(errors) {
+                    $('#libelle').removeClass('is-invalid')
+                    if (errors.responseJSON.message.libelle != null) {
+                        $('#libelle').addClass('is-invalid')
+                        $('#libelle-error').text(errors.responseJSON.message.libelle);
+                    }
+                    $('#modal_natures_demande').removeClass('is-invalid')
+                    if (errors.responseJSON.message.natures_demande_id != null) {
+                        $('#modal_natures_demande').addClass('is-invalid')
+                        $('#modal_natures_demande-error').text(errors.responseJSON.message.natures_demande_id);
+                    }
+                }
+            }); // ajax end
+        })
+        // OnClose Modal eventListener
+        $('#add_article').on('hidden.bs.modal', function() {
+            $("#form_id")[0].reset()
+        })
 
         function calculTotal() {
             let qte_demande = $("input[name=qte_demande]").val()
@@ -679,7 +877,7 @@ $tbl_action = __('labels.tbl_action');
                 success: function(response) {
                     // alert(JSON.stringify(response))
                     $("#lignebesoin_id").val(response.id);
-                    $("input[name=libelle]").val(response.libelle)
+                    //$("input[name=libelle]").val(response.libelle)
                     $("input[name=description]").val(response.description)
                     $("input[name=qte_demande]").val(response.qte_demande)
                     $("input[name=cout_unite_ttc]").val(response.cout_unite_ttc)
@@ -688,10 +886,33 @@ $tbl_action = __('labels.tbl_action');
                     $("#type_demande").val(response.type_demande)
                     $('#type_demande').trigger('change');
                     console.log("dfdf " +response.nature_demandes_id);
-                    $('#natures_demande').val(response.nature_demandes_id);
-                    $('#natures_demande').select2().trigger('change');
-
-
+                    var natures_demandeSelect = $('#natures_demande');
+                    $.ajax({
+                        type: 'GET',
+                        url: '/natures_demande/Select2/' + response.nature_demandes_id
+                    }).then(function(data) {
+                        // create the option and append to Select2
+                        var option = new Option(data.libelle, data.id, true, true);
+                        natures_demandeSelect.append(option).trigger('change');
+                        // manually trigger the `select2:select` event
+                        natures_demandeSelect.trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                    });
+                    var article_Select = $('#articles_id');
+                     // create the option and append to Select2
+                     var option = new Option(response.libelle, response.articles_id, true, true);
+                     article_Select.append(option).trigger('change');
+                        // manually trigger the `select2:select` event
+                        article_Select.trigger({
+                            type: 'select2:select',
+                            /*params: {
+                                data: data
+                            }*/
+                        });
                     if (response.document) {
                         $("input[name=file_name]").val(response.document.libelle);
                     }

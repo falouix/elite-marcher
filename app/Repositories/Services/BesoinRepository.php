@@ -143,6 +143,13 @@ class BesoinRepository implements IBesoinRepository
                 }
                 return "";
             })
+            /*->editColumn('qte_valide', function ($lignesBesoin) {
+                return '<input type="number" data-id="'.$lignesBesoin->id.'" id="dtqte_valide" value="'.$lignesBesoin->qte_valide.'"/>';
+            })
+            ->editColumn('cout_total_ttc', function ($lignesBesoin) {
+                return '<input type="number" data-id="'.$lignesBesoin->id.'" id="dtcout_total_ttc" value="'.$lignesBesoin->cout_total_ttc.'"/>
+                ';
+            })*/
             ->addColumn('valide', function ($lignesBesoin) {
                 if ($lignesBesoin->besoin) {
                     if($lignesBesoin->besoin->valider == true){
@@ -165,7 +172,7 @@ class BesoinRepository implements IBesoinRepository
             })
             ->addColumn('action_file', 'besoins.file-actions')
             ->addColumn('action', $dataAction)
-            ->rawColumns(['id', 'valide', 'type_demande', 'nature_demandes_id', 'action_file', 'action'])
+            ->rawColumns(['id', 'valide', 'type_demande', 'nature_demandes_id', 'action_file', 'action']) //'qte_valide','cout_total_ttc'
             ->make(true);
     }
 

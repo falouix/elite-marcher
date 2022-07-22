@@ -16,6 +16,7 @@ class CreateLignesBesoinsTable extends Migration
         Schema::create('lignes_besoins', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('libelle')->nullable();
+            $table->bigInteger('articles_id');
             $table->integer('qte_demande')->nullable();
             $table->decimal('cout_unite_ttc', 12, 3)->nullable();
             $table->decimal('cout_total_ttc', 12, 3)->nullable();

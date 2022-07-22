@@ -24,7 +24,7 @@ $tbl_action = __('labels.tbl_action');
     <!-- select2 css -->
     <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
     <style>
-        .qte_valide {
+        .qte_valide, .cout_unite_ttc {
             background-color: lightgoldenrodyellow;
         }
 
@@ -44,7 +44,6 @@ $tbl_action = __('labels.tbl_action');
             background-color: #337ab7;
             text-decoration: none;
         }
-
         .my-cancel-class {
             padding: 3px 6px;
             font-size: 12px;
@@ -55,12 +54,10 @@ $tbl_action = __('labels.tbl_action');
             background-color: #a94442;
             text-decoration: none;
         }
-
         .error {
             border: solid 1px;
             border-color: #a94442;
         }
-
         .destroy-button {
             padding: 5px 10px 5px 10px;
             border: 1px blue solid;
@@ -207,7 +204,7 @@ $tbl_action = __('labels.tbl_action');
     <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
     <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
     <script src="{{ asset('/plugins/data-tables/js/dataTables.cellEdit.js') }}"></script>
-    <script src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>`
+    <script src="{{ asset('/plugins/data-tables/js/sum().js') }}"></script>`
 
 
     <script>
@@ -262,7 +259,7 @@ $tbl_action = __('labels.tbl_action');
                     scrollCollapse: true,
                     paging: false,
                     fixedColumns: {
-                        leftColumns: 1,
+                        leftColumns: 0,
                         rightColumns: 1
                     },
                     initComplete: function() {
@@ -294,8 +291,7 @@ $tbl_action = __('labels.tbl_action');
                         url: "{{ $lang }}"
                     },
 
-                    columns: [
-                        {
+                    columns: [{
                             data: "id",
                             className: "id",
                         },
@@ -338,16 +334,14 @@ $tbl_action = __('labels.tbl_action');
                         },
 
                     ],
-                    columnDefs: [
-                        {
-                            visible: false,
-                            targets: 1
-                        }
-                    ],
+                    columnDefs: [{
+                        visible: false,
+                        targets: 0
+                    }],
                     drawCallback: function() {
                         var api = this.api();
                         $('#coutTotal').html(
-                            api.column(8, {
+                            api.column(7, {
                                 page: 'current'
                             }).data().sum()
                         )
@@ -356,15 +350,15 @@ $tbl_action = __('labels.tbl_action');
                 });
 
 
-                    table.on('click', 'tr', function (e, dt, type, indexes) {
+                table.on('click', 'tr', function(e, dt, type, indexes) {
 
-                        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-        } else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-    });
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                    } else {
+                        table.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                    }
+                });
                 $('.dataTables_length').addClass('bs-select');
                 // Setup - add a text input to each footer cell
                 addSearchFooterDataTable("#table-cp")
@@ -399,9 +393,9 @@ $tbl_action = __('labels.tbl_action');
                         "onUpdate": updateCallbackFunction,
 
                         "inputCss": 'my-input-class',
-                        "columns": [6,7],
+                        "columns": [5, 6],
                         "allowNulls": {
-                            "columns": [6,7],
+                            "columns": [5, 6],
                             "errorClass": 'error'
 
                         },
@@ -410,27 +404,34 @@ $tbl_action = __('labels.tbl_action');
                             "cancelCss": 'my-cancel-class'
                         },
                         "inputTypes": [{
-                            "column": 6,
-                            "type": "number",
-                            "options": null
-                        }, ]
+                                "column": 5,
+                                "type": "number",
+                                "options": null
+                            },
+                            {
+                                "column": 6,
+                                "type": "number",
+                                "options": null
+                            },
+                        ]
                     });
                 }
+
 
             });
 
         });
 
         function updateCallbackFunction(updatedCell, updatedRow, oldValue) {
-            console.log("The new value for the cell is: " + updatedCell.data());
-            console.log("The values for each cell in that row are: " + JSON.stringify(updatedRow.data()));
+           // console.log("The new value for the cell is: " + updatedCell.data());
+           // console.log("The values for each cell in that row are: " + JSON.stringify(updatedRow.data()));
             //ajax call to update lignebesoin by id
             $.ajax({
                 url: "{{ route('lignes_besoin_v.update') }}",
                 type: "PUT",
                 data: {
                     id: updatedRow.data().id,
-                    qte_valide: updatedCell.data(),
+                    qte_valide: updatedRow.data().qte_valide,
                     cout_unite_ttc: updatedRow.data().cout_unite_ttc,
                 },
                 success: function(response) {
@@ -442,20 +443,45 @@ $tbl_action = __('labels.tbl_action');
 
         }
 
-        function validationCallbackFunction(cell, row, newValue) {
-             console.log("Validation; The old value for the cell is: " + JSON.stringify(row.data()));
-            // console.log("Validation; The new value for the cell is: " + newValue);
-            if (newValue < 0) {
-                swal("{{ __('labels.swal_warning_title') }}", 'الرجاء التثبت من الكمية المصادق عليها',
-                    "warning");
-                return false;
+        function validationCallbackFunction(cell, row, newValue, cellName) {
+            switch (cellName) {
+                case ' qte_valide':
+                    if (newValue < 0) {
+                        swal("{{ __('labels.swal_warning_title') }}", 'الرجاء التثبت من الكمية المصادق عليها',
+                            "warning");
+                        return false;
+                    }
+                    if (newValue > row.data().qte_demande) {
+                        swal("{{ __('labels.swal_warning_title') }}", 'الكمية المصادق عليها لا يكمن ان تتجاوز : ' + row
+                            .data()
+                            .qte_demande,
+                            "warning");
+                        return false;
+                    }
+                    break;
+
+                case ' cout_unite_ttc':
+                //console.log("On Validation; The old value for the cell [cout_unit_ttc] is: " + row.data().cout_unite_ttc);
+                //console.log("On Validation; The new value for the cell [cout_unit_ttc] is: " + newValue);
+                    if (newValue < 0) {
+                        swal("{{ __('labels.swal_warning_title') }}",
+                            'الرجاء التثبت من الكلفة التقديرية للوحدة المصادق عليها',
+                            "warning");
+                        return false;
+                    }
+                    if ((row.data().cout_unite_ttc != 0)) {
+                        if(newValue > row.data().cout_unite_ttc){
+                            swal("{{ __('labels.swal_warning_title') }}",
+                            'الكلفة التقديرية للوحدة المصادق عليها لا يكمن ان تتجاوز : ' + row
+                            .data()
+                            .cout_unite_ttc,
+                            "warning");
+                        return false;
+                        }
+                    }
+                    break;
             }
-            if (newValue > row.data().qte_demande) {
-                swal("{{ __('labels.swal_warning_title') }}", 'الكمية المصادق عليها لا يكمن ان تتجاوز : ' + row.data()
-                    .qte_demande,
-                    "warning");
-                return false;
-            }
+
             //ajax call to update lignebesoin by id
             //console.log("Validation; The values for each cell in that row are: " + JSON.stringify(row.data()));
             return true;

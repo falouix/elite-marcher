@@ -55,7 +55,7 @@
                                 @endcan
 
                             <li class="">
-                                <a href="{{ route('approvisionnement') }}" class="">مشاريع الشراءات</a>
+                                <a href="{{ route('projets.index') }}" class="">مشاريع الشراءات</a>
                             </li>
                             <li class="">
                                 <a href="{{ route('Dossier_achat') }}" class="">إعداد ملف شراءات </a>

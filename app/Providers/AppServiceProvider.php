@@ -57,6 +57,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Interfaces\IParagrapheRepository',
             'App\Repositories\Services\ParagrapheRepository'
         );
+        // Register Paragraphe Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\IProjetRepository',
+            'App\Repositories\Services\ProjetRepository'
+        );
         // Register Sparagraphe Repository
         $this->app->bind(
             'App\Repositories\Interfaces\ISparagrapheRepository',

@@ -22,7 +22,7 @@ $tbl_action = __('labels.tbl_action');
         <!-- select2 css -->
         <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
     <style>
-          .qte_valide, .cout_unite_ttc{
+        .qte_valide, .cout_unite_ttc{
             background-color: lightgoldenrodyellow;
         }
     </style>
@@ -48,7 +48,7 @@ $tbl_action = __('labels.tbl_action');
         <div class="card">
 
             <div class="card-header">
-                <h5>المخطط السنوي للشراءات</h5>
+                <h5>إضافة مشروع شراء</h5>
                 <div class="card-header-right">
                     @can('besoins-list')
                         <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>
@@ -58,7 +58,7 @@ $tbl_action = __('labels.tbl_action');
                         </button>
                     @endcan
                     @can('besoins-list')
-                        <a type="button" class="btn btn-primary" href="{{ route('besoins.create') }}">
+                        <a type="button" class="btn btn-primary" href="{{ route('projets.create') }}">
                             <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}
                         </a>
                     @endcan
@@ -84,10 +84,14 @@ $tbl_action = __('labels.tbl_action');
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="form-label">نوع الطلب</label>
+                            <label class="form-label">طريقة الإبرام</label>
 
-                            <select class="form-control " id="natures_demande" name="natures_demande">
+                            <select class="form-control" id="natures_passation" name="natures_passation">
                                 <option value="all">الكل</option>
+                                <option value="CONSULTATION">استشارة عادية</option>
+                                <option value="AOS">صفقة إجراءات مبسطة </option>
+                                <option value="AON">صفقة إجراءات عادية</option>
+                                <option value="AOGREGRE">صفقة بالتفاوض المباشر</option>
                             </select>
                         </div>
                     </div>
@@ -104,7 +108,7 @@ $tbl_action = __('labels.tbl_action');
                     </div>
 
                     <div class="col-md-2">
-                        <button class="btn btn-primary-gradient " id="btn_search_besoins" type="submit"
+                        <button class="btn btn-primary-gradient " id="btn_search_projets" type="submit"
                             style="margin-top: 32px">
                             {{ __('inputs.btn_search') }}
                         </button>
@@ -112,38 +116,33 @@ $tbl_action = __('labels.tbl_action');
                 </div>
 
                 <div class="dt-responsive table-responsive">
-                    <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span
-                            id="coutTotal"> </span></h6>
 
                     <table id="table-cp" class="table table-striped table-bordered nowrap">
                         <thead>
                             <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                     class="select-checkbox not-export-col" /> </th>
-                            <th class="not-export-col">id</th>
-                            <th>المادة</th>
+                            <th class="not-export-col"> </th>
+                            <th>مشروع عدد</th>
+                            <th> تاريخ اعتزام التنفيذ</th>
+                            <th>المصلحة أو المؤسسة</th>
+                            <th>الموضوع</th>
                             <th>طبيعة الطلب</th>
-                            <th>نوع الطلب</th>
-                            <th>الكمية المطلوبة</th>
-                            <th>الكمية المصادقة</th>
-                            <th>الكلفة التقديرية للوحدة</th>
-                            <th>الكلفة التقديرية الجملية</th>
-                            <th>الملاحظات</th>
+                            <th>طريقة الإبرام</th>
+                            <th>السنة المالية</th>
                             <th class="not-export-col">{{ $tbl_action }}</th>
                         </thead>
-
                         <tfoot>
                             <tr>
                                 <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                         class="select-checkbox not-export-col" /> </th>
-                                <th class="not-export-col">id</th>
-                                <th>المادة</th>
+                                <th class="not-export-col"> </th>
+                                <th>مشروع عدد</th>
+                                <th> تاريخ اعتزام التنفيذ</th>
+                                <th>المصلحة أو المؤسسة</th>
+                                <th>الموضوع</th>
                                 <th>طبيعة الطلب</th>
-                                <th>نوع الطلب</th>
-                                <th>الكمية المطلوبة</th>
-                                <th>الكمية المصادقة</th>
-                                <th>الكلفة التقديرية للوحدة</th>
-                                <th>الكلفة التقديرية الجملية</th>
-                                <th>الملاحظات</th>
+                                <th>طريقة الإبرام</th>
+                                <th>السنة المالية</th>
                                 <th class="not-export-col">{{ $tbl_action }}</th>
                             </tr>
                         </tfoot>
@@ -181,7 +180,7 @@ $tbl_action = __('labels.tbl_action');
             var annee_gestion = $('#annee_gestion').val()
             var services_id = $('#services_id').val()
             var type_demande = $('#type_demande').val()
-            var natures_demande = $('#natures_demande').val()
+            var natures_passation = $('#natures_passation').val()
             var table = $('#table-cp').DataTable({
                     dom: 'frltipB',
                     "lengthMenu": [
@@ -245,7 +244,7 @@ $tbl_action = __('labels.tbl_action');
                     // serverSide: true,
                     serverMethod: 'POST',
                     ajax: {
-                        url: "{{ route('pais.datatable') }}",
+                        url: "{{ route('projets.data') }}",
                         data: function(data) {
                             data.annee_gestion = $('#annee_gestion').val()
                             if ($("#services_id").val()[0] === undefined) {
@@ -255,8 +254,7 @@ $tbl_action = __('labels.tbl_action');
                         }
                            // data.services_id = $('#services_id').val()
                             data.type_demande = $('#type_demande').val()
-                            data.nature_demande = $('#natures_demande').val()
-                            data.mode = "pais";
+                            data.natures_passation = $('#natures_passation').val()
                         },
                     },
                     language: {
@@ -271,36 +269,32 @@ $tbl_action = __('labels.tbl_action');
                             className: "id",
                         },
                         {
-                            data: "libelle",
-                            className: "libelle"
+                            data: "code_pa",
+                            className: "code_pa"
+                        },
+                        {
+                            data: "date_action_prevu",
+                            className: "date_action_prevu"
+                        },
+                        {
+                            data: "service",
+                            className: "service"
+                        },
+                        {
+                            data: "objet",
+                            className: "objet"
                         },
                         {
                             data: "type_demande",
                             className: "type_demande"
                         },
                         {
-                            data: "nature_demandes_id",
-                            className: "nature_demandes_id"
+                            data: "nature_passation",
+                            className: "nature_passation"
                         },
                         {
-                            data: "qte_demande",
-                            className: "qte_demande"
-                        },
-                        {
-                            data: "qte_valide",
-                            className: "qte_valide"
-                        },
-                        {
-                            data: "cout_unite_ttc",
-                            className: "cout_unite_ttc"
-                        },
-                        {
-                            data: "cout_total_ttc",
-                            className: "cout_total_ttc"
-                        },
-                        {
-                            data: "libelle",
-                            className: "libelle"
+                            data: "annee_gestion",
+                            className: "annee_gestion"
                         },
                         {
                             data: 'action',
@@ -342,28 +336,7 @@ $tbl_action = __('labels.tbl_action');
 
                 addSearchFooterDataTable("#table-cp")
 
-                $("#natures_demande").select2({
-                    dir: "{{ $rtl }}",
-                    // minimumInputLength: 3, // only start searching when the user has input 3 or more characters
-                    //placeholder: "{{ __('labels.choose') }} ",
-                    ajax: {
-                        url: "{{ route('natures-demande.select') }}",
-                        type: "post",
-                        delay: 250,
-                        dataType: 'json',
-                        data: {
-                            type: $('#type_demande').val()
-                        },
-                    },
-                    processResults: function(response) {
-                        // alert(JSON.stringify(response))
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
 
-                });
             $("#services_id").select2({
                 dir: "{{ $rtl }}",
                 maximumSelectionLength: 1,
@@ -371,33 +344,11 @@ $tbl_action = __('labels.tbl_action');
 
             });
         });
-        // Get Dropdown Cascade
-        $('#type_demande').on('change', function(e) {
-            var type = e.target.value;
-            $.ajax({
-                url: "{{ route('natures-demande.select') }}",
-                type: "POST",
 
-                data: {
-                    type: type
-                },
-                success: function(data) {
-                    $('#natures_demande').empty();
-                    $('#natures_demande').append('<option value="all">الكل</option>');
-                    $.each(data.results, function(index, naturdemande) {
-                        $('#natures_demande').append('<option value="' + naturdemande.id + '">' +
-                            naturdemande.text + '</option>');
-                    })
-                    $('#natures_demande').select2({
-                        dir: "{{ $rtl }}",
-                    });
-                }
-            })
-        });
 
 
         // Search button click event (reload dtatable)
-        $('#btn_search_besoins').on('click', (e) => {
+        $('#btn_search_projets').on('click', (e) => {
             e.preventDefault();
            // var annee_gestion = $('#annee_gestion').val();
 
