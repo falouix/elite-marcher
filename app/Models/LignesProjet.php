@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property int $id
  * @property int|null $num_lot
- * @property int|null $libelle
+ * @property string|null $libelle
  * @property int $articles_id
  * @property int|null $qte
  * @property float|null $cout_unite_ttc
@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $type_demande
  * @property int $nature_demandes_id
  * @property int $projets_id
+ * @property int $lignes_besoin_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -37,12 +38,11 @@ class LignesProjet extends Model
 {
 	use SoftDeletes;
 	protected $table = 'lignes_projets';
-	public $incrementing = false;
 
 	protected $casts = [
 		'id' => 'int',
 		'num_lot' => 'int',
-		'libelle' => 'int',
+		'lignes_besoin_id' => 'int',
 		'articles_id' => 'int',
 		'qte' => 'int',
 		'cout_unite_ttc' => 'float',
@@ -58,6 +58,7 @@ class LignesProjet extends Model
 		'num_lot',
 		'libelle',
 		'articles_id',
+		'lignes_besoin_id',
 		'qte',
 		'cout_unite_ttc',
 		'cout_total_ttc',
@@ -75,5 +76,9 @@ class LignesProjet extends Model
     public function nature_demande()
 	{
 		return $this->belongsTo(NatureDemande::class, 'nature_demandes_id');
+	}
+    public function ligneBesoin()
+	{
+		return $this->belongsTo(LignesBesoin::class, 'lignes_besoin_id');
 	}
 }

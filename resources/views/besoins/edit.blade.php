@@ -41,12 +41,11 @@ $tbl_action = __('labels.tbl_action');
                 <h5>{{ $sub_breadcrumb }}</h5>
                 <div class="card-header-right">
 
-                    @if($besoin->valider == false)
+                    @if ($besoin->valider == false)
                         @can('besoins-list')
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                            data-target="#add_article">
-                            <i class="feather icon-plus-circle"></i> إضافة مادة جديدة
-                        </button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_article">
+                                <i class="feather icon-plus-circle"></i> إضافة مادة جديدة
+                            </button>
                         @endcan
                     @endif
                     <a href="{{ route('besoins.index') }}" class="btn btn-secondary">
@@ -73,7 +72,11 @@ $tbl_action = __('labels.tbl_action');
 
 
                 {{-- Case Other Parties --}}
-                {!! Form::open(['route' => ['besoins.update', $besoin->id], 'method' => 'patch', 'id' => 'validation-client_form']) !!}
+                {!! Form::open([
+                    'route' => ['besoins.update', $besoin->id],
+                    'method' => 'patch',
+                    'id' => 'validation-client_form',
+                ]) !!}
 
                 <div class="row">
                     <div class="col-md-12">
@@ -137,8 +140,8 @@ $tbl_action = __('labels.tbl_action');
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">المادة (التسمية)</label>
-                                    <select class="form-control " id="articles_id" name="articles_id">
-                                    </select>
+                                <select class="form-control " id="articles_id" name="articles_id">
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -258,64 +261,64 @@ $tbl_action = __('labels.tbl_action');
     </div>
 
 
-     <!-- Modal Create or edit status -->
-     <div class="modal fade show" id="add_article" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
-     style="display: none;">
-     <div class="modal-dialog ">
-         <div class="modal-content">
-             <div class="modal-header">
-                 <h5 class="modal-title" id="modal-title"> إضافة مادة جديدة </h5>
-                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                     <span aria-hidden="true">×</span>
-                 </button>
-             </div>
-             <div class="modal-body">
-                 <form id="form_id">
+    <!-- Modal Create or edit status -->
+    <div class="modal fade show" id="add_article" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
+        style="display: none;">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title"> إضافة مادة جديدة </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_id">
 
-                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">طبيعة الطلب</label>
-                                <select class="form-control" id="modal_type_demande" name="modal_type_demande">
-                                    <option value="1">مواد وخدمات</option>
-                                    <option value="2">أشغال</option>
-                                    <option value="3">دراسات</option>
-                                </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">طبيعة الطلب</label>
+                                    <select class="form-control" id="modal_type_demande" name="modal_type_demande">
+                                        <option value="1">مواد وخدمات</option>
+                                        <option value="2">أشغال</option>
+                                        <option value="3">دراسات</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">نوع الطلب</label>
+
+                                    <select class="form-control" id="modal_natures_demande">
+                                    </select>
+                                    <label id="modal_natures_demande-error"
+                                        class="error jquery-validation-error small form-text invalid-feedback"
+                                        for="libelle"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="lbl_libelle"> المادة</label>
+                                <input type="text" class="form-control" id='modal_libelle' name="modal_libelle"
+                                    placeholder="إسم المادة..." value="">
+                                <label id="modal_libelle-error"
+                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                    for="modal_libelle"></label>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">نوع الطلب</label>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        {{ __('inputs.btn_close') }}</button>
+                    <button class="btn btn-primary" id='btn_add_article'> {{ __('inputs.btn_create') }}
+                    </button>
+                </div>
 
-                                <select class="form-control" id="modal_natures_demande">
-                                </select>
-                                <label id="modal_natures_demande-error"
-                                class="error jquery-validation-error small form-text invalid-feedback"
-                                for="libelle"></label>
-                            </div>
-                        </div>
-                         <div class="form-group col-md-12">
-                             <label for="lbl_libelle"> المادة</label>
-                             <input type="text" class="form-control" id='modal_libelle' name="modal_libelle"
-                                 placeholder="إسم المادة..." value="">
-                             <label id="libelle-error"
-                                 class="error jquery-validation-error small form-text invalid-feedback"
-                                 for="libelle"></label>
-                         </div>
-                     </div>
-                 </form>
-             </div>
-             <div class="modal-footer">
-                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                     {{ __('inputs.btn_close') }}</button>
-                 <button  class="btn btn-primary" id='btn_add_article'> {{ __('inputs.btn_create') }}
-                 </button>
-             </div>
-
-         </div>
-     </div>
- </div>
- <!-- Modal Create or edit status end-->
+            </div>
+        </div>
+    </div>
+    <!-- Modal Create or edit status end-->
 @endsection
 @section('srcipt-js')
     <!-- jquery-validation Js -->
@@ -636,7 +639,7 @@ $tbl_action = __('labels.tbl_action');
                         delay: 250,
                         dataType: 'json',
                         data: {
-                            natures_demande_id : $('#natures_demande').val()
+                            natures_demande_id: $('#natures_demande').val()
                         },
                     },
                     processResults: function(response) {
@@ -726,7 +729,6 @@ $tbl_action = __('labels.tbl_action');
             $.ajax({
                 url: "{{ route('natures-demande.select') }}",
                 type: "POST",
-
                 data: {
                     type: type
                 },
@@ -748,36 +750,25 @@ $tbl_action = __('labels.tbl_action');
         $('#add').click(() => {
             //$('#libelle').removeClass('is-invalid')
             $('.spinner-border').removeAttr('hidden');
-            var article = $('#articles_id').select2('data')
-            if(!article){
+            var articleId = $('#articles_id').val()
+            if (articleId === null || articleId == 'NULL' || articleId === undefined ) {
                 swal("{{ __('labels.swal_warning_title') }}", 'الرجاء تحديد المادة',
-                        "warning");
+                    "warning");
                 return false;
             }
             let id = $("#lignebesoin_id").val();
-            let libelle = article.text
-            let type_demande = $("#type_demande").val()
-            let natures_demande = $("#natures_demande").val()
-            let articles_id = article.id
-            let file_name = $("input[name=file_name]").val();
-            let qte_demande = $("input[name=qte_demande]").val()
-            let cout_unite_ttc = $("input[name=cout_unite_ttc]").val()
-            let cout_total_ttc = $("input[name=cout_total_ttc]").val()
-            let description = $("input[name=description]").val()
-            let file = document.getElementById("file").files[0];
             var formData = new FormData();
-            formData.append('libelle', libelle)
-            formData.append('type_demande', type_demande)
-            formData.append('nature_demandes_id', natures_demande)
-            formData.append('articles_id', natures_demande)
-            formData.append('description', description)
-            formData.append('file_name', file_name)
-            formData.append('qte_demande', qte_demande)
-            formData.append('cout_unite_ttc', cout_unite_ttc)
-            formData.append('cout_unite_ttc', cout_unite_ttc)
+            formData.append('type_demande', $("#type_demande").val())
+            formData.append('nature_demandes_id', $("#natures_demande").val())
+            formData.append('articles_id', articleId)
+            formData.append('description', $("input[name=description]").val())
+            formData.append('file_name', $("input[name=file_name]").val())
+            formData.append('qte_demande', $("input[name=qte_demande]").val())
+            formData.append('cout_unite_ttc', $("input[name=cout_total_ttc]").val())
+            formData.append('cout_unite_ttc', $("input[name=cout_unite_ttc]").val())
             formData.append('besoins_id', {{ $besoin->id }})
-            formData.append('id', id)
-            formData.append('file', file)
+            formData.append('id', $("#lignebesoin_id").val())
+            formData.append('file', document.getElementById("file").files[0])
             //alert(file)
             var $type = 'POST'
             var $url = "{{ route('lignes_besoin.store') }}"
@@ -827,29 +818,30 @@ $tbl_action = __('labels.tbl_action');
             let natures_demande_id = $("#modal_natures_demande").val();
             let libelle = $("input[name=modal_libelle]").val();
             $.ajax({
-                url: "{{ route('articles.store')}}",
+                url: "{{ route('articles.store') }}",
                 type: "POST",
                 data: {
                     'natures_demande_id': $("#modal_natures_demande").val(),
-                    'libelle':  $("input[name=modal_libelle]").val(),
+                    'libelle': $("input[name=modal_libelle]").val(),
                 },
                 success: function(response) {
-                    $('#libelle').removeClass('is-invalid')
+                    $('#modal_libelle').removeClass('is-invalid')
                     $('#modal_natures_demande').removeClass('is-invalid')
                     $('#add_article').modal('toggle');
                     PnotifyCustom(response)
 
                 },
                 error: function(errors) {
-                    $('#libelle').removeClass('is-invalid')
+                    $('#modal_libelle').removeClass('is-invalid')
                     if (errors.responseJSON.message.libelle != null) {
-                        $('#libelle').addClass('is-invalid')
-                        $('#libelle-error').text(errors.responseJSON.message.libelle);
+                        $('#modal_libelle').addClass('is-invalid')
+                        $('#modal_libelle-error').text(errors.responseJSON.message.libelle);
                     }
                     $('#modal_natures_demande').removeClass('is-invalid')
                     if (errors.responseJSON.message.natures_demande_id != null) {
                         $('#modal_natures_demande').addClass('is-invalid')
-                        $('#modal_natures_demande-error').text(errors.responseJSON.message.natures_demande_id);
+                        $('#modal_natures_demande-error').text(errors.responseJSON.message
+                            .natures_demande_id);
                     }
                 }
             }); // ajax end
@@ -885,7 +877,7 @@ $tbl_action = __('labels.tbl_action');
                     // Set selected
                     $("#type_demande").val(response.type_demande)
                     $('#type_demande').trigger('change');
-                    console.log("dfdf " +response.nature_demandes_id);
+                    console.log("dfdf " + response.nature_demandes_id);
                     var natures_demandeSelect = $('#natures_demande');
                     $.ajax({
                         type: 'GET',
@@ -903,16 +895,16 @@ $tbl_action = __('labels.tbl_action');
                         });
                     });
                     var article_Select = $('#articles_id');
-                     // create the option and append to Select2
-                     var option = new Option(response.libelle, response.articles_id, true, true);
-                     article_Select.append(option).trigger('change');
-                        // manually trigger the `select2:select` event
-                        article_Select.trigger({
-                            type: 'select2:select',
-                            /*params: {
-                                data: data
-                            }*/
-                        });
+                    // create the option and append to Select2
+                    var option = new Option(response.libelle, response.articles_id, true, true);
+                    article_Select.append(option).trigger('change');
+                    // manually trigger the `select2:select` event
+                    article_Select.trigger({
+                        type: 'select2:select',
+                        /*params: {
+                            data: data
+                        }*/
+                    });
                     if (response.document) {
                         $("input[name=file_name]").val(response.document.libelle);
                     }

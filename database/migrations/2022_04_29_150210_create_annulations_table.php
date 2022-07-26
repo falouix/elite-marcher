@@ -14,7 +14,7 @@ class CreateAnnulationsTable extends Migration
     public function up()
     {
         Schema::create('annulations', function (Blueprint $table) {
-            $table->bigInteger('dossiers_achats_id')->index('fk_annulations_dossiers_achats1_idx');
+            $table->bigInteger('dossiers_achats_id')->unsigned()->index('fk_annulations_dossiers_achats1');
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

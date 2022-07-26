@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Besoin;
 use App\Models\LignesBesoin;
 use App\Models\Service;
@@ -149,17 +150,6 @@ class BesoinController extends Controller
     public function destroy($id)
     {
         $this->repository->destroy($id);
-        $locale = LaravelLocalization::getCurrentLocale();
-        /*if (session()->has('delete_error')) {
-        if ($locale == 'en') {
-        return $this->notify('Error', 'ِِOnly Clients without relations can be deleted', 'error', false);
-        } else {
-        return $this->notify('خطأ عند الحذف ', 'لا يمكن حذف عميل له تسجيلات مرتبطة');
-        }
-        }*/
-        if ($locale == 'en') {
-            return $this->notify('Notification', 'ِِClient deleted successfully', 'success', false);
-        }
         return $this->notify('حذف الحاجيات', 'تم حذف الحاجيات  بنجاح');
     }
     //return besoin selected
@@ -227,7 +217,6 @@ class BesoinController extends Controller
      */
     public function storeLigneBesoin(Request $request)
     {
-
         Log::info("Store Ligne besoin");
         Log::info($request);
         if ($request->file == 'undefined') {
@@ -251,21 +240,29 @@ class BesoinController extends Controller
         if ($request->ajax()) {
             Log::info("Store Ligne besoin");
             Log::info($request);
+            $ligneBesoin = LignesBesoin::select('id', 'articles_id')
+                ->where('besoins_id', $request->besoins_id)
+                ->where('articles_id', $request->articles_id)->first();
+            Log::info("Exist Ligne besoin " . $ligneBesoin);
+            if ($ligneBesoin) {
+                return $this->notify('ضبط الحاجيات', 'هذه المادة موجودة سابقا ضمن الحاجيات.', 'error', true);
+            }
+            $article = Article::find($request->articles_id);
             $ligneBesoin = LignesBesoin::create([
-                'libelle' => $request->libelle,
+                'libelle' => ($article != null) ? $article->libelle : null,
                 'articles_id' => $request->articles_id,
                 'description' => $request->description,
                 'type_demande' => $request->type_demande,
                 'nature_demandes_id' => $request->nature_demandes_id,
                 'qte_demande' => $request->qte_demande,
                 'cout_unite_ttc' => $request->cout_unite_ttc,
-                'cout_total_ttc' => $request->cout_total_ttc,
+                'cout_total_ttc' => $request->qte_demande * $request->cout_unite_ttc,
                 'qte_valide' => $request->qte_valide,
                 'besoins_id' => $request->besoins_id,
             ]);
             // ajout de document s'il existe
             if ($request->file != 'undefined') {
-                if($ligneBesoin){
+                if ($ligneBesoin) {
                     $request['path'] = "besoin_documents";
                     $request['besoins_id'] = $ligneBesoin->id;
                     $file = $this->fileRepository->fileUploadPost($request);
@@ -281,7 +278,6 @@ class BesoinController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CasePartie  $pris
      * @return \Illuminate\Http\Response
      */
     public function updateLigneBesoin(Request $request)
@@ -304,21 +300,22 @@ class BesoinController extends Controller
             $request->qte_valide = 0;
         }
         if ($request->ajax()) {
-            $locale = LaravelLocalization::getCurrentLocale();
-             LignesBesoin::find($request->id)->update([
-                'libelle' => $request->libelle,
+            $article = Article::find($request->articles_id);
+            Log::info("Article Details " . $article);
+            LignesBesoin::find($request->id)->update([
+                'libelle' => ($article != null) ? $article->libelle : null,
                 'articles_id' => $request->articles_id,
                 'description' => $request->description,
                 'type_demande' => $request->type_demande,
                 'nature_demandes_id' => $request->nature_demandes_id,
                 'qte_demande' => $request->qte_demande,
                 'cout_unite_ttc' => $request->cout_unite_ttc,
-                'cout_total_ttc' => $request->cout_total_ttc,
+                'cout_total_ttc' => $request->qte_demande * $request->cout_unite_ttc,
                 'qte_valide' => $request->qte_valide,
             ]);
             if ($request->file != 'undefined') {
                 $ligneBesoin = LignesBesoin::find($request->id);
-                if($ligneBesoin){
+                if ($ligneBesoin) {
                     $request['path'] = "besoin_documents";
                     $request['besoins_id'] = $ligneBesoin->id;
                     $file = $this->fileRepository->fileUploadPost($request);

@@ -17,7 +17,7 @@ class CreateDossierDocsTable extends Migration
             $table->integer('id', true);
             $table->string('libelle', 255)->nullable();
             $table->text('path')->nullable();
-            $table->bigInteger('dossiers_achats_id')->index('fk_dossier_docs_dossiers_achats1_idx');
+            $table->bigInteger('dossiers_achats_id')->unsigned()->index('fk_dossier_docs_dossiers_achats1_idx');
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

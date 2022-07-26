@@ -63,6 +63,7 @@ class Besoin extends Model
         parent::boot();
         // auto-sets values on creation
         static::creating(function ($model) {
+            $model->valider = 0;
             $model->created_by = Auth::user()->id;
         });
         static::updating(function ($model) {

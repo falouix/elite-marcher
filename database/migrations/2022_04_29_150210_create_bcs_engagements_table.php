@@ -15,7 +15,7 @@ class CreateBcsEngagementsTable extends Migration
     {
         Schema::create('bcs_engagements', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->bigInteger('dossiers_achats_id')->index('fk_bcs_engagements_dossiers_achats1_idx');
+            $table->bigInteger('dossiers_achats_id')->unsigned()->index('fk_bcs_engagements_dossiers_achats1_idx');
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

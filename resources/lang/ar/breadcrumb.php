@@ -22,16 +22,16 @@ return [
     'bread_user_create' => 'إضافة مستعمل جديدة',
     'bread_user_edit' => 'تعديل مستعمل',
     // BreadCrumb Besoins
-    'bread_besoins_list' => 'ظبط الحاجيات',
-    // BreadCrumb Paragraphes  
+    'bread_besoins_list' => 'ضبط الحاجيات',
+    // BreadCrumb Paragraphes
     'bread_paragraphes_list' => ' الفقرات',
-    // BreadCrumb Sparagraphes 
-    'bread_sparagraphes_list' => ' الفقرة الفرعية', 
-    // BreadCrumb Titres 
+    // BreadCrumb Sparagraphes
+    'bread_sparagraphes_list' => ' الفقرة الفرعية',
+    // BreadCrumb Titres
     'bread_titres_list' => 'العنوانين',
-    // BreadCrumb Chapitres 
+    // BreadCrumb Chapitres
     'bread_chapitres_list' => 'المحاور',
-    // BreadCrumb Services 
+    // BreadCrumb Services
     'bread_services_list' => 'المصالح/الدوائر/المؤسسات',
     // BreadCrumb Soumissionnaires
     'bread_soumissionnaires_list' => 'المتعهدين',

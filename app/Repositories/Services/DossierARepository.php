@@ -2,13 +2,13 @@
 
 namespace App\Repositories\Services;
 
-use App\Repositories\Interfaces\IProjetRepository;
+use App\Repositories\Interfaces\IDossierARepository;
+use App\Models\DossiersAchat;
 use App\Models\Projet;
-use App\Models\LignesProjet;
 use App\Models\LignesDossier;
 use Log;
 
-class ProjetRepository implements IProjetRepository
+class DossierARepository implements IDossierARepository
 {
     public function create($request)
     {
@@ -190,18 +190,17 @@ class ProjetRepository implements IProjetRepository
     {
         $lignesProjet = LignesProjet::select('*')->where('projets_id', $projet_id)->get();
         foreach ($lignesProjet as $item) {
-            Log::info('Ligne Projet '. $item);
             LignesDossier::create([
                 'num_lot'=> $item->num_lot,
                 'libelle'=> $item->libelle,
-                'lignes_projet_id'=> $item->id,
+                'articles_id'=> $item->articles_id,
                 'qte'=> $item->qte,
                 'cout_unite_ttc'=> $item->cout_unite_ttc,
                 'cout_total_ttc'=> $item->cout_total_ttc,
                 'dossiers_achats_id'=> $dossier_id,
             ]);
         }
-        self::markProjetAsTransferer($projet_id);
+        markProjetAsTransferer($projet_id);
        // return Response()->json(['success' => 'Projet deleted successfully.']);
     }
     public function destroy($id)

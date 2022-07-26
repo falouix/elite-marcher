@@ -92,6 +92,16 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Interfaces\IEtablissementRepository',
             'App\Repositories\Services\EtablissementRepository'
         );
+        // Register Consultation Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\IConsultationRepository',
+            'App\Repositories\Services\ConsultationRepository'
+        );
+        // Register DossierAchat Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\IDossierARepository',
+            'App\Repositories\Services\DossierARepository'
+        );
 
         // FileUpload Repository
         $this->app->bind(

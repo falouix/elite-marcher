@@ -59,7 +59,7 @@ $tbl_action = __('labels.tbl_action');
 
                 {{-- Case Other Parties --}}
                 {!! Form::open(['route' => 'projets.store', 'method' => 'POST', 'id' => 'validation-projet_form']) !!}
-                        <input type="text" name="lignesprjt" id="lignesprjt" hidden>
+
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -69,6 +69,20 @@ $tbl_action = __('labels.tbl_action');
                             {{-- @if ($errors->has('annee_gestion'))
                                         <span class="text-danger">{{ $errors->first('annee_gestion') }}</span>
                                     @endif --}}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            <label> المصلحة/الدائرة/المؤسسة </label>
+                            <select class="col-sm-12" id="services_id" name="services_id">
+                                <option value="all">الكل</option>
+                                @foreach ($services as $item)
+                                    <option value="{{ $item->id }}">{{ $item->libelle }}</option>
+                                @endforeach
+                            </select>
+                            <label id="services_id-error"
+                                class="error jquery-validation-error small form-text invalid-feedback"
+                                for="libelle"></label>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -81,27 +95,6 @@ $tbl_action = __('labels.tbl_action');
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label> المصلحة/الدائرة/المؤسسة </label>
-                            <select class="col-sm-12" id="services_id" name="services_id">
-
-                                @foreach ($services as $item)
-                                    <option value="{{ $item->id }}">{{ $item->libelle }}</option>
-                                @endforeach
-                            </select>
-                            <label id="services_id-error"
-                                class="error jquery-validation-error small form-text invalid-feedback"
-                                for="libelle"></label>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary-gradient" id="btn_search_pai" type="submit"
-                            style="margin-top: 32px">
-                            {{ __('inputs.btn_search') }}
-                        </button>
-                    </div>
-
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
@@ -147,7 +140,7 @@ $tbl_action = __('labels.tbl_action');
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <h3 class="form-label"> إضافة الحاجيات بصفة إستثنائية</h3>
+                                    <h3 class="form-label"> الحاجيات</h3>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -227,6 +220,25 @@ $tbl_action = __('labels.tbl_action');
                                     <i class="feather icon-plus"></i>
                                     إضافة إلى الجدول
                                 </a>
+                                <div class="table-responsive">
+                                    <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span
+                                            id="coutTotal"> 0</span></h6>
+                                    <table class="table table-striped table-bordered" id="table-cp">
+                                        <thead>
+                                            <tr>
+                                                <thead>
+                                                    <th>المادة</th>
+                                                    <th>الكمية المطلوبة</th>
+                                                    <th>الكلفة التقديرية للوحدة</th>
+                                                    <th>الكلفة التقديرية الجملية</th>
+                                                    <th>حذف</th>
+                                                </thead>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -235,11 +247,9 @@ $tbl_action = __('labels.tbl_action');
 
 
                 <div class="card-body">
-
                     <h4>إختيار محتوى المسشروع</h4>
 
                     <div class="dt-responsive table-responsive">
-
                         <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span id="coutTotal">
                             </span></h6>
 
@@ -371,7 +381,9 @@ $tbl_action = __('labels.tbl_action');
                         'is-invalid');
                 }
             });
-
+            var annee_gestion = $('#annee_gestion').val()
+            var services_id = $('#services_id').val()
+            var type_demande = $('#type_demande').val()
             var table = $('#table-cp').DataTable({
                 dom: 'frltipB',
                 "lengthMenu": [
@@ -410,7 +422,7 @@ $tbl_action = __('labels.tbl_action');
                 scrollY: true,
                 scrollX: true,
                 scrollCollapse: true,
-                //paging: false,
+                paging: false,
                 fixedColumns: {
                     leftColumns: 0,
                     rightColumns: 1
@@ -435,11 +447,10 @@ $tbl_action = __('labels.tbl_action');
                 ajax: {
                     url: "{{ route('pais.datatable') }}",
                     data: function(data) {
-                        data.annee_gestion = $('#annee_gestion').val()
-                        data.services_id = $('#services_id').val()
-                        data.type_demande = $('#type_demande').val()
-                        data.nature_demande = 'all'
-                        data.mode = 'projets'
+                        data.annee_gestion = annee_gestion
+                        data.services_id = services_id
+                        data.type_demande = type_demande
+                        data.mode = "projets"
                     },
                 },
                 language: {
@@ -537,30 +548,12 @@ $tbl_action = __('labels.tbl_action');
                 placeholder: "{{ __('labels.choose') }} ",
             });
         });
-        // Search button click event (reload dtatable)
-        $('#btn_search_pai').on('click', (e) => {
-            e.preventDefault();
-            // var annee_gestion = $('#annee_gestion').val();
-            var services_id = $('#services_id').val()
-            $('#services_id').removeClass('is-invalid')
-            $('#services_id-error').text('');
-            $('#services_id-error').hide();
-            if (services_id === 'all') {
-
-                $('#services_id').addClass('is-invalid')
-                $('#services_id-error').text('الرجاء إختيار المصلحة أو المؤسسة');
-                $('#services_id-error').show()
-                return false
-            }
-
-            $('#table-cp').DataTable().ajax.reload();
-
-        })
 
         //Submit form 'store'
         $('#btn_create').on("click", () => {
-            //add_cp()
-
+            //var myTableArray = [];
+            //myTableArray = add_cp();
+            //$('#contact_cp').val(JSON.stringify(myTableArray))
             $('#type_demande-error').hide()
             $('#services_id-error').hide()
             $('#nature_passation-error').hide()
@@ -590,26 +583,29 @@ $tbl_action = __('labels.tbl_action');
                 $('#services_id-error').text('الرجاء إختيار المصلحة أو المؤسسة');
                 $('#services_id-error').show()
             }
-
+            alert(verif)
             if (verif > 0) {
                 return false
             }
-            var ids =add_cp();
-            alert(JSON.stringify(ids))
-            $('#lignesprjt').val(JSON.stringify(ids))
+            var myTableArray = [];
+            myTableArray = add_cp();
+            $('#lignesprjt').val(JSON.stringify(myTableArray))
             $("#btn_submit").click()
         })
 
         function add_cp() {
-            var table = $('#table-cp').DataTable();
-            var ids = $.map(table.rows('.selected').data(), function(item) {
-                console.log(item)
-                return item.id
+            var myTableArray = [];
+            $("table#table-cp tr").each(function() {
+                var arrayOfThisRow = [];
+                var tableData = $(this).find('td');
+                if (tableData.length > 0) {
+                    tableData.each(function() {
+                        arrayOfThisRow.push($(this).text());
+                    });
+                    myTableArray.push(arrayOfThisRow);
+                }
             });
-            console.log(ids)
-           // alert(table.rows('.selected').data().length + ' row(s) selected');
-
-            return (ids);
+            return (myTableArray);
         }
     </script>
 @endsection

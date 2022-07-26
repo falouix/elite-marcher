@@ -21,9 +21,12 @@ class CreateLignesBesoinsTable extends Migration
             $table->decimal('cout_unite_ttc', 12, 3)->nullable();
             $table->decimal('cout_total_ttc', 12, 3)->nullable();
             $table->integer('qte_valide')->nullable();
-            $table->bigInteger('besoins_id')->index('fk_lignes_besoins_besoins1_idx');
+            $table->text('description')->nullable();
+            $table->bigInteger('besoins_id')->unsigned()->index('fk_lignes_besoins_besoins1_idx');
             $table->bigInteger('projets_id')->nullable();
             $table->bigInteger('docs_id')->nullable(); // document spec besoins
+            $table->هnteger('type_demande')->nullable(); // document spec besoins
+            $table->bigInteger('nature_demandes_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

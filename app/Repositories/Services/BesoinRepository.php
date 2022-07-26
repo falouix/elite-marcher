@@ -5,7 +5,6 @@ namespace App\Repositories\Services;
 use App\Models\Besoin;
 use App\Models\LignesBesoin;
 use App\Repositories\Interfaces\IBesoinRepository;
-use carbon\Carbon;
 use Log;
 use Str;
 
@@ -32,42 +31,42 @@ class BesoinRepository implements IBesoinRepository
         return $Besoin;
     }
 
-    public function getAllBesoin($services_id, $annee_gestion, $status , $mode)
+    public function getAllBesoin($services_id, $annee_gestion, $status, $mode)
     {
         $dataAction = "besoins.datatable-actions";
-        if($mode =="validation"){
+        if ($mode == "validation") {
             $dataAction = "besoins.validation.datatable-actions";
         }
         if (!($annee_gestion)) {
-            $annee_gestion = strftime("%Y") ;
+            $annee_gestion = strftime("%Y");
         }
         if ($services_id != 'all') {
-            if($status == 'all'){
+            if ($status == 'all') {
                 $query = Besoin::select('*')
                     ->with('service')
                     ->where('services_id', $services_id)
                     ->where('annee_gestion', $annee_gestion)
                     ->orderByDesc('id');
-                    Log::info('status is : '. $status);
+                Log::info('status is : ' . $status);
 
-            }else{
+            } else {
                 $query = Besoin::select('*')
-            // ->with('lignes_besoins')
-                ->with('service')
-                ->where('services_id', $services_id)
-                ->where('valider', $status)
-                ->where('annee_gestion', $annee_gestion)
-                ->orderByDesc('id');
+                // ->with('lignes_besoins')
+                    ->with('service')
+                    ->where('services_id', $services_id)
+                    ->where('valider', $status)
+                    ->where('annee_gestion', $annee_gestion)
+                    ->orderByDesc('id');
             }
         } else {
-            if($status == 'all'){
-            $query = Besoin::select('*')
-            // ->with('lignes_besoins')
-                ->with('service')
+            if ($status == 'all') {
+                $query = Besoin::select('*')
+                // ->with('lignes_besoins')
+                    ->with('service')
                 //->where('valider', $status)
-                ->where('annee_gestion', $annee_gestion)
-                ->orderByDesc('id');
-            }else{
+                    ->where('annee_gestion', $annee_gestion)
+                    ->orderByDesc('id');
+            } else {
                 $query = Besoin::select('*')
                 // ->with('lignes_besoins')
                     ->with('service')
@@ -88,13 +87,11 @@ class BesoinRepository implements IBesoinRepository
                 }
                 return null;
             })
-            ->addColumn('valide', function ($lignesBesoin) {
-                if ($lignesBesoin->besoin) {
-                    if($lignesBesoin->besoin->valider == true){
-                        return '<label class="badge badge-info">تمت المصادقة النهائية</label>';
-                    }else{
-                        return '<label class="badge badge-info"> لم تتم المصادقة النهائية </label>';
-                    }
+            ->addColumn('valide', function ($besoin) {
+                if ($besoin->valider == true) {
+                    return '<label class="badge badge-success">تمت المصادقة النهائية</label>';
+                } else {
+                    return '<label class="badge badge-info"> لم تتم المصادقة النهائية </label>';
                 }
                 return '<label class="badge badge-info"> لم تتم المصادقة النهائية </label>';
             })
@@ -105,13 +102,13 @@ class BesoinRepository implements IBesoinRepository
     public function getLigneBesoinsByBesoin($besoin_id, $mode)
     {
         $dataAction = "besoins.lignebesoin-datatable-actions";
-        if($mode =="validation"){
+        if ($mode == "validation") {
             $dataAction = "besoins.validation.lignebesoin-datatable-actions";
         }
 
-         $query = LignesBesoin::select('*')->with('besoin')->with('nature_demande')->where('besoins_id', $besoin_id);
-        Log::info("mode ligne besoin is ".$mode);
-        Log::info("query result is  ".$query->get());
+        $query = LignesBesoin::select('*')->with('besoin')->with('nature_demande')->where('besoins_id', $besoin_id);
+        Log::info("mode ligne besoin is " . $mode);
+        Log::info("query result is  " . $query->get());
 
         return datatables()
             ->of($query)
@@ -123,17 +120,17 @@ class BesoinRepository implements IBesoinRepository
             })
             ->editColumn('description', function ($lignesBesoin) {
 
-                return Str::words($lignesBesoin->description,5);
+                return Str::words($lignesBesoin->description, 5);
             })
             ->editColumn('type_demande', function ($lignesBesoin) {
                 switch ($lignesBesoin->type_demande) {
                     case 1:
                         return '<label class="badge badge-info"> مواد وخدمات </label>';
-                        case 2:
-                            return '<label class="badge badge-success"> أشغال </label>';
+                    case 2:
+                        return '<label class="badge badge-success"> أشغال </label>';
 
                     default:
-                    return '<label class="badge badge-primary"> دراسات </label>';
+                        return '<label class="badge badge-primary"> دراسات </label>';
                 }
                 return "";
             })
@@ -144,17 +141,17 @@ class BesoinRepository implements IBesoinRepository
                 return "";
             })
             /*->editColumn('qte_valide', function ($lignesBesoin) {
-                return '<input type="number" data-id="'.$lignesBesoin->id.'" id="dtqte_valide" value="'.$lignesBesoin->qte_valide.'"/>';
-            })
-            ->editColumn('cout_total_ttc', function ($lignesBesoin) {
-                return '<input type="number" data-id="'.$lignesBesoin->id.'" id="dtcout_total_ttc" value="'.$lignesBesoin->cout_total_ttc.'"/>
-                ';
-            })*/
+        return '<input type="number" data-id="'.$lignesBesoin->id.'" id="dtqte_valide" value="'.$lignesBesoin->qte_valide.'"/>';
+        })
+        ->editColumn('cout_total_ttc', function ($lignesBesoin) {
+        return '<input type="number" data-id="'.$lignesBesoin->id.'" id="dtcout_total_ttc" value="'.$lignesBesoin->cout_total_ttc.'"/>
+        ';
+        })*/
             ->addColumn('valide', function ($lignesBesoin) {
                 if ($lignesBesoin->besoin) {
-                    if($lignesBesoin->besoin->valider == true){
+                    if ($lignesBesoin->besoin->valider == true) {
                         return '<label class="badge badge-info">تمت المصادقة النهائية</label>';
-                    }else{
+                    } else {
                         return '<label class="badge badge-info"> لم تتم المصادقة النهائية </label>';
                     }
                 }
@@ -162,9 +159,9 @@ class BesoinRepository implements IBesoinRepository
             })
             ->addColumn('valider', function ($lignesBesoin) {
                 if ($lignesBesoin->besoin) {
-                    if($lignesBesoin->besoin->valider == true){
+                    if ($lignesBesoin->besoin->valider == true) {
                         return true;
-                    }else{
+                    } else {
                         return false;
                     }
                 }
@@ -176,27 +173,30 @@ class BesoinRepository implements IBesoinRepository
             ->make(true);
     }
 
-    public function getBesoinByParam($key,$value){
+    public function getBesoinByParam($key, $value)
+    {
         return Besoin::Select('*')->where($key, '=', $value)
-                                 ->get()->first();
+            ->get()->first();
     }
-    public function getBesoinLigneBesoinByParam($key,$value){
+    public function getBesoinLigneBesoinByParam($key, $value)
+    {
         return Besoin::Select('*')->with('lignes_besoins')->where($key, '=', $value)
-                                 ->get()->first();
+            ->get()->first();
     }
     public function validerBesoin($id)
     {
         Besoin::find($id)->update([
-            'valider'=>true,
+            'valider' => true,
         ]);
-       // return Response()->json(['success' => 'Projet deleted successfully.']);
+        // return Response()->json(['success' => 'Projet deleted successfully.']);
     }
     public function destroy($id)
     {
         Besoin::find($id)->delete();
-       // return Response()->json(['success' => 'Projet deleted successfully.']);
+        // return Response()->json(['success' => 'Projet deleted successfully.']);
     }
-    public function multiDestroy($ids){
+    public function multiDestroy($ids)
+    {
         Besoin::whereIn('id', $ids)->delete();
     }
 

@@ -16,7 +16,7 @@ return [
     'role_list' => 'قائمة صلاحيات المستعملين ',
     'user_list' => 'قائمة المستعملين',
     // Card Besoins
-    'besoins_list' => 'قائمة ظبط الحاجيات',
+    'besoins_list' => 'قائمة ضبط الحاجيات',
     //Card Paragraphes
     'paragraphes_list' => 'قائمة الفقرات',
     //Card Sparagraphes
@@ -27,7 +27,7 @@ return [
     'chapitres_list' => 'قائمة المحاور  ',
     //Card Services
     'services_list' => 'قائمة المصالح/الدوائر/المؤسسات  ',
-    
+
     //Card Soumissionnaires
     'soumissionnaires_list' => 'قائمة المتعهدين  ',
 

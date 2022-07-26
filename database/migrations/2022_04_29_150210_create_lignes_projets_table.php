@@ -14,13 +14,14 @@ class CreateLignesProjetsTable extends Migration
     public function up()
     {
         Schema::create('lignes_projets', function (Blueprint $table) {
-            $table->bigInteger('id')->primary();
+            $table->$table->bigIncrements('id');
             $table->integer('num_lot')->nullable();
             $table->integer('libelle')->nullable();
             $table->integer('qte')->nullable();
             $table->decimal('cout_unite_ttc', 12, 3)->nullable();
             $table->decimal('cout_total_ttc', 12, 3)->nullable();
             $table->bigInteger('projets_id')->index('fk_lignes_projets_projets1_idx');
+            $table->bigInteger('lignes_besoin_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

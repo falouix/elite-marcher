@@ -16,6 +16,7 @@ class CreateBesoinsDocsTable extends Migration
         Schema::create('besoins_docs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('file_name')->nullable();
+            $table->bigInteger('besoins_id');
             $table->string('path')->nullable();
             $table->timestamps();
             $table->softDeletes();

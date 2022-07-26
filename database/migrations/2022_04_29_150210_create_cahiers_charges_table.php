@@ -28,7 +28,7 @@ class CreateCahiersChargesTable extends Migration
             $table->decimal('autres_caution', 2)->nullable();
             $table->integer('duree_autres_caution')->nullable();
             $table->date('date_pub_prevu')->nullable()->comment('تاريخ اعتزام النشر');
-            $table->bigInteger('dossiers_achats_id')->index('fk_cahiers_charges_dossiers_achats1_idx');
+            $table->bigInteger('dossiers_achats_id')->unsigned()->index('fk_cahiers_charges_dossiers_achats1_idx');
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

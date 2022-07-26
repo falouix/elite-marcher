@@ -6,23 +6,26 @@
 
 namespace App\Models;
 
+use Auth;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class DossiersAchat
- * 
+ *
  * @property int $id
- * @property int|null $code_projet
+ * @property string|null $annee_gestion
+ * @property string|null $code_projet
  * @property string|null $code_dossier
  * @property int|null $situation_dossier
  * @property string|null $objet_dossier
  * @property string|null $organisme_financier
  * @property int|null $source_finance
  * @property string|null $nature_finance
- * @property bool|null $type_dossier
+ * @property string|null $type_dossier
  * @property string|null $type_demande
  * @property string|null $type_commission
  * @property Carbon|null $date_cloture
@@ -32,7 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property int|null $created_by
  * @property int|null $updated_by
- * 
+ *
  * @property Annulation $annulation
  * @property Collection|AvisDossier[] $avis_dossiers
  * @property Collection|BcsEngagement[] $bcs_engagements
@@ -53,14 +56,11 @@ class DossiersAchat extends Model
 {
 	use SoftDeletes;
 	protected $table = 'dossiers_achats';
-	public $incrementing = false;
 
 	protected $casts = [
 		'id' => 'int',
-		'code_projet' => 'int',
 		'situation_dossier' => 'int',
 		'source_finance' => 'int',
-		'type_dossier' => 'bool',
 		'created_by' => 'int',
 		'updated_by' => 'int'
 	];
@@ -74,6 +74,7 @@ class DossiersAchat extends Model
 		'code_dossier',
 		'situation_dossier',
 		'objet_dossier',
+        'annee_gestion',
 		'organisme_financier',
 		'source_finance',
 		'nature_finance',
@@ -85,6 +86,40 @@ class DossiersAchat extends Model
 		'created_by',
 		'updated_by'
 	];
+
+    protected static function boot()
+    {
+        parent::boot();
+        // auto-sets values on creation
+        static::creating(function ($model) {
+            $model->created_by = Auth::user()->id;
+        });
+        static::created(function ($model) {
+            $count = \DB::table('dossiers_achats')
+            ->select(\DB::raw('count(*) as count'))
+            ->count();
+            switch ($model->type_dossier) {
+                case 'CONSULTATION':
+                    $codeDossier = 'C'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
+                    break;
+                case 'AOS':
+                    $codeDossier = 'AOS'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
+                    break;
+                case 'AON':
+                    $codeDossier = 'AON'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
+                    break;
+                case 'AOGREGRE':
+                    $codeDossier = 'AOGREGRE'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
+                    break;
+            }
+            $model->code_dossier = $codeDossier;
+            $model->save();
+        });
+        static::updating(function ($model) {
+            $model->updated_by = Auth::user()->id;
+        });
+    }
+
 
 	public function annulation()
 	{

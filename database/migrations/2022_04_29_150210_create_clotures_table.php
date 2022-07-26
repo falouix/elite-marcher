@@ -14,7 +14,7 @@ class CreateCloturesTable extends Migration
     public function up()
     {
         Schema::create('clotures', function (Blueprint $table) {
-            $table->bigInteger('dossiers_achats_id')->index('fk_clotures_dossiers_achats1_idx');
+            $table->bigInteger('dossiers_achats_id')->unsigned()->index('fk_clotures_dossiers_achats1_idx');
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

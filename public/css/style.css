@@ -11921,6 +11921,200 @@ table.dataTable tbody > tr.selected td.select-checkbox:after, table.dataTable tb
     background: linear-gradient(to left, #48d6a8 0%, #029666 100%);
     border: 1px solid #3dc59a;
 }
+.btn-primary-gradient{
+	color: $white;
+	background:linear-gradient(to left, #0db2de 0%, #005bea 100%);
+	border:1px solid #0db2de;
+	
+	&:hover {
+    color: $white;
+    background: linear-gradient(to left, #099fc7 0%, #0555d4 100%);
+    border-color: #0db2de;
+  }
+}
+
+.btn-primary-gradient{
+  &:focus, &.focus {
+	 background:linear-gradient(to left, #099fc7 0%, #0555d4 100%);
+    box-shadow: 0 0 0 0.2rem rgba(5, 85, 212, 0.5);
+  }
+}
+
+
+.btn-danger-gradient{
+	color: $white;
+	background:linear-gradient(45deg, #f93a5a, #f7778c);
+	border:1px solid #ef6178;
+	
+	&:hover {
+    color: $white;
+    background: linear-gradient(45deg, #fb3254, #f96d84);
+    border-color: #ef6178;
+  }
+}
+
+.btn-danger-gradient{
+  &:focus, &.focus {
+	 background: linear-gradient(45deg, #fb3254, #f96d84);
+    box-shadow: 0 0 0 0.2rem rgba(251, 50, 84, 0.5);
+  }
+}
+
+
+.btn-pink-gradient{
+	color: $white;
+	background:linear-gradient(to right, $pink 0%, #f36eae 100%);
+	border:1px solid $pink;
+	
+	&:hover {
+    color: $white;
+    background: linear-gradient(to right, #de056e 0%, #f565aa 100%);
+    border-color: $pink;
+  }
+}
+
+.btn-pink-gradient{
+  &:focus, &.focus {
+	 background: linear-gradient(to right, #de056e 0%, #f565aa 100%);
+    box-shadow: 0 0 0 0.2rem rgba(222, 5, 110, 0.5);
+  }
+}
+
+
+.btn-purple-gradient{
+	color: $white;
+	background:linear-gradient(to right, $purple 0%, #884af1 100%);
+	border:1px solid $purple;
+	
+	&:hover {
+    color: $white;
+    background: linear-gradient(to right, #6437b3 0%, #7d40e4 100%);
+    border-color: $purple;
+  }
+}
+
+.btn-purple-gradient{
+  &:focus, &.focus {
+	 background: linear-gradient(to right, #6437b3 0%, #7d40e4 100%);
+    box-shadow: 0 0 0 0.2rem rgba(100, 55, 179, 0.5);
+  }
+}
+
+.btn-warning-gradient{
+	color: $white;
+	background: linear-gradient(to left, #efa65f, #f76a2d);
+	border:1px solid #efa65f;
+	
+	&:hover {
+    color: $white;
+    background: linear-gradient(to left, #efa359, #f56729);
+    border-color: #efa65f;
+  }
+}
+
+.btn-warning-gradient{
+  &:focus, &.focus {
+	 background: linear-gradient(to left, #efa359, #f56729);
+    box-shadow: 0 0 0 0.2rem rgba(239, 163, 89, 0.5);
+  }
+}
+
+.btn-success-gradient{
+	color: $white;
+	background: linear-gradient(to left, #48d6a8 0%, #029666 100%);
+	border:1px solid #3dc59a;
+	
+	&:hover {
+    color: $white;
+    background: linear-gradient(to left, #3ed0a1 0%, #039062 100%);
+    border-color: #3dc59a;
+  }
+}
+
+.btn-success-gradient{
+  &:focus, &.focus {
+	 background: linear-gradient(to left, #3ed0a1 0%, #039062 100%);
+    box-shadow: 0 0 0 0.2rem rgba(3, 144, 98, 0.5);
+  }
+}
+
+
+.btn-info-gradient{
+	color: $white;
+	background: linear-gradient(to right, #0296ce 0%, #38c6f7 100%);
+	border:1px solid #29b9ec;
+	
+	&:hover {
+    color: $white;
+    background: linear-gradient(to right, #0993c7 0%, #22b7ea 100%);
+    border-color: #29b9ec;
+  }
+}
+
+.btn-info-gradient{
+  &:focus, &.focus {
+	 background: linear-gradient(to right, #0993c7 0%, #22b7ea 100%);
+    box-shadow: 0 0 0 0.2rem rgba(34, 183, 234, 0.5);
+  }
+}
+
+.btn-light-gradient{
+	color: $black;
+	background: linear-gradient(120deg, #cdd2de 0%, $gray-100 100%);
+	border:1px solid #cdd2de;
+	
+	&:hover {
+    color: $black;
+    background: linear-gradient(120deg, #c1c7d6 0%, #e0e5f1 100%);
+    border-color: #cdd2de;
+  }
+}
+
+.btn-light-gradient{
+  &:focus, &.focus {
+	 background: linear-gradient(120deg, #c1c7d6 0%, #e0e5f1 100%);
+    box-shadow: 0 0 0 0.2rem rgba(193, 199, 214, 0.5);
+  }
+}
+
+.btn-dark-gradient{
+	color: $white;
+	background: linear-gradient(60deg, #29323c 0%, #485563 100%);
+	border:1px solid #29323c;
+	
+	&:hover {
+    color: $white;
+    background: linear-gradient(60deg, #212931 0%, #424f5d 100%);
+    border-color: #29323c;
+  }
+}
+
+.btn-dark-gradient{
+  &:focus, &.focus {
+	 background:linear-gradient(60deg, #212931 0%, #424f5d 100%);
+    box-shadow: 0 0 0 0.2rem rgba(33, 41, 49, 0.5);
+  }
+}
+
+
+.btn-secondary-gradient{
+	color: $white;
+	background: linear-gradient(to right, #636f8e 0%, #acb8da 100%);
+	border:1px solid #9aa6c7;
+	
+	&:hover {
+    color: $white;
+    background: linear-gradient(to right, #596586 0%, #92a0ca 100%);
+    border-color: #9aa6c7;
+  }
+}
+
+.btn-secondary-gradient{
+  &:focus, &.focus {
+	 background: linear-gradient(to right, #596586 0%, #92a0ca 100%);
+    box-shadow: 0 0 0 0.2rem rgba(88, 100, 130, 0.5);
+  }
+}
 .btn-primary:hover {
     color: #fff;
     background-color: #0c83e2;

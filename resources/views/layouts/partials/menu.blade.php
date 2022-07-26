@@ -57,13 +57,11 @@
                             <li class="">
                                 <a href="{{ route('projets.index') }}" class="">مشاريع الشراءات</a>
                             </li>
-                            <li class="">
-                                <a href="{{ route('Dossier_achat') }}" class="">إعداد ملف شراءات </a>
-                            </li>
+
                         </ul>
                     </li>
                 @endcan
-                @can('dossier-achat')
+                @can('pai')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="#!" class="nav-link">
                         <span class="pcoded-micon">

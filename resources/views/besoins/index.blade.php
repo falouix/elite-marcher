@@ -1,5 +1,4 @@
 @php
-
 $breadcrumb = __('breadcrumb.bread_besoins_list');
 if ($locale == 'ar') {
     $lang = asset('/plugins/i18n/Arabic.json');
@@ -47,13 +46,7 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>{{ __('cards.besoins_list') }}</h5>
                 <div class="card-header-right">
-                    @can('besoins-list')
-                        <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>
-                            <i class="feather icon-trash-2"></i>
-                            {{ __('inputs.btn_delete') }}
-                            <i id="btn_count"></i>
-                        </button>
-                    @endcan
+                    
                     @can('besoins-list')
                         <a type="button" class="btn btn-primary" href="{{ route('besoins.create') }}">
                             <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}

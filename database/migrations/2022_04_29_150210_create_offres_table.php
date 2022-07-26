@@ -22,7 +22,7 @@ class CreateOffresTable extends Migration
             $table->dateTime('date_enregistrement')->nullable();
             $table->string('ref_bo', 45)->nullable()->comment('Reference bureau d\'ordre');
             $table->text('observation')->nullable();
-            $table->bigInteger('dossiers_achats_id')->index('fk_offres_dossiers_achats1_idx');
+            $table->bigInteger('dossiers_achats_id')->unsigned()->index('fk_offres_dossiers_achats1_idx');
             $table->bigInteger('soumissionaire_id')->nullable();
             $table->integer('nbr_lots')->nullable();
             $table->decimal('prix_offre', 15, 3)->nullable();

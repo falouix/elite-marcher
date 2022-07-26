@@ -15,7 +15,7 @@ class CreateServiceOrdresTable extends Migration
     {
         Schema::create('service_ordres', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->bigInteger('dossiers_achats_id')->index('fk_service_ordres_dossiers_achats1_idx');
+            $table->bigInteger('dossiers_achats_id')->unsigned()->index('fk_service_ordres_dossiers_achats1_idx');
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

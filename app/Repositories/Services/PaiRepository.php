@@ -18,15 +18,8 @@ class PaiRepository implements IPaiRepository
 
         $dataAction = "besoins.pais.file-actions";
         if($mode =='projets'){
-            $dataAction = "Projets_approvisionnement.datatable-actions";
+            $dataAction = "projets.lignes_projets.ligneprojet-datatable-actions";
         }
-
-       /* $services_id = 2;
-        $annee_gestion = '2022';
-        $nature_demande = 2;
-        $type_demande =3;
-        */
-
         $grouped = DB::table('lignes_besoins')
         ->selectRaw('*,
             SUM(qte_demande) AS sumqte_demande,
@@ -47,24 +40,23 @@ class PaiRepository implements IPaiRepository
             ->groupByRaw('libelle')
             ->groupByRaw('nature_demandes_id')
             ->groupByRaw('type_demande');
-        if(!$nature_demande == 'all'){
+        if($nature_demande != 'all'){
            // if('$nature_demande == NULL')
             $grouped->where('nature_demandes_id', $nature_demande);
         }
         if($type_demande != 'all'){
             $grouped->where('type_demande', $type_demande);
         }
-        
+        if($mode == 'projets'){
+            $grouped->where('projets_id', NULL);
+        }
         //->get();
         Log::alert("Pai grouped query");
         Log::info($grouped->get());
 
-
         return datatables()
             ->of($grouped)
-            /* ->editColumn('created_at', function ($caseSession) {
-        return $caseSession->created_at->format('Y-m-d');
-        })*/
+
             ->addColumn('select', static function () {
                 return null;
             })

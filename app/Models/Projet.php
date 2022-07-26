@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $type_demande
  * @property string|null $nature_passation
  * @property int|null $services_id
+ * @property bool|null $transferer
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -42,6 +43,7 @@ class Projet extends Model
 
 	protected $casts = [
 		'services_id' => 'int',
+		'transferer' => 'bool',
 		'created_by' => 'int',
 		'updated_by' => 'int'
 	];
@@ -60,6 +62,7 @@ class Projet extends Model
 		'type_demande',
 		'nature_passation',
 		'services_id',
+		'transferer',
 		'created_by',
 		'updated_by'
 	];

@@ -15,7 +15,7 @@ class CreateEnregistrementsTable extends Migration
     {
         Schema::create('enregistrements', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->bigInteger('dossiers_achats_id')->index('fk_enregistrements_dossiers_achats1_idx');
+            $table->bigInteger('dossiers_achats_id')->unsigned()->index('fk_enregistrements_dossiers_achats1_idx');
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

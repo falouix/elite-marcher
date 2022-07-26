@@ -16,7 +16,7 @@ class CreateReceptionsTable extends Migration
         Schema::create('receptions', function (Blueprint $table) {
             $table->integer('id', true);
             $table->tinyInteger('type_reception')->nullable()->comment('Provisoire, Definitif');
-            $table->bigInteger('dossiers_achats_id')->index('fk_receptions_dossiers_achats1_idx');
+            $table->bigInteger('dossiers_achats_id')->unsigned()->index('fk_receptions_dossiers_achats1_idx');
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

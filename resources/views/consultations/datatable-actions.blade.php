@@ -1,6 +1,6 @@
 
 @can('besoin-edit')
-<a href="{{ route('projets.show', ['projet'=> $id]) }}" class="btn btn-icon btn-rounded btn-primary" title="{{ __('inputs.btn_view') }}">
+<a href="#" class="btn btn-icon btn-rounded btn-primary" title="{{ __('inputs.btn_view') }}">
     <i class="feather icon-eye"></i>
 </a>
 @endcan

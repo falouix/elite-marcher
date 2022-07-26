@@ -30,8 +30,8 @@ $tbl_action = __('labels.tbl_action');
 
 @section('breadcrumb')
     @include('layouts.partials.breadcrumb', [
-        'bread_title' => 'البرنامج السنوي للشراءات',
-        'bread_subtitle' => 'مشاريع الشراءات',
+        'bread_title' => 'ملفات الشراءات',
+        'bread_subtitle' => 'الإستشارات',
     ])
 @endsection
 
@@ -47,11 +47,10 @@ $tbl_action = __('labels.tbl_action');
         <div class="card">
 
             <div class="card-header">
-                <h5>قائمة مشاريع الشراءات</h5>
+                <h5> قائمة الإستشارات </h5>
                 <div class="card-header-right">
-
                     @can('besoins-list')
-                        <a type="button" class="btn btn-primary" href="{{ route('projets.create') }}">
+                        <a type="button" class="btn btn-primary" href="{{ route('consultations.create') }}">
                             <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}
                         </a>
                     @endcan
@@ -177,9 +176,9 @@ $tbl_action = __('labels.tbl_action');
                                 <div class="form-group">
                                     <label class="form-label">طريقة التمويل</label>
                                     <select class="mb-3 form-control" id="source_finance" name="source_finance">
-                                        <option value="1">ميزانية الدولة</option>
-                                        <option value="2"> قرض</option>
-                                        <option value="3">هبة</option>
+                                        <option>ميزانية الدولة</option>
+                                        <option> قرض</option>
+                                        <option>هبة</option>
                                     </select>
                                 </div>
                             </div>
@@ -227,13 +226,16 @@ $tbl_action = __('labels.tbl_action');
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-           /* var annee_gestion = $('#annee_gestion').val()
+            var annee_gestion = $('#annee_gestion').val()
             var services_id = $('#services_id').val()
             var type_demande = $('#type_demande').val()
-            var natures_passation = $('#natures_passation').val()*/
+            var natures_passation = $('#natures_passation').val()
             var table = $('#table-cp').DataTable({
                 dom: 'frltipB',
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "{{ __('labels.all') }}"]
+                ],
                 buttons: [{
                         text: '{{ __('inputs.btn_copy') }}',
                         extend: 'copyHtml5',
@@ -267,7 +269,7 @@ $tbl_action = __('labels.tbl_action');
                 scrollY: true,
                 scrollX: true,
                 scrollCollapse: true,
-                //paging: false,
+                paging: false,
                 fixedColumns: {
                     leftColumns: 0,
                     rightColumns: 1
@@ -388,7 +390,11 @@ $tbl_action = __('labels.tbl_action');
         });
 
         $('#btn_add_dossierAchat').click(() => {
-
+            let projets_id = $("#projets_id").val();
+            let nature_passation = $("#nature_passation").val();
+            let organisme_financier = $("#modal_natures_demande").val();
+            let source_finance = $("#source_finance").val();
+            let nature_finance = $("#nature_finance").val();
             $.ajax({
                 url: "{{ route('projets.transfertDA') }}",
                 type: "POST",
@@ -402,7 +408,6 @@ $tbl_action = __('labels.tbl_action');
                 success: function(response) {
                     $('#organisme_financier-error').removeClass('is-invalid')
                     $('#add_dossierAchat').modal('toggle');
-                    $('#table-cp').DataTable().ajax.reload();
                     PnotifyCustom(response)
                 },
                 error: function(errors) {

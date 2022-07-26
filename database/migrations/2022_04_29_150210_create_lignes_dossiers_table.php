@@ -16,11 +16,12 @@ class CreateLignesDossiersTable extends Migration
         Schema::create('lignes_dossiers', function (Blueprint $table) {
             $table->bigInteger('id')->primary();
             $table->integer('num_lot')->nullable();
-            $table->integer('libelle')->nullable();
+            $table->text('libelle')->nullable();
             $table->integer('qte')->nullable();
             $table->decimal('cout_unite_ttc', 12, 3)->nullable();
             $table->decimal('cout_total_ttc', 12, 3)->nullable();
-            $table->bigInteger('dossiers_achats_id')->index('fk_lignes_dossiers_dossiers_achats1_idx');
+            $table->bigInteger('dossiers_achats_id')->unsigned()->index('fk_lignes_dossiers_dossiers_achats1_idx');
+            $table->bigInteger('lignes_projet_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

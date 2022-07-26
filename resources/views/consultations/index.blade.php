@@ -31,7 +31,7 @@ $tbl_action = __('labels.tbl_action');
 @section('breadcrumb')
     @include('layouts.partials.breadcrumb', [
         'bread_title' => 'البرنامج السنوي للشراءات',
-        'bread_subtitle' => 'مشاريع الشراءات',
+        'bread_subtitle' => 'المخطط السنوي للشراءات',
     ])
 @endsection
 
@@ -47,9 +47,15 @@ $tbl_action = __('labels.tbl_action');
         <div class="card">
 
             <div class="card-header">
-                <h5>قائمة مشاريع الشراءات</h5>
+                <h5>إضافة مشروع شراء</h5>
                 <div class="card-header-right">
-
+                    @can('besoins-list')
+                        <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>
+                            <i class="feather icon-trash-2"></i>
+                            {{ __('inputs.btn_delete') }}
+                            <i id="btn_count"></i>
+                        </button>
+                    @endcan
                     @can('besoins-list')
                         <a type="button" class="btn btn-primary" href="{{ route('projets.create') }}">
                             <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}
@@ -161,8 +167,6 @@ $tbl_action = __('labels.tbl_action');
                 <div class="modal-body">
                     <form id="form_id">
                         <div class="row">
-                            <input type="number" name="projets_id" id="projets_id" value="0" hidden>
-                            <input type="text" name="nature_passation" id="nature_passation" hidden>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">جهة التمويل </label>
@@ -176,10 +180,10 @@ $tbl_action = __('labels.tbl_action');
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">طريقة التمويل</label>
-                                    <select class="mb-3 form-control" id="source_finance" name="source_finance">
-                                        <option value="1">ميزانية الدولة</option>
-                                        <option value="2"> قرض</option>
-                                        <option value="3">هبة</option>
+                                    <select class="mb-3 form-control  ">
+                                        <option>ميزانية الدولة</option>
+                                        <option> قرض</option>
+                                        <option>هبة</option>
                                     </select>
                                 </div>
                             </div>
@@ -227,13 +231,16 @@ $tbl_action = __('labels.tbl_action');
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-           /* var annee_gestion = $('#annee_gestion').val()
+            var annee_gestion = $('#annee_gestion').val()
             var services_id = $('#services_id').val()
             var type_demande = $('#type_demande').val()
-            var natures_passation = $('#natures_passation').val()*/
+            var natures_passation = $('#natures_passation').val()
             var table = $('#table-cp').DataTable({
                 dom: 'frltipB',
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "{{ __('labels.all') }}"]
+                ],
                 buttons: [{
                         text: '{{ __('inputs.btn_copy') }}',
                         extend: 'copyHtml5',
@@ -267,7 +274,7 @@ $tbl_action = __('labels.tbl_action');
                 scrollY: true,
                 scrollX: true,
                 scrollCollapse: true,
-                //paging: false,
+                paging: false,
                 fixedColumns: {
                     leftColumns: 0,
                     rightColumns: 1
@@ -378,38 +385,48 @@ $tbl_action = __('labels.tbl_action');
                 });
 
             $('.dataTables_length').addClass('bs-select');
+
             // Setup - add a text input to each footer cell
+
             addSearchFooterDataTable("#table-cp")
+
+
             $("#services_id").select2({
                 dir: "{{ $rtl }}",
                 maximumSelectionLength: 1,
-                placeholder: "{{ __('labels.choose') }}",
+                placeholder: "{{ __('labels.choose') }} ",
+
             });
         });
 
         $('#btn_add_dossierAchat').click(() => {
-
+            let natures_demande_id = $("#modal_natures_demande").val();
+            let libelle = $("input[name=modal_libelle]").val();
             $.ajax({
-                url: "{{ route('projets.transfertDA') }}",
+                url: "{{ route('articles.store') }}",
                 type: "POST",
                 data: {
-                    'projets_id': $("#projets_id").val(),
-                    'nature_passation': $("#nature_passation").val(),
-                    'organisme_financier': $("#organisme_financier").val(),
-                    'source_finance': $("#source_finance").val(),
-                    'nature_finance': $("#nature_finance").val(),
+                    'natures_demande_id': $("#modal_natures_demande").val(),
+                    'libelle': $("input[name=modal_libelle]").val(),
                 },
                 success: function(response) {
-                    $('#organisme_financier-error').removeClass('is-invalid')
-                    $('#add_dossierAchat').modal('toggle');
-                    $('#table-cp').DataTable().ajax.reload();
+                    $('#libelle').removeClass('is-invalid')
+                    $('#modal_natures_demande').removeClass('is-invalid')
+                    $('#add_article').modal('toggle');
                     PnotifyCustom(response)
+
                 },
                 error: function(errors) {
-                    $('#organisme_financier').removeClass('is-invalid')
-                    if (errors.responseJSON.message.organisme_financier != null) {
-                        $('#organisme_financier').addClass('is-invalid')
-                        $('#organisme_financier-error').text(errors.responseJSON.message.organisme_financier);
+                    $('#libelle').removeClass('is-invalid')
+                    if (errors.responseJSON.message.libelle != null) {
+                        $('#libelle').addClass('is-invalid')
+                        $('#libelle-error').text(errors.responseJSON.message.libelle);
+                    }
+                    $('#modal_natures_demande').removeClass('is-invalid')
+                    if (errors.responseJSON.message.natures_demande_id != null) {
+                        $('#modal_natures_demande').addClass('is-invalid')
+                        $('#modal_natures_demande-error').text(errors.responseJSON.message
+                            .natures_demande_id);
                     }
                 }
             }); // ajax end
@@ -429,10 +446,7 @@ $tbl_action = __('labels.tbl_action');
 
         })
 
-        function tranfererDA(id, nature_passation) {
-            alert(nature_passation)
-            $('#projets_id').val(id)
-            $('#nature_passation').val(nature_passation)
+        function tranfererDA(id, $nature_passation) {
             $('#add_dossierAchat').modal('show');
         }
     </script>

@@ -14,15 +14,16 @@ class CreateDossiersAchatsTable extends Migration
     public function up()
     {
         Schema::create('dossiers_achats', function (Blueprint $table) {
-            $table->bigInteger('id')->primary();
-            $table->bigInteger('code_projet')->nullable();
+            $table->bigIncrements('id');
+            $table->string('annee_gestion', 4)->nullable();
+            $table->string('code_projet')->nullable();
             $table->string('code_dossier', 45)->nullable()->unique('code_dossier_UNIQUE');
             $table->integer('situation_dossier')->nullable()->comment('بصدد الإعداد 1\n، في انتظار العروض2\n في الفرز،3\n بصدد الإنجاز،4\n القبول الوقتي، 5\nالقبول النهائي،6\n ملف منتهي 7\n، ملغى');
             $table->text('objet_dossier')->nullable();
             $table->string('organisme_financier')->nullable()->comment('ميزانية الدولة');
             $table->integer('source_finance')->nullable()->comment('طريقة التمويل \nميزانية الدولة، قرض، هبة');
             $table->enum('nature_finance', ['FIXE', 'DYNAMIQUE'])->nullable()->comment('طبيعة الأسعار (ثابتة، قابلة للمراجعة)\n');
-            $table->boolean('type_dossier')->nullable()->comment('0 : Consultation\n1 : Appel Offre(إجراءات مبسطو . عادية. تفاوض مباشر)');
+            $table->enum('type_dossier', ['CONSULTATION', 'AOS', 'AON', 'AOGREGRE'])->nullable()->comment('طريقة الإبرام\nإستشارة\nطلب عروض اجراءات مبسطة\nطلب عروض اجراءات عادية\nصفقة بالتفاوض المباشر');
             $table->string('type_demande', 10)->nullable()->comment('أشغال\nتزود بخدمات\nتزود بمواد\nدراسات\nENUM(\'TRAVAUX\', \'FOURNITURE_SERVICE\', \'FOURNITURE_BIEN\', \'ETUDES\')');
             $table->string('type_commission', 45)->nullable()->comment('لجنة الصفقات (محلية، جهوية، وطنية)');
             $table->date('date_cloture')->nullable();

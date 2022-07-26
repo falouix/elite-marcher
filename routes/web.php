@@ -160,6 +160,7 @@ Route::group(
         // route projets d'approvisionnement
         Route::resource('projets', ProjetController::class);
         Route::post('projets/datatable', [ProjetController::class, 'getAllProjetsDatatable'])->name('projets.data');
+        Route::post('projets/transferer', [ProjetController::class, 'transfererProjet'])->name('projets.transfertDA');
         Route::delete('projets/multidestroy', [ProjetController::class, 'multidestroy'])->name('projets.multidestroy');
 
          //route Pai : Générateur du plan d'investissement annulle des achats
