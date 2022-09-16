@@ -146,6 +146,7 @@ class NatureDemandeController extends Controller
      */
     public function getAllNatureDemandeToSelect(Request $request)
     {
+        \Log::info($request);
         if ($request->ajax()) {
             return $this->repository->getNatureDemandeSelect($request->type);
         }

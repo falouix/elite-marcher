@@ -1,8 +1,7 @@
 <?php
 namespace App\Common;
 use Request;
-use App\Models\Income;
-use App\Models\MCase;
+
 
 
 class Utility {
@@ -25,20 +24,25 @@ class Utility {
        return $result;
     }
 
-    //  Get record revenue_from_table in Income Table
-    public static function getRecordFromTableById($income_id){
-        $income = Income::select('id','revenue_from_table','incomes_from_id')->where('id', $income_id)->first();
-        if($income){
-            switch ($income->revenue_from_table){
-                case 'cases':
-                    return Mcase::select('id','case_date', 'case_code', 'description','user_id')->with('user')->where('id', $income->incomes_from_id)->first();
-                    break;
 
-                default:
-                    # code...
-                    break;
+    public static function getSituationDossierLabel($situation){
+          switch ($situation){
+                case 1:
+                    return '<label class="badge btn-primary-gradient btn-sm" style="color: white;">بصدد الإعداد</label>';
+                case 2:
+                    return '<label class="badge btn-success-gradient btn-sm" style="color: white;"> في انتظار العروض </label>';
+                case 3:
+                    return '<label class="badge btn-secondary-gradient btn-sm" style="color: white;"> في الفرز </label>';
+                case 4:
+                    return '<label class="badge btn-danger-gradient btn-sm" style="color: white;"> بصدد الإنجاز </label>';
+                case 5:
+                    return '<label class="badge btn-warning-gradient btn-sm" style="color: white;"> القبول الوقتي</label>';
+                case 6:
+                    return '<label class="badge badge-primary" style="color: white;">القبول النهائي</label>';
+                case 7:
+                    return '<label class="badge badge-secondary" style="color: white;">ملف منتهي </label>';
+                case 8:
+                    return '<label class="badge btn-dark-gradient btn-sm" style="color: white;">ملغى</label>';
             }
         }
-
-    }
 }

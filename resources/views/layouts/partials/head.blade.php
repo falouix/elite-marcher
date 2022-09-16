@@ -15,7 +15,7 @@
     content="Legal, Aid, مكتب, محمامي">
     <meta name="author" content="CDF Center- Chedli Elhaj Ali" />
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<!-- Favicon icon 
+<!-- Favicon icon
 {{-- <linkrel="icon"href="asset('/images/favicon.ico')" type="image/x-icon"> --}}
 <!-- fontawesome icon -->
 <link rel="stylesheet" href="{{ asset('/fonts/fontawesome/css/fontawesome-all.min.css') }}">

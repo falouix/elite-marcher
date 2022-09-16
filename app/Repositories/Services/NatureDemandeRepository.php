@@ -55,6 +55,7 @@ class NatureDemandeRepository implements INatureDemandeRepository
             ->make(true);
     }
     public function getNatureDemandeSelect($type){
+        \Log::info("Filter Nature demande by :".$type);
         return ['results' =>NatureDemande::select('id','libelle as text')->where('type',$type)->orderBy('libelle')->get()];
     }
     public function destroy($id)

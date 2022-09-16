@@ -91,9 +91,9 @@ $tbl_action = __('labels.tbl_action');
                             <script src="{{ asset('/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
                             <script src="{{ asset('/js/pcoded.min.js') }}"></script>
                             <script src="{{ asset('/js/menu-setting.min.js') }}"></script>
-                            <!-- Other js files or scripts -->.
-                            {{-- Single delete modal --}}
 
+
+                            {{-- Single delete modal --}}
                             @yield('srcipt-js')
                             <script>
                                 // Add selected row count to Mulitiple Delete Btn
@@ -132,7 +132,7 @@ $tbl_action = __('labels.tbl_action');
                                 }
 
                                 function deleteSingleRowDataTable(tableId) {
-                                   // alert("ggsfgsgsgsg")
+                                    // alert("ggsfgsgsgsg")
                                     var table = $(tableId).DataTable();
                                     var row = $(this).parents('tr');
 
@@ -191,6 +191,7 @@ $tbl_action = __('labels.tbl_action');
                                     new PNotify(opts);
                                 }
 
+
                                 function multipleDeleteG(locale, tableId, ids, url) {
 
                                     if (ids.length <= 0) {
@@ -232,10 +233,10 @@ $tbl_action = __('labels.tbl_action');
                                                     var loader = new PNotify({
                                                         title: "{{ __('labels.pnotify_title') }}",
                                                         text: '<div class="progress progress-striped active" style="margin:0">\
-                                                                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
-                                                                                    <span class="sr-only">0%</span>\
-                                                                                    </div>\
-                                                                                    </div>',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span class="sr-only">0%</span>\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>',
                                                         addclass: PnClass,
                                                         stack: stack_top_left,
                                                         icon: 'icon-spinner4 spinner',
@@ -307,6 +308,166 @@ $tbl_action = __('labels.tbl_action');
                                     }
 
 
+                                }
+
+                                function customnotify(title, desc, url) {
+
+                                    if (Notification.permission !== "granted") {
+                                        Notification.requestPermission();
+                                    } else {
+                                        var notification = new Notification(title, {
+                                            icon: '',
+                                            body: desc,
+                                        });
+
+                                        /* Remove the notification from Notification Center when clicked.*/
+                                        notification.onclick = function() {
+                                            window.open(url);
+                                        };
+
+                                        /* Callback function when the notification is closed. */
+                                        notification.onclose = function() {
+                                            console.log('Notification closed');
+                                        };
+
+                                    }
+                                }
+
+                                function showNotifG() {
+                                    var afficheNotifDesktop = 'True'
+                                    var afficheNotifValidationDesktop = 'True'
+                                    var afficheNotifActionsDesktop = 'True'
+                                    var nbNotifModel = 10
+                                    var nbNotifValidationModel = 2
+                                    var nbNotifActionsModel = 6
+                                    if (afficheNotifDesktop == 'True') {
+                                        showInernalNotif("info", 'إشعارات تذكير ', "لديك " + nbNotifModel + " إشعارات تذكير ", "", false)
+                                        customnotify('جامعة جندوبة', "لديك " + nbNotifModel + " إشعارات تذكير ", '');
+                                    }
+                                    if (afficheNotifValidationDesktop == 'True') {
+                                        showInernalNotif("success", " إشعارات تذكير لتثبيت المعلومات ", "لديك " + nbNotifValidationModel +
+                                            "إشعارات تذكير لتثبيت المعلومات ",
+                                            "", true)
+                                        customnotify('جامعة جندوبة', "لديك " + nbNotifValidationModel + " إشعارات تذكير لتثبيت المعلومات ",
+                                            '');
+                                    }
+                                    if (afficheNotifActionsDesktop == 'True') {
+                                        showInernalNotif("error", "إشعارات تذكير لتثبيت المعلومات ",
+                                            "لديك " + nbNotifActionsModel + " مهام يجب إنجازها ", "", false)
+                                        customnotify('جامعة جندوبة', "لديك " + nbNotifActionsModel + " مهام يجب إنجازها ", '');
+                                    }
+                                }
+
+                                function showInernalNotif(type, title, desc, url, hide) {
+
+                                    show_stack_bottom_right(type, title, desc, url, hide);
+                                }
+                                // Stacks
+                                // ------------------------------
+
+                                // Define directions
+                                var stack_top_left = {
+                                    "dir1": "down",
+                                    "dir2": "right",
+                                    "push": "top"
+                                };
+                                var stack_bottom_left = {
+                                    "dir1": "right",
+                                    "dir2": "up",
+                                    "push": "top"
+                                };
+                                var stack_bottom_right = {
+                                    "dir1": "up",
+                                    "dir2": "right",
+                                    "firstpos1": 25,
+                                    "firstpos2": 25
+                                };
+                                var stack_custom_left = {
+                                    "dir1": "right",
+                                    "dir2": "down"
+                                };
+                                var stack_custom_right = {
+                                    "dir1": "left",
+                                    "dir2": "up",
+                                    "push": "top"
+                                };
+                                var stack_custom_top = {
+                                    "dir1": "down",
+                                    "dir2": "right",
+                                    "push": "top",
+                                    "spacing1": 1
+                                };
+                                var stack_custom_bottom = {
+                                    "dir1": "up",
+                                    "dir2": "left",
+                                    "spacing1": 1
+                                };
+                                // Custom bottom position
+                                function show_stack_custom_bottom(type, title, desc, url, $hide) {
+                                    type = "info"
+                                    var opts = {
+                                        title: "Over here",
+                                        text: "Check me out. I'm in a different stack.",
+                                        width: "50%",
+                                        cornerclass: "no-border-radius",
+                                        addclass: "stack-custom-bottom bg-primary",
+                                        stack: stack_custom_bottom,
+                                        hide: $hide
+                                    };
+                                    switch (type) {
+                                        case 'error':
+                                            opts.title = "Oh No";
+                                            opts.text = "Watch out for that water tower!";
+                                            opts.addclass = "stack-custom-bottom bg-danger";
+                                            opts.type = "error";
+                                            break;
+
+                                        case 'info':
+                                            opts.title = "Breaking News";
+                                            opts.text = "Have you met Ted?";
+                                            opts.addclass = "stack-custom-bottom bg-info";
+                                            opts.type = "info";
+                                            break;
+
+                                        case 'success':
+                                            opts.title = "Good News Everyone";
+                                            opts.text = "I've invented a device that bites shiny metal asses.";
+                                            opts.addclass = "stack-custom-bottom bg-success";
+                                            opts.type = "success";
+                                            break;
+                                    }
+                                    new PNotify(opts);
+                                }
+                                // Bottom right
+                                function show_stack_bottom_right(type, title, desc, url, hide) {
+                                    console.log(hide)
+                                    var opts = {
+                                        title: title,
+                                        text: desc,
+                                        addclass: "stack-bottom-left bg-primary",
+                                        stack: stack_bottom_right,
+                                        hide: hide
+                                    };
+                                    switch (type) {
+                                        case 'error':
+
+                                            opts.addclass = "stack-bottom-left bg-danger";
+                                            opts.type = "error";
+                                            break;
+
+                                        case 'info':
+
+                                            opts.addclass = "stack-bottom-left bg-info";
+                                            opts.type = "info";
+                                            break;
+
+                                        case 'success':
+
+                                            opts.addclass = "stack-bottom-left bg-success";
+                                            opts.type = "success";
+                                            break;
+                                    }
+                                    new PNotify(opts);
                                 }
                             </script>
                             @if (Session::has('notification'))

@@ -818,7 +818,7 @@ $tbl_action = __('labels.tbl_action');
             let natures_demande_id = $("#modal_natures_demande").val();
             let libelle = $("input[name=modal_libelle]").val();
             $.ajax({
-                url: "{{ route('articles.store') }}",
+                url: "{{ route('articles.storeFromBesoin') }}",
                 type: "POST",
                 data: {
                     'natures_demande_id': $("#modal_natures_demande").val(),

@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\NotifyCron::class,
     ];
 
     /**
@@ -25,6 +25,14 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        //$schedule->command('cdf:notify')->daily();
+        $schedule->command('cdf:notify')->everyMinute()
+        ->onSuccess(function () {
+            \Log::info("Cron Notify Task Succeeded!");
+        })
+        ->onFailure(function () {
+            \Log::info("Cron Notify Task Failed!");
+        });;
     }
 
     /**
