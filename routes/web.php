@@ -138,6 +138,7 @@ Route::group(
         //route DossierAchats
         Route::post('dossiers/datatable', [DossierAchatController::class, 'getAllDossiersDatatable'])->name('dossiers.data');
         Route::get('dossiers/{id}', [DossierAchatController::class, 'show'])->name('dossiers.show');
+        Route::get('settings/{id}/edit ', [DossierAchatController::class, 'edit'])->name('dossiers.edit');
 
          // route Consultations
          Route::resource('consultations', ConsultationController::class);

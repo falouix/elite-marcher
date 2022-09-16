@@ -130,6 +130,17 @@ class ConsultationController extends Controller
     public function edit($id)
     {
         $dossier = DossiersAchat::select('*')->where('id', $id)->first();
+        switch ($dossier->type_demande) {
+            case '1':
+                $dossier->type_demande = "مواد وخدمات";
+                break;
+            case '2':
+                $dossier->type_demande = "أشغال";
+                break;
+            default:
+                $dossier->type_demande = "دراسات";
+                break;
+        }
         //dd($dossier);
         return view('dossiers_achats.consultations.edit', compact('dossier'));
     }

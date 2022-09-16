@@ -20,7 +20,7 @@ class CreateEtablissementsTable extends Migration
             $table->string('email', 45)->nullable();
             $table->string('adresse')->nullable();
             $table->string('responsable', 45)->nullable();
-            $table->string('entete', 45)->nullable();
+            $table->text('entete')->nullable();
             $table->string('code_pa', 45)->nullable();
             $table->string('code_consult', 45)->nullable();
             $table->string('code_ao', 45)->nullable();

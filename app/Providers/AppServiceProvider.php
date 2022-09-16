@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\BesoinsParam;
+use App\Models\Etablissement;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Schema;
@@ -129,10 +130,15 @@ class AppServiceProvider extends ServiceProvider
             if ($paramBesoin) {
                 $besoins_actif = Carbon::now()->between($paramBesoin->date_debut, $paramBesoin->date_fin);
             }
-            //  $settings = Setting::first();
+            $settings = Etablissement::first();
+            if(!$settings){
+                $settings = Etablissement::create();
+            }
+
             $view->with('locale', $locale)
                 ->with('besoins_actif', $besoins_actif)
-                ->with('paramBesoin', $paramBesoin);
+                ->with('paramBesoin', $paramBesoin)
+                ->with('settings', $settings);
         });
 
     }

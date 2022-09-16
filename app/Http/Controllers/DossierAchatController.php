@@ -15,36 +15,6 @@ class DossierAchatController extends Controller
     {
         $this->repository = $repository;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -52,11 +22,30 @@ class DossierAchatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $dossier = $this->repository->getDossierWithRelations($id);
-       // dd($dossier);
-        return view('dossiers_achats.show',compact('dossier'));
+        switch ($dossier->type_demande) {
+            case '1':
+                $dossier->type_demande = "مواد وخدمات";
+                break;
+            case '2':
+                $dossier->type_demande = "أشغال";
+                break;
+            default:
+                $dossier->type_demande = "دراسات";
+                break;
+        }
+        switch ($dossier->type_dossier) {
+            case 'CONSULTATION':
+                return view('dossiers_achats.consultations.edit', compact('dossier'));
+            case 'AOS':
+                return view('dossiers_achats.AOS.index', compact('dossier'));
+            case 'AON':
+                return view('dossiers_achats.AON.index', compact('dossier'));
+            case 'AOGREGRE':
+                return view('dossiers_achats.AOGREGRE.index', compact('dossier'));
+        }
     }
 
     /**
@@ -65,34 +54,31 @@ class DossierAchatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $dossier = $this->repository->getDossierWithRelations($id);
-        return view('dossiers_achats.show',compact('dossier'));
-    }
-    
+        switch ($dossier->type_demande) {
+            case '1':
+                $dossier->type_demande = "مواد وخدمات";
+                break;
+            case '2':
+                $dossier->type_demande = "أشغال";
+                break;
+            default:
+                $dossier->type_demande = "دراسات";
+                break;
+        }
+        switch ($dossier->type_dossier) {
+            case 'CONSULTATION':
+                return view('dossiers_achats.consultations.edit', compact('dossier'));
+            case 'AOS':
+                return view('dossiers_achats.AOS.index', compact('dossier'));
+            case 'AON':
+                return view('dossiers_achats.AON.index', compact('dossier'));
+            case 'AOGREGRE':
+                return view('dossiers_achats.AOGREGRE.index', compact('dossier'));
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
     /**
@@ -106,7 +92,8 @@ class DossierAchatController extends Controller
         Log::info($request);
         if ($request->annee_gestion) {
             if ($request->ajax()) {
-                return $this->repository->getAllDossierA($request->annee_gestion, $request->situation_dossier, $request->type_demande, $request->type_dossier);
+                return $this->repository->getAllDossierA($request->annee_gestion,
+                $request->situation_dossier, $request->type_demande, $request->type_dossier);
             }
         }
 

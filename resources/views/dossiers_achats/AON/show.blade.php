@@ -57,9 +57,148 @@ $tbl_action = __('labels.tbl_action');
             </div>
             <div class="card-body task-details">
 
-                @component('components.dossier_details', ['dossier'=>$dossier])
+                <div class="pl-0">
+                    <div class="main-profile-overview">
 
-               @endcomponent
+                        <div class=" justify-content-between ">
+
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 0.3rem; border-top:white;">
+                                            <h6>{{ __('labels.tbl_case_date') }} </h6>
+                                        </td>
+                                        <td class="text-right" style="padding: 0.3rem; border-top:white;">
+                                            {{ date('d-m-Y', strtotime($case->case_date)) }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 0.3rem; border-top:white;">
+                                            <h6>
+                                                {{ __('labels.tbl_case_num') }} :
+
+                                            </h6>
+                                        </td>
+                                        <td class="text-right" style="padding: 0.3rem; border-top:white;">
+                                            {{ $case->case_num }}
+                                        </td>
+                                    </tr>
+                                    @if ($case->caseType)
+                                        <tr>
+                                            <td style="padding: 0.3rem; border-top:white;">
+                                                <h6>
+                                                    {{ __('labels.tbl_case_type_id') }} :
+                                                </h6>
+                                            </td>
+                                            <td class="text-right" style="padding: 0.3rem; border-top:white;">
+                                                {{ $case->caseType->libelle }}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if ($case_court_circle)
+                                        <tr>
+                                            <td style="padding: 0.3rem; border-top:white;">
+                                                <h6>
+                                                    {{ __('labels.tbl_court_num') }} :
+                                                </h6>
+                                            </td>
+                                            <td class="text-right" style="padding: 0.3rem; border-top:white;">
+                                                {{ $case_court_circle->libelle }}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if ($case->court)
+                                        <tr>
+                                            <td style="padding: 0.3rem; border-top:white;">
+                                                <h6>
+                                                    {{ __('labels.tbl_court_id') }} :
+                                                </h6>
+                                            </td>
+                                            <td class="text-right" style="padding: 0.3rem; border-top:white;">
+                                                {{ $case->court->libelle }}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+
+
+                        </div>
+
+                        <hr class="mg-y-20">
+                        <h6>{{ __('cards.case_client') }}</h6>
+                        <hr class="mg-y-20">
+                        <div class=" justify-content-between ">
+
+                            <table class="table">
+
+                                <tr>
+                                    <td style="padding: 0.3rem; border-top:white;">
+                                        <h6>{{ __('labels.tbl_client_name') }} </h6>
+                                    </td>
+                                    <td class="text-right" style="padding: 0.3rem; border-top:white;">
+                                        {{ $case->client->full_name }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.3rem; border-top:white;">
+                                        <h6>
+                                            {{ __('labels.tbl_client_phone') }} :
+
+                                        </h6>
+                                    </td>
+                                    <td class="text-right" style="padding: 0.3rem; border-top:white;">
+                                        {{ $case->client->phone_num }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.3rem; border-top:white;">
+                                        <h6>
+                                            {{ __('labels.tbl_email_abr') }} :
+                                        </h6>
+                                    </td>
+                                    <td class="text-right" style="padding: 0.3rem; border-top:white;">
+                                        {{ $case->client->email }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.3rem; border-top:white;">
+                                        <h6>
+                                            {{ __('labels.tbl_client_nationality') }} :
+                                        </h6>
+                                    </td>
+                                    <td class="text-right" style="padding: 0.3rem; border-top:white;">
+                                        {{ $case->client->nationality }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.3rem; border-top:white;">
+                                        <h6>
+                                            {{ __('labels.tbl_client_adress') }} :
+                                        </h6>
+                                    </td>
+                                    <td class="text-right" style="padding: 0.3rem; border-top:white;">
+                                        {{ $case->client->contact }}
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+
+
+                        <hr class="mg-y-20">
+                        <h6>{{ __('labels.tbl_description') }} </h6>
+                        <div class="main-profile-social-list">
+
+                            <div class="media">
+                                <p style="line-height: 27px">
+                                    {{ $case->description }}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div><!-- main-profile-overview -->
+                </div>
             </div>
         </div>
 

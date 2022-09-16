@@ -95,15 +95,17 @@ class DossiersAchat extends Model
             $model->created_by = Auth::user()->id;
         });
         static::created(function ($model) {
+            $settings =\App\Models\Etablissement::first();
             $count = \DB::table('dossiers_achats')
             ->select(\DB::raw('count(*) as count'))
             ->count();
             switch ($model->type_dossier) {
+
                 case 'CONSULTATION':
-                    $codeDossier = 'C'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
+                    $codeDossier =  $settings->code_consult;
                     break;
                 case 'AOS':
-                    $codeDossier = 'AOS'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
+                    $codeDossier =  $settings->code_AOS;
                     break;
                 case 'AON':
                     $codeDossier = 'AON'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
@@ -112,6 +114,13 @@ class DossiersAchat extends Model
                     $codeDossier = 'AOGREGRE'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
                     break;
             }
+            if($settings->ajouter_annee){
+                $code = \Str::replaceFirst('{code}', str_pad($count, 4, '0', STR_PAD_LEFT), $settings->code_pa);
+                $code = \Str::replaceFirst('{annee}', date('Y'), $code);
+            }else{
+                $code = \Str::replaceFirst('{code}', str_pad($count, 4, '0', STR_PAD_LEFT), $settings->code_pa);
+            }
+
             $model->code_dossier = $codeDossier;
             $model->save();
         });

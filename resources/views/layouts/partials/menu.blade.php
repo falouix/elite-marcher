@@ -100,24 +100,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item pcoded-hasmenu">
-                        <a href="#!" class="nav-link">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-folder"></i>
-                            </span>
-                            <span class="pcoded-mtext">المعطيات الأساسية</span>
-                        </a>
-                        <ul class="pcoded-submenu" style="display: none;">
-                            <li class=""><a href={{ route('services.index') }}
-                                    class="">المصالح/الدوائر/المؤسسات</a></li>
-                            <li class=""><a href="{{ route('natures-demande.index') }}" class="">أنواع
-                                    الطلبات</a></li>
-                            <li class=""><a href="{{ route('articles.index') }}" class="">المواد أو
-                                    الطلبات</a></li>
-                            <li class=""><a href="{{ route('soumissionnaires.index') }}"
-                                    class="">المتعهدين</a></li>
-                        </ul>
-                    </li>
+
                 @endcan
                 <!-- settings menu -->
                 {{-- @can('settings-general') --}}
@@ -146,7 +129,7 @@
                     @endif
                     <!-- settings menu end-->
                     <!-- case-settings menu -->
-                    @if (\Auth::user()->can('case-type-list') ||
+                    @if (\Auth::user()->can('pai') ||
                         \Auth::user()->can('case-status-list') ||
                         (\Auth::user()->can('case-stage-list') && \Auth::user()->can('court-list')))
                         <li data-username=" Settings ui">
@@ -155,9 +138,27 @@
                                     class="pcoded-mtext">{{ __('menu.settings') }}</span></a>
 
                         </li>
-                    @endif
-                    <!-- case-settings menu end-->
 
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="#!" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-folder"></i>
+                            </span>
+                            <span class="pcoded-mtext">المعطيات الأساسية</span>
+                        </a>
+                        <ul class="pcoded-submenu" style="display: none;">
+                            <li class=""><a href={{ route('services.index') }}
+                                    class="">المصالح/الدوائر/المؤسسات</a></li>
+                            <li class=""><a href="{{ route('natures-demande.index') }}" class="">أنواع
+                                    الطلبات</a></li>
+                            <li class=""><a href="{{ route('articles.index') }}" class="">المواد أو
+                                    الطلبات</a></li>
+                            <li class=""><a href="{{ route('soumissionnaires.index') }}"
+                                    class="">المتعهدين</a></li>
+                        </ul>
+                    </li>
+                    <!-- case-settings menu end-->
+                    @endif
                 @endcan
 
             </ul>

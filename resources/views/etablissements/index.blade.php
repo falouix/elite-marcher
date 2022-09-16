@@ -49,11 +49,18 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active text-uppercase" id="reglagesGeneraux-tab" data-toggle="tab"
-                            href="#reglagesGeneraux" role="tab" aria-controls="reglagesGeneraux" aria-selected="false"><i
-                                class="fas fa-file-alt m-2"></i>
+                            href="#reglagesGeneraux" role="tab" aria-controls="reglagesGeneraux"
+                            aria-selected="false"><i class="fas fa-file-alt m-2"></i>
                             {{ __('labels.tbl_reglagesGeneraux') }}
                             <!--labels.etablissement_reglagesGeneraux-->
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" id="codification-tab" data-toggle="tab" href="#codification"
+                            role="tab" aria-controls="codification" aria-selected="true"><i
+                                class="fas fa-file-alt m-2"></i>
+                            إعدادات ترقيم الملفات </a>
+
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-uppercase" id="parametreAvertissement-tab" data-toggle="tab"
@@ -65,24 +72,18 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                 </ul>
 
                 <!-- [ Form Validation ] start -->
-
-                @if (isset($etablissement))
-                    {{ Form::model($etablissement, ['route' => ['etablissements.update', $etablissement->id], 'method' => 'patch', 'id' => 'validation-etablissement_form']) }}
-                @else
-                    {!! Form::open(['route' => 'etablissements.store', 'method' => 'POST', 'id' => 'validation-etablissement_form']) !!}
-                @endif
+                {!! Form::open(['route' => 'etablissements.store', 'method' => 'POST', 'id' => 'validation-etablissement_form']) !!}
                 <div class="tab-content" id="myTabContent">
                     {{-- etablissement reglagesGenerauxs Tab start --}}
                     <div class="tab-pane fade show active" id="reglagesGeneraux" role="tabpanel"
                         aria-labelledby="reglagesGeneraux-tab">
 
-                        <div id="soumissionnaire" class="row">
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label"> {{ __('labels.tbl_matricule_fiscale') }}</label>
+                                    <label class="form-label"> معرف المؤسسة</label>
                                     <input type="text" class="form-control" name="matricule_fiscale"
-                                        placeholder=" {{ __('labels.tbl_matricule_fiscale') }}..."
-                                        value="{{ old('matricule_fiscale') }}">
+                                        placeholder=" المعرف..." value="{{ $settings->matricule_fiscale }}">
                                 </div>
                             </div>
 
@@ -90,38 +91,47 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                 <div class="form-group">
                                     <label class="form-label">{{ __('labels.tbl_libelle') }}</label>
                                     <input type="text" class="form-control" name="libelle"
-                                        placeholder="{{ __('labels.tbl_libelle') }}..." value="{{ old('libelle') }}">
+                                        placeholder="{{ __('labels.tbl_libelle') }}..." value="{{ $settings->libelle }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label"> {{ __('labels.tbl_responsable') }}</label>
+                                    <input type="responsable" class="form-control" name="responsable"
+                                        placeholder=" {{ __('labels.tbl_responsable') }}..."
+                                        value="{{ $settings->responsable }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label"> {{ __('labels.tbl_email') }} </label>
                                     <input type="email" class="form-control" name="email"
-                                        placeholder=" {{ __('labels.tbl_adresse') }} ..." value="{{ old('email') }}">
+                                        placeholder=" {{ __('labels.tbl_adresse') }} ..." value="{{ $settings->email }}">
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">{{ __('labels.tbl_adresse') }}</label>
                                     <input type="text" class="form-control" name="adresse"
-                                        placeholder="{{ __('labels.tbl_adresse') }}..." value="{{ old('adresse') }}">
+                                        placeholder="{{ __('labels.tbl_adresse') }}..." value="{{ $settings->adresse }}">
                                 </div>
                             </div>
+                           
+                        </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label"> {{ __('labels.tbl_responsable') }}</label>
-                                    <input type="responsable" class="form-control" name="responsable"
-                                        placeholder=" {{ __('labels.tbl_responsable') }}..."
-                                        value="{{ old('responsable') }}">
-                                </div>
-                            </div>
+                    </div>
+                    {{-- etablissement reglagesGenerauxs Tab end --}}
+                    {{-- etablissement Codifications Tab start --}}
+                    <div class="tab-pane fade show " id="codification" role="tabpanel" aria-labelledby="codification-tab">
+
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label"> {{ __('labels.tbl_code_pa') }}</label>
                                     <input type="text" class="form-control" name="code_pa"
-                                        placeholder=" {{ __('labels.tbl_code_pa') }}..." value="{{ old('code_pa') }}">
+                                        placeholder=" {{ __('labels.tbl_code_pa') }}..."
+                                        value="{{ $settings->code_pa }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -129,22 +139,24 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <label class="form-label">{{ __('labels.tbl_code_consult') }}</label>
                                     <input type="text" class="form-control" name="code_consult"
                                         placeholder="{{ __('labels.tbl_code_consult') }}..."
-                                        value="{{ old('code_consult') }}">
+                                        value="{{ $settings->code_consult }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">{{ __('labels.tbl_code_ao') }} </label>
                                     <input type="text" class="form-control" name="code_ao"
-                                        placeholder="{{ __('labels.tbl_code_ao') }} ..." value="{{ old('code_ao') }}">
+                                        placeholder="{{ __('labels.tbl_code_ao') }} ..."
+                                        value="{{ $settings->code_ao }}">
                                 </div>
                             </div>
-
-                            <div class="col-sm-4 ">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 ">
                                 <div class="form-check">
-                                    <input type="hidden" name="ajouter_annee" value="0">
-                                    <input class="form-check-input" type="checkbox" id="ajouter_annee" name="ajouter_annee"
-                                        value="1" {{ old('ajouter_annee' ? 'checked' : '') }} checked>
+                                    <input class="form-check-input" type="checkbox" id="ajouter_annee"
+                                        name="ajouter_annee" value="{{ $settings->ajouter_annee }}"
+                                        {{ $settings->ajouter_annee ? 'checked' : '' }} checked>
 
                                     <label class="form-check-label" for="ajouter_annee">
                                         {{ __('labels.tbl_ajouter_annee') }}
@@ -152,29 +164,20 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                 </div>
                             </div>
 
-                            <div class="col-sm-4 ">
+                            <div class="col-sm-6 ">
                                 <div class="form-check">
-                                    <input type="hidden" name="reset_code" value="0">
                                     <input class="form-check-input" type="checkbox" id="reset_code" name="reset_code"
-                                        value="1" {{ old('reset_code' ? 'checked' : '') }} checked>
+                                        value="{{ $settings->reset_code }}" {{ $settings->reset_code ? 'checked' : '' }}
+                                        checked>
                                     <label class="form-check-label" for="reset_code">
                                         {{ __('labels.tbl_reset_code') }}
                                     </label>
                                 </div>
                             </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">{{ __('labels.tbl_entete') }}</label>
-                                    <textarea type="text" class="form-control" name="entete" id='entete' placeholder="{{ __('labels.tbl_entete') }}..."
-                                        value="{{ old('entete') }}">
-                                     </textarea>
-                                </div>
-                            </div>
                         </div>
 
                     </div>
-                    {{-- etablissement reglagesGenerauxs Tab end --}}
+                    {{-- etablissement Codifications Tab end --}}
                     {{-- etablissement parametreAvertissement Tab start --}}
                     <div class="tab-pane fade " id="parametreAvertissement" role="tabpanel"
                         aria-labelledby="parametreAvertissement-tab">
@@ -227,8 +230,9 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             <div class="col-sm-4 ">
                                 <div class="form-group">
                                     <input name="notif_reglagesGeneraux_op" type="hidden" value="0">
-                                    <input id="notif_reglagesGeneraux_op" name="notif_reglagesGeneraux_op" type="checkbox"
-                                        value="1" {{ old('notif_reglagesGeneraux_op' ? 'checked' : '') }}>
+                                    <input id="notif_reglagesGeneraux_op" name="notif_reglagesGeneraux_op"
+                                        type="checkbox" value="1"
+                                        {{ old('notif_reglagesGeneraux_op' ? 'checked' : '') }}>
                                     <label>{{ __('labels.tbl_notif_reglagesGeneraux_op') }}</label>
                                 </div>
                             </div>
@@ -278,8 +282,17 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                     </div>
                     {{-- etablissement parametreAvertissement Tab end --}}
                 </div>
-                <div class="form-group col-md-12 text-center">
-                    <button type="submit" class="btn btn-primary"> إضافة </button>
+                <div class="col-md-12 mt-3">
+                    <button type="submit" class="btn btn-primary" style="float: right;">
+                        <i class="feather icon-client-plus"></i>
+                        {{ __('inputs.btn_save_changes') }}
+
+                    </button>
+
+                    <a href="{{ route('settings.index') }}" class="btn btn-danger" style="float: left;">
+                        <i class="feather icon-minus-circle"></i>
+                        {{ __('inputs.btn_cancel') }}
+                    </a>
                 </div>
                 {!! Form::close() !!}
                 <!-- [ Form Validation ] end -->
