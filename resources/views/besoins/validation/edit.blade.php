@@ -137,7 +137,8 @@ $tbl_action = __('labels.tbl_action');
 
                 <div class="col-md-12">
                     <div class="dt-responsive table-responsive">
-
+                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span
+                            id="coutTotal"> </span></h6>
                         <table id="table-cp" class="table table-striped table-bordered nowrap">
                             <thead>
                                 <th class="not-export-col">id</th>
@@ -167,8 +168,7 @@ $tbl_action = __('labels.tbl_action');
                                 </tr>
                             </tfoot>
                         </table>
-                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span id="coutTotal">
-                            </span></h6>
+
                     </div>
                 </div>
                 {{-- Contact from company  end --}}

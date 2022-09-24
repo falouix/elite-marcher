@@ -32,8 +32,8 @@ $tbl_action = __('labels.tbl_action');
 
 @section('breadcrumb')
     @include('layouts.partials.breadcrumb', [
-    'bread_title'=> 'تحديد الحاجيات',
-    'bread_subtitle'=> 'المخطط السنوي للحاجيات'
+    'bread_title'=> 'البرنامج السنوي للشراءات',
+    'bread_subtitle'=> 'المخطط السنوي للشراءات'
     ])
 @endsection
 
@@ -120,7 +120,7 @@ $tbl_action = __('labels.tbl_action');
                         <thead>
                             <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                     class="select-checkbox not-export-col" /> </th>
-                            <th class="not-export-col">id</th>
+
                             <th>المادة</th>
                             <th>طبيعة الطلب</th>
                             <th>نوع الطلب</th>
@@ -128,7 +128,6 @@ $tbl_action = __('labels.tbl_action');
                             <th>الكمية المصادقة</th>
                             <th>الكلفة التقديرية للوحدة</th>
                             <th>الكلفة التقديرية الجملية</th>
-                            <th>الملاحظات</th>
                             <th class="not-export-col">{{ $tbl_action }}</th>
                         </thead>
 
@@ -136,7 +135,7 @@ $tbl_action = __('labels.tbl_action');
                             <tr>
                                 <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                         class="select-checkbox not-export-col" /> </th>
-                                <th class="not-export-col">id</th>
+
                                 <th>المادة</th>
                                 <th>طبيعة الطلب</th>
                                 <th>نوع الطلب</th>
@@ -144,7 +143,6 @@ $tbl_action = __('labels.tbl_action');
                                 <th>الكمية المصادقة</th>
                                 <th>الكلفة التقديرية للوحدة</th>
                                 <th>الكلفة التقديرية الجملية</th>
-                                <th>الملاحظات</th>
                                 <th class="not-export-col">{{ $tbl_action }}</th>
                             </tr>
                         </tfoot>
@@ -247,7 +245,7 @@ $tbl_action = __('labels.tbl_action');
                     // serverSide: true,
                     serverMethod: 'POST',
                     ajax: {
-                        url: "{{ route('pais.datatable') }}",
+                        url: "{{ route('pais-projet.datatable') }}",
                         data: function(data) {
                             data.annee_gestion = $('#annee_gestion').val()
                             if ($("#services_id").val()[0] === undefined) {
@@ -269,10 +267,6 @@ $tbl_action = __('labels.tbl_action');
                             className: "select-checkbox"
                         },
                         {
-                            data: "id",
-                            className: "id",
-                        },
-                        {
                             data: "libelle",
                             className: "libelle"
                         },
@@ -284,25 +278,22 @@ $tbl_action = __('labels.tbl_action');
                             data: "nature_demandes_id",
                             className: "nature_demandes_id"
                         },
+
                         {
-                            data: "qte_demande",
-                            className: "qte_demande"
+                            data: "sumqte_dem",
+                            className: "sumqte_dem"
                         },
                         {
-                            data: "qte_valide",
-                            className: "qte_valide"
+                            data: "sumqte",
+                            className: "sumqte"
                         },
                         {
                             data: "cout_unite_ttc",
                             className: "cout_unite_ttc"
                         },
                         {
-                            data: "cout_total_ttc",
-                            className: "cout_total_ttc"
-                        },
-                        {
-                            data: "libelle",
-                            className: "libelle"
+                            data: "sumcout_total_ttc",
+                            className: "sumcout_total_ttc"
                         },
                         {
                             data: 'action',
@@ -316,15 +307,11 @@ $tbl_action = __('labels.tbl_action');
                             className: 'select-checkbox',
                             targets: 0
                         },
-                        {
-                            visible: false,
-                            targets: 1
-                        }
                     ],
                     drawCallback: function() {
                         var api = this.api();
                         $('#coutTotal').html(
-                            api.column(8, {
+                            api.column(7, {
                                 page: 'current'
                             }).data().sum()
                         )

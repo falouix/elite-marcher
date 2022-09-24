@@ -2,10 +2,15 @@
 
 namespace App\Repositories\Services;
 
-use App\Models\DossiersAchat;
-use App\Models\LignesDossier;
+
 use App\Repositories\Interfaces\IDossierARepository;
 use Log;
+use App\Models\{
+    DossiersAchat,
+    LignesDossier,
+    CahiersCharge,
+    AvisDossier,
+};
 
 class DossierARepository implements IDossierARepository
 {
@@ -29,15 +34,15 @@ class DossierARepository implements IDossierARepository
                 $query->where('type_dossier', 'CONSULTATION');
                 break;
             case 'AOS':
-                $dataAction = "AOS.datatable-actions";
+                $dataAction = "dossiers_achats.AOS.datatable-actions";
                 $query->where('type_dossier', 'AOS');
                 break;
             case 'AON':
-                $dataAction = "AOS.datatable-actions";
+                $dataAction = "dossiers_achats.AOS.datatable-actions";
                 $query->where('type_dossier', 'AON');
                 break;
             case 'AOGREGRE':
-                $dataAction = "AOS.datatable-actions";
+                $dataAction = "dossiers_achats.AOGREGRE.datatable-actions";
                 $query->where('type_dossier', 'AOGREGRE');
                 break;
             case 'all': // for dashboard
@@ -119,102 +124,55 @@ class DossierARepository implements IDossierARepository
             ->addColumn('total_ttc', function ($dossier) {
                 return self::getTotalDossier($dossier->id);
             })
+            ->addColumn('dashboard_action', 'dossiers_achats.dhasboard-actions')
             ->addColumn('action', $dataAction)
-            ->rawColumns(['id', 'nature_passation', 'situationDA', 'source_financeL', 'nature_financeL', 'type_demandeL', 'total_ttc', 'action'])
+            ->rawColumns(['id', 'nature_passation', 'situationDA',
+                'source_financeL', 'nature_financeL',
+                'type_demandeL', 'total_ttc', 'dashboard_action', 'action'])
             ->make(true);
     }
-    public function getLigneDossierAsByDossierA($projet_id, $mode)
+    public function getLigneDossierAsByDossierA($dossierId)
     {
         $dataAction = "projets.ligneprojet-datatable-actions";
-        $query = LignesDossierA::select('*')->with('DossierA')->with('nature_demande')->where('projets_id', $projet_id);
-        Log::info("mode ligne DossierA is " . $mode);
-        Log::info("query result is  " . $query->get());
-
+        $query = LignesDossierA::select('*')->with('dossiers_achat')->with('lignes_projet')->where('dossiers_achats_id', $dossierId);
+        Log::info("query LigneDossier num : ".$dossierId." result is : " . $query->get());
         return datatables()
             ->of($query)
-            /* ->editColumn('created_at', function ($caseSession) {
-        return $caseSession->created_at->format('Y-m-d');
-        })*/
             ->addColumn('select', static function () {
                 return null;
             })
-            ->editColumn('description', function ($lignesDossierA) {
+            ->editColumn('libelle', function ($lignesDossierA) {
 
-                return Str::words($lignesDossierA->description, 5);
+                return Str::words($lignesDossierA->libelle, 10);
             })
-            ->editColumn('type_demande', function ($lignesDossierA) {
-                switch ($lignesDossierA->type_demande) {
-                    case 1:
-                        return '<label class="badge badge-info"> مواد وخدمات </label>';
-                    case 2:
-                        return '<label class="badge badge-success"> أشغال </label>';
-
-                    default:
-                        return '<label class="badge badge-primary"> دراسات </label>';
-                }
-                return "";
-            })
-            ->editColumn('nature_demandes_id', function ($lignesDossierA) {
-                if ($lignesDossierA->nature_demande) {
-                    return $lignesDossierA->nature_demande->libelle;
-                }
-                return "";
-            })
-            /*->editColumn('qte_valide', function ($lignesDossierA) {
-        return '<input type="number" data-id="'.$lignesDossierA->id.'" id="dtqte_valide" value="'.$lignesDossierA->qte_valide.'"/>';
-        })
-        ->editColumn('cout_total_ttc', function ($lignesDossierA) {
-        return '<input type="number" data-id="'.$lignesDossierA->id.'" id="dtcout_total_ttc" value="'.$lignesDossierA->cout_total_ttc.'"/>
-        ';
-        })*/
-            ->addColumn('valide', function ($lignesDossierA) {
-                if ($lignesDossierA->DossierA) {
-                    if ($lignesDossierA->DossierA->valider == true) {
-                        return '<label class="badge badge-info">تمت المصادقة النهائية</label>';
-                    } else {
-                        return '<label class="badge badge-info"> لم تتم المصادقة النهائية </label>';
-                    }
-                }
-                return "";
-            })
-            ->addColumn('valider', function ($lignesDossierA) {
-                if ($lignesDossierA->DossierA) {
-                    if ($lignesDossierA->DossierA->valider == true) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-                return false;
-            })
-            ->addColumn('action_file', 'projets.file-actions')
             ->addColumn('action', $dataAction)
-            ->rawColumns(['id', 'valide', 'type_demande', 'nature_demandes_id', 'action_file', 'action']) //'qte_valide','cout_total_ttc'
+            ->rawColumns(['id', 'action'])
             ->make(true);
     }
 
     public function getDossierAByParam($key, $value)
     {
         return DossiersAchat::Select('*')->where($key, '=', $value)
-                                        ->first();
+            ->first();
     }
     public function getDossierALigneDossierAByParam($key, $value)
     {
         return DossiersAchat::Select('*')->with('lignes_dossiers')->where($key, '=', $value)
-                                        ->first();
+            ->first();
     }
-    public function getDossierWithRelations($id){
+    public function getDossierWithRelations($id)
+    {
         return DossiersAchat::Select('*')
-                                ->with('lignes_dossiers')
-                                ->with('cahiers_charges')
-                                ->with('dossier_docs')
-                                ->with('offres')
-                                ->with('service_ordres')
-                                ->with('enregistrements')
-                                ->with('bcs_engagements')
-                                ->with('avis_dossiers')
-                                ->where('id', $id)
-                                ->first();
+            ->with('lignes_dossiers')
+            ->with('cahiers_charges')
+            ->with('dossier_docs')
+            ->with('offres')
+            ->with('service_ordres')
+            ->with('enregistrements')
+            ->with('bcs_engagements')
+            ->with('avis_dossiers')
+            ->where('id', $id)
+            ->first();
     }
     public function destroy($id)
     {
@@ -225,8 +183,59 @@ class DossierARepository implements IDossierARepository
     {
         DossiersAchat::whereIn('id', $ids)->delete();
     }
-    public function getTotalDossier($dossier_id){
-        return LignesDossier::select('cout_total_ttc')->where('dossiers_achats_id',$dossier_id)->sum('cout_total_ttc');
+    public function getTotalDossier($dossier_id)
+    {
+        return LignesDossier::select('cout_total_ttc')->where('dossiers_achats_id', $dossier_id)->sum('cout_total_ttc');
+    }
+
+    // مراحل الإنجاز المشتركة
+    /* Cahier des charges */
+    public function cahierCharges($input, $dossierId){
+        $cc = CahiersCharge::where('dossiers_achats_id', $dossierId)->first();
+        if($cc){
+            self::createCC($input);
+        }
+        else{
+            self::updateCC($input);
+        }
+    }
+    private function createCC($input)
+    {
+        Log::alert("Create CC Request repository");
+        $cc = CahiersCharge::create($request);
+        return $cc;
+    }
+
+    private function updateCC($input)
+    {
+        $input = $request->all();
+        $cc = CahiersCharge::find($id);
+        $cc->update($input);
+        return $cc;
+    }
+     /* Avis Pub */
+     public function avisPub($input, $dossierId){
+        $cc = AvisDossier::where('dossiers_achats_id', $dossierId)->first();
+        if($cc){
+            self::createCC($input);
+        }
+        else{
+            self::updateCC($input);
+        }
+    }
+    private function createAvisPub($input)
+    {
+        Log::alert("Create CC Request repository");
+        $cc = AvisDossier::create($request);
+        return $cc;
+    }
+
+    private function updateAvisPub($input)
+    {
+        $input = $request->all();
+        $cc = AvisDossier::find($id);
+        $cc->update($input);
+        return $cc;
     }
 
 

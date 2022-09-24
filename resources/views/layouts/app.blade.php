@@ -132,7 +132,6 @@ $tbl_action = __('labels.tbl_action');
                                 }
 
                                 function deleteSingleRowDataTable(tableId) {
-                                    // alert("ggsfgsgsgsg")
                                     var table = $(tableId).DataTable();
                                     var row = $(this).parents('tr');
 

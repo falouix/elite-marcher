@@ -68,7 +68,7 @@ class ProjetController extends Controller
         $this->validate($request, [
             'type_demande' => 'required',
             'nature_passation' => 'required',
-            'services_id' => 'required',
+            //'services_id' => 'required',
             'date_action_prevu' => 'required',
             'annee_gestion' => 'required|max:4|min:4',
            // 'objet' => 'required',
@@ -132,15 +132,8 @@ class ProjetController extends Controller
      */
     public function edit($id)
     {
-        //$besoin = $this->repository->getBesoinByParam('id', $id);
         $projet = Projet::select('*')->where('id', $id)->first();
-        if (Auth::user()->user_type == 'user') {
-            $services = Service::select('id', 'libelle')->where('id', Auth::user()->services_id)->get();
-        }
-        if (Auth::user()->user_type == 'admin') {
-            $services = Service::select('id', 'libelle')->get();
-        }
-        return view('projets.edit', compact('Service', 'projet'));
+        return view('projets.edit', compact('projet'));
     }
 
     /**
@@ -155,16 +148,47 @@ class ProjetController extends Controller
         $this->validate($request, [
             'type_demande' => 'required',
             'nature_passation' => 'required',
-            'services_id' => 'required',
+           // 'services_id' => 'required',
             'date_action_prevu' => 'required',
             'annee_gestion' => 'required|max:4|min:4',
             'objet' => 'required',
         ]);
-        $projet = $this->repository->update($request->all());
+        $projet = $this->repository->update($request, $id);
         $notification = $this->notifyArr('تحيين مشروع شراء', '!تم تحيين مشروع شراء بنجاح', 'success', true);
 
         return redirect()->route('projets.index')
             ->with('notification', $notification);
+    }
+
+    /**
+     * Add LigneProjet to LignesProjet from edit view
+     */
+    public function addLProjet(Request $request){
+        if ($request->ajax()) {
+        $projet = Projet::find($request->projets_id);
+        if($projet){
+            $ligneBesoin = LignesBesoin::find($request->id);
+                   // dd($ligneBesoin);
+                    if($ligneBesoin){
+                        LignesProjet::create([
+                            'num_lot' => NULL,
+                            'libelle' => ($ligneBesoin->libelle) ? $ligneBesoin->libelle : NULL,
+                            'lignes_besoin_id' => $ligneBesoin->id,
+                            'qte' => $ligneBesoin->qte_valide,
+                            'cout_unite_ttc' =>$ligneBesoin->cout_unite_ttc,
+                            'cout_total_ttc' => $ligneBesoin->cout_total_ttc,
+                            //'type_demande' => $ligneBesoin->type_demande,
+                            //'nature_demandes_id' => $ligneBesoin->nature_demandes_id,
+                            'projets_id' => $projet->id,
+                        ]);
+                        $ligneBesoin->projets_id = $projet->id;
+                        $ligneBesoin->save();
+                        return $this->notify('مشروع شراءات', 'تم إضافة الحاجيات المختارة إلى مشروع الشراء بنجاح');
+                    }
+                    return $this->notify('مشروع شراءات', 'خطأ داخلي, الرجاء إعادة المحاولة', 'error');
+        }
+        return $this->notify('مشروع شراءات', 'خطأ داخلي, الرجاء إعادة المحاولة', 'error');
+        }
     }
 
     /**
@@ -181,9 +205,9 @@ class ProjetController extends Controller
 
     public function destroyLigneProjet(Request $request)
     {
-        LignesProjet::find($request->id)->delete();
-
-        return $this->notify('مشروع شراء', 'تم حذف المادة من مشروع الشراء بنجاح');
+        \Log::info(LignesProjet::where('id',$request->id)->first());
+        $this->repository->destroyLigneProjet($request->id);
+        return $this->notify('مشروع شراءات', 'تم حذف الحاجيات المختارة بنجاح');
 
     }
     /**

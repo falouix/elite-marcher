@@ -65,4 +65,8 @@ class LignesDossier extends Model
 	{
 		return $this->belongsTo(DossiersAchat::class, 'dossiers_achats_id');
 	}
+    public function lignes_projet()
+	{
+		return $this->belongsTo(LignesProjet::class, 'lignes_projet_id');
+	}
 }

@@ -145,18 +145,18 @@ $mode = isset($user);
                         </div>
                     </div>
 
-                    {{--
+
                       <div class="col-md-6">
                        @component('components.user_type', ['userType' => $userType])
                        @endcomponent
                     </div>
-                    --}}
+
                     <div class="col-md-6">
 
                         <div class="form-group">
                             <label class="form-label">المصلحة/ المؤسسة</label>
-                            <select class="form-control" name="services_id">
-                                <option value="NULL" selected>المصلحة أو المؤسسة ...</option>
+                            <select class="form-control" name="services_id" >
+                                <option value="" selected>المصلحة أو المؤسسة ...</option>
 
                                 @foreach ($services as $item)
                                 <option value="{{ $item->id }}">
@@ -245,7 +245,12 @@ $mode = isset($user);
                                 'user_type': {
                                     required: true
                                 },
+                                'services_id': {
+                                    required: true
+                                },
+
                         },
+
 
                         // Errors //
 

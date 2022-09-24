@@ -102,6 +102,7 @@ Route::group(
         //route ligneBesoin
         Route::post('lignes-besoin/datatable', [BesoinController::class, 'getLigneBesoinsByBesoin'])->name('ligne_besoin.datatable');
         Route::post('lignes-besoin', [BesoinController::class, 'storeLigneBesoin'])->name('lignes_besoin.store');
+        Route::post('lignes-besoin-exception', [BesoinController::class, 'storeLigneBesoinException'])->name('lignes_besoin.storeExeption');
         Route::put('lignes-besoin', [BesoinController::class, 'updateLigneBesoin'])->name('lignes_besoin.update');
         Route::get('lignes-besoin', [BesoinController::class, 'editLigneBesoin'])->name('ligne_besoins.edit');
         Route::delete('lignes-besoin-delete', [BesoinController::class, 'destroyLigneBesoin'])->name('ligne_besoins_datatable.destroy');
@@ -115,19 +116,26 @@ Route::group(
         Route::resource('natures-demande', NatureDemandeController::class);
         Route::post('natures-demande/datatable', [NatureDemandeController::class, 'getAllNatureDemandeDataTable'])->name('natures-demande.data');
         Route::post('natures-demande/select', [NatureDemandeController::class, 'getAllNatureDemandeToSelect'])->name('natures-demande.select');
-        Route::get('/natures_demande/Select2/{nature_demandes_id}', [NatureDemandeController::class, 'getNatureDemandeById'])
+        Route::post('/natures_demande/Select2', [NatureDemandeController::class, 'getNatureDemandeById'])
             ->name('natures-demande.NatureDemandeByIdToSelect');
         Route::delete('natures-demande/multidestroy', [NatureDemandeController::class, 'multidestroy'])->name('natures-demandes-datatable.multidestroy');
 
         //route Pai : Générateur du plan d'investissement annulle des achats
-        Route::resource('pais', PaiController::class);
+       // Route::get('pais', PaiController::class);
+        Route::get('pais', [PaiController::class, 'indexPais'])->name('pais.index');
+        Route::get('pais/projet', [PaiController::class, 'indexPais'])->name('pais.indexPais');
         Route::post('pais/datatable', [PaiController::class, 'getAllPaiDatatable'])->name('pais.datatable');
+        Route::post('pais-projet/datatable', [PaiController::class, 'getAllPaiProjetDatatable'])->name('pais-projet.datatable');
 
         // route projets d'approvisionnement
         Route::resource('projets', ProjetController::class);
         Route::post('projets/datatable', [ProjetController::class, 'getAllProjetsDatatable'])->name('projets.data');
+        Route::post('lignes-projets/datatable', [ProjetController::class, 'getLigneProjetsByProjet'])->name('lignes-projets.data');
         Route::post('projets/transferer', [ProjetController::class, 'transfererProjet'])->name('projets.transfertDA');
+        Route::post('lignes-projets/addLProjet', [ProjetController::class, 'addLProjet'])->name('lignes-projets.addLProjet');
         Route::delete('projets/multidestroy', [ProjetController::class, 'multidestroy'])->name('projets.multidestroy');
+        Route::delete('lignes-projets', [ProjetController::class, 'destroyLigneProjet'])->name('lignes-projets.destroy');
+
 
         //route Articles
         Route::resource('articles', ArticleController::class);

@@ -165,10 +165,13 @@ return [
         'poa_file_name'                  => '"اسم المستند"',
         'poa_expiry_date'                  => '"تاريخ الإنتهاء"',
         'libelle'                  => '"التسمية"',
+        'responsable'                  => '"المسؤول"',
+        'contact'                  => '"جهة الإتصال"',
         'description'                  => '"ملاحظات/التفاصيل"',
         'payement_status_id'                  => '"طريقة الدفع"',
         'url'                  => '"الرابط"',
         'captcha'                  => 'رمز التحقق'
+
 
     ],
 

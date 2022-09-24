@@ -94,7 +94,7 @@
                                         <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                                 class="select-checkbox not-export-col" /> </th>
                                         <th class="not-export-col"> </th>
-                                        <th>إستشارة عدد</th>
+                                        <th>ملف عدد</th>
                                         <th>وضعية الملف</th>
                                         <th>الموضوع</th>
                                         <th>الإطار</th>
@@ -111,7 +111,7 @@
                                             <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                                     class="select-checkbox not-export-col" /> </th>
                                             <th class="not-export-col"> </th>
-                                            <th>إستشارة عدد</th>
+                                            <th>ملف عدد</th>
                                             <th>وضعية الملف</th>
                                             <th>الموضوع</th>
                                             <th>الإطار</th>
@@ -378,6 +378,7 @@
                         data.type_dossier = 'all'
                     },
                 },
+                deferRender: true,
                 language: {
                     url: "{{ asset('/plugins/i18n/Arabic.json') }}"
                 },
@@ -430,7 +431,7 @@
                         className: "date_cloture"
                     },
                     {
-                        data: 'action',
+                        data: 'dashboard_action',
                         className: 'action',
                         visible: 'false'
                     }

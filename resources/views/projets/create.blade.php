@@ -33,7 +33,7 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>إضافة مشروع شراء</h5>
                 <div class="card-header-right">
-                    <a href="{{ route('besoins.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('projets.index') }}" class="btn btn-secondary">
                         العودة لقائمة مشاريع الشراءات
                         <i class="feather icon-corner-down-left"></i>
                     </a>
@@ -59,50 +59,17 @@ $tbl_action = __('labels.tbl_action');
 
                 {{-- Case Other Parties --}}
                 {!! Form::open(['route' => 'projets.store', 'method' => 'POST', 'id' => 'validation-projet_form']) !!}
-                        <input type="text" name="lignesprjt" id="lignesprjt" hidden>
+                <input type="text" name="lignesprjt" id="lignesprjt" hidden>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="annee_gestion"> السنة المالية </label>
                             <input type="number" class="form-control" id='annee_gestion' name="annee_gestion"
                                 placeholder="أدخل السنة المالية" value='{{ strftime('%Y') }}' readonly>
-                            {{-- @if ($errors->has('annee_gestion'))
-                                        <span class="text-danger">{{ $errors->first('annee_gestion') }}</span>
-                                    @endif --}}
+
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="date_besoin"> تاريخ إعتزام التنفيذ </label>
-                            <input type="date" class="form-control" id='date_action_prevu' name="date_action_prevu"
-                                placeholder="أدخل التاريخ" value="{{ \Carbon\Carbon::now()->toDateString() }}">
-                            @if ($errors->has('date_action_prevu'))
-                                <span class="text-danger">{{ $errors->first('date_action_prevu') }}</span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label> المصلحة/الدائرة/المؤسسة </label>
-                            <select class="col-sm-12" id="services_id" name="services_id">
-
-                                @foreach ($services as $item)
-                                    <option value="{{ $item->id }}">{{ $item->libelle }}</option>
-                                @endforeach
-                            </select>
-                            <label id="services_id-error"
-                                class="error jquery-validation-error small form-text invalid-feedback"
-                                for="libelle"></label>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary-gradient" id="btn_search_pai" type="submit"
-                            style="margin-top: 32px">
-                            {{ __('inputs.btn_search') }}
-                        </button>
-                    </div>
-
-                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
                             <select class="form-control" id="type_demande" name="type_demande">
@@ -116,7 +83,7 @@ $tbl_action = __('labels.tbl_action');
                                 for="libelle"></label>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label class="form-label">طريقة الإبرام</label>
                             <select class="form-control" id="nature_passation" name="nature_passation">
@@ -131,7 +98,25 @@ $tbl_action = __('labels.tbl_action');
                                 for="libelle"></label>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-3">
+                        <button class="btn btn-primary-gradient" id="btn_search_pai" type="submit"
+                            style="margin-top: 32px">
+                            {{ __('inputs.btn_search') }}
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="date_besoin"> تاريخ إعتزام التنفيذ </label>
+                            <input type="date" class="form-control" id='date_action_prevu' name="date_action_prevu"
+                                placeholder="أدخل التاريخ" value="{{ \Carbon\Carbon::now()->toDateString() }}">
+                            @if ($errors->has('date_action_prevu'))
+                                <span class="text-danger">{{ $errors->first('date_action_prevu') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-7">
                         <div class="form-group">
                             <label class="form-label">الموضوع</label>
                             <input type="text" class="form-control" name="objet" id="objet">
@@ -143,13 +128,16 @@ $tbl_action = __('labels.tbl_action');
                 {!! Form::close() !!}
                 {{-- Contact from company  start --}}
                 @can('besoin-exception')
+                    {{-- Contact from company  start --}}
                     <form id="cp_form" action="#">
+                        <input type="hidden" name="lignebesoin_id" id="lignebesoin_id" value="0">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <h3 class="form-label"> إضافة الحاجيات بصفة إستثنائية</h3>
+                                    <h3 class="form-label"> إضافة إستثنائية للحاجيات</h3>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">طبيعة الطلب</label>
@@ -163,18 +151,15 @@ $tbl_action = __('labels.tbl_action');
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">نوع الطلب</label>
-                                    <select class="form-control" id="type_demande">
-                                        <option value="1">مواد وخدمات</option>
-                                        <option value="2">أشغال</option>
-                                        <option value="3">دراسات</option>
+                                    <select class="form-control " id="natures_demande" name="natures_demande">
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">المادة (التسمية)</label>
-                                    <input type="text" class="form-control" name="libelle" placeholder="المادة..."
-                                        value="{{ old('libelle') }}">
+                                    <select class="form-control " id="articles_id" name="articles_id">
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -214,22 +199,28 @@ $tbl_action = __('labels.tbl_action');
                                     for="file"></label>
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="exampleInputEmail1"> المبررات </label>
+                                <label for="exampleInputEmail1"> الملاحظات </label>
                                 <input type="text" class="form-control" name="description" id="description"
-                                    placeholder="المبررات" value="">
+                                    placeholder="الملاحظات" value="">
 
                             </div>
 
-
                             <div class="col-md-12">
+
                                 <a href="javascript:void(0);" class="btn btn-rounded btn-info" id='add'
                                     for-table='#table-cp'>
                                     <i class="feather icon-plus"></i>
-                                    إضافة إلى الجدول
+                                    <span class="spinner-border spinner-border-sm" role="status" hidden></span>
+                                    <span id="btn_add_poa_title">إضافة إلى الجدول</span>
+
                                 </a>
+
+
+
                             </div>
                         </div>
                     </form>
+                    {{-- Contact from company  end --}}
                 @endcan
                 {{-- Contact from company  end --}}
 
@@ -240,7 +231,8 @@ $tbl_action = __('labels.tbl_action');
 
                     <div class="dt-responsive table-responsive">
 
-                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span id="coutTotal">
+                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات المختارة : <span
+                                id="coutTotal">
                             </span></h6>
 
                         <table id="table-cp" class="table table-striped table-bordered nowrap">
@@ -299,12 +291,12 @@ $tbl_action = __('labels.tbl_action');
     <script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
     <!-- jquery-validation Js -->
     <script src="{{ asset('/plugins/jquery-validation/js/jquery.validate.min.js') }}"></script>
+    <!-- form-select-custom Js -->
+    <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
 
     <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
     <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
-
-    <!-- form-select-custom Js -->
-    <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/sum().js') }}"></script>`
 
     <script>
         'use strict';
@@ -339,6 +331,53 @@ $tbl_action = __('labels.tbl_action');
                     }
                 },
 
+                // Errors //
+
+                errorPlacement: function errorPlacement(error, element) {
+                    var $parent = $(element).parents('.form-group');
+
+                    // Do not duplicate errors
+                    if ($parent.find('.jquery-validation-error').length) {
+                        return;
+                    }
+
+                    $parent.append(
+                        error.addClass(
+                            'jquery-validation-error small form-text invalid-feedback')
+                    );
+                },
+                highlight: function(element) {
+                    var $el = $(element);
+                    var $parent = $el.parents('.form-group');
+
+                    $el.addClass('is-invalid');
+
+                    // Select2 and Tagsinput
+                    if ($el.hasClass('select2-hidden-accessible') || $el.attr(
+                            'data-role') === 'tagsinput') {
+                        $el.parent().addClass('is-invalid');
+                    }
+                },
+                unhighlight: function(element) {
+                    $(element).parents('.form-group').find('.is-invalid').removeClass(
+                        'is-invalid');
+                }
+            });
+            // [ Initialize client-form validation ]
+            $('#cp_form').validate({
+                ignore: '.ignore, .select2-input',
+                focusInvalid: false,
+                rules: {
+                    'libelle': {
+                        required: true,
+                    },
+                    'qte_demande': {
+                        required: true,
+                    },
+                    'cout_unite_ttc': {
+                        required: true,
+                    },
+                },
                 // Errors //
 
                 errorPlacement: function errorPlacement(error, element) {
@@ -436,7 +475,7 @@ $tbl_action = __('labels.tbl_action');
                     url: "{{ route('pais.datatable') }}",
                     data: function(data) {
                         data.annee_gestion = $('#annee_gestion').val()
-                        data.services_id = $('#services_id').val()
+                        data.services_id = 'all'
                         data.type_demande = $('#type_demande').val()
                         data.nature_demande = 'all'
                         data.mode = 'projets'
@@ -466,24 +505,24 @@ $tbl_action = __('labels.tbl_action');
                         className: "nature_demandes_id"
                     },
                     {
-                        data: "qte_demande",
-                        className: "qte_demande"
+                        data: "sumqte_demande",
+                        className: "sumqte_demande"
                     },
                     {
-                        data: "qte_valide",
-                        className: "qte_valide"
+                        data: "sumqte_valide",
+                        className: "sumqte_valide"
                     },
                     {
                         data: "cout_unite_ttc",
                         className: "cout_unite_ttc"
                     },
                     {
-                        data: "cout_total_ttc",
-                        className: "cout_total_ttc"
+                        data: "sumcout_total_ttc",
+                        className: "sumcout_total_ttc"
                     },
                     {
-                        data: "libelle",
-                        className: "libelle"
+                        data: "description",
+                        className: "description"
                     },
                 ],
                 columnDefs: [{
@@ -496,19 +535,51 @@ $tbl_action = __('labels.tbl_action');
                         targets: 1
                     }
                 ],
+                /*
+                drawCallback: function() {
+                        var api = this.api();
+                        $('#coutTotal').html(
+                            api.column(7, {
+                                page: 'current'
+                            }).data().sum()
+                        )
+                    },
+                */
                 select: {
-                    style: 'os',
-                    selector: 'td:first-child'
+                    style: 'multi'
                 },
             });
-
-
             $('.dataTables_length').addClass('bs-select');
 
             // Setup - add a text input to each footer cell
 
             addSearchFooterDataTable("#table-cp")
 
+            table
+                .on('select', function(e, dt, type, indexes) {
+                    $('#coutTotal').html('...')
+                    let items = table.rows('.selected').data()
+                    let sum = 0
+                    items.each((index) => {
+                        sum += parseFloat(index.sumcout_total_ttc)
+                        console.log(sum);
+                    });
+                    $('#coutTotal').html(sum)
+                })
+                .on('deselect', function(e, dt, type, indexes) {
+                    $('#coutTotal').html('...')
+                    let items = table.rows('.selected').data()
+                    let sum = 0
+                    items.each((index) => {
+                        sum += parseFloat(index.sumcout_total_ttc)
+                        console.log(sum);
+                    });
+                    $('#coutTotal').html(sum)
+
+                });
+
+
+            // add Besoin - Exception
             $("#natures_demande").select2({
                 dir: "{{ $rtl }}",
                 // minimumInputLength: 3, // only start searching when the user has input 3 or more characters
@@ -531,42 +602,128 @@ $tbl_action = __('labels.tbl_action');
                 cache: true
 
             });
-
-            $("#services_id").select2({
-                dir: "{{ $rtl }}",
-                placeholder: "{{ __('labels.choose') }} ",
-            });
         });
+        $('#type_demande').on('change', function(e) {
+            var type = e.target.value;
+            $.ajax({
+                url: "{{ route('natures-demande.select') }}",
+                type: "POST",
+
+                data: {
+                    type: type
+                },
+                success: function(data) {
+                    $('#natures_demande').empty();
+                    $('#natures_demande').append('<option value="NULL">إختر من القائمة</option>');
+                    $.each(data.results, function(index, naturdemande) {
+                        $('#natures_demande').append('<option value="' + naturdemande.id +
+                            '">' +
+                            naturdemande.text + '</option>');
+                    })
+                    $('#natures_demande').select2({
+                        dir: "{{ $rtl }}",
+                    });
+                }
+            })
+        });
+        $('#natures_demande').on('change', function(e) {
+            var type = e.target.value;
+            $.ajax({
+                url: "{{ route('articles.select') }}",
+                type: "POST",
+                data: {
+                    natures_demande_id: type
+                },
+                success: function(data) {
+                    $('#articles_id').empty();
+                    $('#articles_id').append('<option value="NULL">إختر من القائمة</option>');
+                    $.each(data.results, function(index, article) {
+                        $('#articles_id').append('<option value="' + article.id +
+                            '">' +
+                            article.text + '</option>');
+                    })
+                    $('#articles_id').select2({
+                        dir: "{{ $rtl }}",
+                    });
+                }
+            })
+        });
+
+        $('#add').click((e) => {
+            e.preventDefault();
+            //$('#libelle').removeClass('is-invalid')
+            $('.spinner-border').removeAttr('hidden');
+            var articleId = $('#articles_id').val()
+            if (articleId === null || articleId == 'NULL' || articleId === undefined) {
+                swal("{{ __('labels.swal_warning_title') }}", 'الرجاء تحديد المادة',
+                    "warning");
+                return false;
+            }
+
+            var formData = new FormData();
+            formData.append('annee_gestion', $("#annee_gestion").val())
+            formData.append('type_demande', $("#type_demande").val())
+            formData.append('nature_demandes_id', $("#natures_demande").val())
+            formData.append('articles_id', articleId)
+            formData.append('description', $("input[name=description]").val())
+            formData.append('file_name', $("input[name=file_name]").val())
+            formData.append('qte_demande', $("input[name=qte_demande]").val())
+            formData.append('cout_unite_ttc', $("input[name=cout_total_ttc]").val())
+            formData.append('cout_unite_ttc', $("input[name=cout_unite_ttc]").val())
+            formData.append('file', document.getElementById("file").files[0])
+            //alert(file)
+            var $type = 'POST'
+            var $url = "{{ route('lignes_besoin.storeExeption') }}"
+
+            $.ajax({
+                url: $url,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function(response) {
+                    console.log(response)
+                    $('.spinner-border').attr('hidden', 'hidden');
+                    $('#table-cp').DataTable().ajax.reload();
+                    $('#cp_form')[0].reset()
+                    //$("#cp_form").get(0).reset()
+                    $('#add').html("إضافة إلى الجدول")
+                    PnotifyCustom(response)
+
+
+                },
+                error: function(response) {
+                    $('.spinner-border').attr('hidden', 'hidden');
+                    console.log(JSON.stringify(response.responseJSON));
+                    $('.spinner-border').attr('hidden', 'hidden');
+                    //  $('#file_name-error').html('')
+                    $('#libelle-error').html('')
+                    $('#file-error').html('')
+                    // alert(JSON.stringify(response.responseJSON.message))
+                    if (response.responseJSON.message.libelle != null) {
+                        $('#libelle').addClass('is-invalid')
+                        $('#libelle-error').text(response.responseJSON.message.poa_title);
+                    }
+
+                }
+            }); // ajax end
+        })
+
         // Search button click event (reload dtatable)
         $('#btn_search_pai').on('click', (e) => {
             e.preventDefault();
-            // var annee_gestion = $('#annee_gestion').val();
-            var services_id = $('#services_id').val()
-            $('#services_id').removeClass('is-invalid')
-            $('#services_id-error').text('');
-            $('#services_id-error').hide();
-            if (services_id === 'all') {
-
-                $('#services_id').addClass('is-invalid')
-                $('#services_id-error').text('الرجاء إختيار المصلحة أو المؤسسة');
-                $('#services_id-error').show()
-                return false
-            }
-
             $('#table-cp').DataTable().ajax.reload();
 
         })
 
         //Submit form 'store'
-        $('#btn_create').on("click", () => {
-            //add_cp()
+        $('#btn_create').on("click", (e) => {
+            e.preventDefault();
 
             $('#type_demande-error').hide()
-            $('#services_id-error').hide()
             $('#nature_passation-error').hide()
             $('#type_demande').removeClass('is-invalid')
             $('#nature_passation').removeClass('is-invalid')
-            $('#services_id').removeClass('is-invalid')
 
             var type_demande = $('#type_demande').val()
             var verif = 0
@@ -583,19 +740,12 @@ $tbl_action = __('labels.tbl_action');
                 $('#nature_passation-error').text('الرجاء إختيار  طريقة الإبرام');
                 $('#nature_passation-error').show()
             }
-            var services_id = $('#services_id').val()
-            if (services_id === 'all') {
-                verif = verif + 1
-                $('#services_id').addClass('is-invalid')
-                $('#services_id-error').text('الرجاء إختيار المصلحة أو المؤسسة');
-                $('#services_id-error').show()
-            }
 
             if (verif > 0) {
                 return false
             }
-            var ids =add_cp();
-            alert(JSON.stringify(ids))
+            var ids = add_cp();
+            //alert(JSON.stringify(ids))
             $('#lignesprjt').val(JSON.stringify(ids))
             $("#btn_submit").click()
         })
@@ -606,8 +756,8 @@ $tbl_action = __('labels.tbl_action');
                 console.log(item)
                 return item.id
             });
-            console.log(ids)
-           // alert(table.rows('.selected').data().length + ' row(s) selected');
+            // console.log(ids)
+            // alert(table.rows('.selected').data().length + ' row(s) selected');
 
             return (ids);
         }

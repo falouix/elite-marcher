@@ -75,8 +75,7 @@ class UserController extends Controller
             'roles' => 'required',
         ]);
 
-       $this->repository->create($request->all());
-
+        $user = $this->repository->create($request->all());
         $locale = LaravelLocalization::getCurrentLocale();
         if ($locale == 'en') {
            $notification = $this->notifyArr('Success [create new user]', 'User created successfully!', 'success', false);
@@ -121,6 +120,7 @@ class UserController extends Controller
 
         $this->validate($request, [
             'name' => 'required',
+            'user_type' => 'required',
            // 'qin' => 'unique:users,qin,' . $id,
            // 'passport' => 'unique:users,passport,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,

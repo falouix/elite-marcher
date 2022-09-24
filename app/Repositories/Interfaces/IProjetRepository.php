@@ -10,5 +10,6 @@ interface IProjetRepository {
     public function getProjetByParam($key,$value);
     function transfererProjet($projet_id, $dossier_id);
     public function destroy($id);
+    public function destroyLigneProjet($id);
     public function multiDestroy($ids);
 }

@@ -57,7 +57,7 @@
                             @endcan
 
                             @can('besoins-list')
-                                <li class=""><a href=" {{ route('pais.index') }}" class="">المخطط السنوي
+                                <li class=""><a href=" {{ route('pais.indexPais') }}" class="">المخطط السنوي
                                         للشراءات</a></li>
                                 <li class="">
                                 @endcan
@@ -100,7 +100,6 @@
                             </li>
                         </ul>
                     </li>
-
                 @endcan
                 <!-- settings menu -->
                 {{-- @can('settings-general') --}}
@@ -132,34 +131,37 @@
                     @if (\Auth::user()->can('pai') ||
                         \Auth::user()->can('case-status-list') ||
                         (\Auth::user()->can('case-stage-list') && \Auth::user()->can('court-list')))
-                        <li data-username=" Settings ui">
-                            <a href="{{ route('etablissements.index') }}" class="nav-link"><span class="pcoded-micon"><i
+                        <li data-username="Expenses ui" class="nav-item pcoded-hasmenu">
+                            <a href="#" class="nav-link"><span class="pcoded-micon"><i
                                         class="feather icon-sliders"></i></span><span
-                                    class="pcoded-mtext">{{ __('menu.settings') }}</span></a>
+                                    class="pcoded-mtext">إعدادات</span></a>
+                            <ul class="pcoded-submenu">
+
+                                <li data-username=" Settings ui">
+                                    <a href="{{ route('etablissements.index') }}" class="nav-link"><span
+                                            class="pcoded-micon"><i class="feather icon-sliders"></i></span><span
+                                            class="pcoded-mtext">إعدادات عامة</span></a>
+
+                                </li>
+                                <li class="pcoded-hasmenu"><a href="#" class="">المعطيات الأساسية</a>
+                                    <ul class="pcoded-submenu">
+                                        <li class=""><a href={{ route('services.index') }}
+                                            class="">المصالح/الدوائر/المؤسسات</a></li>
+                                    <li class=""><a href="{{ route('natures-demande.index') }}" class="">أنواع
+                                            الطلبات</a></li>
+                                    <li class=""><a href="{{ route('articles.index') }}" class="">المواد أو
+                                            الطلبات</a></li>
+                                    <li class=""><a href="{{ route('soumissionnaires.index') }}"
+                                            class="">المتعهدين</a></li>
+                                    </ul>
+                                </li>
 
                         </li>
-
-                    <li class="nav-item pcoded-hasmenu">
-                        <a href="#!" class="nav-link">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-folder"></i>
-                            </span>
-                            <span class="pcoded-mtext">المعطيات الأساسية</span>
-                        </a>
-                        <ul class="pcoded-submenu" style="display: none;">
-                            <li class=""><a href={{ route('services.index') }}
-                                    class="">المصالح/الدوائر/المؤسسات</a></li>
-                            <li class=""><a href="{{ route('natures-demande.index') }}" class="">أنواع
-                                    الطلبات</a></li>
-                            <li class=""><a href="{{ route('articles.index') }}" class="">المواد أو
-                                    الطلبات</a></li>
-                            <li class=""><a href="{{ route('soumissionnaires.index') }}"
-                                    class="">المتعهدين</a></li>
-                        </ul>
-                    </li>
-                    <!-- case-settings menu end-->
-                    @endif
-                @endcan
+                </ul>
+                </li>
+                <!-- case-settings menu end-->
+                @endif
+            @endcan
 
             </ul>
         </div>

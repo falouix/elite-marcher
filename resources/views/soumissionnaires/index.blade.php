@@ -41,13 +41,7 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>{{ __('cards.soumissionnaires_list') }}</h5>
                 <div class="card-header-right">
-                    @can('besoins-list')
-                        <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>
-                            <i class="feather icon-trash-2"></i>
-                            {{ __('inputs.btn_delete') }}
-                            <i id="btn_count"></i>
-                        </button>
-                    @endcan
+
                     @can('besoins-list')
                         <button type="button" class="btn btn-primary" href="" data-toggle="modal"
                             data-target="#add_soumissionnaire">
@@ -64,7 +58,7 @@ $tbl_action = __('labels.tbl_action');
                             <th style="width: 30px"><input type="checkbox" class="select-checkbox" /> </th>
                             <th>id</th>
                             <th>الاسم</th>
-                            <th>جهة الإتصال</th>gouvernorat
+                            <th>جهة الإتصال</th>
                             <th>العنوان</th>
                             <th>الترقيم البريدي</th>
                             <th>المدينة</th>
@@ -97,6 +91,109 @@ $tbl_action = __('labels.tbl_action');
         </div>
     </div>
     <!-- Column Selector table end -->
+    <!-- Modal create or update soumissionnaire -->
+    <div class="modal fade show" id="add_soumissionnaire" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-modal="true" style="display: none;">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-header"> إضافة متعهد جديد </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id='form_id' name='form_id'>
+                        <input type="hidden" name="id" id="id" value="0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="libelle">الاسم</label>
+                                    <input type="text" class="form-control" id='libelle' name="libelle"
+                                        placeholder="أدخل الاسم" value=''>
+                                    <span class="text-danger error-text libelle_err"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">المعرف الجبائي</label>
+                                    <input type="text" class="form-control" id='matricule_fiscale'
+                                        name="matricule_fiscale" placeholder=" أدخل المعرف الجبائي " value=''>
+                                    <span class="text-danger error-text  matricule_fiscale_err"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">العنوان</label>
+                                    <input type="text" class="form-control" id='adresse' name="adresse"
+                                        placeholder="أدخل العنوان" value=''>
+                                    <span class="text-danger error-text adresse_err"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">المدينة</label>
+                                    <input type="text" class="form-control" id='ville' name="ville"
+                                        placeholder=" أدخل المدينة" value=''>
+                                    <span class="text-danger error-text ville_err"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">الترقيم البريدي</label>
+                                    <input type="number" class="form-control" id='code_postal' name="code_postal"
+                                        placeholder="أدخل الترقيم البريدي" value=''>
+                                    <span class="text-danger error-text code_postal_err"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">الهاتف</label>
+                                    <input type="number" class="form-control" id='tel' name="tel"
+                                        placeholder="أدخل الهاتف " value=''>
+                                    <span class="text-danger error-text tel_err"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">الفاكس</label>
+                                    <input type="number" class="form-control" id='tel_fax' name="tel_fax"
+                                        placeholder=" أدخل الفاكس " value=''>
+                                    <span class="text-danger error-text tel_fax_err"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">العنوان الإلكتروني</label>
+                                    <input type="email" class="form-control" id='email' name="email"
+                                        placeholder="أدخل العنوان الإلكتروني" value=''>
+                                    <span class="text-danger error-text email_err"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">جهة الإتصال</label>
+                                    <input type="text" class="form-control" id='contact' name="contact"
+                                        placeholder=" أدخل جهة الإتصال " value=''>
+                                    <span class="text-danger error-text contact_err"></span>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"> إغلاق</button>
+                            <button type="submit" class="btn btn-primary" id='saveBtn'> إضافة </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal create or update soumissionnaire end-->
 @endsection
 @section('srcipt-js')
     <!-- datatable Js -->

@@ -61,7 +61,6 @@ class ArticleController extends Controller
             'valider' => false,
         ]);
         return $this->notify('ضبط الحاجيات', 'تم إضافة مادة جديدة  في انتظار التأكيد من المشرف على المنظومة');
-
     }
 
     /**
@@ -78,7 +77,6 @@ class ArticleController extends Controller
             'libelle' => 'required|unique:articles,libelle',
             'natures_demande_id' => 'required',
         ]);
-
         if ($validator->fails()) {
             Log::critical($validator->errors());
             return $this->error($validator->errors(), 403);
@@ -89,24 +87,12 @@ class ArticleController extends Controller
             'valider' => true,
         ]);
         return $this->notify('المواد أو الطلبات', 'تم إضافة مادة جديدة بنجاح');
-
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Court  $Court
      * @return \Illuminate\Http\JsonResponse
      */
     public function edit(Request $request, $id)
@@ -114,6 +100,7 @@ class ArticleController extends Controller
         Log::info("Article edit id ===> " . $id);
         if ($request->ajax()) {
             $article = Article::find($id);
+            Log::info("Article edit details ===> " . $article);
             return response()->json($article);
         }
     }
@@ -122,33 +109,32 @@ class ArticleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
+        \Log::alert("Update Article from view ".$request);
         $validator = Validator::make($request->all(), [
-            'libelle' => 'required|unique:articles,libelle' . $id,
+            'libelle' => 'required|unique:articles,libelle,' . $id,
             'natures_demande_id' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors(), 403);
         }
-
         Article::find($id)->update([
             'libelle' => $request->libelle,
             'natures_demande_id' => $request->natures_demande_id,
         ]);
         return $this->notify(' المواد أو الطلبات', 'تم تحيين المادة بنجاح');
-
     }
 
     public function destroy($id)
     {
         $this->repository->destroy($id);
         if (session()->has('delete_error')) {
-
             return $this->notify('خطأ عند الحذف ', 'لا يمكن حذف مادة لها تسجيلات مرتبطة','error');
         }
+        return $this->notify('حذف المواد أو الطلبات ', 'تم حذف المادة بنجاح');
     }
     /**
      * Process datatables ajax request.

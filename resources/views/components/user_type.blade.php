@@ -1,29 +1,10 @@
-@if ($locale == 'ar')
     <div class="form-group">
         <label class="form-label">التصنيف </label>
         <select class="form-control" name="user_type">
             <option value="">إختر التصنيف ...</option>
-
-            <option value="chairman" {{ $userType == 'chairman' ? 'selected' : '' }}>رئيس تنفيذي</option>
-            <option value="lawyer" {{ $userType == 'lawyer' ? 'selected' : '' }}>محامي</option>
-            <option value="accountant" {{ $userType == 'accountant' ? 'selected' : '' }}>محاسب</option>
-            <option value="business_manager" {{ $userType == 'business_manager' ? 'selected' : '' }}>إدارة أعمال/ الموارد
-                البشرية</option>
-            <option value="receptionist" {{ $userType == 'receptionist' ? 'selected' : '' }}>موظف إستقبال </option>
+            <option value="admin" {{ $userType == 'admin' ? 'selected' : '' }}>مشرف عام</option>
+            <option value="user" {{ $userType == 'user' ? 'selected' : '' }}>مستعمل عادي</option>
+            <option value="comOffres" {{ $userType == 'comOffres' ? 'selected' : '' }}>عضو لجنة صفقات</option>
+            <option value="comAchats" {{ $userType == 'comAchats' ? 'selected' : '' }}>عضو لجنة شراءات</option>
         </select>
     </div>
-@else
-    <div class="form-group">
-        <label class="form-label">User Type</label>
-        <select class="form-control" name="user_type">
-            <option value="">Select type...</option>
-
-            <option value="chairman" {{ $userType == 'chairman' ? 'selected' : '' }}>Chairman</option>
-            <option value="lawyer" {{ $userType == 'lawyer' ? 'selected' : '' }}>Lawyer</option>
-            <option value="accountant" {{ $userType == 'accountant' ? 'selected' : '' }}>Accountant</option>
-            <option value="business_manager" {{ $userType == 'business_manager' ? 'selected' : '' }}>Business Manager/HR
-            </option>
-            <option value="receptionist" {{ $userType == 'receptionist' ? 'selected' : '' }}>Receptionist </option>
-        </select>
-    </div>
-@endif

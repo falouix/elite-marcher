@@ -44,13 +44,13 @@ class UserNotification extends Notification
     {
         Log::info($this->event['full_name']);
         return (new MailMessage)
-        ->greeting(Lang::get('Hello, ').$this->event['full_name'])
-        ->subject(Lang::get('Customer Account Notification'))
-        ->line(Lang::get('You are receiving this email because we have created an account for you.'))
-        ->action(Lang::get('Access to your account'), $this->event['url'])
-        ->line(Lang::get('Your account credentials :'))
-        ->line(Lang::get('User: ').$this->event['email'])
-        ->line(Lang::get('Password: ').$this->event['pass']);
+        ->greeting(Lang::get('مرحبا, ').$this->event['full_name'])
+        ->subject('منظومة متابعة الصفقات العمومية : جامعة جندوبة')
+        ->line(Lang::get('يسعدنا إعلامكم بإنشاء حساب خاص بكم لمتابعة ملفات الصفقات العمومية لفائدة جامعة جندوبة'))
+        ->action(Lang::get('الرجاء النقر على الرابط للدخول للمنظومة'), $this->event['url'])
+        ->line(Lang::get('معلومات الحساب '))
+        ->line($this->event['email'].Lang::get(' :المستعمل'))
+        ->line($this->event['pass'].Lang::get(' :كلمة العبور'));
     }
 
     /**

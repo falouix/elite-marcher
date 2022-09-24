@@ -48,14 +48,6 @@ $tbl_action = __('labels.tbl_action');
                             <i class="feather icon-plus-circle"></i> إضافة
                         </button>
                     {{-- @endcan --}}
-                    {{-- @can('expense-type-delete') --}}
-                        <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>
-                            <i class="feather icon-trash-2"></i>
-                            {{ __('inputs.btn_delete') }}
-                            <i id="btn_count"></i>
-                        </button>
-                   {{-- @endcan --}}
-
                 </div>
 
             </div>

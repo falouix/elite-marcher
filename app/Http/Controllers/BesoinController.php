@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
-use App\Models\Besoin;
-use App\Models\LignesBesoin;
-use App\Models\Service;
+use App\Models\{
+    Article,
+    Besoin,
+    LignesBesoin,
+    Service,
+    LignesProjet
+};
 use App\Repositories\IFileUploadRepository;
 use App\Repositories\Interfaces\IBesoinRepository;
 use App\Repositories\Interfaces\INatureDemandeRepository;
@@ -267,6 +270,97 @@ class BesoinController extends Controller
                     $request['besoins_id'] = $ligneBesoin->id;
                     $file = $this->fileRepository->fileUploadPost($request);
                 }
+            }
+
+            return $this->notify('ضبط الحاجيات', '!تم إضافة مادة جديدة للحاجيات بنجاح', 'success', true);
+        } else {
+            return $this->notify('ضبط الحاجيات', '!خطأ داخلي الرجاء إعادة المحاولة', 'error', true);
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeLigneBesoinException(Request $request)
+    {
+        Log::info("Store Ligne besoin Exception - Projet Achat");
+        Log::info($request);
+        if ($request->file == 'undefined') {
+            $validator = Validator::make($request->all(), [
+                'articles_id' => 'required',
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'articles_id' => 'required',
+                'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
+            ]);
+        }
+
+        Log::info($validator->errors());
+        if ($validator->fails()) {
+            return $this->error($validator->errors(), 403);
+        }
+
+        if ($request->ajax()) {
+            Log::info("Store Ligne besoin Expectionel");
+            Log::info($request);
+            $Besoin = Besoin::where('annee_gestion',$request['annee_gestion'])->where('services_id', Auth::user()->services_id)->first();
+            if(!$Besoin){
+                $Besoin = Besoin::create([
+                    'date_besoin' => Carbon::today()->toDateString(),
+                    'services_id' => Auth::user()->services_id,
+                    'annee_gestion' => $request['annee_gestion'],
+                    'valider' => 1,
+                ]);
+            }
+            $ligneBesoin = LignesBesoin::select('id', 'articles_id')
+                ->where('besoins_id', $Besoin->id)
+                ->where('articles_id', $request->articles_id)->first();
+            Log::info("Exist Ligne besoin " . $ligneBesoin);
+            if ($ligneBesoin) {
+                return $this->notify('ضبط الحاجيات', 'هذه المادة موجودة سابقا ضمن الحاجيات.', 'error', true);
+            }
+            $article = Article::find($request->articles_id);
+            $ligneBesoin = LignesBesoin::create([
+                'libelle' => ($article != null) ? $article->libelle : null,
+                'articles_id' => $request->articles_id,
+                'description' => $request->description,
+                'type_demande' => $request->type_demande,
+                'nature_demandes_id' => $request->nature_demandes_id,
+                'qte_demande' => $request->qte_demande,
+                'cout_unite_ttc' => $request->cout_unite_ttc,
+                'cout_total_ttc' => $request->qte_demande * $request->cout_unite_ttc,
+                'qte_valide' => $request->qte_valide,
+                'besoins_id' => $Besoin->id,
+            ]);
+            // ajout de document s'il existe
+            if ($request->file != 'undefined') {
+                if ($ligneBesoin) {
+                    $request['path'] = "besoin_documents";
+                    $request['besoins_id'] = $ligneBesoin->id;
+                    $file = $this->fileRepository->fileUploadPost($request);
+                }
+            }
+            //Add ligneBesoin to LigneProjet if modeprojet = editProjet
+            if($request->mode =="editProjet"){
+                    if($ligneBesoin){
+                        LignesProjet::create([
+                            'num_lot' => NULL,
+                            'libelle' => ($ligneBesoin->libelle) ? $ligneBesoin->libelle : NULL,
+                            'lignes_besoin_id' => $ligneBesoin->id,
+                            'qte' => $ligneBesoin->qte_valide,
+                            'cout_unite_ttc' =>$ligneBesoin->cout_unite_ttc,
+                            'cout_total_ttc' => $ligneBesoin->cout_total_ttc,
+                            //'type_demande' => $ligneBesoin->type_demande,
+                            //'nature_demandes_id' => $ligneBesoin->nature_demandes_id,
+                            'projets_id' => $request->projets_id,
+                        ]);
+                        $ligneBesoin->projets_id = $request->projets_id;
+                        $ligneBesoin->save();
+                    }
             }
 
             return $this->notify('ضبط الحاجيات', '!تم إضافة مادة جديدة للحاجيات بنجاح', 'success', true);

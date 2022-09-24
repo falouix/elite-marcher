@@ -158,6 +158,8 @@ class NatureDemandeController extends Controller
      */
     public function getNatureDemandeById(Request $request)
     {
+        $n = NatureDemande::select('id', 'libelle')->where('id',$request->nature_demandes_id)->first();
+        \Log::alert("filter : ".$request->nature_demandes_id . " Result :".$n);
         //if ($request->ajax()) {
         return NatureDemande::select('id', 'libelle')->where('id',$request->nature_demandes_id)->first();
     }

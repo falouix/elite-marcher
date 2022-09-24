@@ -90,7 +90,7 @@ $tbl_action = __('labels.tbl_action');
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    {{-- <div class="col-md-3">
                         <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
                         <select class="js-example-basic-multiple-limit col-sm-12" multiple="multiple" id="services_id"
                             name="services_id">
@@ -100,7 +100,7 @@ $tbl_action = __('labels.tbl_action');
                             @endforeach
                         </select>
                     </div>
-
+                    --}}
                     <div class="col-md-2">
                         <button class="btn btn-primary-gradient " id="btn_search_projets" type="submit"
                             style="margin-top: 32px">
@@ -186,7 +186,7 @@ $tbl_action = __('labels.tbl_action');
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">طبيعة الأسعار </label>
-                                    <select class="form-control" id="nature_finance" >
+                                    <select class="form-control" id="nature_finance">
                                         <option value="FIXE">ثابتة</option>
                                         <option value="DYNAMIQUE"> قابلة للمراجعة</option>
                                     </select>
@@ -227,13 +227,16 @@ $tbl_action = __('labels.tbl_action');
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-           /* var annee_gestion = $('#annee_gestion').val()
-            var services_id = $('#services_id').val()
-            var type_demande = $('#type_demande').val()
-            var natures_passation = $('#natures_passation').val()*/
+            /* var annee_gestion = $('#annee_gestion').val()
+             var services_id = $('#services_id').val()
+             var type_demande = $('#type_demande').val()
+             var natures_passation = $('#natures_passation').val()*/
             var table = $('#table-cp').DataTable({
                 dom: 'frltipB',
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "{{ __('labels.all') }}"]
+                ],
                 buttons: [{
                         text: '{{ __('inputs.btn_copy') }}',
                         extend: 'copyHtml5',
@@ -294,11 +297,13 @@ $tbl_action = __('labels.tbl_action');
                     url: "{{ route('projets.data') }}",
                     data: function(data) {
                         data.annee_gestion = $('#annee_gestion').val()
-                        if ($("#services_id").val()[0] === undefined) {
-                            data.services_id = 'all';
-                        } else {
-                            data.services_id = $("#services_id").val()[0]
-                        }
+                        /* if ($("#services_id").val()[0] === undefined) {
+                             data.services_id = 'all';
+                         } else {
+                             data.services_id = $("#services_id").val()[0]
+                         }
+                         */
+                        data.services_id = 'all';
                         // data.services_id = $('#services_id').val()
                         data.type_demande = $('#type_demande').val()
                         data.natures_passation = $('#natures_passation').val()
@@ -409,7 +414,8 @@ $tbl_action = __('labels.tbl_action');
                     $('#organisme_financier').removeClass('is-invalid')
                     if (errors.responseJSON.message.organisme_financier != null) {
                         $('#organisme_financier').addClass('is-invalid')
-                        $('#organisme_financier-error').text(errors.responseJSON.message.organisme_financier);
+                        $('#organisme_financier-error').text(errors.responseJSON.message
+                            .organisme_financier);
                     }
                 }
             }); // ajax end
@@ -430,7 +436,7 @@ $tbl_action = __('labels.tbl_action');
         })
 
         function tranfererDA(id, nature_passation) {
-            alert(nature_passation)
+            //alert(nature_passation)
             $('#projets_id').val(id)
             $('#nature_passation').val(nature_passation)
             $('#add_dossierAchat').modal('show');

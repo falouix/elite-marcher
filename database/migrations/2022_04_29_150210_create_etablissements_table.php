@@ -23,7 +23,9 @@ class CreateEtablissementsTable extends Migration
             $table->text('entete')->nullable();
             $table->string('code_pa', 45)->nullable();
             $table->string('code_consult', 45)->nullable();
-            $table->string('code_ao', 45)->nullable();
+            $table->string('code_aon', 45)->nullable();
+            $table->string('code_aos', 45)->nullable();
+            $table->string('code_gg', 45)->nullable();
             $table->boolean('ajouter_annee')->nullable()->default(1);
             $table->boolean('reset_code')->nullable()->default(1);
             $table->boolean('notif_validation_besoins')->nullable()->default(1);

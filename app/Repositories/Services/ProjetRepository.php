@@ -2,35 +2,36 @@
 
 namespace App\Repositories\Services;
 
-use App\Repositories\Interfaces\IProjetRepository;
-use App\Models\Projet;
-use App\Models\LignesProjet;
+use App\Models\LignesBesoin;
 use App\Models\LignesDossier;
+use App\Models\LignesProjet;
+use App\Models\NatureDemande;
+use App\Models\Projet;use App\Repositories\Interfaces\IProjetRepository;
+use DB;
 use Log;
 
 class ProjetRepository implements IProjetRepository
 {
     public function create($request)
     {
-        // dd($request);
-        //dd($request['date_projet']);
         $Projet = Projet::create([
-           // 'date_projet' => $request['date_projet'],
             'objet' => $request['objet'],
             'date_action_prevu' => $request['date_action_prevu'],
             'type_demande' => $request['type_demande'],
             'nature_passation' => $request['nature_passation'],
-            'services_id' => $request['services_id'],
             'annee_gestion' => $request['annee_gestion'],
         ]);
         return $Projet;
     }
     public function update($request, $id)
     {
-        $input = $request->all();
-
         $Projet = Projet::find($id);
-        $Projet->update($input);
+        $Projet->update([
+            'type_demande' => $request['type_demande'],
+            'nature_passation' => $request['nature_passation'],
+            'date_action_prevu' => $request['date_action_prevu'],
+            'objet' => $request['objet'],
+        ]);
         return $Projet;
     }
 
@@ -38,22 +39,22 @@ class ProjetRepository implements IProjetRepository
     {
         $dataAction = "projets.datatable-actions";
         if (!($annee_gestion)) {
-            $annee_gestion = strftime("%Y") ;
+            $annee_gestion = strftime("%Y");
         }
         $query = Projet::select('*')
-                        ->where('annee_gestion', $annee_gestion)
-                        ->with('service');
-        if ($services_id != 'all'){
+            ->where('annee_gestion', $annee_gestion)
+            ->with('service');
+        if ($services_id != 'all') {
             $query->where('services_id', $services_id);
         }
-        if ($type_demande != 'all'){
+        if ($type_demande != 'all') {
             $query->where('type_demande', $type_demande);
         }
-        if ($nature_passation != 'all'){
+        if ($nature_passation != 'all') {
             $query->where('nature_passation', $nature_passation);
         }
         $query->orderBy('transferer');
-        Log::info("Result of query projets : ". $query->get());
+        Log::info("Result of query projets : " . $query->get());
         return datatables()
             ->of($query)
             ->addColumn('select', static function () {
@@ -69,11 +70,11 @@ class ProjetRepository implements IProjetRepository
                 switch ($projet->type_demande) {
                     case 1:
                         return '<label class="badge badge-info"> مواد وخدمات </label>';
-                        case 2:
-                            return '<label class="badge badge-success"> أشغال </label>';
+                    case 2:
+                        return '<label class="badge badge-success"> أشغال </label>';
 
                     default:
-                    return '<label class="badge badge-primary"> دراسات </label>';
+                        return '<label class="badge badge-primary"> دراسات </label>';
                 }
                 return "";
             })
@@ -82,11 +83,11 @@ class ProjetRepository implements IProjetRepository
                     case 'CONSULTATION':
                         return '<label class="badge badge-info">استشارة عادية</label>';
                     case 'AOS':
-                            return '<label class="badge badge-success"> صفقة إجراءات مبسطة </label>';
+                        return '<label class="badge badge-success"> صفقة إجراءات مبسطة </label>';
                     case 'AON':
-                            return '<label class="badge badge-success"> صفقة إجراءات عادية </label>';
+                        return '<label class="badge badge-success"> صفقة إجراءات عادية </label>';
                     default:
-                    return '<label class="badge badge-primary"> صفقة بالتفاوض المباشر </label>';
+                        return '<label class="badge badge-primary"> صفقة بالتفاوض المباشر </label>';
                 }
                 return "";
             })
@@ -96,120 +97,116 @@ class ProjetRepository implements IProjetRepository
     }
     public function getLigneProjetsByProjet($projet_id, $mode)
     {
-        $dataAction = "projets.ligneprojet-datatable-actions";
-         $query = LignesProjet::select('*')->with('Projet')->with('nature_demande')->where('projets_id', $projet_id);
-        Log::info("mode ligne Projet is ".$mode);
-        Log::info("query result is  ".$query->get());
+        $dataAction = 'projets.lignes_projets.ligneprojet-datatable-actions';
+        $query = DB::table('lignes_projets')->Where('lignes_projets.deleted_at', null)->join('lignes_besoins', 'lignes_besoins.id', '=', 'lignes_projets.lignes_besoin_id')
+            ->join('projets', 'projets.id', '=', 'lignes_projets.projets_id')
+            ->selectRaw('lignes_projets.id,
+                     lignes_projets.libelle,
+                     lignes_projets.num_lot,
+                     lignes_projets.cout_unite_ttc,
+                     lignes_besoins.nature_demandes_id,
+                     lignes_besoins.type_demande,
+                     lignes_besoins.docs_id,
+                     lignes_projets.qte,
+                     lignes_projets.cout_total_ttc
+                     ')
+            ->where('lignes_projets.projets_id', $projet_id);
+
+        Log::info("mode ligne Projet is " . $mode);
+        Log::info("query LignesProjets result is  " . $query->get());
 
         return datatables()
             ->of($query)
-            /* ->editColumn('created_at', function ($caseSession) {
-        return $caseSession->created_at->format('Y-m-d');
-        })*/
+
             ->addColumn('select', static function () {
                 return null;
             })
-            ->editColumn('description', function ($lignesProjet) {
+            ->editColumn('type_demande', function ($ligneProjet) {
 
-                return Str::words($lignesProjet->description,5);
-            })
-            ->editColumn('type_demande', function ($lignesProjet) {
-                switch ($lignesProjet->type_demande) {
+                switch ($ligneProjet->type_demande) {
                     case 1:
                         return '<label class="badge badge-info"> مواد وخدمات </label>';
-                        case 2:
-                            return '<label class="badge badge-success"> أشغال </label>';
+                    case 2:
+                        return '<label class="badge badge-success"> أشغال </label>';
 
                     default:
-                    return '<label class="badge badge-primary"> دراسات </label>';
+                        return '<label class="badge badge-primary"> دراسات </label>';
                 }
                 return "";
             })
-            ->editColumn('nature_demandes_id', function ($lignesProjet) {
-                if ($lignesProjet->nature_demande) {
-                    return $lignesProjet->nature_demande->libelle;
+            ->editColumn('nature_demandes_id', function ($ligneProjet) {
+
+                $naturedemande = NatureDemande::select('id', 'libelle')->where('id', $ligneProjet->nature_demandes_id)->first();
+                if ($naturedemande) {
+                    return $naturedemande->libelle;
                 }
                 return "";
             })
-            /*->editColumn('qte_valide', function ($lignesProjet) {
-                return '<input type="number" data-id="'.$lignesProjet->id.'" id="dtqte_valide" value="'.$lignesProjet->qte_valide.'"/>';
-            })
-            ->editColumn('cout_total_ttc', function ($lignesProjet) {
-                return '<input type="number" data-id="'.$lignesProjet->id.'" id="dtcout_total_ttc" value="'.$lignesProjet->cout_total_ttc.'"/>
-                ';
-            })*/
-            ->addColumn('valide', function ($lignesProjet) {
-                if ($lignesProjet->Projet) {
-                    if($lignesProjet->Projet->valider == true){
-                        return '<label class="badge badge-info">تمت المصادقة النهائية</label>';
-                    }else{
-                        return '<label class="badge badge-info"> لم تتم المصادقة النهائية </label>';
-                    }
-                }
-                return "";
-            })
-            ->addColumn('valider', function ($lignesProjet) {
-                if ($lignesProjet->Projet) {
-                    if($lignesProjet->Projet->valider == true){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                }
-                return false;
-            })
-            ->addColumn('action_file', 'projets.file-actions')
+
             ->addColumn('action', $dataAction)
-            ->rawColumns(['id', 'valide', 'type_demande', 'nature_demandes_id', 'action_file', 'action']) //'qte_valide','cout_total_ttc'
+            ->rawColumns(['type_demande', 'nature_demandes_id', 'action'])
             ->make(true);
     }
 
-    public function getProjetByParam($key,$value){
+    public function getProjetByParam($key, $value)
+    {
         return Projet::Select('*')->where($key, '=', $value)
-                                 ->get()->first();
+            ->get()->first();
     }
-    public function getProjetLigneProjetByParam($key,$value){
+    public function getProjetLigneProjetByParam($key, $value)
+    {
         return Projet::Select('*')->with('lignes_projets')->where($key, '=', $value)
-                                 ->get()->first();
+            ->get()->first();
     }
     public function validerProjet($id)
     {
         Projet::find($id)->update([
-            'valider'=>true,
+            'valider' => true,
         ]);
-       // return Response()->json(['success' => 'Projet deleted successfully.']);
+        // return Response()->json(['success' => 'Projet deleted successfully.']);
     }
-    public function markProjetAsTransferer($id)
-    {
-        Projet::find($id)->update([
-            'transferer'=>true,
-        ]);
-       // return Response()->json(['success' => 'Projet deleted successfully.']);
-    }
+
     public function transfererProjet($projet_id, $dossier_id)
     {
         $lignesProjet = LignesProjet::select('*')->where('projets_id', $projet_id)->get();
         foreach ($lignesProjet as $item) {
-            Log::info('Ligne Projet '. $item);
+            Log::info('Ligne Projet ' . $item);
             LignesDossier::create([
-                'num_lot'=> $item->num_lot,
-                'libelle'=> $item->libelle,
-                'lignes_projet_id'=> $item->id,
-                'qte'=> $item->qte,
-                'cout_unite_ttc'=> $item->cout_unite_ttc,
-                'cout_total_ttc'=> $item->cout_total_ttc,
-                'dossiers_achats_id'=> $dossier_id,
+                'num_lot' => $item->num_lot,
+                'libelle' => $item->libelle,
+                'lignes_projet_id' => $item->id,
+                'qte' => $item->qte,
+                'cout_unite_ttc' => $item->cout_unite_ttc,
+                'cout_total_ttc' => $item->cout_total_ttc,
+                'dossiers_achats_id' => $dossier_id,
             ]);
         }
         self::markProjetAsTransferer($projet_id);
-       // return Response()->json(['success' => 'Projet deleted successfully.']);
     }
+
+    private function markProjetAsTransferer($id)
+    {
+        Projet::find($id)->update([
+            'transferer' => true,
+        ]);
+    }
+
     public function destroy($id)
     {
         Projet::find($id)->delete();
-       // return Response()->json(['success' => 'Projet deleted successfully.']);
     }
-    public function multiDestroy($ids){
+    public function destroyLigneProjet($id)
+    {
+        $lp = LignesProjet::find($id);
+        if ($lp) {
+            LignesBesoin::find($lp->lignes_besoin_id)->update([
+                "projets_id" => null,
+            ]);
+        }
+        $lp->delete();
+    }
+    public function multiDestroy($ids)
+    {
         Projet::whereIn('id', $ids)->delete();
     }
 

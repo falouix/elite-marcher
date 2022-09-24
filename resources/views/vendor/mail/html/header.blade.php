@@ -1,11 +1,12 @@
 <tr>
 <td class="header">
+    <img src="http://www.uj.rnu.tn/Ar/static/ar/img/logo.png" class="logo" alt="Université Jendouba Logo">
+</td>
+</tr>
+<tr>
+<td class="header">
 <a href="{{ $url }}" style="display: inline-block;">
-@if (trim($slot) === 'Laravel')
-<img src="https://laravel.com/img/notification-logo.png" class="logo" alt="Laravel Logo">
-@else
 {{ $slot }}
-@endif
 </a>
 </td>
 </tr>

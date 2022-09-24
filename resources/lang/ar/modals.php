@@ -21,7 +21,7 @@ return [
     // Modal chapitre
     'chapitre_modal' => 'إضافة أو تحيين محور ',
     // Modal service
-    'service_modal' => 'إضافة أو تحيين مصلحة/دائرة/مؤسسة',
+    'service_modal' => 'إضافة مصلحة/دائرة/مؤسسة',
     // Modal soumissionnaire
     'soumissionnaire_modal' => 'إضافة أو تحيين متعهد',
 ];

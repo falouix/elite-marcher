@@ -25,20 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $settings =\App\Models\Etablissement::first();
-        $count = \DB::table('dossiers_achats')
-        ->select(\DB::raw('count(*) as count'))
-        ->count();
-        if($settings->ajouter_annee){
-            $code = \Str::replaceFirst('{code}', str_pad($count, 4, '0', STR_PAD_LEFT), $settings->code_pa);
-            $code = \Str::replaceFirst('{annee}', date('Y'), $code);
-        }else{
-            $code = \Str::replaceFirst('{code}', str_pad($count, 4, '0', STR_PAD_LEFT), $settings->code_pa);
-        }
-
-        dd($code);
-
-
         // get infos by current year
         $annee_gestion = strftime('%Y');
         $count_dossiers = DossiersAchat::Select('id')->where('annee_gestion', $annee_gestion)->count();

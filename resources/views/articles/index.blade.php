@@ -100,7 +100,7 @@ $tbl_action = __('labels.tbl_action');
                 </div>
                 <div class="modal-body">
                     <form id="form_id">
-
+                        <input type="text" name="article_id" id="article_id" value="0" hidden>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -120,16 +120,16 @@ $tbl_action = __('labels.tbl_action');
                                     </select>
                                     <label id="natures_demande-error"
                                         class="error jquery-validation-error small form-text invalid-feedback"
-                                        for="libelle"></label>
+                                        for="natures_demande"></label>
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="lbl_libelle"> المادة</label>
-                                <input type="text" class="form-control" id='modal_libelle' name="modal_libelle"
+                                <input type="text" class="form-control" id='libelle' name="libelle"
                                     placeholder="إسم المادة..." value="">
-                                <label id="modal_libelle-error"
+                                <label id="libelle-error"
                                     class="error jquery-validation-error small form-text invalid-feedback"
-                                    for="modal_libelle"></label>
+                                    for="libelle"></label>
                             </div>
                         </div>
                     </form>
@@ -247,76 +247,117 @@ $tbl_action = __('labels.tbl_action');
             addSearchFooterDataTable("#article-table")
 
             $("#natures_demande").select2({
-                    dir: "rtl",
-                    // minimumInputLength: 3, // only start searching when the user has input 3 or more characters
-                    placeholder: "{{ __('labels.choose') }} ",
-                    ajax: {
-                        url: "{{ route('natures-demande.select') }}",
-                        type: "post",
-                        delay: 250,
-                        dataType: 'json',
-                        data: {
-                            type: $('#modal_type_demande').val()
-                        },
+                dir: "rtl",
+                // minimumInputLength: 3, // only start searching when the user has input 3 or more characters
+                placeholder: "{{ __('labels.choose') }} ",
+                ajax: {
+                    url: "{{ route('natures-demande.select') }}",
+                    type: "post",
+                    delay: 250,
+                    dataType: 'json',
+                    data: {
+                        type: $('#modal_type_demande').val()
                     },
-                    processResults: function(response) {
-                        // alert(JSON.stringify(response))
-                        return {
-                            results: response
-                        };
-                    },
-                    //cache: true
-                });
+                },
+                processResults: function(response) {
+                    // alert(JSON.stringify(response))
+                    return {
+                        results: response
+                    };
+                },
+                //cache: true
+            });
         });
 
-        $('#modal_type_demande').on('change', function(e) {
-                var type = e.target.value;
-                $.ajax({
-                    url: "{{ route('natures-demande.select') }}",
-                    type: "POST",
+         // Create new case status from modal
+         $('#btn_add_article').click(() => {
+            let responsable = $('#responsable').val();
+            let natures_demande_id = $('#natures_demande').val();
+            let libelle = $("input[name=libelle]").val();
+            let id = $("#article_id").val();
+            var $url = "{{ route('articles.store') }}"
+            var $type = "POST";
+            if (id != 0) {
+                $url = "{{ route('articles.update', ['article' => ':id']) }}"
+                $url = $url.replace(':id', id);
+                $type = "PUT";
+            }
+            $.ajax({
+                url: $url,
+                type: $type,
+                data: {
+                    libelle: libelle,
+                    natures_demande_id: natures_demande_id,
+                },
+                success: function(response) {
+                    $('#libelle').removeClass('is-invalid')
+                    $('#natures_demande_id').removeClass('is-invalid')
 
-                    data: {
-                        type: type
-                    },
-                    success: function(data) {
-                        $('#natures_demande').empty();
-                        $('#natures_demande').append(
-                            '<option value="NULL">إختر من القائمة</option>');
-                        $.each(data.results, function(index, naturdemande) {
-                            $('#natures_demande').append('<option value="' +
-                                naturdemande.id +
-                                '">' +
-                                naturdemande.text + '</option>');
-                        })
-                        $('#natures_demande').select2({
-                            dir: "rtl",
-                            dropdownParent: $("#add_article"),
-                        });
+                    // refresh datatable
+                    $('#article-table').DataTable().ajax.reload();
+                    $('#add_article').modal('toggle');
+                    PnotifyCustom(response)
+                },
+                error: function(errors) {
+                    $('#libelle').removeClass('is-invalid')
+                    if (errors.responseJSON.message.libelle != null) {
+                        $('#libelle').addClass('is-invalid')
+                        $('#libelle-error').text(errors.responseJSON.message.libelle);
                     }
-                })
+                    $('#contact').removeClass('is-invalid')
+                    if (errors.responseJSON.message.natures_demande_id != null) {
+                        $('#natures_demande_id').addClass('is-invalid')
+                        $('#natures_demande_id-error').text(errors.responseJSON.message.natures_demande_id);
+                    }
+                }
+            }); // ajax end
+
+        })
+        $('#modal_type_demande').on('change', function(e) {
+            var type = e.target.value;
+            $.ajax({
+                url: "{{ route('natures-demande.select') }}",
+                type: "POST",
+
+                data: {
+                    type: type
+                },
+                success: function(data) {
+                    $('#natures_demande').empty();
+                    $('#natures_demande').append(
+                        '<option value="NULL">إختر من القائمة</option>');
+                    $.each(data.results, function(index, naturdemande) {
+                        $('#natures_demande').append('<option value="' +
+                            naturdemande.id +
+                            '">' +
+                            naturdemande.text + '</option>');
+                    })
+                    $('#natures_demande').select2({
+                        dir: "rtl",
+                        dropdownParent: $("#add_article"),
+                    });
+                }
             })
+        })
         // OnClose Modal eventListener
         $('#add_article').on('hidden.bs.modal', function() {
             $('#libelle').removeClass('is-invalid')
             $("#natures_demande_id").val(0)
             $("#libelle").val('')
             var btn_title = "{{ __('inputs.btn_create') }}"
-            $("#btn_add_nature_demande").html(btn_title)
-            var modal_title = "إضافة نوع الطلب"
+            $("#btn_add_article").html(btn_title)
+            var modal_title = "إضافة مادة"
             $("#modal-title").html(modal_title)
         })
 
-
-
-
         function editArticle(id) {
-            $("input[name=natures_demande_id]").val(id)
+            $("input[name=article_id]").val(id)
             var btn_title = "{{ __('inputs.btn_edit') }}"
-            $("#btn_add_nature_demande").html(btn_title)
-            var modal_title = "تحيين نوع الطلب"
+            $("#btn_add_article").html(btn_title)
+            var modal_title = "تحيين مادة"
             $("#modal-title").html(modal_title)
 
-            $url = "{{ route('natures-demande.edit', ['natures_demande' => ':id']) }}"
+            $url = "{{ route('articles.edit', ['article' => ':id']) }}"
             $url = $url.replace(':id', id);
             // alert($url)
             $.ajax({
@@ -324,9 +365,30 @@ $tbl_action = __('labels.tbl_action');
                 type: 'GET',
                 success: function(response) {
                     $("input[name=libelle]").val(response.libelle);
-                    $("#natures_demande_id").val(response.id)
-                    $('#add_article').modal('show');
+                    $("#article_id").val(response.id)
+                    // Fetch the preselected item, and add to the control
+                    $.ajax({
+                        url: "{{ route('natures-demande.NatureDemandeByIdToSelect') }}",
+                        type: "POST",
 
+                        data: {
+                            nature_demandes_id: response.natures_demande_id
+                        },
+                        success: function(data) {
+                            $('#natures_demande').empty();
+                            $('#natures_demande').append('<option value="' +
+                                data.id +
+                                '">' +
+                                data.libelle + '</option>');
+
+                            $('#natures_demande').select2({
+                                dir: "rtl",
+                                dropdownParent: $("#add_article"),
+                            });
+                        }
+
+                    });
+                    $('#add_article').modal('show');
 
                 },
                 error: function(response) {
@@ -365,7 +427,26 @@ $tbl_action = __('labels.tbl_action');
                                 PnotifyCustom(response)
 
 
-                            }
+                            },
+                            error: function(jqXHR, exception) {
+                                var msg = '';
+                                if (jqXHR.status === 0) {
+                                    msg = 'Not connect.\n Verify Network.';
+                                } else if (jqXHR.status == 404) {
+                                    msg = 'Requested page not found. [404]';
+                                } else if (jqXHR.status == 500) {
+                                    msg = 'Internal Server Error [500].';
+                                } else if (exception === 'parsererror') {
+                                    msg = 'Requested JSON parse failed.';
+                                } else if (exception === 'timeout') {
+                                    msg = 'Time out error.';
+                                } else if (exception === 'abort') {
+                                    msg = 'Ajax request aborted.';
+                                } else {
+                                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                                }
+                                alert(msg);
+                            },
                         }); // ajax end
 
                     }
@@ -404,10 +485,10 @@ $tbl_action = __('labels.tbl_action');
                 var loader = new PNotify({
                     title: "{{ __('labels.pnotify_title') }}",
                     text: '<div class="progress progress-striped active" style="margin:0">\
-                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
-                                <span class="sr-only">0%</span>\
-                                </div>\
-                                </div>',
+                                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
+                                                    <span class="sr-only">0%</span>\
+                                                    </div>\
+                                                    </div>',
                     addclass: PnClass,
                     stack: stack_top_left,
                     icon: 'icon-spinner4 spinner',

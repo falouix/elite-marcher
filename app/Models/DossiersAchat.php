@@ -100,32 +100,46 @@ class DossiersAchat extends Model
             ->select(\DB::raw('count(*) as count'))
             ->count();
             switch ($model->type_dossier) {
-
                 case 'CONSULTATION':
                     $codeDossier =  $settings->code_consult;
                     break;
                 case 'AOS':
-                    $codeDossier =  $settings->code_AOS;
+                    $codeDossier =  $settings->code_aos;
                     break;
                 case 'AON':
-                    $codeDossier = 'AON'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
+                    $codeDossier = $settings->code_aon;
                     break;
                 case 'AOGREGRE':
-                    $codeDossier = 'AOGREGRE'.str_pad($count.'/'. date('Y'), 10, '0', STR_PAD_LEFT);
+                    $codeDossier = $settings->code_gg;
                     break;
+                default :
+                $codeDossier = str_pad($count.'/'. date('Y'), 6, '0', STR_PAD_LEFT);
+                break;
             }
             if($settings->ajouter_annee){
-                $code = \Str::replaceFirst('{code}', str_pad($count, 4, '0', STR_PAD_LEFT), $settings->code_pa);
+                $code = \Str::replaceFirst('{code}', str_pad($count, 4, '0', STR_PAD_LEFT), $codeDossier);
                 $code = \Str::replaceFirst('{annee}', date('Y'), $code);
             }else{
-                $code = \Str::replaceFirst('{code}', str_pad($count, 4, '0', STR_PAD_LEFT), $settings->code_pa);
+                $code = \Str::replaceFirst('{code}', str_pad($count, 4, '0', STR_PAD_LEFT), $codeDossier);
             }
 
-            $model->code_dossier = $codeDossier;
+            $model->code_dossier = $code;
             $model->save();
         });
         static::updating(function ($model) {
             $model->updated_by = Auth::user()->id;
+        });
+        static::deleting(function ($client) {
+            $relationMethods = ['lignes_dossiers', 'cahiers_charges', 'bcs_engagements', 'commissions_ops', 'offres', 'receptions'];
+            //$relationMethods = ['LignesBesoin'];
+
+            foreach ($relationMethods as $relationMethod) {
+                if ($client->$relationMethod()->count() > 0) {
+                    session()->flash('delete_error', "You can't delete a workorder that has a Continuation");
+                    return false;
+                    break;
+                }
+            }
         });
     }
 

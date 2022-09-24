@@ -7,17 +7,19 @@ use App\Models\Service;
 use App\Repositories\Interfaces\IServiceRepository;
 use Illuminate\Http\Request;
 use Validator;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Log;
+use App\Traits\ApiResponser;
 
 class ServiceController extends Controller
 {
+    use ApiResponser;
     public function __construct(IServiceRepository $repository)
     {
         $this->repository = $repository;
     }
 
     /**
-     * Display a listing of the resource. 
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -25,8 +27,7 @@ class ServiceController extends Controller
     {
         return view('services.index');
     }
-
-    /**
+ /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -34,51 +35,62 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
+
+         Log::alert("Service store request");
+        Log::info($request);
         $validator = Validator::make($request->all(), [
-            'libelle' => 'required',
+            'libelle' => 'required|unique:services,libelle',
             'contact' => 'required',
             'responsable' => 'required'
         ]);
+
+        if ($validator->fails()) {
+            Log::critical($validator->errors());
+            return $this->error($validator->errors(), 403);
+        }
         $this->repository->create($request->all());
+        return $this->notify('المصالح/الداوئر أو المؤسسات', 'تم إضافة مصلحة/دائرة أو مؤسسة جديدة بنجاح');
+    }
+
+
+    public function edit(Request $request, $id)
+    {
+        Log::info("Service edit id ===> " . $id);
+        if ($request->ajax()) {
+            $service = Service::find($id);
+            return response()->json($service);
+        }
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'libelle' => 'required|unique:services,libelle,'. $id,
+            'contact' => 'required',
+            'responsable' => 'required'
+        ]);
+        if ($validator->fails()) {
+            Log::critical($validator->errors());
+            return $this->error($validator->errors(), 403);
+        }
+        $this->repository->update($request, $id);
+        return $this->notify('المصالح/الداوئر أو المؤسسات', 'تم تحيين مصلحة/دائرة أو مؤسسة  بنجاح');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        return $this->repository->edit($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'libelle' => 'required',
-            'contact' => 'required',
-            'responsable' => 'required'
-        ]);
-        $this->repository->update($request, $id);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
         $this->repository->destroy($id);
+        if (session()->has('delete_error')) {
+
+            return $this->notify('خطأ عند الحذف ', 'لا يمكن حذف  مصلحة/دائرة أو مؤسسة لها تسجيلات مرتبطة','error');
+        }
+        return $this->notify('حذف  مصلحة/دائرة أو مؤسسة', 'تم حذف  مصلحة/دائرة أو مؤسسة بنجاح');
     }
 
     public function getAllServicesDatatable(Request $request)

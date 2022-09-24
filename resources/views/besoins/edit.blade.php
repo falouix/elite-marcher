@@ -336,6 +336,7 @@ $tbl_action = __('labels.tbl_action');
     <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
     <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/sum().js') }}"></script>
 
     <script>
         'use strict';
@@ -499,6 +500,7 @@ $tbl_action = __('labels.tbl_action');
                         leftColumns: 0,
                         rightColumns: 1
                     },
+
                     initComplete: function() {
                         // Apply the search
                         this.api().columns().every(function() {
@@ -576,7 +578,6 @@ $tbl_action = __('labels.tbl_action');
                             visible: 'false'
                         }
                     ],
-
                     columnDefs: [{
                             orderable: false,
                             className: 'select-checkbox',
@@ -587,6 +588,14 @@ $tbl_action = __('labels.tbl_action');
                             targets: 1
                         }
                     ],
+                    drawCallback: function() {
+                        var api = this.api();
+                        $('#coutTotal').html(
+                            api.column(7, {
+                                page: 'current'
+                            }).data().sum()
+                        )
+                    },
                     select: {
                         style: 'os',
                         selector: 'td:first-child'
@@ -607,7 +616,6 @@ $tbl_action = __('labels.tbl_action');
                 $('.dataTables_length').addClass('bs-select');
                 // Setup - add a text input to each footer cell
                 addSearchFooterDataTable("#table-cp")
-
                 $("#natures_demande").select2({
                     dir: "{{ $rtl }}",
                     // minimumInputLength: 3, // only start searching when the user has input 3 or more characters
@@ -673,7 +681,6 @@ $tbl_action = __('labels.tbl_action');
                     //cache: true
 
                 });
-
             });
 
         });
@@ -751,7 +758,7 @@ $tbl_action = __('labels.tbl_action');
             //$('#libelle').removeClass('is-invalid')
             $('.spinner-border').removeAttr('hidden');
             var articleId = $('#articles_id').val()
-            if (articleId === null || articleId == 'NULL' || articleId === undefined ) {
+            if (articleId === null || articleId == 'NULL' || articleId === undefined) {
                 swal("{{ __('labels.swal_warning_title') }}", 'الرجاء تحديد المادة',
                     "warning");
                 return false;
@@ -764,6 +771,7 @@ $tbl_action = __('labels.tbl_action');
             formData.append('description', $("input[name=description]").val())
             formData.append('file_name', $("input[name=file_name]").val())
             formData.append('qte_demande', $("input[name=qte_demande]").val())
+            formData.append('qte_valide', $("input[name=qte_demande]").val())
             formData.append('cout_unite_ttc', $("input[name=cout_total_ttc]").val())
             formData.append('cout_unite_ttc', $("input[name=cout_unite_ttc]").val())
             formData.append('besoins_id', {{ $besoin->id }})

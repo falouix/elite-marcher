@@ -18,6 +18,8 @@ $tbl_action = __('labels.tbl_action');
     <link rel="stylesheet" href="{{ asset('/plugins/pnotify/css/pnotify.custom.min.css') }}">
     <!-- pnotify-custom css -->
     <link rel="stylesheet" href="{{ asset('/css/pages/pnotify.css') }}">
+    <!-- select2 css -->
+    <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
 @endsection
 
 @section('breadcrumb')
@@ -41,13 +43,6 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>{{ __('cards.services_list') }}</h5>
                 <div class="card-header-right">
-                    @can('besoins-list')
-                        <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>
-                            <i class="feather icon-trash-2"></i>
-                            {{ __('inputs.btn_delete') }}
-                            <i id="btn_count"></i>
-                        </button>
-                    @endcan
                     @can('besoins-list')
                         <button type="button" class="btn btn-primary" href="" data-toggle="modal" data-target="#add_service">
                             <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}
@@ -102,7 +97,7 @@ $tbl_action = __('labels.tbl_action');
                             <div class="form-group col-md-12">
                                 <label for="lbl_libelle"> {{ __('labels.tbl_libelle') }} </label>
                                 <input type="text" class="form-control" id='libelle' name="libelle"
-                                    placeholder="{{ __('labels.tbl_libelle') }}" value="">
+                                    placeholder="{{ __('labels.tbl_libelle') }}" required>
                                 <label id="libelle-error"
                                     class="error jquery-validation-error small form-text invalid-feedback"
                                     for="libelle"></label>
@@ -112,7 +107,7 @@ $tbl_action = __('labels.tbl_action');
                             <div class="form-group col-md-12">
                                 <label for="lbl_contact"> {{ __('labels.tbl_contact') }} </label>
                                 <input type="text" class="form-control" id='contact' name="contact"
-                                    placeholder="{{ __('labels.tbl_contact') }}" value="">
+                                    placeholder="{{ __('labels.tbl_contact') }}" required>
                                 <label id="contact-error"
                                     class="error jquery-validation-error small form-text invalid-feedback"
                                     for="contact"></label>
@@ -122,7 +117,7 @@ $tbl_action = __('labels.tbl_action');
                             <div class="form-group col-md-12">
                                 <label for="lbl_responsable"> {{ __('labels.tbl_responsable') }} </label>
                                 <input type="text" class="form-control" id='responsable' name="responsable"
-                                    placeholder="{{ __('labels.tbl_responsable') }}" value="">
+                                    placeholder="{{ __('labels.tbl_responsable') }}" required>
                                 <label id="responsable-error"
                                     class="error jquery-validation-error small form-text invalid-feedback"
                                     for="responsable"></label>
@@ -143,13 +138,16 @@ $tbl_action = __('labels.tbl_action');
     <!-- Modal Create or edit status end-->
 @endsection
 @section('srcipt-js')
-    <!-- datatable Js -->
-    <script src="{{ asset('/plugins/data-tables/js/datatables.min.js') }}"></script>
-    <script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
-    <!-- sweet alert Js -->
-    <script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
-    <!-- pnotify Js -->
-    <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
+   <!-- datatable Js -->
+   <script src="{{ asset('/plugins/data-tables/js/datatables.min.js') }}"></script>
+   <script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
+   <!-- sweet alert Js -->
+   <script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
+   <!-- pnotify Js -->
+   <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
+   <!-- form-select-custom Js -->
+   <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
+
 
     <script>
         $(document).ready(function() {
@@ -275,58 +273,94 @@ $tbl_action = __('labels.tbl_action');
             addSearchFooterDataTable("#service-table")
         });
 
-        // Create new service from modal
-        $('#btn_add_service').click(() => {
-            var id = $("#service_id").val()
-            var libelle = $('#libelle').val();
-            var contact = $('#contact').val();
-            var responsable = $('#responsable').val();
 
-            var url = "{{ route('services.store') }}";
-            var type = 'POST';
+        // Create new case status from modal
+        $('#btn_add_service').click(() => {
+            let responsable = $('#responsable').val();
+            let contact = $('#contact').val();
+            let libelle = $("input[name=libelle]").val();
+            let id = $("#service_id").val();
+            var $url = "{{ route('services.store') }}"
+            var $type = "POST";
             if (id != 0) {
-                url = "{{ route('services.update', ['service' => ':id']) }}"
-                url = url.replace(':id', id);
-                type = 'PUT';
+                $url = "{{ route('services.update', ['service' => ':id']) }}"
+                $url = $url.replace(':id', id);
+                $type = "PUT";
             }
             $.ajax({
+                url: $url,
+                type: $type,
                 data: {
                     libelle: libelle,
                     contact: contact,
-                    responsable: responsable
+                    responsable: responsable,
                 },
-                url: url,
-                type: type,
                 success: function(response) {
+                    $('#libelle').removeClass('is-invalid')
+                    $('#contact').removeClass('is-invalid')
+                    $('#responsable').removeClass('is-invalid')
+                    // refresh datatable
                     $('#service-table').DataTable().ajax.reload();
                     $('#add_service').modal('toggle');
-                    $("#service_id").val('0');
-                    $('#form_id').trigger("reset");
-                    PnotifyCustom(response);
+                    PnotifyCustom(response)
+                },
+                error: function(errors) {
+                    $('#libelle').removeClass('is-invalid')
+                    if (errors.responseJSON.message.libelle != null) {
+                        $('#libelle').addClass('is-invalid')
+                        $('#libelle-error').text(errors.responseJSON.message.libelle);
+                    }
+                    $('#contact').removeClass('is-invalid')
+                    if (errors.responseJSON.message.contact != null) {
+                        $('#contact').addClass('is-invalid')
+                        $('#contact-error').text(errors.responseJSON.message.contact);
+                    }
+                    $('#responsable').removeClass('is-invalid')
+                    if (errors.responseJSON.message.responsable != null) {
+                        $('#responsable').addClass('is-invalid')
+                        $('#responsable-error').text(errors.responseJSON.message.responsable);
+                    }
                 }
             }); // ajax end
-        });
-        // Edite service
-        function editService(id) {
 
+        })
+        // OnClose Modal eventListener
+        $('#add_service').on('hidden.bs.modal', function() {
+            $("#form_id")[0].reset()
+            var btn_title = "{{ __('inputs.btn_create') }}"
+            $("#btn_add_service").html(btn_title)
+            var modal_title = "{{ __('inputs.btn_create') }}"
+            $("#modal-title").html(modal_title)
+        })
+
+        function editService(id) {
+            $("#service_id").val(id)
+            $url = "{{ route('services.edit', ['service' => ':id']) }}"
+            $url = $url.replace(':id', id);
+            // alert($url)
             $.ajax({
-                type: "GET",
-                url: "services/" + id + "/edit",
-                success: function(data) {
+                url: $url,
+                type: 'GET',
+                success: function(response) {
+                    var btn_title = "{{ __('inputs.btn_edit') }}"
+                    $("#btn_add_service").html(btn_title)
+                    var modal_title = "تحيين دائرة/مصلحة أو مؤسسة"
+                    $("#modal-title").html(modal_title)
+
+                    $("input[name=libelle]").val(response.libelle);
+                    $("input[name=contact]").val(response.contact);
+                    $("#responsable").val(response.responsable);
                     $('#add_service').modal('show');
-                    $('#libelle').val(data.libelle);
-                    $('#contact').val(data.contact);
-                    $('#responsable').val(data.responsable);
-                    $("#service_id").val(id);
                 },
                 error: function(response) {
                     alert(response.responseJSON.message)
                 }
             }); // ajax end
-
         }
 
         function deleteFromDataTableBtn(id) {
+            //  let id = $('#tbl_btn_delete').attr('data-id');
+
             var url = "{{ route('services.destroy', ['service' => ':id']) }}";
             url = url.replace(':id', id);
             swal({
@@ -340,26 +374,39 @@ $tbl_action = __('labels.tbl_action');
                     if (willDelete) {
 
                         $.ajax({
-                            url: url,
                             type: 'DELETE',
+                            dataType: 'JSON',
+                            url: url,
                             success: function(response) {
                                 console.log(response)
-                                deleteSingleRowDataTable("#service-table");
-                                PnotifyCustom(response);
-                            }
+                                //alert(JSON.stringify(response))
+                                // refresh data or remove only tr
+                                deleteSingleRowDataTable("#service-table")
+                                PnotifyCustom(response)
+                            },
+                            error: function(jqXHR, exception) {
+                                var msg = '';
+                                if (jqXHR.status === 0) {
+                                    msg = 'Not connect.\n Verify Network.';
+                                } else if (jqXHR.status == 404) {
+                                    msg = 'Requested page not found. [404]';
+                                } else if (jqXHR.status == 500) {
+                                    msg = 'Internal Server Error [500].';
+                                } else if (exception === 'parsererror') {
+                                    msg = 'Requested JSON parse failed.';
+                                } else if (exception === 'timeout') {
+                                    msg = 'Time out error.';
+                                } else if (exception === 'abort') {
+                                    msg = 'Ajax request aborted.';
+                                } else {
+                                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                                }
+                                alert(msg);
+                            },
                         }); // ajax end
 
                     }
                 });
         }
-
-        /*
-        function multipleDelete(locale) {
-            var table = $('#service-table').DataTable();
-            var ids = table.rows('.selected').data();
-            var url = "";//services_datatable.multidestroy
-            multipleDeleteG(locale, "#service-table", ids, url);
-        }
-        */
     </script>
 @endsection

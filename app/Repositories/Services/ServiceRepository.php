@@ -10,7 +10,6 @@ class ServiceRepository implements IServiceRepository
 {
     public function create($input)
     {
-        Log::info($input);
         $service = Service::create($input);
         return $service;
     }
@@ -22,8 +21,8 @@ class ServiceRepository implements IServiceRepository
     public function update($request, $id)
     {
         $input = $request->all();
-        $service = Service::find($id);
-        $service->update($input);
+        $service = Service::find($id)->update($input);
+        return $service;
     }
 
     public function destroy($id)

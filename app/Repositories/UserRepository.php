@@ -64,6 +64,7 @@ class UserRepository implements IUserRepository
         if(isset( $input['start_date'])) $input['start_date'] = Carbon::parse($input['start_date'])->format('Y-m-d');
         if(isset( $input['end_date'])) $input['end_date'] = Carbon::parse($input['start_date'])->format('Y-m-d');
         if(isset( $input['active']) && $input['active'] =="on") $input['active'] = 1; else $input['active'] = 0 ;
+        $input['full_name'] = $input['name'];
         $user = User::create($input);
         $user->assignRole($input['roles']);
         $event = [
