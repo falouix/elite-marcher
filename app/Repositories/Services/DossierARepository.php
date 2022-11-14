@@ -5,6 +5,7 @@ namespace App\Repositories\Services;
 
 use App\Repositories\Interfaces\IDossierARepository;
 use Log;
+use Str;
 use App\Models\{
     DossiersAchat,
     LignesDossier,
@@ -131,10 +132,16 @@ class DossierARepository implements IDossierARepository
                 'type_demandeL', 'total_ttc', 'dashboard_action', 'action'])
             ->make(true);
     }
-    public function getLigneDossierAsByDossierA($dossierId)
+    public function getLigneDossierAsByDossierA($dossierId, $withRelations = 0)
     {
         $dataAction = "projets.ligneprojet-datatable-actions";
-        $query = LignesDossierA::select('*')->with('dossiers_achat')->with('lignes_projet')->where('dossiers_achats_id', $dossierId);
+
+        $query = LignesDossier::select('*');
+        if ($withRelations == 1){
+           $query->with('dossiers_achat')->with('lignes_projet');
+        }
+        $query->where('dossiers_achats_id', $dossierId);
+
         Log::info("query LigneDossier num : ".$dossierId." result is : " . $query->get());
         return datatables()
             ->of($query)
@@ -190,23 +197,24 @@ class DossierARepository implements IDossierARepository
 
     // مراحل الإنجاز المشتركة
     /* Cahier des charges */
-    public function cahierCharges($input, $dossierId){
-        $cc = CahiersCharge::where('dossiers_achats_id', $dossierId)->first();
+    public function cahierCharges($input){
+        $cc = CahiersCharge::where('dossiers_achats_id', $input['dossiers_achats_id'])->first();
         if($cc){
-            self::createCC($input);
+            return self::updateCC($input, $cc->id);
         }
         else{
-            self::updateCC($input);
+            return self::createCC($input);
         }
     }
-    private function createCC($input)
+    private function createCC($request)
     {
         Log::alert("Create CC Request repository");
-        $cc = CahiersCharge::create($request);
+        $input = $request->all();
+        $cc = CahiersCharge::create($input);
         return $cc;
     }
 
-    private function updateCC($input)
+    private function updateCC($request, $id)
     {
         $input = $request->all();
         $cc = CahiersCharge::find($id);
@@ -214,23 +222,24 @@ class DossierARepository implements IDossierARepository
         return $cc;
     }
      /* Avis Pub */
-     public function avisPub($input, $dossierId){
-        $cc = AvisDossier::where('dossiers_achats_id', $dossierId)->first();
+     public function avisPub($input){
+        $cc = AvisDossier::where('dossiers_achats_id',  $input['dossiers_achats_id'])->first();
         if($cc){
-            self::createCC($input);
+            return self::updateAvisPub($input, $cc->id);
         }
         else{
-            self::updateCC($input);
+            return self::createAvisPub($input);
         }
     }
     private function createAvisPub($input)
     {
         Log::alert("Create CC Request repository");
-        $cc = AvisDossier::create($request);
+        $input = $request->all();
+        $cc = AvisDossier::create($input);
         return $cc;
     }
 
-    private function updateAvisPub($input)
+    private function updateAvisPub($request, $id)
     {
         $input = $request->all();
         $cc = AvisDossier::find($id);

@@ -85,6 +85,7 @@ class NotifController extends Controller
 
     // Axios & VueJs Functions
     public function getNotifs(){
+        
         return Notif:: all();
     }
 }

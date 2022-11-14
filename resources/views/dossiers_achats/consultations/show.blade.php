@@ -262,18 +262,16 @@ $tbl_action = __('labels.tbl_action');
                             aria-labelledby="contenu-tab">
                             <div class="col-md-12">
 
-                                <table id="contenu-cp" class="table table-striped table-bordered nowrap">
+                                <table id="ligneConsultation-table" class="table table-striped table-bordered nowrap">
                                     <thead>
                                         <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                                 class="select-checkbox not-export-col" /> </th>
                                         <th class="not-export-col">id</th>
                                         <th>المادة</th>
-                                        <th>طبيعة الطلب</th>
-                                        <th>نوع الطلب</th>
                                         <th>الكمية </th>
                                         <th>الكلفة التقديرية للوحدة</th>
                                         <th>الكلفة التقديرية الجملية</th>
-                                        <th>الملاحظات</th>
+
                                     </thead>
 
                                     <tfoot>
@@ -282,12 +280,9 @@ $tbl_action = __('labels.tbl_action');
                                                     class="select-checkbox not-export-col" /> </th>
                                             <th class="not-export-col">id</th>
                                             <th>المادة</th>
-                                            <th>طبيعة الطلب</th>
-                                            <th>نوع الطلب</th>
                                             <th>الكمية </th>
                                             <th>الكلفة التقديرية للوحدة</th>
                                             <th>الكلفة التقديرية الجملية</th>
-                                            <th>الملاحظات</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -602,6 +597,134 @@ $tbl_action = __('labels.tbl_action');
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            //Consultation Datatable
+            var table = $('#ligneConsultation-table').DataTable({
+                dom: 'frltipB',
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                buttons: [{
+                        text: '{{ __('inputs.btn_copy') }}',
+                        extend: 'copyHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_excel') }}',
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_pdf') }}',
+                        extend: 'pdfHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_print') }}',
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                ],
+                initComplete: function() {
+                    // Apply the search
+                    this.api().columns().every(function() {
+                        var that = this;
+
+                        $('input', this.footer()).on('keyup change clear', function() {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                processing: true,
+               // serverSide: true,
+                serverMethod: 'POST',
+                ajax: {
+                    url: "{{ route('lignes-dossier.data') }}",
+                    data: function(data) {
+                        data.dossiers_id = "{{ $dossier->id }}";
+                    },
+                },
+                language: {
+                    url: "{{ $lang }}"
+                },
+                columns: [{
+                        data: "select",
+                        className: "select-checkbox"
+                    },
+                    {
+                        data: "id",
+                        className: "id"
+                    },
+                    {
+                        data: "libelle",
+                        className: "libelle"
+                    },
+                    {
+                        data: "qte",
+                        className: "qte"
+                    },
+                    {
+                        data: "cout_unite_ttc",
+                        className: "cout_unite_ttc"
+                    },
+                    {
+                        data: "cout_total_ttc",
+                        className: "cout_total_ttc"
+                    }
+                ],
+                responsive: true,
+
+                columnDefs: [{
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0
+                    },
+                    {
+                        visible: false,
+                        targets: 1
+                    }
+                ],
+                select: {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+                // select: { style: 'multi+shift' },
+
+            });
+            table
+                .on('select', function(e, dt, type, indexes) {
+                    SelectedRowCountBtnDelete(table)
+                })
+                .on('deselect', function(e, dt, type, indexes) {
+                    SelectedRowCountBtnDelete(table)
+                });
+
+            $('.dataTables_length').addClass('bs-select');
+
+            // Setup - add a text input to each footer cell
+
+            addSearchFooterDataTable("#ligneConsultation-table")
+            $("#services_id").select2({
+                dir: "{{ $rtl }}",
+                maximumSelectionLength: 1,
+                placeholder: "{{ __('labels.choose') }} ",
+
+            });
+
+
+
+
+
             var table = [
                 ['الشروط الإدارية',''],
                 ['الفنية','']
@@ -617,6 +740,7 @@ $tbl_action = __('labels.tbl_action');
                 }
 
             });
+
 
         });
 
@@ -652,7 +776,6 @@ $tbl_action = __('labels.tbl_action');
                 {
                     title: 'تعديلات'
                 },
-
             ],
             language: {
                 url: "{{ asset('/plugins/i18n/Arabic.json') }}"

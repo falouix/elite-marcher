@@ -23,7 +23,7 @@ class CreateCahiersChargesTable extends Migration
             $table->integer('duree_travaux')->nullable();
             $table->decimal('caution_prov', 9, 3)->nullable();
             $table->integer('duree_caution_prov')->nullable();
-            $table->decimal('caution_def', 2)->nullable();
+            $table->decimal('caution_def', 4,2)->nullable();
             $table->integer('duree_caution_def')->nullable();
             $table->decimal('autres_caution', 2)->nullable();
             $table->integer('duree_autres_caution')->nullable();

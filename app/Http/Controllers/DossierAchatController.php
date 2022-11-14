@@ -98,4 +98,20 @@ class DossierAchatController extends Controller
         }
 
     }
+    /**
+     * Process datatables ajax request.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getLigneDossierADataTable(Request $request)
+    {
+        Log::alert("Ligne Dossier Request Params from view");
+        Log::info($request);
+        if ($request->ajax()) {
+            if ($request->dossiers_id) {
+                    return $this->repository->getLigneDossierAsByDossierA($request->dossiers_id);
+                }
+        }
+
+    }
 }

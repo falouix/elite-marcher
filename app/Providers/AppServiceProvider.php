@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+     //   DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         // Register User Repository
         $this->app->bind(
             'App\Repositories\IUserRepository',
@@ -112,6 +112,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             'App\Repositories\IFileUploadRepository',
             'App\Repositories\FileUploadRepository'
+        );
+         // Notif Repository
+         $this->app->bind(
+            'App\Repositories\Interfaces\INotifRepository',
+            'App\Repositories\Services\NotifRepository'
         );
 
         // Event Repository

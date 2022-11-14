@@ -51,13 +51,7 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>المخطط السنوي للشراءات</h5>
                 <div class="card-header-right">
-                    @can('besoins-list')
-                        <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>
-                            <i class="feather icon-trash-2"></i>
-                            {{ __('inputs.btn_delete') }}
-                            <i id="btn_count"></i>
-                        </button>
-                    @endcan
+                   
                     @can('besoins-list')
                         <a type="button" class="btn btn-primary" href="{{ route('besoins.create') }}">
                             <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}

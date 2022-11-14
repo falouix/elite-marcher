@@ -142,14 +142,18 @@ Route::group(
         Route::post('articles/datatable', [ArticleController::class, 'getAllArticlesDatatable'])->name('articles.data');
         Route::post('articles/store', [ArticleController::class, 'storeFromBesoin'])->name('articles.storeFromBesoin');
         Route::post('articles/select', [ArticleController::class, 'getAllArticlesToSelect'])->name('articles.select');
+        Route::put('articles/validate/{id}', [ArticleController::class, 'valider'])->name('articles.validate');
 
         //route DossierAchats
         Route::post('dossiers/datatable', [DossierAchatController::class, 'getAllDossiersDatatable'])->name('dossiers.data');
+        Route::post('lignesdossier/datatable', [DossierAchatController::class, 'getLigneDossierADataTable'])->name('lignes-dossier.data');
         Route::get('dossiers/{id}', [DossierAchatController::class, 'show'])->name('dossiers.show');
         Route::get('settings/{id}/edit ', [DossierAchatController::class, 'edit'])->name('dossiers.edit');
 
          // route Consultations
          Route::resource('consultations', ConsultationController::class);
+         Route::post('consultations/cc', [ConsultationController::class, 'cahierCharges'])->name('consultation.cc');
+         Route::post('consultations/avisPub', [ConsultationController::class, 'avisPub'])->name('consultation.avisPub');
          // route Appel Offre Normal
          Route::resource('aon', AONController::class);
          // route Appel Offre Simplifié

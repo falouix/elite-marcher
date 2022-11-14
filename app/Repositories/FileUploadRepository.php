@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Models\LignesBesoin;
 use App\Models\BesoinsDoc;
+use App\Models\CahiersCharge;
+use App\Models\CcDoc;
 use App\Models\UserDocuement;
 use Auth;
 use Config;
@@ -54,6 +56,22 @@ class FileUploadRepository implements IFileUploadRepository
                 return $besoinsDoc;
 
                 break;
+                case 'cc_docs':
+                    Log::info($request);
+                    $fileName = 'cc_docs' . time() . '.' . $request->file->extension();
+                    $path = 'app/documents/' . Config::get('constants.cc_docs') . '/' . $request->cahiers_charges_id . '/';
+                    $request->file->move(storage_path($path), $fileName);
+                    // Storage::move($request->file, $fileName);
+                    $CcDoc =  CcDoc::create([
+                        'file_name' => $request->file_name,
+                        'cahiers_charges_id' => $request->cahiers_charges_id,
+                        'path' => $path . $fileName,
+                        'created_by' => Auth::user()->id,
+                    ]);
+
+                    return $CcDoc;
+
+                    break;
         }
     }
     public function fileUploadDelete($path)
@@ -79,8 +97,8 @@ class FileUploadRepository implements IFileUploadRepository
                 return $besoisdoc;
 
                 break;
-            case 'session_docuements':
-                return SessionDocuement::where('id', $id)->delete();
+            case 'cc_docs':
+                return CcDoc::where('id', $id)->delete();
 
                 break;
             case 'prosecution_docuements':
@@ -122,28 +140,29 @@ class FileUploadRepository implements IFileUploadRepository
 
                     ->make(true);
                 break;
-            case 'case_documents':
-                $file_permission = "files.user-docs";
+            case 'cc_docs':
+                $file_permission = "files.cc-docs";
                 if($permission == "customer" ){
                     $file_permission = "files.customer-docs";
                 }
-                $query = CaseDocuement::select('*')->where('cases_id', $id);
-
+                $cc = CahiersCharge::select('id', 'dossiers_achats_id')->where('dossiers_achats_id', $id)->first();
+                $cc_id = 0;
+                if($cc){
+                    $cc_id = $cc->id;
+                }
+                Log::info("cc id : ".$cc_id);
+                $query = CcDoc::select('*')->where('cahiers_charges_id', $cc_id);
                 return datatables()
                     ->of($query)
                     ->editColumn('created_at', function ($consultation) {
                         return $consultation->created_at->format('Y-m-d');
                     })
-
                     ->addColumn('select', static function () {
                         return null;
                     })
                     ->addColumn('action', $file_permission)
-
                     ->rawColumns(['id', 'action'])
-
                     ->make(true);
-
                 break;
             case 'session_docuements':
                 $query = SessionDocuement::select('*')->where('case_sessions_id', $id);
@@ -251,9 +270,9 @@ class FileUploadRepository implements IFileUploadRepository
                 return BesoinsDoc::select('*')->where('id', $id)->first();
 
                 break;
-            case 'session_docuements':
+            case 'cc_docs':
 
-                return SessionDocuement::select('*')->where('id', $id)->first();
+                return CcDoc::select('*')->where('id', $id)->first();
 
                 break;
             case 'prosecution_docuements':

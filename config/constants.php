@@ -17,7 +17,7 @@ return [
 
     'user_documents' => 'user_documents',
 
-    'case_documents' => 'case_documents',
+    'cc_docs' => 'cc_docs',
 
     'session_docuements' => 'session_docuements',
 
@@ -28,6 +28,7 @@ return [
     'poa_docuements' => 'poa_docuements',
 
     'legal_docuements' => 'legal_links',
+    
     'besoin_documents' => 'besoin_documents',
 
 ];

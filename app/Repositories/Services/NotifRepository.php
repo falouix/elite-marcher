@@ -66,15 +66,15 @@ class NotifRepository implements INotifRepository
             ->make(true);
     }
 
-    public function GenererNotif($type, $texte, $from_table, $from_table_id, $users_id, $action){
+    public function GenererNotif($newNotif){
         Log::alert("Generate Notif from repository");
         $notif = Notif::create([
-            'type'=> $type,
-            'texte'=> $texte,
-            'from_table'=> $from_table,
-            'from_table_id'=> $from_table_id,
-            'users_id'=> $users_id,
-            'action'=> $action,
+            'type'=> $newNotif->type,
+            'texte'=> $newNotif->texte,
+            'from_table'=> $newNotif->from_table,
+            'from_table_id'=> $newNotif->from_table_id,
+            'users_id'=> $newNotif->users_id,
+            'action'=> $newNotif->action,
             'valider'=> false,
         ]);
         return $notif;

@@ -3,18 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Notif;
 use App\Repositories\Interfaces\IArticleRepository;
+use App\Repositories\Interfaces\INotifRepository;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Log;
+use Auth;
 use Validator;
 
 class ArticleController extends Controller
 {
     use ApiResponser;
-    public function __construct(IArticleRepository $repository)
+    private $newNotif;
+    public function __construct(IArticleRepository $repository, INotifRepository $notifRepository)
     {
         $this->repository = $repository;
+        $this->notifRepository = $notifRepository;
     }
     /**
      * Display a listing of the resource.
@@ -55,11 +60,25 @@ class ArticleController extends Controller
             Log::critical($validator->errors());
             return $this->error($validator->errors(), 403);
         }
-        Article::create([
+        $article = Article::create([
             'libelle' => $request->libelle,
             'natures_demande_id' => $request->natures_demande_id,
             'valider' => false,
         ]);
+        if($article){
+            $msg = "قام المستعمل [". Auth::user()->name ."] بإضافة مادة جديدة للحاجيات بصفة في إنتظار المصادقة ";
+            // Create Notification To users
+            $newNotif = new Notif();
+            $newNotif->type = "VALIDATION";
+            $newNotif->texte = $msg;
+            $newNotif->from_table = "articles";
+            $newNotif->from_table_id = $article->id;
+            $newNotif->users_id = Auth::user()->id;
+            $newNotif->action = "";
+            $notif = $this->notifRepository->GenererNotif($newNotif);
+        }
+
+
         return $this->notify('ضبط الحاجيات', 'تم إضافة مادة جديدة  في انتظار التأكيد من المشرف على المنظومة');
     }
 
@@ -127,6 +146,22 @@ class ArticleController extends Controller
         ]);
         return $this->notify(' المواد أو الطلبات', 'تم تحيين المادة بنجاح');
     }
+    /**
+     * Update the specified resource in storage. : Valider Article
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function valider($id)
+    {
+        \Log::alert("Validate Article from Notif ".$id);
+
+        $article = Article::find($id)->update([
+            'valider' => true,
+        ]);
+
+        return $this->notify(' المواد أو الطلبات', 'تمت الموافقة على إضافة المادة بنجاح ');
+    }
+
 
     public function destroy($id)
     {

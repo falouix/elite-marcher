@@ -12,6 +12,7 @@ use App\Repositories\Interfaces\IConsultationRepository;
 use App\Repositories\Interfaces\IDossierARepository;
 use App\Traits\ApiResponser;
 use Auth;
+use Validator;
 use Illuminate\Http\Request;
 use Log;
 
@@ -52,7 +53,57 @@ class ConsultationController extends Controller
         }
         return view('projets.create', compact('services'));
     }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cahierCharges(Request $request)
+    {
+        if ($request->ajax()) {
+            Log::info("Cahier des charges validation from edit consultation view");
+            Log::info($request);
 
+            $validator = Validator::make($request->all(), [
+                'dossiers_achats_id' => 'required',
+                'date_pub_prevu' => 'required|date',
+                'duree_travaux' => 'required|numeric|min:1|max:999',
+            ]);
+
+            if ($validator->fails()) {
+                return $this->error($validator->errors(), 403);
+            }
+            $cc = $this->dossierRepository->cahierCharges($request);
+            return $this->notify('كراس الشروط', 'تم تسجيل بيانات كراس الشروط بنجاح', $type = 'success', $rtl = true, $cc);
+        }
+
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function avisPub(Request $request)
+    {
+        if ($request->ajax()) {
+            Log::info("Cahier des charges validation from edit consultation view");
+            Log::info($request);
+            /*
+            $validator = Validator::make($request->all(), [
+                'dossiers_achats_id' => 'required',
+                'date_pub_prevu' => 'required|date',
+                'duree_travaux' => 'required|numeric|min:1|max:999',
+            ]);
+
+            if ($validator->fails()) {
+                return $this->error($validator->errors(), 403);
+            }
+            */
+            $cc = $this->dossierRepository->avisPub($request);
+            return $this->notify('الإعلان الإشهاري', 'تم تسجيل بيانات الإعلان الإشهاري بنجاح', 'success', true, $cc);
+        }
+
+    }
     /**
      * Store a newly created resource in storage.
      *

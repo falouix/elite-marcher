@@ -40,8 +40,8 @@ class FileUploadController extends Controller
                     $path = storage_path($file->path);
                     break;
 
-                case 'legal_links':
-                    $path = storage_path($file->url);
+                case 'cc_docs':
+                    $path = storage_path($file->path);
                     break;
 
                 default:
@@ -91,18 +91,11 @@ class FileUploadController extends Controller
 
             /* Store $fileName name in DATABASE from HERE */
             switch ($request->path) {
-                case 'user_documents':
+                case 'cc_docs':
                     if ($file) {
-                        if ($locale == 'en') {
-                            return $this->notify('User Document', ' User document added successfully!', 'success', false);
-                        }
-                        return $this->notify('إضافة ملف للمستخدم', 'تم إضافة ملف للمستخدم بنجاح');
+                        return $this->notify('إضافة ملف', 'تم إضافة ملف لكراس الشروط بنجاح');
                     }
-                    if ($locale == 'en') {
-                        return $this->notify('Error', 'User document upload error!', 'error', false);
-                    }
-                    return $this->notify('خطأ عند إضافة ملف للمستعمل', 'خطأ', 'error');
-
+                    return $this->notify('خطأ عند إضافة ملف لكراس الشروط', 'خطأ', 'error');
                     break;
                 case 'case_documents':
                     if ($file) {
@@ -203,6 +196,7 @@ class FileUploadController extends Controller
 
     }
     public function getAllFilesByType(Request $request){
+        Log::info("Request File from controller : ");
         Log::info($request);
         return $this->repository->getAllFilesByType($request->id, $request->param);
     }

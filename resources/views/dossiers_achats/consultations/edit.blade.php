@@ -55,9 +55,8 @@ $tbl_action = __('labels.tbl_action');
             </div>
             <div class="card-body task-details">
 
-               @component('components.dossier_details', ['dossier'=>$dossier])
-
-               @endcomponent
+                @component('components.dossier_details', ['dossier' => $dossier])
+                @endcomponent
             </div>
         </div>
 
@@ -78,286 +77,427 @@ $tbl_action = __('labels.tbl_action');
 
                         </div>
                     </div>
-                   <div class="card-body">
-                    <div class="col-md-12">
-                        <div class="row">
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
 
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-primary-gradient btn-block">
-                                    <i class="fe fe-users tx-20 pl-2"></i>
-                                    كراس الشروط
-                                </a>
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_CC" class="btn btn-primary-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
+                                        <i class="fe fe-users tx-20 pl-2"></i>
+                                        كراس الشروط
+                                    </button>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_pubAvis" class="btn btn-danger-gradient btn-block" onclick='return showHideSteps("#card-pubAvis");'>
+                                        <i class="fas fa-gavel tx-20 pl-2" aria-hidden="true"></i>
+                                        الإعلان الإشهاري
+                                    </button>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_receptionOffre" class="btn btn-warning-gradient btn-block" onclick='return showHideSteps("#card-receptionOffres");'>
+                                        <i class="fas fa-gavel tx-20 pl-2" aria-hidden="true"></i>
+                                        وصول العروض
+                                    </button>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_comOuverturePlis" class="btn btn-success-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
+                                        <i class="far fa-clock tx-20 pl-2" aria-hidden="true"></i>
+                                        جلسات فتح الظروف
+                                    </button>
+                                </div>
+
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_comOuvertureTech" class="btn btn-secondary-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
+                                        <i class="fe fe-dollar-sign tx-20 pl-2"></i>
+                                        جلسات الفرز
+                                    </button>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_engagement" class="btn btn-success-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
+                                        <i class="fe fe-dollar-sign tx-20 pl-2"></i>
+                                        اسناد الصفقة
+                                    </button>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_enregistrementOffre" class="btn btn-info-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
+                                        <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
+                                        تسجيل الصفقة
+                                    </button>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_ordreService" class="btn btn-dark-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
+                                        <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
+                                        إذن بداية الأشغال
+                                    </button>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_receptionProvisoire" class="btn btn-danger-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
+                                        <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
+                                        القبول الوقتي
+                                    </button>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_receptionDefinitif"class="btn btn-warning-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
+                                        <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
+                                        القبول النهائي
+                                    </button>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_clotureDossier" class="btn btn-secondary-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
+                                        <i class="fas fa-cogs tx-20 pl-2" aria-hidden="true"></i>
+                                        التسوية النهائية
+                                    </button>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mb-2">
+                                    <button type="button" id="btnPartial_annulationOffre" class="btn btn-danger-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
+                                        <i class="fas fa-cogs tx-20 pl-2" aria-hidden="true"></i>
+                                        الغاء الصفقة
+                                    </button>
+                                </div>
+
+
+
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-danger-gradient btn-block">
-                                    <i class="fas fa-gavel tx-20 pl-2" aria-hidden="true"></i>
-                                    الإعلان الإشهاري
-                                </a>
+                </div>
+            </div>
+
+        </div>
+
+        {{-- Cahier charges Card Start --}}
+        <div class="row" id="card-cc" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">كراس الشروط</a>
+                        <div class="card-header-right">
+                            <button type="button" class="btn btn-success" id="btn_add_cc">
+                                تسجيل البيانات
+                                <i class="feather icon-plus-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  Cahier des charges  form start --}}
+                                <div class="col-md-12">
+                                    <div class="form-row">
+                                        <input type="number" name="cahiers_charges_id" id="cahiers_charges_id" value="0" hidden>
+                                        <div class="form-group col-md-6">
+                                            <label>تاريخ اعتزام نشر الإعلان :</label>
+                                            <input type="date" class="form-control" id='date_pub_prevu'
+                                                name="date_pub_prevu" placeholder="أدخل التاريخ" required>
+                                                <label id="date_pub_prevu-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="date_pub_prevu"></label>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>ثمن اقتناء كراس الشروط :</label>
+                                            <input class="form-control" type="number" min=0 max=99999999999,999 id="prix_cc" name="prix_cc">
+                                            <label id="date_pub_prevu-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="date_pub_prevu"></label>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>طريقة قبول العروض :</label>
+                                            <select class="form-control" id="type_reception" name="type_reception">
+                                                <option value="1">منظومة الشراءات على الخط</option>
+                                                <option value="2">مكتب الضبط</option>
+                                                <option value="3">البريد</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label>طريقة فتح الظروف :</label>
+                                            <select class="form-control" id="type_overture_plis"
+                                                name="type_overture_plis">
+                                                <option value="1">مالية علنية</option>
+                                                <option value="2">مالية وفنية علنية</option>
+                                                <option value="3">مالية وفنية غير علنية</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>مدة الضمان الوقتي :</label>
+                                            <input type="number" class="form-control" id="duree_caution_prov"
+                                                name="duree_caution_prov" min=0 max=999>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>قيمة الضمان الوقتي :</label>
+                                            <input type="number" class="form-control" id="caution_prov"
+                                                name="caution_prov" min=1,000 max=99999999999,999>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label>مدة الضمان النهائي :</label>
+                                            <input type="number" class="form-control" id="duree_caution_def" min=0
+                                                max=999>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>نسبة الضمان النهائي :</label>
+                                            <input type="number" class="form-control" id="caution_def" name="caution_def" min=1
+                                                max=99>
+                                                <label id="caution_def-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="caution_def"></label>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label>مدة الإنجاز باليوم : </label>
+                                            <input class="mb-3 form-control form-control-lg" type="number"
+                                                id="duree_travaux" name="duree_travaux" min=1 max=999>
+                                                <label id="duree_travaux-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="duree_travaux"></label>
+                                        </div>
+                                    </div>
+                                    <div class="m-t-30">
+                                        <h5>الوثائق المكونة لكراس الشروط</h5>
+                                        <div class="form-row">
+
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name"
+                                                    id="file_name" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name"></label>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file" name="file"
+                                                    class="form-control form-control-file" id="file">
+                                                <label id="file-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-docs-cc" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                {{--  Cahier des charges form end --}}
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-warning-gradient btn-block">
-                                    <i class="fas fa-gavel tx-20 pl-2" aria-hidden="true"></i>
-                                    وصول العروض
-                                </a>
+        </div>
+        {{-- Cahier charges Card End --}}
+        {{-- Publication Avis Card Start --}}
+        <div class="row" id="card-pubAvis" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary"> الإعلان الإشهاري</a>
+                        <div class="card-header-right">
+                            <button type="button" class="btn btn-success" id="btn_add_cc"
+                                onclick="pubAvis({{ $dossier->id }})">
+                                تسجيل البيانات
+                                <i class="feather icon-plus-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  Publication Avis  form start --}}
+                                <div class="col-md-12">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>مرجع الإعلان</label>
+                                            <input type="text" class="form-control" id='ref_avis' name="ref_avis"
+                                                placeholder="...المرجع" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>موجه إلى </label>
+                                            <select class="form-control" id="destination" name="destination">
+                                                <option value="1">منظومة الشراءات على الخط</option>
+                                                <option value="2">موقع المؤسسة</option>
+                                                <option value="3">مةاقع أخرى</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label>نص الإعلان</label>
+                                            <textarea class="form-control" id="texte_avis" name="texte_avis" placeholder="نص الإعلان..."></textarea>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>تاريخ أول ظهور للإعلان </label>
+                                            <input type="datetime-local" class="form-control" id='date_debut_avis'
+                                                name="date_debut_avis" placeholder="أدخل التاريخ" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>مدة الإعلان باليوم</label>
+                                            <input type="number" class="form-control" id="duree_avis" name="duree_avis"
+                                                min=0 max=99>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>آخر أجل لقبول العروض </label>
+                                            <input type="datetime-local" class="form-control" id='date_validite'
+                                                name="date_validite" placeholder="أدخل التاريخ" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>تاريخ فتح الظروف </label>
+                                            <input type="datetime-local" class="form-control" id='date_ouverture_plis'
+                                                name="date_ouverture_plis" placeholder="أدخل التاريخ" required>
+                                        </div>
+                                    </div>
+                                    {{--  Cahier des charges form end --}}
+                                </div>
                             </div>
+                        </div>
 
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-success-gradient btn-block">
-                                    <i class="far fa-clock tx-20 pl-2" aria-hidden="true"></i>
-                                    جلسات فتح الظروف
-                                </a>
-                            </div>
+                    </div>
+                </div>
+            </div>
+            {{-- Publication Avis Card End --}}
 
+        </div>
 
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-secondary-gradient btn-block">
-                                    <i class="fe fe-dollar-sign tx-20 pl-2"></i>
-                                    جلسات الفرز
-                                </a>
-                            </div>
-
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-success-gradient btn-block">
-                                    <i class="fe fe-dollar-sign tx-20 pl-2"></i>
-                                    اسناد الصفقة
-                                </a>
-                            </div>
-
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-info-gradient btn-block">
-                                    <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
-                                    تسجيل الصفقة
-                                </a>
-                            </div>
-
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-dark-gradient btn-block">
-                                    <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
-                                    إذن بداية الأشغال
-                                </a>
-                            </div>
-
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-danger-gradient btn-block">
-                                    <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
-                                    القبول الوقتي
-                                </a>
-                            </div>
-
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-warning-gradient btn-block">
-                                    <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
-                                    القبول النهائي
-                                </a>
-                            </div>
-
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-secondary-gradient btn-block">
-                                    <i class="fas fa-cogs tx-20 pl-2" aria-hidden="true"></i>
-                                    التسوية النهائية
-                                </a>
-                            </div>
-
-                            <div class="col-sm-6 col-md-3 mb-2">
-                                <a href="#" class="btn btn-danger-gradient btn-block">
-                                    <i class="fas fa-cogs tx-20 pl-2" aria-hidden="true"></i>
-                                    الغاء الصفقة
-                                </a>
-                            </div>
-
-
+        {{-- Reception Offres Card Start --}}
+        <div class="row" id="card-receptionOffres" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">وصول العروض</a>
+                        <div class="card-header-right">
 
                         </div>
                     </div>
-                   </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  Cahier des charges  form start --}}
+                                <form id="form-id">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>تاريخ وصول العرض</label>
+                                                <input type="datetime-local" class="form-control" id='date_arrive'
+                                                    name="date_arrive" placeholder="أدخل التاريخ" required>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>طريقة وصول العرض</label>
+                                                <select class="form-control" id="source_offre" name="source_offre">
+                                                    <option value="1">منظومة الشراءات على الخط</option>
+                                                    <option value="2">مكتب الضبط</option>
+                                                    <option value="3">البريد</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>مرجع العرض</label>
+                                                <input type="text" class="form-control" name="ref_offre"
+                                                    id="ref_offre" placeholder="مرجع العرض">
+                                            </div>
 
-                </div>
-            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>عدد التسجيل بمكتب الضبط</label>
+                                                <input type="text" class="form-control" name="ref_bo" id="ref_bo"
+                                                    placeholder="عدد التسجيل">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>الملاحظات</label>
+                                                <input type="text" class="form-control" id="observation"
+                                                    name="observation">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <a href="javascript:void(0);" class="btn btn-rounded btn-info" id='add-offre'
+                                                for-table='#table-offres'>
+                                                <i class="feather icon-plus"></i>
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                <span id="btn_add_poa_title">إضافة إلى الجدول</span>
 
-        </div>
-    </div>
-
-    <!-- Modal Create or edit cahier charges -->
-    <div class="modal fade show" id="add_cahier_charges" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
-        style="display: none;">
-        <div class="modal-dialog ">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-title"> تسجيل كراس الشروط  </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label>تاريخ اعتزام نشر الإعلان :</label>
-                            <input class="form-control" type="text"  >
+                                            </a>
+                                        </div>
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="table-offres" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <th class="not-export-col" style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox not-export-col" /> </th>
+                                                    <th class="not-export-col"> </th>
+                                                    <th>تاريخ وصول العرض</th>
+                                                    <th>المرجع</th>
+                                                    <th>عدد التسجيل بمكتب الضبط</th>
+                                                    <th>تاريخ التسجيل</th>
+                                                    <th class="not-export-col">{{ $tbl_action }}</th>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th class="not-export-col" style="width: 30px"><input
+                                                                type="checkbox" class="select-checkbox not-export-col" />
+                                                        </th>
+                                                        <th class="not-export-col"> </th>
+                                                        <th>تاريخ وصول العرض</th>
+                                                        <th>المرجع</th>
+                                                        <th>عدد التسجيل بمكتب الضبط</th>
+                                                        <th>تاريخ التسجيل</th>
+                                                        <th class="not-export-col">{{ $tbl_action }}</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                                {{--  Cahier des charges form end --}}
+                            </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label>ثمن اقتناء كراس الشروط :</label>
-                            <input class="form-control" type="text" value='0' >
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>طريقة قبول العروض :</label>
-                            <select class="form-control" >
-                                <option>منظومة الشراءات على الخط</option>
-                                <option value="2">مكتب الضبط</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group col-md-6">
-
-                            <label>طريقة فتح الظروف :</label>
-                            <select class="form-control" >
-                                <option value="1">مالية علنية</option>
-                                <option value="2"> مالية وفنية علنية</option>
-                                <option value="3">مالية وفنية غير علنية</option>
-
-                            </select>
-                        </div>
-
-
-                        <div class="form-group col-md-4">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                            <label class="custom-control-label" for="customCheck1">ضمان وقتي</label>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>مدة الضمان الوقتي :</label>
-                            <input type="number" class="form-control" id="inputPassword2b" value=""
-                                >
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>المبلغ :</label>
-                            <input type="number" class="form-control" id="inputPassword2b" value=""
-                                >
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label class="custom-control-label" for="customCheck2">ضمان نهائي</label>
-                            <input type="checkbox" class="custom-control-input" id="customCheck2">
-
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>مدة الضمان النهائي :</label>
-                            <input type="number" class="form-control" id="inputPassword2b" value="0"
-                                >
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>المبلغ :</label>
-                            <input type="number" class="form-control" id="inputPassword2b1" value="0"
-                                >
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>مدة الإنجاز باليوم : </label>
-                            <input class="mb-3 form-control form-control-lg" type="number" value='0' readonly>
-                        </div>
-
-
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        {{ __('inputs.btn_close') }}</button>
-                    <button class="btn btn-primary" id='btn_add_dossierAchat'> إنشاء ملف شراء
-                    </button>
-                </div>
-
             </div>
+
         </div>
+        {{-- Reception Offres Card End --}}
     </div>
-    <!-- Modal Create or edit  cahier charges end-->
-<!-- Modal Create or edit Avisdossier -->
-<div class="modal fade show" id="add_avis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
-style="display: none;">
-<div class="modal-dialog ">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="modal-title"> تسجيل كراس الشروط  </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>تاريخ اعتزام نشر الإعلان :</label>
-                    <input class="form-control" type="text"  >
-                </div>
-                <div class="form-group col-md-6">
-                    <label>ثمن اقتناء كراس الشروط :</label>
-                    <input class="form-control" type="text" value='0' >
-                </div>
-                <div class="form-group col-md-6">
-                    <label>طريقة قبول العروض :</label>
-                    <select class="form-control" >
-                        <option>منظومة الشراءات على الخط</option>
-                        <option value="2">مكتب الضبط</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-md-6">
-
-                    <label>طريقة فتح الظروف :</label>
-                    <select class="form-control" >
-                        <option value="1">مالية علنية</option>
-                        <option value="2"> مالية وفنية علنية</option>
-                        <option value="3">مالية وفنية غير علنية</option>
-
-                    </select>
-                </div>
-
-
-                <div class="form-group col-md-4">
-                    <input type="checkbox" class="custom-control-input" id="customCheck1">
-                    <label class="custom-control-label" for="customCheck1">ضمان وقتي</label>
-                </div>
-                <div class="form-group col-md-4">
-                    <label>مدة الضمان الوقتي :</label>
-                    <input type="number" class="form-control" id="inputPassword2b" value=""
-                        >
-                </div>
-                <div class="form-group col-md-4">
-                    <label>المبلغ :</label>
-                    <input type="number" class="form-control" id="inputPassword2b" value=""
-                        >
-                </div>
-                <div class="form-group col-md-4">
-                    <label class="custom-control-label" for="customCheck2">ضمان نهائي</label>
-                    <input type="checkbox" class="custom-control-input" id="customCheck2">
-
-                </div>
-                <div class="form-group col-md-4">
-                    <label>مدة الضمان النهائي :</label>
-                    <input type="number" class="form-control" id="inputPassword2b" value="0"
-                        >
-                </div>
-                <div class="form-group col-md-4">
-                    <label>المبلغ :</label>
-                    <input type="number" class="form-control" id="inputPassword2b1" value="0"
-                        >
-                </div>
-                <div class="form-group col-md-4">
-                    <label>مدة الإنجاز باليوم : </label>
-                    <input class="mb-3 form-control form-control-lg" type="number" value='0' readonly>
-                </div>
-
-
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                {{ __('inputs.btn_close') }}</button>
-            <button class="btn btn-primary" id='btn_add_dossierAchat'> إنشاء ملف شراء
-            </button>
-        </div>
-
-    </div>
-</div>
-</div>
-<!-- Modal Create or edit Avisdossier end-->
-
 @endsection
 @section('srcipt-js')
     <!-- datatable Js -->
@@ -382,71 +522,283 @@ style="display: none;">
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var table = [
-                ['الشروط الإدارية',''],
-                ['الفنية','']
-            ];
-            $("#documents").DataTable({
-                data: table,
-                columns: [{
 
-                    title: 'الوثائق المكونة لكراس الشروط'
-                }],
+            $("#table-offres").DataTable({
                 language: {
-                    url: "{{ asset('/plugins/i18n/Arabic.json') }}"
+                    url: "{{ $lang }}"
                 }
-
             });
 
-        });
 
-        var offre_table = [
-            ['15/05/2021', '10:00', '', '01245', '16/05/2021',
-                '<a class="btn btn-success feather icon-edit" href="#" role="button">تحيين</a><a class="btn btn-danger feather icon-trash-2" role="button">حذف</a>'
-            ],
-            ['17/05/2021', '08:00', '', '01254', '18/05/2021',
-                '<a class="btn btn-success feather icon-edit" href="#" role="button">تحيين</a><a class="btn btn-danger feather icon-trash-2" role="button">حذف</a>'
-            ],
-            ['18/05/2021', '09:00', '', '01260', '18/05/2021',
-                '<a class="btn btn-success feather icon-edit" href="#" role="button">تحيين</a><a class="btn btn-danger feather icon-trash-2" role="button">حذف</a>'
-            ]
-        ];
-        $("#offres-table").DataTable({
-            data: offre_table,
-            columns: [{
 
-                    title: 'تاريخ وصول العرض'
-                },
-                {
-                    title: 'الساعة'
-                },
-                {
-                    title: 'المرجع'
-                },
-                {
-                    title: 'عدد التسجيل بمكتب الضبط'
-                },
-                {
-                    title: 'تاريخ التسجيل'
-                },
-                {
-                    title: 'تعديلات'
-                },
+            $("#ordres-table").DataTable({
+                language: {
+                    url: "{{ $lang }}"
+                }
+            });
 
-            ],
-            language: {
-                url: "{{ asset('/plugins/i18n/Arabic.json') }}"
-            }
+
+            var table = $('#table-docs-cc').DataTable({
+                initComplete: function() {
+                    // Apply the search
+                    this.api().columns().every(function() {
+                        var that = this;
+
+                        $('input', this.footer()).on('keyup change clear', function() {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                processing: true,
+                serverSide: true,
+                serverMethod: 'POST',
+                ajax: {
+                    url: "{{ route('files.datatable') }}",
+                    data: {
+                        id: {{ $dossier->id }},
+                        param: 'cc_docs'
+                    }
+                },
+                language: {
+                    url: "{{ $lang }}"
+                },
+                columns: [{
+                        data: "select",
+                        className: "select-checkbox"
+                    },
+                    {
+                        data: "id",
+                        className: "id"
+                    },
+                    {
+                        data: "libelle",
+                        className: 'libelle'
+                    },
+                    {
+                        data: 'action',
+                        className: 'action',
+                        visible: 'false'
+                    },
+                    {
+                        data: "created_at",
+                        className: 'created_at'
+                    },
+
+                ],
+                responsive: true,
+
+                columnDefs: [{
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0
+                    },
+                    {
+                        visible: false,
+                        targets: 1
+                    }
+                ],
+                select: {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+                // select: { style: 'multi+shift' },
+
+            });
+            table
+                .on('select', function(e, dt, type, indexes) {
+                    // var rowData = table.rows( indexes ).data().toArray();
+                    //console.log( rowData );
+                    SelectedRowCountBtnDelete(table)
+                })
+                .on('deselect', function(e, dt, type, indexes) {
+                    SelectedRowCountBtnDelete(table)
+                });
+
+            $('.dataTables_length').addClass('bs-select');
+
+            // Create new file_documents
+            $('#btn_add_file').click((e) => {
+                e.preventDefault();
+                $('#btn_add_file').attr('disabled', 'disabled');
+                $('.spinner-border').removeAttr('hidden');
+                $('#file_name').removeClass('is-invalid')
+                $('#file').removeClass('is-invalid')
+                let cahiers_charges_id = $('#cahiers_charges_id').val();
+                if(cahiers_charges_id == 0 || cahiers_charges_id == "" || cahiers_charges_id == null || cahiers_charges_id == undefined){
+                    swal("{{ __('labels.swal_warning_title') }}", 'الرجاء تسجيل بيانات كراس الشروط قبل إضافة الملف أو الوثيقة',
+                    "warning");
+                    $('#btn_add_file').removeAttr('disabled');
+                        $('.spinner-border').attr('hidden', 'hidden');
+                return false;
+                }
+                let path = "cc_docs";
+                let file_name = $("input[name=file_name]").val();
+                let file = document.getElementById("file").files[0];
+                var formData = new FormData();
+                formData.append('cahiers_charges_id', cahiers_charges_id)
+                formData.append('path', path)
+                formData.append('file', file)
+                formData.append('file_name', file_name)
+                formData.append('libelle', file_name)
+                $.ajax({
+                    url: "{{ route('file.upload.post') }}",
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#file_name').val('')
+                        $('#file').val('')
+                        //refreshSessions()
+                        PnotifyCustom(response)
+                        $('#btn_add_file').removeAttr('disabled');
+                        $('.spinner-border').attr('hidden', 'hidden');
+                        $('#table-docs-cc').DataTable().ajax.reload();
+
+
+                    },
+                    error: function(response) {
+                        console.log(JSON.stringify(response))
+                        $('#btn_add_file').removeAttr('disabled');
+                        $('.spinner-border').attr('hidden', 'hidden');
+                        $('#file_name-error').html('')
+                        $('#file-error').html('')
+                        // alert(JSON.stringify(response.responseJSON.message))
+                        if (response.responseJSON.message.file_name != null) {
+                            $('#file_name').addClass('is-invalid')
+                            $('#file_name-error').text(response.responseJSON.message.file_name);
+                        }
+                        if (response.responseJSON.message.file != null) {
+                            $('#file').addClass('is-invalid')
+                            $('#file-error').text(response.responseJSON.message.file);
+                        }
+
+
+                    }
+                }); // ajax end
+
+            })
         });
-        $("#docs-table").DataTable({
-            language: {
-                url: "{{ asset('/plugins/i18n/Arabic.json') }}"
+        // show or hide div step
+        function showHideSteps(divName){
+            $('[name="card"]').hide();
+            $(divName).show();
+        }
+
+
+
+        $('#add-offre').click(() => {
+            //$('#libelle').removeClass('is-invalid')
+            $('.spinner-border').removeAttr('hidden');
+            var articleId = $('#articles_id').val()
+            if (articleId === null || articleId == 'NULL' || articleId === undefined) {
+                swal("{{ __('labels.swal_warning_title') }}", 'الرجاء تحديد المادة',
+                    "warning");
+                return false;
             }
-        });
-        $("#ordres-table").DataTable({
-            language: {
-                url: "{{ asset('/plugins/i18n/Arabic.json') }}"
-            }
-        });
+
+            var formData = new FormData();
+            formData.append('dossiers_id', "{{ $dossier->id }}")
+            formData.append('mode', "editProjet")
+            formData.append('annee_gestion', $("#annee_gestion").val())
+            formData.append('type_demande', $("#type_demande").val())
+            formData.append('nature_demandes_id', $("#natures_demande").val())
+            formData.append('articles_id', articleId)
+            formData.append('description', $("input[name=description]").val())
+            formData.append('file_name', $("input[name=file_name]").val())
+            formData.append('qte_demande', $("input[name=qte_demande]").val())
+            formData.append('cout_unite_ttc', $("input[name=cout_total_ttc]").val())
+            formData.append('cout_unite_ttc', $("input[name=cout_unite_ttc]").val())
+
+            formData.append('file', document.getElementById("file").files[0])
+            //alert(file)
+            var $type = 'POST'
+            var $url = "{{ route('lignes_besoin.storeExeption') }}"
+
+            $.ajax({
+                url: $url,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function(response) {
+                    console.log(response)
+                    $('.spinner-border').attr('hidden', 'hidden');
+                    $('#table-cp').DataTable().ajax.reload();
+                    $('#cp_form')[0].reset()
+                    //$("#cp_form").get(0).reset()
+                    $('#add').html("إضافة إلى الجدول")
+                    PnotifyCustom(response)
+
+
+                },
+                error: function(response) {
+                    $('.spinner-border').attr('hidden', 'hidden');
+                    console.log(JSON.stringify(response.responseJSON));
+                    $('.spinner-border').attr('hidden', 'hidden');
+                    //  $('#file_name-error').html('')
+                    $('#libelle-error').html('')
+                    $('#file-error').html('')
+                    // alert(JSON.stringify(response.responseJSON.message))
+                    if (response.responseJSON.message.libelle != null) {
+                        $('#libelle').addClass('is-invalid')
+                        $('#libelle-error').text(response.responseJSON.message.poa_title);
+                    }
+
+                }
+            }); // ajax end
+        })
+
+
+         // Create new case status from modal
+         $('#btn_add_cc').click(() => {
+            var $url = "{{ route('consultation.cc') }}"
+            var $type = "POST";
+
+            $.ajax({
+                url: $url,
+                type: $type,
+                data: {
+                    dossiers_achats_id: {{ $dossier->id }},
+                    date_pub_prevu: $('#date_pub_prevu').val(),
+                    prix_cc: $('#prix_cc').val(),
+                    type_reception: $('#type_reception').val(),
+                    type_overture_plis: $('#type_overture_plis').val(),
+                    duree_travaux: $('#duree_travaux').val(),
+                    caution_prov: $('#caution_prov').val(),
+                    duree_caution_prov: $('#duree_caution_prov').val(),
+                    caution_def: $('#caution_def').val(),
+                    duree_caution_def: $('#duree_caution_def').val(),
+                },
+                success: function(response) {
+                    $('#date_pub_prevu').removeClass('is-invalid')
+                    $('#duree_travaux').removeClass('is-invalid')
+                    $('#cahiers_charges_id').val(response.data.id)
+                    PnotifyCustom(response)
+                },
+                error: function(errors) {
+
+                    if (errors.responseJSON.message.date_pub_prevu != null) {
+                        $('#date_pub_prevu').addClass('is-invalid')
+                        $('#date_pub_prevu-error').text(errors.responseJSON.message.date_pub_prevu);
+                    }
+
+                    if (errors.responseJSON.message.duree_travaux != null) {
+                        $('#duree_travaux').addClass('is-invalid')
+                        $('#duree_travaux-error').text(errors.responseJSON.message.duree_travaux);
+                    }
+                    if (errors.responseJSON.message.caution_def != null) {
+                        $('#caution_def').addClass('is-invalid')
+                        $('#caution_def-error').text(errors.responseJSON.message.caution_def);
+                    }
+                }
+            }); // ajax end
+
+        })
     </script>
 @endsection

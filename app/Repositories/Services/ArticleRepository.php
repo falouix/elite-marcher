@@ -34,7 +34,7 @@ class ArticleRepository implements IArticleRepository
             if($type){
                 $query->where('natures_demande_id',$type);
             }
-            $query->orderByDesc('libelle');
+            $query->orderBy('valider');
         return datatables()
             ->of($query)
             ->addColumn('select', static function () {
