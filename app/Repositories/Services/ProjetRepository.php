@@ -35,22 +35,30 @@ class ProjetRepository implements IProjetRepository
         return $Projet;
     }
 
-    public function getAllProjet($annee_gestion, $services_id, $type_demande, $nature_passation)
+    public function getAllProjet($annee_gestion, $services_id, $type_demande, $nature_passation, $mode="projet")
     {
+        Log::info("projet mode : ".$mode. " / Nature Passation : ".$nature_passation);
         $dataAction = "projets.datatable-actions";
+        if($mode =="ppm"){
+            $dataAction = "projets.ppm.datatable-actions";
+        }
         if (!($annee_gestion)) {
             $annee_gestion = strftime("%Y");
         }
         $query = Projet::select('*')
             ->where('annee_gestion', $annee_gestion)
             ->with('service');
+
         if ($services_id != 'all') {
+            Log::info("clause if service");
             $query->where('services_id', $services_id);
         }
         if ($type_demande != 'all') {
+            Log::info("clause if type demande");
             $query->where('type_demande', $type_demande);
         }
         if ($nature_passation != 'all') {
+            Log::info("clause if nature passation");
             $query->where('nature_passation', $nature_passation);
         }
         $query->orderBy('transferer');

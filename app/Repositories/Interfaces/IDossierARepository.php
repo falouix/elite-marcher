@@ -6,7 +6,9 @@ interface IDossierARepository {
     public function getDossierALigneDossierAByParam($key,$value);
     public function getLigneDossierAsByDossierA($dossierId, $withRelations = 0);
     public function getDossierAByParam($key,$value);
-    public function getDossierWithRelations($id);
+    public function getOffres($iddossier);
+    public function getCCDocs($idCC, $action ="file");
+    public function getDossierWithRelations($id, $relations);
     public function destroy($id);
     public function multiDestroy($ids);
     // مراحل الإنجاز المشتركة

@@ -78,7 +78,7 @@ $tbl_action = __('labels.tbl_action');
                     'id' => 'validation-client_form',
                 ]) !!}
 
-                <div class="row">
+                <div class="row" style="display: none;">
                     <div class="col-md-12">
                         <div class="form-group ">
                             <label> المصلحة/الدائرة/المؤسسة </label>
@@ -114,11 +114,7 @@ $tbl_action = __('labels.tbl_action');
                 <form id="cp_form" action="#">
                     <input type="hidden" name="lignebesoin_id" id="lignebesoin_id" value="0">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <h3 class="form-label"> الحاجيات</h3>
-                            </div>
-                        </div>
+                       
 
                         <div class="col-md-3">
                             <div class="form-group">

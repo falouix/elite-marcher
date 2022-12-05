@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Offre
- * 
+ *
  * @property int $id
  * @property string|null $ref_offre
  * @property int|null $source_offre
@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property int|null $created_by
  * @property int|null $updated_by
- * 
+ *
  * @property CommissionsOp $commissions_op
  * @property CommissionsTechnique $commissions_technique
  * @property DossiersAchat $dossiers_achat
@@ -55,7 +55,9 @@ class Offre extends Model
 		'commissions_ops_id' => 'int',
 		'commissions_techniques_id' => 'int',
 		'created_by' => 'int',
-		'updated_by' => 'int'
+		'updated_by' => 'int',
+        'date_arrive'=>'datetime:Y-m-d h:i:s',
+        'date_enregistrement'=>'datetime:Y-m-d h:i:s',
 	];
 
 	protected $dates = [

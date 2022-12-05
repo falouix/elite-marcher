@@ -63,7 +63,7 @@ class FileUploadRepository implements IFileUploadRepository
                     $request->file->move(storage_path($path), $fileName);
                     // Storage::move($request->file, $fileName);
                     $CcDoc =  CcDoc::create([
-                        'file_name' => $request->file_name,
+                        'libelle' => $request->file_name,
                         'cahiers_charges_id' => $request->cahiers_charges_id,
                         'path' => $path . $fileName,
                         'created_by' => Auth::user()->id,
@@ -142,9 +142,9 @@ class FileUploadRepository implements IFileUploadRepository
                 break;
             case 'cc_docs':
                 $file_permission = "files.cc-docs";
-                if($permission == "customer" ){
+                /*if($permission == "customer" ){
                     $file_permission = "files.customer-docs";
-                }
+                }*/
                 $cc = CahiersCharge::select('id', 'dossiers_achats_id')->where('dossiers_achats_id', $id)->first();
                 $cc_id = 0;
                 if($cc){

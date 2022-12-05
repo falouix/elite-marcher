@@ -1,6 +1,6 @@
 @switch ($type_dossier)
     @case('CONSULTATION')
-        @can('besoin-edit')
+        @can('consultations-view')
             <a href="{{ route('consultations.show', ['consultation' => $id]) }}" class="btn btn-icon btn-rounded btn-primary"
                 title="{{ __('inputs.btn_view') }}">
                 <i class="feather icon-eye"></i>
@@ -9,7 +9,7 @@
     @break
 
     @case('AOS')
-        @can('besoin-edit')
+        @can('AOS-view')
             <a href="{{ route('consultations.show', ['consultation' => $id]) }}" class="btn btn-icon btn-rounded btn-primary"
                 title="{{ __('inputs.btn_view') }}">
                 <i class="feather icon-eye"></i>
@@ -18,7 +18,7 @@
     @break
 
     @case('AON')
-        @can('besoin-edit')
+        @can('AON-view')
             <a href="{{ route('AON.show', ['consultation' => $id]) }}" class="btn btn-icon btn-rounded btn-primary"
                 title="{{ __('inputs.btn_view') }}">
                 <i class="feather icon-eye"></i>
@@ -26,7 +26,7 @@
         @endcan
     @break
 
-    @case('AOGREGRE')
+    @case('AOGREGRE-view')
         @can('besoin-edit')
             <a href="{{ route('consultations.show', ['consultation' => $id]) }}" class="btn btn-icon btn-rounded btn-primary"
                 title="{{ __('inputs.btn_view') }}">

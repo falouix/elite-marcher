@@ -2,28 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DossiersAchat;
-use App\Models\LignesBesoin;
-use App\Models\LignesDossier;
-use App\Models\LignesDossiersAchat;
-use App\Models\Service;
+use App\Models\{
+    DossiersAchat,
+    LignesBesoin,
+    LignesDossier,
+    LignesDossiersAchat,
+    Service,
+    Notif
+};
 use App\Repositories\IFileUploadRepository;
-use App\Repositories\Interfaces\IConsultationRepository;
-use App\Repositories\Interfaces\IDossierARepository;
+use App\Repositories\Interfaces\{
+    IConsultationRepository,
+    IDossierARepository,
+    INotifRepository
+};
 use App\Traits\ApiResponser;
 use Auth;
-use Validator;
 use Illuminate\Http\Request;
 use Log;
+use Validator;
+use Carbon\Carbon;
 
 class ConsultationController extends Controller
 {
     use ApiResponser;
-    public function __construct(IConsultationRepository $repository, IDossierARepository $dossierRepository, IFileUploadRepository $fileRepository)
+    public function __construct(IConsultationRepository $repository, IDossierARepository $dossierRepository,
+                                IFileUploadRepository $fileRepository, INotifRepository $notifRepository)
     {
         $this->repository = $repository;
         $this->dossierRepository = $dossierRepository;
         $this->fileRepository = $fileRepository;
+        $this->notifRepository = $notifRepository;
     }
 
     /**
@@ -74,6 +83,26 @@ class ConsultationController extends Controller
                 return $this->error($validator->errors(), 403);
             }
             $cc = $this->dossierRepository->cahierCharges($request);
+            $dossier =
+            $dossier = $this->dossierRepository->getDossierAByParam('id', $request->dossiers_achats_id);
+            // Notification تاريخ اعتزام التنفيذ
+            if($cc){
+                $msg = "تذكير لإضافة الإعلان الإشهاري للإستشارة عدد [".$dossier->code_dossier."] بتاريخ [".$cc->date_pub_prevu."]";
+                // Create Notification To users
+                $newNotif = new Notif();
+                $newNotif->type = "RAPPEL";
+                $newNotif->texte = $msg;
+                $newNotif->from_table = "cahiers_charges";
+                $newNotif->from_table_id = $cc->id;
+                $newNotif->users_id = Auth::user()->id;
+                $newNotif->action = "";
+                $dateavis = Carbon::createFromFormat('Y-m-d', $cc->date_pub_prevu);
+                $newNotif->date_traitement = $dateavis->subDays(2);
+                $notif = $this->notifRepository->GenererNotif($newNotif);
+            }
+
+
+
             return $this->notify('كراس الشروط', 'تم تسجيل بيانات كراس الشروط بنجاح', $type = 'success', $rtl = true, $cc);
         }
 
@@ -90,15 +119,15 @@ class ConsultationController extends Controller
             Log::info($request);
             /*
             $validator = Validator::make($request->all(), [
-                'dossiers_achats_id' => 'required',
-                'date_pub_prevu' => 'required|date',
-                'duree_travaux' => 'required|numeric|min:1|max:999',
+            'dossiers_achats_id' => 'required',
+            'date_pub_prevu' => 'required|date',
+            'duree_travaux' => 'required|numeric|min:1|max:999',
             ]);
 
             if ($validator->fails()) {
-                return $this->error($validator->errors(), 403);
+            return $this->error($validator->errors(), 403);
             }
-            */
+             */
             $cc = $this->dossierRepository->avisPub($request);
             return $this->notify('الإعلان الإشهاري', 'تم تسجيل بيانات الإعلان الإشهاري بنجاح', 'success', true, $cc);
         }
@@ -161,7 +190,19 @@ class ConsultationController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $dossier = $this->dossierRepository->getDossierWithRelations($id);
+        /*->with('lignes_dossiers')
+        ->with('cahiers_charges')
+        ->with('dossier_docs')
+        ->with('offres')
+        ->with('service_ordres')
+        ->with('enregistrements')
+        ->with('bcs_engagements')
+        ->with('avis_dossiers')*/
+        $dossier = $this->dossierRepository->getDossierWithRelations($id, [
+                                                                            'cahiers_charges',
+                                                                            'commissions_ops',
+                                                                            'commissions_techniques'
+                                                                        ]);
         switch ($dossier->type_demande) {
             case '1':
                 $dossier->type_demande = "مواد وخدمات";
@@ -173,6 +214,7 @@ class ConsultationController extends Controller
                 $dossier->type_demande = "دراسات";
                 break;
         }
+
         return view('dossiers_achats.consultations.show', compact('dossier'));
     }
 
@@ -184,7 +226,7 @@ class ConsultationController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $dossier = $this->dossierRepository->getDossierWithRelations($id);
+        $dossier = $this->dossierRepository->getDossierAByParam('id', $id);
         switch ($dossier->type_demande) {
             case '1':
                 $dossier->type_demande = "مواد وخدمات";

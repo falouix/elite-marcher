@@ -49,7 +49,7 @@ $tbl_action = __('labels.tbl_action');
         <div class="card">
 
             <div class="card-header">
-                <h5>المخطط السنوي للشراءات</h5>
+                <h5>المخطط السنوي للحاجيات</h5>
                 <div class="card-header-right">
                     @can('besoins-list')
                         <button class="btn btn-danger " id="btn_delete" onclick='return multipleDelete("{{ $locale }}");'>

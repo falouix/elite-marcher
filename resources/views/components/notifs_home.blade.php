@@ -1,6 +1,12 @@
  <!-- Incomeing-section start -->
-
- <div class="card user-list table-card">
+@php
+    if ($col == "12"){
+        $classCol = "col-md-12";
+    }else {
+        $classCol="";
+    }
+@endphp
+ <div class="card user-list table-card {{ $classCol }}">
      <div class="card-header">
          <h5>الإشعارات</h5>
      </div>

@@ -24,6 +24,16 @@ class CreateProjetsTable extends Migration
             $table->enum('nature_passation', ['CONSULTATION', 'AOS', 'AON', 'AOGREGRE'])->nullable()->comment('طريقة الإبرام\nإستشارة\nطلب عروض اجراءات مبسطة\nطلب عروض اجراءات عادية\nصفقة بالتفاوض المباشر');
             $table->bigInteger('services_id')->nullable();
             $table->boolean('transferer')->nullable();
+            $table->Integer('duree_travaux_prvu')->nullable();
+            $table->date('date_cc_prvu')->nullable();
+            $table->date('date_avis_prvu')->nullable();
+            $table->date('date_op_prvu')->nullable(); // overture des plis
+            $table->date('date_trsfert_ca_prvu')->nullable(); // الإحالة على لجنة الشراءات
+            $table->date('date_trsfert_cao_prvu')->nullable(); // الاحالة على لجنة الصفقات
+            $table->date('date_repca_prvu')->nullable(); // إجابة لجنة الصفقات
+            $table->date('date_pub_reslt_prvu')->nullable(); // نشر المنافسة
+            $table->date('date_avis_soumissionaire_prvu')->nullable(); // لتبليغ الصفقة
+            $table->date('date_ordre_serv_prvu')->nullable(); // لبداية الإنجاز
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('created_by')->nullable();

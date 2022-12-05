@@ -104,40 +104,6 @@ $mode = isset($user);
 
                         </div>
                     </div>
-
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-label">{{ __('labels.tbl_phone') }}</label>
-                            <input type="text" class="form-control" name="phone_num" placeholder="Phone: 999 9999-9999"
-                                data-mask="999 9999-9999" value="@if (isset($user)) {{ $user->phone_num == null ? '' : $user->phone_num }} @else {{ old('phone_num') }} @endif">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">{{ __('labels.tbl_start_date') }}</label>
-                        <input type="text" class="form-control text-left "
-                            placeholder="{{ __('labels.tbl_start_date') }}..." name="start_date" id="start_date"
-                            value="@if (isset($user)) {{ $user->start_date == null ? '' : $user->start_date }} @else {{ old('start_date') }} @endif">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">{{ __('labels.tbl_end_date') }}</label>
-                        <input type="text" class="form-control text-left"
-                            placeholder="{{ __('labels.tbl_end_date') }}..." name="end_date" id="end_date"
-                            value="@if (isset($user)) {{ $user->end_date == null ? '' : $user->end_date }} @else {{ old('end_date') }} @endif">
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{{ __('labels.tbl_client_adress') }}</label>
-                            <textarea class="form-control" name="adress" placeholder="{{ __('labels.tbl_client_adress') }}...">@if (isset($user)) {{ $user->adress }} @else {{ old('adress') }} @endif</textarea>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{{ __('labels.tbl_description') }}</label>
-                            <textarea class="form-control" name="description"
-                                placeholder="{{ __('labels.tbl_description') }}...">@if (isset($user)) {{ $user->description }} @else {{ old('description') }} @endif</textarea>
-                        </div>
-                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">{{ __('labels.tbl_email') }}</label>
@@ -145,6 +111,16 @@ $mode = isset($user);
                                 placeholder="{{ __('labels.tbl_email') }}..." value="@if (isset($user)) {{ $user->email }} @else {{ old('email') }} @endif">
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">{{ __('labels.tbl_phone') }}</label>
+                            <input type="text" class="form-control" name="phone_num" value="@if (isset($user)) {{ $user->phone_num == null ? '' : $user->phone_num }} @else {{ old('phone_num') }} @endif">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        @component('components.user_type', ['userType' => $userType])
+                        @endcomponent
+                     </div>
 
                     <div class="col-md-6">
 
@@ -161,6 +137,13 @@ $mode = isset($user);
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">{{ __('labels.tbl_client_adress') }}</label>
+                            <textarea class="form-control" name="adress" placeholder="{{ __('labels.tbl_client_adress') }}...">@if (isset($user)) {{ $user->adress }} @else {{ old('adress') }} @endif</textarea>
+                        </div>
+                    </div>
+
 
                     <div class="col-md-12">
                         @component('components.user_role', ['roles' => $roles, 'name' => $name, 'userRole' => $userRole])

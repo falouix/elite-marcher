@@ -266,7 +266,7 @@ $tbl_action = __('labels.tbl_action');
                                     <thead>
                                         <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                                 class="select-checkbox not-export-col" /> </th>
-                                        <th class="not-export-col">id</th>
+                                        <th class="not-export-col"></th>
                                         <th>المادة</th>
                                         <th>الكمية </th>
                                         <th>الكلفة التقديرية للوحدة</th>
@@ -278,7 +278,7 @@ $tbl_action = __('labels.tbl_action');
                                         <tr>
                                             <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                                     class="select-checkbox not-export-col" /> </th>
-                                            <th class="not-export-col">id</th>
+                                            <th class="not-export-col"></th>
                                             <th>المادة</th>
                                             <th>الكمية </th>
                                             <th>الكلفة التقديرية للوحدة</th>
@@ -293,68 +293,64 @@ $tbl_action = __('labels.tbl_action');
                         <div class="tab-pane fade" id="cahiercharges" role="tabpanel"
                             aria-labelledby="cahiercharges-tab">
                             <div class="col-md-12"> <br>
-
+@php
+   $cahiers_charges = $dossier->cahiers_charges;
+@endphp
 
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>تاريخ اعتزام نشر الإعلان :</label>
-                                        <input class="form-control" type="text" value='01/05/2022' readonly>
+                                        <input class="form-control" type="date" value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>ثمن اقتناء كراس الشروط :</label>
-                                        <input class="form-control" type="text" value='0' readonly>
+                                        <input class="form-control" type="text" value='{{ $cahiers_charges->prix_cc ?? '' }}' readonly>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>طريقة قبول العروض :</label>
-                                        <select class="form-control" readonly>
-                                            <option>منظومة الشراءات على الخط</option>
+                                        <select class="form-control" disabled>
+                                            <option {{ ($cahiers_charges != null && $cahiers_charges->type_reception == 1) ? 'selected' : '' }}>منظومة الشراءات على الخط</option>
+                                            <option {{ ($cahiers_charges != null && $cahiers_charges->type_reception == 2) ? 'selected' : '' }}> مكتب الضبط </option>
+                                            <option  {{ ($cahiers_charges != null && $cahiers_charges->type_reception == 3) ? 'selected' : '' }}> البريد </option>
 
                                         </select>
                                     </div>
 
                                     <div class="form-group col-md-6">
                                         <label>طريقة فتح الظروف :</label>
-                                        <select class="form-control" readonly>
-                                            <option selected>مالية وفنية غير علنية</option>
+                                        <select class="form-control" disabled>
+                                            <option {{ ($cahiers_charges != null && $cahiers_charges->type_overture_plis == 1) ? 'selected' : '' }}>مالية علنية </option>
+                                            <option {{ ($cahiers_charges != null && $cahiers_charges->type_overture_plis == 2) ? 'selected' : '' }}>مالية وفنية علنية</option>
+                                            <option {{ ($cahiers_charges != null && $cahiers_charges->type_overture_plis == 3) ? 'selected' : '' }}>مالية وفنية غير علنية</option>
                                         </select>
                                     </div>
 
 
-                                    <div class="form-group col-md-4">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                    <div class="form-group col-md-6">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck1" {{  ($cahiers_charges != null && $cahiers_charges->caution_prov == 1) ? checked : '' }}>
                                         <label class="custom-control-label" for="customCheck1">ضمان وقتي</label>
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6">
                                         <label>مدة الضمان الوقتي :</label>
-                                        <input type="text" class="form-control" id="inputPassword2b" value="120"
+                                        <input type="text" class="form-control" id="inputPassword2b" value="{{ $cahiers_charges->duree_caution_prov ?? ''}}"
                                             readonly>
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <label>المبلغ :</label>
-                                        <input type="text" class="form-control" id="inputPassword2b" value="120"
-                                            readonly>
-                                    </div>
-                                    <div class="form-group col-md-4">
+
+                                    <div class="form-group col-md-6">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck2" >
                                         <label class="custom-control-label" for="customCheck2">ضمان نهائي</label>
-                                        <input type="checkbox" class="custom-control-input" id="customCheck2">
 
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6">
                                         <label>مدة الضمان النهائي :</label>
-                                        <input type="text" class="form-control" id="inputPassword2b" value="120"
+                                        <input type="text" class="form-control" id="duree_caution_def"
                                             readonly>
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <label>المبلغ :</label>
-                                        <input type="text" class="form-control" id="inputPassword2b1" value="45"
-                                            readonly>
-                                    </div>
-                                    <div class="form-group col-md-4">
+
+                                    <div class="form-group col-md-6">
                                         <label>مدة الإنجاز باليوم : </label>
-                                        <input class="mb-3 form-control form-control-lg" type="text" value='90' readonly>
+                                        <input class="mb-3 form-control form-control-lg" type="text" value='{{ $cahiers_charges->duree_travaux ?? '' }}' readonly>
                                     </div>
-
-
                                 </div>
 
 
@@ -382,12 +378,21 @@ $tbl_action = __('labels.tbl_action');
                                         <div class="dt-responsive table-responsive">
                                             <table id="offres-table" class="table table-striped table-bordered nowrap">
                                                 <thead>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <th class="not-export-col" style="width: 30px"><input type="checkbox"
+                                                        class="select-checkbox not-export-col" /> </th>
+                                                <th class="not-export-col"></th>
+
+                                                   <th>تاريخ الوصول</th>
+                                                   <th>مرجع العرض</th>
+                                                   <th>عدد التسجيل بمكتب الضبط</th>
+                                                   <th>تاريخ التسجيل</th>
+                                                   <th>وصول العرض عن طريق</th>
+                                                   <th>عدد الأقساط</th>
+                                                   <th>الثمن</th>
+                                                   <th>المتعهد</th>
+                                                   <th>قرار لجنة فتح الظروف</th>
+                                                   <th>قرار اللجنة الفنية</th>
+                                                   <th>الملاحظات</th>
                                                 </thead>
                                             </table>
                                         </div>
@@ -714,15 +719,152 @@ $tbl_action = __('labels.tbl_action');
             // Setup - add a text input to each footer cell
 
             addSearchFooterDataTable("#ligneConsultation-table")
-            $("#services_id").select2({
-                dir: "{{ $rtl }}",
-                maximumSelectionLength: 1,
-                placeholder: "{{ __('labels.choose') }} ",
+
+              //Offres Datatable
+              var offres_table = $('#offres-table').DataTable({
+                dom: 'frltipB',
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                buttons: [{
+                        text: '{{ __('inputs.btn_copy') }}',
+                        extend: 'copyHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_excel') }}',
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_pdf') }}',
+                        extend: 'pdfHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_print') }}',
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                ],
+                initComplete: function() {
+                    // Apply the search
+                    this.api().columns().every(function() {
+                        var that = this;
+
+                        $('input', this.footer()).on('keyup change clear', function() {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                processing: true,
+               // serverSide: true,
+                serverMethod: 'POST',
+                ajax: {
+                    url: "{{ route('dossiers.offres.data') }}",
+                    data: function(data) {
+                        data.dossiers_id = "{{ $dossier->id }}";
+                    },
+                },
+                language: {
+                    url: "{{ $lang }}"
+                },
+                columns: [{
+                        data: "select",
+                        className: "select-checkbox"
+                    },
+                    {
+                        data: "id",
+                        className: "id"
+                    },
+                    {
+                        data: "date_arrive",
+                        className: "date_arrive"
+                    },
+                    {
+                        data: "ref_offre",
+                        className: "ref_offre"
+                    },
+                    {
+                        data: "ref_bo",
+                        className: "ref_bo"
+                    },
+                    {
+                        data : 'date_enregistrement',
+                        className : 'date_enregistrement',
+                    },
+                    {
+                        data: "source_offre",
+                        className: "source_offre"
+                    },
+                    {
+                        data: "nbr_lots",
+                        className: "nbr_lots"
+                    },
+                    {
+                        data : 'prix_offre',
+                        className : 'prix_offre',
+                    },
+                    {
+                        data : 'soumissionaire_id',
+                        className : 'soumissionaire_id',
+                    },
+                    {
+                        data : 'decision_op',
+                        className : 'decision_op',
+                    },
+                    {
+                        data : 'decision_technique',
+                        className : 'decision_technique',
+                    },
+                    {
+                        data : 'observations',
+                        className : 'observations',
+                    },
+
+                ],
+                responsive: true,
+
+                columnDefs: [{
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0
+                    },
+                    {
+                        visible: false,
+                        targets: 1
+                    }
+                ],
+                select: {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+                // select: { style: 'multi+shift' },
 
             });
+            offres_table
+                .on('select', function(e, dt, type, indexes) {
+                    SelectedRowCountBtnDelete(table)
+                })
+                .on('deselect', function(e, dt, type, indexes) {
+                    SelectedRowCountBtnDelete(table)
+                });
 
+            $('.dataTables_length').addClass('bs-select');
 
+            // Setup - add a text input to each footer cell
 
+            addSearchFooterDataTable("#offres-table")
 
 
             var table = [
@@ -730,57 +872,134 @@ $tbl_action = __('labels.tbl_action');
                 ['الفنية','']
             ];
             $("#documents").DataTable({
-                data: table,
+                data: dossiers.cc-docs.data,
                 columns: [{
 
                     title: 'الوثائق المكونة لكراس الشروط'
                 }],
                 language: {
-                    url: "{{ asset('/plugins/i18n/Arabic.json') }}"
+                    url: "{{ $lang }}"
                 }
 
             });
 
 
+            //Offres Datatable
+            var offres_table = $('#documents').DataTable({
+                dom: 'frltipB',
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                buttons: [{
+                        text: '{{ __('inputs.btn_copy') }}',
+                        extend: 'copyHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_excel') }}',
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_pdf') }}',
+                        extend: 'pdfHtml5',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        text: '{{ __('inputs.btn_print') }}',
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                ],
+                initComplete: function() {
+                    // Apply the search
+                    this.api().columns().every(function() {
+                        var that = this;
+
+                        $('input', this.footer()).on('keyup change clear', function() {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                processing: true,
+               // serverSide: true,
+                serverMethod: 'POST',
+                ajax: {
+                    url: "{{ route('dossiers.cc-docs.data') }}",
+                    data: function(data) {
+                        data.idCC = "{{ $cahiers_charges->id ?? 0 }}";
+                    },
+                },
+                language: {
+                    url: "{{ $lang }}"
+                },
+                columns: [{
+                        data: "select",
+                        className: "select-checkbox"
+                    },
+                    {
+                        data: "id",
+                        className: "id"
+                    },
+                    {
+                        data: "libelle",
+                        className: "libelle"
+                    },
+                    {
+                        data : 'action',
+                        className : 'action',
+                    },
+
+                ],
+                responsive: true,
+
+                columnDefs: [{
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0
+                    },
+                    {
+                        visible: false,
+                        targets: 1
+                    }
+                ],
+                select: {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+                // select: { style: 'multi+shift' },
+
+            });
+            offres_table
+                .on('select', function(e, dt, type, indexes) {
+                    SelectedRowCountBtnDelete(table)
+                })
+                .on('deselect', function(e, dt, type, indexes) {
+                    SelectedRowCountBtnDelete(table)
+                });
+
+            $('.dataTables_length').addClass('bs-select');
+
+            // Setup - add a text input to each footer cell
+
+            addSearchFooterDataTable("#offres-table")
+
+
+
         });
 
-        var offre_table = [
-            ['15/05/2021', '10:00', '', '01245', '16/05/2021',
-                '<a class="btn btn-success feather icon-edit" href="#" role="button">تحيين</a><a class="btn btn-danger feather icon-trash-2" role="button">حذف</a>'
-            ],
-            ['17/05/2021', '08:00', '', '01254', '18/05/2021',
-                '<a class="btn btn-success feather icon-edit" href="#" role="button">تحيين</a><a class="btn btn-danger feather icon-trash-2" role="button">حذف</a>'
-            ],
-            ['18/05/2021', '09:00', '', '01260', '18/05/2021',
-                '<a class="btn btn-success feather icon-edit" href="#" role="button">تحيين</a><a class="btn btn-danger feather icon-trash-2" role="button">حذف</a>'
-            ]
-        ];
-        $("#offres-table").DataTable({
-            data: offre_table,
-            columns: [{
 
-                    title: 'تاريخ وصول العرض'
-                },
-                {
-                    title: 'الساعة'
-                },
-                {
-                    title: 'المرجع'
-                },
-                {
-                    title: 'عدد التسجيل بمكتب الضبط'
-                },
-                {
-                    title: 'تاريخ التسجيل'
-                },
-                {
-                    title: 'تعديلات'
-                },
-            ],
-            language: {
-                url: "{{ asset('/plugins/i18n/Arabic.json') }}"
-            }
-        });
+
         $("#docs-table").DataTable({
             language: {
                 url: "{{ asset('/plugins/i18n/Arabic.json') }}"

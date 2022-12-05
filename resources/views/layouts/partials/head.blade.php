@@ -10,9 +10,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="description"
-    content="Legal Aid" />
+content="منظوم التصرف في الصفقات العمومية جامعة جندوبة"/>
 <meta name="keywords"
-    content="Legal, Aid, مكتب, محمامي">
+    content="منظوم التصرف في الصفقات العمومية جامعة جندوبة">
     <meta name="author" content="CDF Center- Chedli Elhaj Ali" />
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <!-- Favicon icon

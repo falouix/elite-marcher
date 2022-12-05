@@ -100,7 +100,8 @@ class BesoinController extends Controller
      */
     public function show($id)
     {
-        //
+        $besoin = Besoin::select('*')->where('id', $id)->first();
+        return view('besoins.show', compact('besoin'));
     }
 
     /**
@@ -132,14 +133,7 @@ class BesoinController extends Controller
         ]);
 
         $besoin = $this->repository->update($request, $id);
-        /*$locale = LaravelLocalization::getCurrentLocale();
-        if ($locale == 'en') {
-        $notification = $this->notifyArr('Success [Update Client]', 'Client updated successfully!', 'success', false);
-        } else {
-         */
         $notification = $this->notifyArr('', '!تم تحيين ضبط الحاجيات بنجاح', 'success', true);
-        //}
-
         return redirect()->route('besoins.index')
             ->with('notification', $notification);
     }
@@ -197,7 +191,7 @@ class BesoinController extends Controller
         if ($locale == 'en') {
             return $this->notify('User delete', ' User(s) deleted successfully!', 'success', false);
         }
-        return $this->notify('!حذف مستعمل', 'تم حذف المستعمل(ين) بنجاح');
+        return $this->notify('!حذف حاجيات', 'تم حذف الحاجيات بنجاح');
     }
 
     // Edit Ligne Besoin from table

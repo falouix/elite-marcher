@@ -12,10 +12,10 @@ $tbl_action = __('labels.tbl_action');
 @endphp
 @extends('layouts.app')
 @section('head-script')
-   
+
 <!-- data tables css -->
 <link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/datatables.min.css') }}">
-<link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/select.dataTables.min.css') }}"> 
+<link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/select.dataTables.min.css') }}">
 <!-- pnotify css -->
 <link rel="stylesheet" href="{{ asset('/plugins/pnotify/css/pnotify.custom.min.css') }}">
 <!-- pnotify-custom css -->
@@ -49,7 +49,7 @@ $tbl_action = __('labels.tbl_action');
                 @can('role-create')
                 <a class="btn btn-primary float-right" href="{{ route('roles.create') }}"> <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}</a>
                 @endcan
-               
+
             </div>
             <div class="card-body">
                 <div class="dt-responsive table-responsive">
@@ -65,11 +65,11 @@ $tbl_action = __('labels.tbl_action');
                                 <tr>
 
                                     <td></td>
-                                    <td>{{ $role->$name }}</td>
+                                    <td>{{ $role->name }}</td>
                                     <td>{{ $role->created_at->format('Y-m-d')}}</td>
                                     <td>
                                         @can('role-edit')
-                                            <a class="btn btn-icon btn-rounded btn-success" href="{{ route('roles.edit', $role->id) }}" 
+                                            <a class="btn btn-icon btn-rounded btn-success" href="{{ route('roles.edit', $role->id) }}"
                                                 title="{{ __('inputs.btn_edit') }}">
                                                 <i class="feather icon-edit"></i>
                                             </a>
@@ -80,7 +80,7 @@ $tbl_action = __('labels.tbl_action');
                                             <button type="submit" class="btn btn-icon btn-rounded btn-danger" title="{{ __('inputs.btn_delete') }}">
                                                 <i class="feather icon-trash-2"></i>
                                             </button>
-                                           
+
                                             {!! Form::close() !!}
                                         @endcan
                                     </td>
@@ -112,7 +112,7 @@ $tbl_action = __('labels.tbl_action');
 <script>
     $(document).ready(function() {
         $('#colum-select').DataTable({
-         
+
           columnDefs: [{
             orderable: true,
             className: 'select-checkbox',
@@ -128,7 +128,7 @@ $tbl_action = __('labels.tbl_action');
         });
         $('.dataTables_length').addClass('bs-select');
       });
-      
+
 </script>
 
 @endsection

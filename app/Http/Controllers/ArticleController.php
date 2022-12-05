@@ -148,14 +148,14 @@ class ArticleController extends Controller
     }
     /**
      * Update the specified resource in storage. : Valider Article
-     * @param  int  $id
+     * * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function valider($id)
+    public function valider(Request $request)
     {
-        \Log::alert("Validate Article from Notif ".$id);
+        \Log::alert("Validate Article from Notif ".$request->id);
 
-        $article = Article::find($id)->update([
+        $article = Article::find($request->id)->update([
             'valider' => true,
         ]);
 

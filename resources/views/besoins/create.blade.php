@@ -71,7 +71,7 @@ $sub_breadcrumb = 'إضافة الحاجيات';
                 {{-- Case Other Parties --}}
                 {!! Form::open(['route' => 'besoins.store', 'method' => 'POST', 'files' => 'true', 'enctype' => 'multipart/form-data', 'id' => 'validation-client_form']) !!}
                 <input type="hidden" name="ligne_besoin" id="ligne_besoin" value="">
-                <div class="row">
+                <div class="row" style="display: none;">
                     <div class="col-md-12">
                         <div class="form-group ">
                             <label> المصلحة/الدائرة/المؤسسة </label>

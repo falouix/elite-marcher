@@ -1,15 +1,15 @@
 @php
 
-$breadcrumb = __('breadcrumb.bread_besoins_list');
-$subbreadcrumb = 'المصادقة على الحاجيات';
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-    $rtl = 'rtl';
-} else {
-    $lang = '';
-    $rtl = 'ltr';
-}
-$tbl_action = __('labels.tbl_action');
+    $breadcrumb = __('breadcrumb.bread_besoins_list');
+    $subbreadcrumb = 'المصادقة على الحاجيات';
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+        $rtl = 'rtl';
+    } else {
+        $lang = '';
+        $rtl = 'ltr';
+    }
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
@@ -44,7 +44,7 @@ $tbl_action = __('labels.tbl_action');
         <div class="card">
 
             <div class="card-header">
-                <h5>{{ __('cards.besoins_list') }}</h5>
+                <h5>المصادقة على الحاجيات</h5>
                 <div class="card-header-right">
 
                 </div>
@@ -73,7 +73,7 @@ $tbl_action = __('labels.tbl_action');
                     @else
                         <div class="col-md-3">
                             <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
-                            <select class="col-sm-12" id="services_id" name="services_id" readonly>
+                            <select class="col-sm-12" id="services_id" name="services_id" disabled>
                                 @foreach ($services as $item)
                                     <option value="{{ $item->id }}" selected>{{ $item->libelle }}</option>
                                 @endforeach
@@ -120,7 +120,41 @@ $tbl_action = __('labels.tbl_action');
     </div>
     <!-- Column Selector table end -->
 
+    <!-- Modal Create or edit type -->
+    <div class="modal fade show" id="modal-valider-besoin" aria-labelledby="exampleModalLabel" aria-modal="true"
+        style="display: none;">
 
+        <div class="modal-dialog modal-lg ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">المصادقة على الحاجيات </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" id="besoins_id" name="besoins_id" value="0">
+                        <div class="form-group col-md-12">
+                            <label for="exampleInputEmail1">{{ __('labels.tbl_poa_file_path') }}</label>
+                            <input type="file" id="file" name="file" class="form-control form-control-file"
+                                id="file">
+                            <label id="file-error" class="error jquery-validation-error small form-text invalid-feedback"
+                                for="file"></label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            {{ __('inputs.btn_close') }}</button>
+                        <button type="button" class="btn btn-primary" id='btn_valider_besoins'>
+                            <span class="spinner-border spinner-border-sm" role="status" hidden></span>
+                            <span id="btn_valider_besoins_title">المصادقة</span> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Create or edit type end-->
 
 
 @endsection
@@ -290,39 +324,56 @@ $tbl_action = __('labels.tbl_action');
         // Search button click event (reload dtatable)
         $('#btn_search_besoins').on('click', (e) => {
             e.preventDefault();
-            /*
-            var start_date = Date.parse($('#start_date').val());
-            var end_date = Date.parse($('#end_date').val());
-
-            if (start_date > end_date) {
-                var swal_title = "{{ __('labels.swal_error_title') }}"
-                swal_text = "{{ __('labels.swal_error_event_star_end_date') }}"
-                swal({
-                    icon: 'error',
-                    title: swal_title,
-                    text: swal_text,
-                })
-                return false;
-            }
-
-            if ((isNaN(start_date) || isNaN(end_date)) == true) {
-                var swal_title = "{{ __('labels.swal_error_title') }}"
-                swal_text = "{{ __('labels.swal_error_event_star_end_date') }}"
-                swal({
-                    icon: 'error',
-                    title: swal_title,
-                    text: swal_text,
-                })
-                return false;
-            }
-            */
             $('#besoins-table').DataTable().ajax.reload();
 
         })
 
+        $('#btn_valider_besoins').click(() => {
+            $('.spinner-border').removeAttr('hidden');
+            let id = $('#besoins_id').val()
+            let file = document.getElementById("file").files[0];
+            var formData = new FormData();
+
+            formData.append('file', file)
+            formData.append('besoins_id', id)
+            //alert(file)
+            if (id != 0) {
+                var url = "{{ route('besoins-validation.valider') }}";
+                    //url = url.replace(':id', id);
+                formData.append('_method', 'PUT');
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function(response) {
+                        console.log(response)
+                        //alert(JSON.stringify(response))
+                        // refresh data or remove only tr
+                        $('#besoins-table').DataTable().ajax.reload();
+                        $('#file').val('')
+                        $('#modal-valider-besoin').modal('toggle');
+                        $('.spinner-border').attr('hidden', 'hidden');
+                        PnotifyCustom(response)
+                    },
+                    error: function(response) {
+                        $('.spinner-border').attr('hidden', 'hidden');
+                        console.log(JSON.stringify(response.responseJSON));
+                        $('.spinner-border').attr('hidden', 'hidden');
+                        $('#file-error').html('')
+                        if (response.responseJSON.message.file != null) {
+                            $('#file').addClass('is-invalid')
+                            $('#file-error').text(response.responseJSON.message.file);
+                        }
+                    }
+                }); // ajax end
+            }
+        })
+
         function validerBesoin(id) {
-            var url = "{{ route('besoins-validation.valider', ':id') }}";
-            url = url.replace(':id', id);
+            $('#besoins_id').val(id)
+
             swal({
                     title: "المصادقة النهائية على الحاجيات",
                     text: "عند المصادقة النهائية, لايمكن تحيين أو حذف المعلومات",
@@ -341,19 +392,8 @@ $tbl_action = __('labels.tbl_action');
                             })
                             .then((willDelete) => {
                                 if (willDelete) {
-                                    $.ajax({
-                                        type: 'PUT',
-                                        dataType: 'JSON',
-                                        url: url,
-                                        success: function(response) {
-                                            console.log(response)
-                                            //alert(JSON.stringify(response))
-                                            // refresh data or remove only tr
-                                            //deleteSingleRowDataTable("#besoins-table")
-                                            $('#besoins-table').DataTable().ajax.reload();
-                                            PnotifyCustom(response)
-                                        }
-                                    }); // ajax end
+                                    // Modal upload file
+                                    $('#modal-valider-besoin').modal('show');
                                 }
                             });
                     }

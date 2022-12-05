@@ -185,9 +185,10 @@ class BesoinRepository implements IBesoinRepository
     }
     public function validerBesoin($id)
     {
-        Besoin::find($id)->update([
+        $besoin = Besoin::find($id)->update([
             'valider' => true,
         ]);
+        return $besoin;
         // return Response()->json(['success' => 'Projet deleted successfully.']);
     }
     public function destroy($id)

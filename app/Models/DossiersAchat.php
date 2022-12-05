@@ -161,7 +161,7 @@ class DossiersAchat extends Model
 
 	public function cahiers_charges()
 	{
-		return $this->hasMany(CahiersCharge::class, 'dossiers_achats_id');
+		return $this->hasOne(CahiersCharge::class, 'dossiers_achats_id');
 	}
 
 	public function cloture()

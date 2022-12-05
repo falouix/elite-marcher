@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Log;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Validator;
+use Config;
 
 class BesoinValidationController extends Controller
 {
@@ -28,7 +29,12 @@ class BesoinValidationController extends Controller
      */
     public function index()
     {
-        $services = Service::select('id', 'libelle')->get();
+        if (Auth::user()->user_type == 'user') {
+            $services = Service::select('id', 'libelle')->where('id', Auth::user()->services_id)->get();
+        }
+        if (Auth::user()->user_type == 'admin') {
+            $services = Service::select('id', 'libelle')->get();
+        }
         return view('besoins.validation.index', compact('services'));
     }
 
@@ -40,7 +46,6 @@ class BesoinValidationController extends Controller
      */
     public function edit($id)
     {
-
         $besoin = $this->repository->getBesoinByParam('id', $id);
         $userService = Service::select('*')->where('id', $besoin->services_id)->first();
         //dd($besoin);
@@ -61,7 +66,7 @@ class BesoinValidationController extends Controller
             'annee_gestion' => 'required|min:4|max:4',
         ]);
         $user = $this->repository->update($request, $id);
-        $notification = $this->notifyArr('', '!تم تحيين ضبط الحاجيات بنجاح', 'success', true);
+        $notification = $this->notifyArr('', '!تم تحيين الحاجيات بنجاح', 'success', true);
         return redirect()->route('besoins-validation.index')
             ->with('notification', $notification);
     }
@@ -71,10 +76,27 @@ class BesoinValidationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function validerBesoin($id)
+    public function validerBesoin(Request $request)
     {
-        Log::info("Validation besoin " .$id);
-        $this->repository->validerBesoin($id);
+        Log::info("Validation besoin " .$request->id);
+
+            $validator = Validator::make($request->all(), [
+                'besoins_id' => 'required', // besoins_id
+                'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
+            ]);
+            if ($validator->fails()) {
+                return $this->error($validator->errors(), 403);
+            }
+         // ajout de document s'il existe
+         $besoin = Besoin::select('*')->first($request->besoins_id);
+            if ($besoin) {
+                $fileName = 'besoin_doc_validation' . time() . '.' . $request->file->extension();
+                $path = 'app/documents/' . Config::get('constants.besoin_documents') . '/' . $request->besoins_id . '/';
+                $request->file->move(storage_path($path), $fileName);
+                $besoin->doc_validation =  $path . $fileName;
+                $besoin->valider = 1;
+                $besoin->save();
+            }
         return $this->notify('المصادقة على الحاجيات', 'تمت المصادقة على الحاجيات  بنجاح');
     }
 

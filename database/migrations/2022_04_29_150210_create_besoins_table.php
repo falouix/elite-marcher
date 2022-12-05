@@ -19,6 +19,7 @@ class CreateBesoinsTable extends Migration
             $table->date('date_besoin')->nullable();
             $table->boolean('valider')->nullable();
             $table->dateTime('date_validation')->nullable();
+            $table->text('doc_validation')->nullable();
             $table->bigInteger('services_id')->index('fk_besoins_services_idx');
             $table->timestamps();
             $table->softDeletes();

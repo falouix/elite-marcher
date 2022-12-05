@@ -11,6 +11,7 @@ use App\Models\{
     LignesDossier,
     CahiersCharge,
     AvisDossier,
+    Offre,
 };
 
 class DossierARepository implements IDossierARepository
@@ -167,17 +168,57 @@ class DossierARepository implements IDossierARepository
         return DossiersAchat::Select('*')->with('lignes_dossiers')->where($key, '=', $value)
             ->first();
     }
-    public function getDossierWithRelations($id)
+    public function getOffres($iddossier){
+        $query = Offre::select('*')
+        ->where('dossiers_achats_id', $iddossier);
+        $dataAction = "";
+        return datatables()
+            ->of($query)
+            ->addColumn('select', static function () {
+                return null;
+            })
+            ->editColumn('source_offre', function ($dossier) {
+                switch ($dossier->source_offre) {
+                    case 1:
+                        return 'Tuneps';
+                    case 2:
+                        return 'موقع المؤسسة';
+                    case 3:
+                        return 'مواقع أخرى';
+                }
+                return "";
+            })
+            ->addColumn('action', $dataAction)
+            ->rawColumns(['id', 'source_offre', 'action'])
+            ->make(true);
+    }
+    public function getCCDocs($idCC, $action ="file"){
+        $query = CcDoc::select('*')
+        ->where('cahiers_charges_id', $idCC);
+        $dataAction = "files.cc-docs";
+        if($action = "edit"){
+        $dataAction = "dossiers_achats.consultations.cc-datatable-actions";
+        }
+        return datatables()
+            ->of($query)
+            ->addColumn('select', static function () {
+                return null;
+            })
+            ->addColumn('action', $dataAction)
+            ->rawColumns(['id', 'action'])
+            ->make(true);
+    }
+    public function getDossierWithRelations($id, $relations)
     {
-        return DossiersAchat::Select('*')
-            ->with('lignes_dossiers')
+        return DossiersAchat::Select('*')->with($relations)
+            /*->with('lignes_dossiers')
             ->with('cahiers_charges')
             ->with('dossier_docs')
             ->with('offres')
             ->with('service_ordres')
             ->with('enregistrements')
             ->with('bcs_engagements')
-            ->with('avis_dossiers')
+            ->with('avis_dossiers')*/
             ->where('id', $id)
             ->first();
     }

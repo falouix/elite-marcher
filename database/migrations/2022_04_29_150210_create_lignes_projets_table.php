@@ -16,7 +16,7 @@ class CreateLignesProjetsTable extends Migration
         Schema::create('lignes_projets', function (Blueprint $table) {
             $table->$table->bigIncrements('id');
             $table->integer('num_lot')->nullable();
-            $table->integer('libelle')->nullable();
+            $table->string('libelle')->nullable();
             $table->integer('qte')->nullable();
             $table->decimal('cout_unite_ttc', 12, 3)->nullable();
             $table->decimal('cout_total_ttc', 12, 3)->nullable();

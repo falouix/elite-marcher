@@ -87,7 +87,7 @@ $tbl_action = __('labels.tbl_action');
                         <div class="form-group">
                             <label class="form-label">طريقة الإبرام</label>
                             <select class="form-control" id="nature_passation" name="nature_passation">
-                                <option value="all">الكل</option>
+                                <option value="all">اختر طريقة الإبرام</option>
                                 <option value="CONSULTATION">استشارة عادية</option>
                                 <option value="AOS">صفقة إجراءات مبسطة </option>
                                 <option value="AON">صفقة إجراءات عادية</option>

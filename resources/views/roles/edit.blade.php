@@ -31,7 +31,7 @@ $sub_breadcrumb = __('breadcrumb.bread_role_edit');
 
                 {!! Form::model($role, ['method' => 'PATCH', 'route' => ['roles.update', $role->id]]) !!}
                 <div class="row  ml-3">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">{{ __('labels.lbl_libelle_role') }}</label>
                             @php
@@ -41,17 +41,7 @@ $sub_breadcrumb = __('breadcrumb.bread_role_edit');
 
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{{ __('labels.lbl_libelle_role_ar') }}</label>
-                            @php
-                                $placeholdername = __('labels.lbl_libelle_role_ar');
-                            @endphp
-                            {!! Form::text('name_ar', null, ['placeholder' => '' . $placeholdername . '', 'class' => 'form-control']) !!}
 
-                        </div>
-
-                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label"><input type="checkbox" id="checkAll">

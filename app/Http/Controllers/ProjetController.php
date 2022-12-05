@@ -221,7 +221,7 @@ class ProjetController extends Controller
         Log::info($request);
         if ($request->annee_gestion) {
             if ($request->ajax()) {
-                return $this->repository->getAllProjet($request->annee_gestion, $request->services_id, $request->type_demande, $request->natures_passation);
+                return $this->repository->getAllProjet($request->annee_gestion, $request->services_id, $request->type_demande, $request->natures_passation, "projet");
             }
         }
 

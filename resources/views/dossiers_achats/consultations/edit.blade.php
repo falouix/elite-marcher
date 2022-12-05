@@ -800,5 +800,39 @@ $tbl_action = __('labels.tbl_action');
             }); // ajax end
 
         })
+         // Delete CC files
+         function deleteFile(id) {
+            swal({
+                    title: "{{ __('labels.swal_delete_title') }}",
+                    text: "{{ __('labels.swal_delete_text') }}",
+                    icon: "warning",
+                    buttons: ["{{ __('labels.swal_cancel_btn') }}", "{{ __('labels.swal_confirm_btn') }}"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            type: 'DELETE',
+                            dataType: 'JSON',
+                            data: {
+                                id: id,
+                                param: 'cc_docs'
+                            },
+                            url: "{{ route('files.delete') }}",
+                            success: function(response) {
+                                //console.log(response)
+                                //alert(JSON.stringify(response))
+                                // refresh data or remove only tr
+                                $('#table-docs-cc').DataTable().ajax.reload();
+                                PnotifyCustom(response)
+
+
+                            }
+                        }); // ajax end
+
+                    }
+                });
+        }
     </script>
 @endsection

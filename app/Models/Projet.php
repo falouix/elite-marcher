@@ -26,6 +26,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $nature_passation
  * @property int|null $services_id
  * @property bool|null $transferer
+ * @property int|null $duree_travaux_prvu
+ * @property Carbon|null $date_cc_prvu
+	* @property Carbon|null $date_avis_prvu
+    	* @property Carbon|null $date_op_prvu
+    	* @property Carbon|null $date_trsfert_ca_prvu
+    	* @property Carbon|null $date_trsfert_cao_prvu
+    	* @property Carbon|null $date_repca_prvu
+    	* @property Carbon|null $date_pub_reslt_prvu
+    	* @property Carbon|null $date_avis_soumissionaire_prvu
+    	* @property Carbon|null $date_ordre_serv_prvu
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -44,13 +54,23 @@ class Projet extends Model
 	protected $casts = [
 		'services_id' => 'int',
 		'transferer' => 'bool',
+		'duree_travaux_prvu' => 'int',
 		'created_by' => 'int',
 		'updated_by' => 'int'
 	];
 
 	protected $dates = [
 		'date_projet',
-		'date_action_prevu'
+		'date_action_prevu',
+        'date_cc_prvu' ,
+	    'date_avis_prvu' ,
+    	'date_op_prvu' ,
+    	'date_trsfert_ca_prvu',
+    	'date_trsfert_cao_prvu' ,
+    	'date_repca_prvu' ,
+    	'date_pub_reslt_prvu' ,
+    	'date_avis_soumissionaire_prvu' ,
+    	'date_ordre_serv_prvu'
 	];
 
 	protected $fillable = [
@@ -63,6 +83,16 @@ class Projet extends Model
 		'nature_passation',
 		'services_id',
 		'transferer',
+        'duree_travaux_prvu',
+        'date_cc_prvu' ,
+	    'date_avis_prvu' ,
+    	'date_op_prvu' ,
+    	'date_trsfert_ca_prvu',
+    	'date_trsfert_cao_prvu' ,
+    	'date_repca_prvu' ,
+    	'date_pub_reslt_prvu' ,
+    	'date_avis_soumissionaire_prvu' ,
+    	'date_ordre_serv_prvu' ,
 		'created_by',
 		'updated_by'
 	];

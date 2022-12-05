@@ -21,7 +21,7 @@ class CreateAdminUserSeeder extends Seeder
         	'full_name' => 'السيد الشادلي الحاج علي',
         	'email' => 'echedli1@gmail.com',
         	'password' => bcrypt('09966822'),
-            'user_type' => 'chairman',
+            'user_type' => 'admin',
         ]);
 
         $role = Role::create(['name' => 'superadmin',

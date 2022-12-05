@@ -82,7 +82,7 @@ $tbl_action = __('labels.tbl_action');
                 <h5>{{ $sub_breadcrumb }}</h5>
                 <div class="card-header-right">
                     <a href="{{ route('besoins-validation.index') }}" class="btn btn-secondary">
-                        العودة لضبط الحاجيات
+                        العودة لقائمة المصادقة على الحاجيات الحاجيات
                         <i class="feather icon-corner-down-left"></i>
                     </a>
                 </div>
@@ -283,6 +283,7 @@ $tbl_action = __('labels.tbl_action');
                     ajax: {
                         url: "{{ route('ligne_besoin.datatable') }}",
                         data: function(data) {
+
                             data.besoins_id = "{{ $besoin->id }}";
                             data.mode = "all";
                         },
@@ -511,9 +512,6 @@ $tbl_action = __('labels.tbl_action');
                 }
             })
         });
-
-
-
 
         function editLigneBesoin(id) {
             $.ajax({

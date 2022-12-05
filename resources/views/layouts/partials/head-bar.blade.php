@@ -21,23 +21,16 @@
                     <!-- remove .page-header div if you want breadcumb in bottom of header -->
                     <!-- ============================================================================================= -->
                     <!-- [ breadcrumb ] start -->
-                    <div class="page-header">
+                    <div >
+                        <h5 class="m-b-10" >
+                           @php $userService = App\Models\Service::select('*')->where('id', \Auth::user()->services_id)->first(); @endphp
+                            @if($userService) {{ $userService->libelle }} @endif</h5>
                     </div>
                     <!-- [ breadcrumb ] end -->
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li>
-                    @if (LaravelLocalization::getCurrentLocale() == 'ar')
-                    <a href="{{ LaravelLocalization::getLocalizedURL('en') }}" >
-                        English
-                    </a>
-                    @else
-                    <a href="{{ LaravelLocalization::getLocalizedURL('ar') }}">
-                        العربية
-                    </a>
-                    @endif
-                </li>
+
                 <li class="nav-item">
                     <input type="text" class="form-control" id="g_annee_gestion" maxlength="4" pattern="\d{4}" value="2022" required="">
                 </li>

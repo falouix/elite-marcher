@@ -38,6 +38,7 @@
             @can('dashboard-list')
                 <!-- [ Statistics ] Start-->
                 <!-- [ Calendar ] Start-->
+                @can('dossiers-list')
                 <div class="col-md-6">
                     <div class="card">
 
@@ -129,9 +130,13 @@
                         </div>
                     </div>
                 </div>
+                @endcan
+
                 <!-- [ cards ] end -->
                 <div class="col-md-6">
+
                     <div class="row">
+                        @can('statistic-list')
                         <!-- [ clients_count ] start -->
                         <div class="col-md-4">
                             <div class="card ticket-card">
@@ -267,14 +272,23 @@
                                     </div>
                                 </div>
                             </div>
-                            @component('components.notifs_home')
-                            @endcomponent
-                        </div>
-                        <!-- [ statistics_incomes ] end -->
 
+                        </div>
+                        @endcan
+                        <!-- [ statistics_incomes ] end -->
+                        @if(\Auth::user()->can('dossiers-list') || \Auth::user()->can('statistic-list'))
+                        @component('components.notifs_home', ["col"=>"6"])
+                                    @endcomponent
+                        @endif
                     </div>
                     <!-- [ row 2 ] end -->
                 </div>
+
+                @if(!\Auth::user()->can('dossiers-list') && !\Auth::user()->can('statistic-list'))
+                @component('components.notifs_home', ["col"=>"12"])
+                            @endcomponent
+
+                @endif
                 <!-- [ Statistics ] End-->
             @endcan
         </div>

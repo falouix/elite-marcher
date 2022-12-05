@@ -79,6 +79,15 @@ class NotifRepository implements INotifRepository
         ]);
         return $notif;
     }
+    public function ArchiverNotif($start_date, $end_date){
+        return "";
+    }
+    public function GetArchiveNotif(){
+        return "";
+    }
+    public function deleteNotif($from_table, $from_table_id){
+        Notif::where('from_table',$from_table)->where('from_table_id',$from_table_id)->first()->delete();
+    }
 
 
 }

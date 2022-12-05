@@ -65,12 +65,12 @@ class Article extends Model
             $model->updated_by = Auth::user()->id;
         });
 
-        static::deleting(function ($client) {
+        static::deleting(function ($article) {
             //$relationMethods = ['cases', 'clientOffers', 'consultations', 'poas', 'prosecutions'];
             $relationMethods = ['LignesBesoin'];
 
             foreach ($relationMethods as $relationMethod) {
-                if ($client->$relationMethod()->count() > 0) {
+                if ($article->$relationMethod()->count() > 0) {
                     session()->flash('delete_error', "You can't delete a workorder that has a Continuation");
                     return false;
                     break;

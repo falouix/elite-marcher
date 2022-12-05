@@ -11,7 +11,7 @@ use App\Http\Controllers\{
     SettingController,SoumissionnaireController,
     SparagrapheController,TitreController,UserController,
     DossierAchatController,ConsultationController,AOSController,
-    AONController,GREGREController,NotifController
+    AONController,GREGREController,NotifController,PPMController
 };
 /************************************************************************* */
 /*
@@ -108,7 +108,7 @@ Route::group(
         Route::delete('lignes-besoin-delete', [BesoinController::class, 'destroyLigneBesoin'])->name('ligne_besoins_datatable.destroy');
         // Validation Besoins
         Route::resource('besoins-validation', BesoinValidationController::class);
-        Route::put('besoins-validation/{id}/valider', [BesoinValidationController::class, 'validerBesoin'])->name('besoins-validation.valider');
+        Route::put('besoin-validation/valider', [BesoinValidationController::class, 'validerBesoin'])->name('besoins-validation.valider');
         Route::put('lignes-besoin-validation', [BesoinValidationController::class, 'updateLigneBesoin'])->name('lignes_besoin_v.update');
         Route::get('lignes-besoin-validation', [BesoinValidationController::class, 'editLigneBesoin'])->name('ligne_besoins_v.edit');
 
@@ -135,6 +135,9 @@ Route::group(
         Route::post('lignes-projets/addLProjet', [ProjetController::class, 'addLProjet'])->name('lignes-projets.addLProjet');
         Route::delete('projets/multidestroy', [ProjetController::class, 'multidestroy'])->name('projets.multidestroy');
         Route::delete('lignes-projets', [ProjetController::class, 'destroyLigneProjet'])->name('lignes-projets.destroy');
+        // Route PPM
+        Route::resource('ppm', PPMController::class);
+        Route::post('ppm/datatable',[PPMController::class, 'getAllProjetsDatatable'])->name('projets.data');
 
 
         //route Articles
@@ -142,11 +145,13 @@ Route::group(
         Route::post('articles/datatable', [ArticleController::class, 'getAllArticlesDatatable'])->name('articles.data');
         Route::post('articles/store', [ArticleController::class, 'storeFromBesoin'])->name('articles.storeFromBesoin');
         Route::post('articles/select', [ArticleController::class, 'getAllArticlesToSelect'])->name('articles.select');
-        Route::put('articles/validate/{id}', [ArticleController::class, 'valider'])->name('articles.validate');
+        Route::put('article/validate', [ArticleController::class, 'valider'])->name('articles.validate');
 
         //route DossierAchats
         Route::post('dossiers/datatable', [DossierAchatController::class, 'getAllDossiersDatatable'])->name('dossiers.data');
         Route::post('lignesdossier/datatable', [DossierAchatController::class, 'getLigneDossierADataTable'])->name('lignes-dossier.data');
+        Route::post('dossiers/datatable/offres', [DossierAchatController::class, 'getOffresDataTable'])->name('dossiers.offres.data');
+        Route::post('dossiers/datatable/ccdocs', [DossierAchatController::class, 'getCCDocsDatatable'])->name('dossiers.cc-docs.data');
         Route::get('dossiers/{id}', [DossierAchatController::class, 'show'])->name('dossiers.show');
         Route::get('settings/{id}/edit ', [DossierAchatController::class, 'edit'])->name('dossiers.edit');
 

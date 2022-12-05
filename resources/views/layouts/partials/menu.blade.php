@@ -20,72 +20,83 @@
                                 class="pcoded-micon"><i class="feather icon-grid"></i></span><span
                                 class="pcoded-mtext">{{ __('menu.dashboard') }}</span></a></li>
                 @endcan
-                @can('besoins-list')
+                @can('besoins')
                     @if ($besoins_actif == true)
                         <li data-username="Expenses ui" class="nav-item pcoded-hasmenu">
                             <a href="#" class="nav-link"><span class="pcoded-micon"><i
                                         class="feather icon-sliders"></i></span><span class="pcoded-mtext">تحديد
                                     الحاجيات</span></a>
                             <ul class="pcoded-submenu">
+                                @can('besoins-list')
+                                    <li class=""><a href=" {{ route('besoins.index') }}" class="">ضبط الحاجيات</a>
+                                    </li>
+                                @endcan
 
-                                <li class=""><a href=" {{ route('besoins.index') }}" class="">ضبط الحاجيات</a>
-                                </li>
-                                <li class="">
 
-                                    @can('besoin-validate')
+                                @can('besoin-validate')
+                                    <li class="">
                                         <a href="{{ route('besoins-validation.index') }}" class="">المصادقة على
                                             الحاجيات</a>
                                     </li>
                                 @endcan
-                                <li class=""><a href="{{ route('pais.index') }}" class="">المخطط السنوي
-                                        للحاجيات</a></li>
-
+                                @can('besoin-view')
+                                    <li class=""><a href="{{ route('pais.index') }}" class="">المخطط السنوي
+                                            للحاجيات</a></li>
+                                @endcan
                             </ul>
                         </li>
                     @endif
                 @endcan
-                @can('pai')
+                @can('projet-achat')
                     <li data-username="Expenses ui" class="nav-item pcoded-hasmenu">
                         <a href="#" class="nav-link"><span class="pcoded-micon"><i
                                     class="feather icon-sliders"></i></span><span class="pcoded-mtext"> البرنامج السنوي
                                 للشراءات</span></a>
                         <ul class="pcoded-submenu">
-                            @can('besoins-list')
+                            @can('projet-achat-list')
                                 <li class="">
                                     <a href="{{ route('projets.index') }}" class="">مشاريع الشراءات</a>
                                 </li>
                             @endcan
 
-                            @can('besoins-list')
-                                <li class=""><a href=" {{ route('pais.indexPais') }}" class="">المخطط السنوي
+                            @can('projet-ppm')
+                                <li class=""><a href=" {{ route('ppm.index') }}" class="">المخطط السنوي
                                         للشراءات</a></li>
                                 <li class="">
                                 @endcan
                         </ul>
                     </li>
                 @endcan
-                @can('pai')
+                @can('dossier-achat')
                     <li data-username="Expenses ui" class="nav-item pcoded-hasmenu">
                         <a href="#" class="nav-link"><span class="pcoded-micon"><i
                                     class="feather icon-sliders"></i></span><span class="pcoded-mtext">ملفات
                                 الشراءات</span></a>
                         <ul class="pcoded-submenu">
-                            <li class=""><a href="{{ route('consultations.index') }}" class="">الإستشارات</a>
-                            </li>
+                            @can('consultations-list')
+                                <li class=""><a href="{{ route('consultations.index') }}" class="">الإستشارات</a>
+                                </li>
+                            @endcan
                             <li class="pcoded-hasmenu"><a href="#" class="">طلبات العروض </a>
                                 <ul class="pcoded-submenu">
-                                    <li class=""><a href="{{ route('aos.index') }}" class="">إجراءات مبسطة
-                                        </a></li>
-                                    <li class=""><a href="{{ route('aon.index') }}" class="">إجراءات عادية </a>
-                                    </li>
-                                    <li class=""><a href="{{ route('aogregre.index') }}" class="">التفاوض
-                                            المباشر</a></li>
+                                    @can('AOS-list')
+                                        <li class=""><a href="{{ route('aos.index') }}" class="">إجراءات مبسطة
+                                            </a></li>
+                                    @endcan
+                                    @can('AON-list')
+                                        <li class=""><a href="{{ route('aon.index') }}" class="">إجراءات عادية </a>
+                                        </li>
+                                    @endcan
+                                    @can('AOGREGRE-list')
+                                        <li class=""><a href="{{ route('aogregre.index') }}" class="">التفاوض
+                                                المباشر</a></li>
+                                    @endcan
                                 </ul>
                             </li>
                         </ul>
                     </li>
                 @endcan
-                @can('user-list')
+                @can('comission-ao-achat')
                     <li class="nav-item pcoded-hasmenu">
                         <a href="#!" class="nav-link">
                             <span class="pcoded-micon">
@@ -94,17 +105,21 @@
                             <span class="pcoded-mtext">اللجان المختصة</span>
                         </a>
                         <ul class="pcoded-submenu" style="display: none;">
-                            <li class=""><a href="layout-static.html" class="">لجنة الصفقات</a>
-                            </li>
-                            <li class=""><a href="layout-static.html" class="">لجنة الشراءات</a>
-                            </li>
+                            @can('comission-ao-list')
+                                <li class=""><a href="#" class="">لجنة الصفقات</a>
+                                </li>
+                            @endcan
+                            @can('comission-achat-list')
+                                <li class=""><a href="#" class="">لجنة الشراءات</a>
+                                </li>
+                            @endcan
                         </ul>
                     </li>
                 @endcan
                 <!-- settings menu -->
                 {{-- @can('settings-general') --}}
 
-                @can('pai')
+                @can('settings-general')
                     <li class="nav-item pcoded-menu-caption">
                         <label>{{ __('menu.settings_menu') }}</label>
                     </li>
@@ -119,8 +134,7 @@
                                             class="">{{ __('menu.users_list') }}</a></li>
                                 @endcan
                                 @can('role-list')
-                                    <li class=""><a href="
-                          {{ route('roles.index') }}"
+                                    <li class=""><a href="{{ route('roles.index') }}"
                                             class="">{{ __('menu.users_roles') }}</a></li>
                                 @endcan
                             </ul>
@@ -128,40 +142,40 @@
                     @endif
                     <!-- settings menu end-->
                     <!-- case-settings menu -->
-                    @if (\Auth::user()->can('pai') ||
-                        \Auth::user()->can('case-status-list') ||
-                        (\Auth::user()->can('case-stage-list') && \Auth::user()->can('court-list')))
-                        <li data-username="Expenses ui" class="nav-item pcoded-hasmenu">
-                            <a href="#" class="nav-link"><span class="pcoded-micon"><i
-                                        class="feather icon-sliders"></i></span><span
-                                    class="pcoded-mtext">إعدادات</span></a>
-                            <ul class="pcoded-submenu">
 
-                                <li data-username=" Settings ui">
-                                    <a href="{{ route('etablissements.index') }}" class="nav-link"><span
-                                            class="pcoded-micon"><i class="feather icon-sliders"></i></span><span
-                                            class="pcoded-mtext">إعدادات عامة</span></a>
+                    <li data-username="Expenses ui" class="nav-item pcoded-hasmenu">
+                        <a href="#" class="nav-link"><span class="pcoded-micon"><i
+                                    class="feather icon-sliders"></i></span><span class="pcoded-mtext">إعدادات</span></a>
+                        <ul class="pcoded-submenu">
 
-                                </li>
-                                <li class="pcoded-hasmenu"><a href="#" class="">المعطيات الأساسية</a>
-                                    <ul class="pcoded-submenu">
-                                        <li class=""><a href={{ route('services.index') }}
+                            <li data-username=" Settings ui">
+                                <a href="{{ route('etablissements.index') }}" class="nav-link"><span
+                                        class="pcoded-micon"><i class="feather icon-sliders"></i></span><span
+                                        class="pcoded-mtext">إعدادات عامة</span></a>
+
+                            </li>
+                            <li class="pcoded-hasmenu"><a href="#" class="">المعطيات الأساسية</a>
+                                <ul class="pcoded-submenu">
+                                    <li class=""><a href={{ route('services.index') }}
                                             class="">المصالح/الدوائر/المؤسسات</a></li>
-                                    <li class=""><a href="{{ route('natures-demande.index') }}" class="">أنواع
+                                    <li class=""><a href="{{ route('natures-demande.index') }}"
+                                            class="">أنواع
                                             الطلبات</a></li>
                                     <li class=""><a href="{{ route('articles.index') }}" class="">المواد أو
                                             الطلبات</a></li>
                                     <li class=""><a href="{{ route('soumissionnaires.index') }}"
                                             class="">المتعهدين</a></li>
-                                    </ul>
-                                </li>
+                                </ul>
+                            </li>
 
-                        </li>
-                </ul>
-                </li>
-                <!-- case-settings menu end-->
-                @endif
-            @endcan
+
+                    </li>
+                @endcan
+            </ul>
+            </li>
+            <!-- case-settings menu end-->
+
+
 
             </ul>
         </div>

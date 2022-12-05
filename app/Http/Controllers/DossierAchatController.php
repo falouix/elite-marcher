@@ -25,6 +25,7 @@ class DossierAchatController extends Controller
     public function show(Request $request, $id)
     {
         $dossier = $this->repository->getDossierWithRelations($id);
+
         switch ($dossier->type_demande) {
             case '1':
                 $dossier->type_demande = "مواد وخدمات";
@@ -38,13 +39,13 @@ class DossierAchatController extends Controller
         }
         switch ($dossier->type_dossier) {
             case 'CONSULTATION':
-                return view('dossiers_achats.consultations.edit', compact('dossier'));
+                return view('dossiers_achats.consultations.show', compact('dossier'));
             case 'AOS':
-                return view('dossiers_achats.AOS.index', compact('dossier'));
+                return view('dossiers_achats.AOS.show', compact('dossier'));
             case 'AON':
-                return view('dossiers_achats.AON.index', compact('dossier'));
+                return view('dossiers_achats.AON.show', compact('dossier'));
             case 'AOGREGRE':
-                return view('dossiers_achats.AOGREGRE.index', compact('dossier'));
+                return view('dossiers_achats.AOGREGRE.show', compact('dossier'));
         }
     }
 
@@ -97,6 +98,33 @@ class DossierAchatController extends Controller
             }
         }
 
+    }
+
+    /**
+     * Process datatables ajax request.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOffresDatatable(Request $request)
+    {
+        Log::alert("Offres- DossierAchat Request Params from view");
+        Log::info($request);
+            if ($request->ajax()) {
+                return $this->repository->getOffres($request->dossiers_id);
+            }
+    }
+    /**
+     * Process datatables ajax request.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCCDocsDatatable(Request $request)
+    {
+        Log::alert("CC Docs- DossierAchat Request Params from view");
+        Log::info($request);
+            if ($request->ajax()) {
+                return $this->repository->getCCDocs($request->idCC, $action ="file");
+            }
     }
     /**
      * Process datatables ajax request.

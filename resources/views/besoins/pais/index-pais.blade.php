@@ -32,8 +32,8 @@ $tbl_action = __('labels.tbl_action');
 
 @section('breadcrumb')
     @include('layouts.partials.breadcrumb', [
-    'bread_title'=> 'البرنامج السنوي للشراءات',
-    'bread_subtitle'=> 'المخطط السنوي للشراءات'
+    'bread_title'=> 'تحديد الحاجيات',
+    'bread_subtitle'=> 'المخطط السنوي للحاجيات'
     ])
 @endsection
 
@@ -49,14 +49,12 @@ $tbl_action = __('labels.tbl_action');
         <div class="card">
 
             <div class="card-header">
-                <h5>المخطط السنوي للشراءات</h5>
+                <h5>المخطط السنوي للحاجيات</h5>
                 <div class="card-header-right">
-                   
-                    @can('besoins-list')
-                        <a type="button" class="btn btn-primary" href="{{ route('besoins.create') }}">
-                            <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}
+                        <a type="button" class="btn btn-primary" href="#">
+                            <i class="feather icon-plus-circle"></i> طباعة
                         </a>
-                    @endcan
+
                 </div>
 
             </div>
@@ -87,16 +85,28 @@ $tbl_action = __('labels.tbl_action');
                         </div>
                     </div>
 
-                    <div class="col-md-3">
-                        <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
-                        <select class="js-example-basic-multiple-limit col-sm-12" multiple="multiple" id="services_id"
-                            name="services_id">
-                            <option value="all">الكل</option>
-                            @foreach ($services as $item)
-                            <option value="{{ $item->id }}">{{ $item->libelle }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    @if (\Auth::user()->user_type == 'admin')
+                        <div class="col-md-3">
+
+                            <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
+
+                            <select class="js-example-basic-multiple-limit col-sm-12" multiple="multiple" id="services_id"
+                                name="services_id">
+                                @foreach ($services as $item)
+                                    <option value="{{ $item->id }}">{{ $item->libelle }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @else
+                        <div class="col-md-3">
+                            <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
+                            <select class="col-sm-12" id="services_id" name="services_id" disabled>
+                                @foreach ($services as $item)
+                                    <option value="{{ $item->id }}" selected>{{ $item->libelle }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
 
                     <div class="col-md-2">
                         <button class="btn btn-primary-gradient " id="btn_search_besoins" type="submit"
@@ -114,7 +124,7 @@ $tbl_action = __('labels.tbl_action');
                         <thead>
                             <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                     class="select-checkbox not-export-col" /> </th>
-
+                            <th class="not-export-col">id</th>
                             <th>المادة</th>
                             <th>طبيعة الطلب</th>
                             <th>نوع الطلب</th>
@@ -122,6 +132,7 @@ $tbl_action = __('labels.tbl_action');
                             <th>الكمية المصادقة</th>
                             <th>الكلفة التقديرية للوحدة</th>
                             <th>الكلفة التقديرية الجملية</th>
+                            <th>الملاحظات</th>
                             <th class="not-export-col">{{ $tbl_action }}</th>
                         </thead>
 
@@ -129,7 +140,7 @@ $tbl_action = __('labels.tbl_action');
                             <tr>
                                 <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                         class="select-checkbox not-export-col" /> </th>
-
+                                <th class="not-export-col">id</th>
                                 <th>المادة</th>
                                 <th>طبيعة الطلب</th>
                                 <th>نوع الطلب</th>
@@ -137,6 +148,7 @@ $tbl_action = __('labels.tbl_action');
                                 <th>الكمية المصادقة</th>
                                 <th>الكلفة التقديرية للوحدة</th>
                                 <th>الكلفة التقديرية الجملية</th>
+                                <th>الملاحظات</th>
                                 <th class="not-export-col">{{ $tbl_action }}</th>
                             </tr>
                         </tfoot>
@@ -239,7 +251,7 @@ $tbl_action = __('labels.tbl_action');
                     // serverSide: true,
                     serverMethod: 'POST',
                     ajax: {
-                        url: "{{ route('pais-projet.datatable') }}",
+                        url: "{{ route('pais.datatable') }}",
                         data: function(data) {
                             data.annee_gestion = $('#annee_gestion').val()
                             if ($("#services_id").val()[0] === undefined) {
@@ -261,6 +273,10 @@ $tbl_action = __('labels.tbl_action');
                             className: "select-checkbox"
                         },
                         {
+                            data: "id",
+                            className: "id",
+                        },
+                        {
                             data: "libelle",
                             className: "libelle"
                         },
@@ -272,22 +288,25 @@ $tbl_action = __('labels.tbl_action');
                             data: "nature_demandes_id",
                             className: "nature_demandes_id"
                         },
-
                         {
-                            data: "sumqte_dem",
-                            className: "sumqte_dem"
+                            data: "qte_demande",
+                            className: "qte_demande"
                         },
                         {
-                            data: "sumqte",
-                            className: "sumqte"
+                            data: "qte_valide",
+                            className: "qte_valide"
                         },
                         {
                             data: "cout_unite_ttc",
                             className: "cout_unite_ttc"
                         },
                         {
-                            data: "sumcout_total_ttc",
-                            className: "sumcout_total_ttc"
+                            data: "cout_total_ttc",
+                            className: "cout_total_ttc"
+                        },
+                        {
+                            data: "libelle",
+                            className: "libelle"
                         },
                         {
                             data: 'action',
@@ -301,11 +320,15 @@ $tbl_action = __('labels.tbl_action');
                             className: 'select-checkbox',
                             targets: 0
                         },
+                        {
+                            visible: false,
+                            targets: 1
+                        }
                     ],
                     drawCallback: function() {
                         var api = this.api();
                         $('#coutTotal').html(
-                            api.column(7, {
+                            api.column(8, {
                                 page: 'current'
                             }).data().sum()
                         )

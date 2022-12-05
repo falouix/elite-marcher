@@ -61,8 +61,10 @@ class UserRepository implements IUserRepository
     {
         $pass = Str::random(8);
         $input['password'] = Hash::make($pass);
+        /*
         if(isset( $input['start_date'])) $input['start_date'] = Carbon::parse($input['start_date'])->format('Y-m-d');
         if(isset( $input['end_date'])) $input['end_date'] = Carbon::parse($input['start_date'])->format('Y-m-d');
+        */
         if(isset( $input['active']) && $input['active'] =="on") $input['active'] = 1; else $input['active'] = 0 ;
         $input['full_name'] = $input['name'];
         $user = User::create($input);
@@ -97,8 +99,10 @@ class UserRepository implements IUserRepository
     // override Update function
     public function update($request, $id){
         $input = $request->all();
+        /*
         if(isset( $input['start_date'])) $input['start_date'] = Carbon::parse($input['start_date'])->format('Y-m-d');
         if(isset( $input['end_date'])) $input['end_date'] = Carbon::parse($input['start_date'])->format('Y-m-d');
+        */
         if(isset( $input['active']) && $input['active'] =="on") $input['active'] = 1; else $input['active'] = 0 ;
         if (!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);

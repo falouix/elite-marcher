@@ -8,4 +8,7 @@ interface INotifRepository
     public function markNotifAsRead($noifId);
     public function markNotifAsTraited($noifId);
     public function GenererNotif($newNotif);
+    public function ArchiverNotif($start_date, $end_date);
+    public function GetArchiveNotif();
+    public function deleteNotif($from_table, $from_table_id);
 }

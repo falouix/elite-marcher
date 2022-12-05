@@ -95,7 +95,7 @@ $tbl_action = __('labels.tbl_action');
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
-                            <select class="form-control" id="type_demande" name="type_demande">
+                            <select class="form-control" id="type_demande" name="type_demande" disabled>
                                 <option value="all">الكل</option>
                                 <option value="1" @if ($projet->type_demande == 1) selected = true @endif>مواد وخدمات
                                 </option>
@@ -113,7 +113,7 @@ $tbl_action = __('labels.tbl_action');
                         <div class="form-group">
                             <label class="form-label">طريقة الإبرام</label>
                             <select class="form-control" id="nature_passation" name="nature_passation">
-                                <option value="all">الكل</option>
+
                                 <option value="CONSULTATION" @if ($projet->nature_passation == 'CONSULTATION') selected = true @endif>
                                     استشارة عادية</option>
                                 <option value="AOS" @if ($projet->nature_passation == 'AOS') selected = true @endif>صفقة إجراءات
