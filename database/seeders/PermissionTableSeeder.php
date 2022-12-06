@@ -40,7 +40,7 @@ class PermissionTableSeeder extends Seeder
             Permission::create(
                 [
                     'name' => 'dossiers-list',
-                    'name_en' => 'Dashboard',
+                    'name_en' => 'dossiers-Dashboard',
                     'name_ar' => '(dashboard)الإطلاع على ملفات الصفقات',
                     'guard_name' => 'web',
                     'table_name_en' => 'Dashboard',
@@ -137,8 +137,8 @@ class PermissionTableSeeder extends Seeder
                 ]);
             Permission::create(
                 [
-                    'name' => 'ppm',
-                    'name_en' => 'ppm',
+                    'name' => 'pai',
+                    'name_en' => 'pai',
                     'name_ar' => 'المخطط السنوي للحاجيات',
                     'guard_name' => 'web',
                     'table_name_en' => '',
@@ -166,7 +166,8 @@ class PermissionTableSeeder extends Seeder
                     'table_name_ar' => 'البرنامج السنوي للشراءات',
 
                 ]);
-                [
+                Permission::create(
+                    [
                     'name' => 'projet-ppm',
                     'name_en' => '',
                     'name_ar' => 'عرض تفاصيل البرنامج السنوي للشراءات',

@@ -24,8 +24,8 @@ class CreateAdminUserSeeder extends Seeder
             'user_type' => 'admin',
         ]);
 
-        $role = Role::create(['name' => 'superadmin',
-        'name_ar'=>'مشرف عام',
+        $role = Role::create(['name' => 'مشرف عام',
+        'name_ar'=>'Super Admin',
         'guard_name'=>'web'
     ]);
 

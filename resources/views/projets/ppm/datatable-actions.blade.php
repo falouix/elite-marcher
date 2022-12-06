@@ -1,5 +1,5 @@
 @can('projet-achat-view')
-    <a href="{{ route('projets.show', ['projet' => $id]) }}" class="btn btn-icon btn-rounded btn-primary"
+    <a href="{{ route('ppm.show', ['ppm' => $id]) }}" class="btn btn-icon btn-rounded btn-primary"
         title="{{ __('inputs.btn_view') }}">
         <i class="feather icon-eye"></i>
     </a>
@@ -7,7 +7,7 @@
 
 @if ($transferer == false)
     @can('projet-achat-edit')
-        <a href="{{ route('projets.edit', $id) }}" class="btn btn-icon btn-rounded btn-success"
+        <a href="{{ route('ppm.edit', $id) }}" class="btn btn-icon btn-rounded btn-success"
             title="{{ __('inputs.btn_edit') }}">
             <i class="feather icon-edit"></i>
         </a>

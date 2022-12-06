@@ -66,14 +66,6 @@ $tbl_action = __('labels.tbl_action');
 
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="date_besoin"> تاريخ إعتزام التنفيذ </label>
-                            <input type="date" class="form-control" id='date_action_prevu' name="date_action_prevu"
-                                placeholder="أدخل التاريخ" value="{{ $projet->date_action_prevu }}" readonly>
-
-                        </div>
-                    </div>
 
                     </div>
                     <div class="col-md-6">
@@ -107,9 +99,6 @@ $tbl_action = __('labels.tbl_action');
                         </div>
                     </div>
                 </div>
-
-
-
 
                 <div class="card-body">
 

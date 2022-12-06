@@ -79,19 +79,6 @@ $tbl_action = __('labels.tbl_action');
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="date_besoin"> تاريخ إعتزام التنفيذ </label>
-                            <input type="date" class="form-control" id='date_action_prevu' name="date_action_prevu"
-                                placeholder="أدخل التاريخ" value="{{ $projet->date_action_prevu }}">
-                            @if ($errors->has('date_action_prevu'))
-                                <span class="text-danger">{{ $errors->first('date_action_prevu') }}</span>
-                            @endif
-                        </div>
-                    </div>
-
-
-
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
@@ -140,7 +127,7 @@ $tbl_action = __('labels.tbl_action');
                 </button>
                 {!! Form::close() !!}
                 {{-- Contact from company  start --}}
-                @can('besoin-exception')
+                @can('besoin-add-special')
                {{-- Contact from company  start --}}
                <form id="cp_form" action="#">
                 <input type="hidden" name="lignebesoin_id" id="lignebesoin_id" value="0">
@@ -237,7 +224,7 @@ $tbl_action = __('labels.tbl_action');
 
                 <div class="card-body">
 
-                    <h4>إختيار محتوى المسشروع</h4>
+                    <h4> محتوى المسشروع</h4>
 
                     <div class="dt-responsive table-responsive">
 

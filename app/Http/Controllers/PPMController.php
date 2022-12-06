@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\Projet;
+use App\Models\LignesProjet;
 use App\Models\Service;
+use App\Models\LignesBesoin;
+use App\Models\DossiersAchat;
+use App\Repositories\IFileUploadRepository;
 use App\Repositories\Interfaces\IProjetRepository;
+use App\Traits\ApiResponser;
+use Auth;
 use Illuminate\Http\Request;
 use Log;
-use Auth;
+use DB;
 
 class PPMController extends Controller
 {
@@ -57,6 +65,7 @@ class PPMController extends Controller
         //
     }
 
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -65,7 +74,8 @@ class PPMController extends Controller
      */
     public function edit($id)
     {
-        //
+        $projet = Projet::select('*')->where('id', $id)->first();
+        return view('projets.ppm.edit', compact('projet'));
     }
 
     /**

@@ -31,13 +31,13 @@ class ProjetController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->user_type == 'user') {
+        /*if (Auth::user()->user_type == 'user') {
             $services = Service::select('id', 'libelle')->where('id', Auth::user()->services_id)->get();
         }
         if (Auth::user()->user_type == 'admin') {
             $services = Service::select('id', 'libelle')->get();
-        }
-        return view('projets.index', compact('services'));
+        }*/
+        return view('projets.index');
     }
 
     /**
@@ -47,13 +47,13 @@ class ProjetController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->user_type == 'user') {
+        /*if (Auth::user()->user_type == 'user') {
             $services = Service::select('id', 'libelle')->where('id', Auth::user()->services_id)->get();
         }
         if (Auth::user()->user_type == 'admin') {
             $services = Service::select('id', 'libelle')->get();
-        }
-        return view('projets.create', compact('services'));
+        }*/
+        return view('projets.create');
     }
 
     /**
@@ -69,9 +69,9 @@ class ProjetController extends Controller
             'type_demande' => 'required',
             'nature_passation' => 'required',
             //'services_id' => 'required',
-            'date_action_prevu' => 'required',
+            //'date_action_prevu' => 'required',
             'annee_gestion' => 'required|max:4|min:4',
-           // 'objet' => 'required',
+            'objet' => 'required',
         ]);
         $projet = $this->repository->create($request->all());
        //dd($projet);
@@ -115,13 +115,13 @@ class ProjetController extends Controller
     {
          //$besoin = $this->repository->getBesoinByParam('id', $id);
          $projet = Projet::select('*')->where('id', $id)->first();
-         if (Auth::user()->user_type == 'user') {
+        /* if (Auth::user()->user_type == 'user') {
             $services = Service::select('id', 'libelle')->where('id', Auth::user()->services_id)->get();
         }
         if (Auth::user()->user_type == 'admin') {
             $services = Service::select('id', 'libelle')->get();
-        }
-         return view('projets.show', compact('services', 'projet'));
+        }*/
+         return view('projets.show', compact('projet'));
     }
 
     /**
@@ -149,7 +149,7 @@ class ProjetController extends Controller
             'type_demande' => 'required',
             'nature_passation' => 'required',
            // 'services_id' => 'required',
-            'date_action_prevu' => 'required',
+           // 'date_action_prevu' => 'required',
             'annee_gestion' => 'required|max:4|min:4',
             'objet' => 'required',
         ]);
