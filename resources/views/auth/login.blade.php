@@ -58,6 +58,19 @@
         <div class="col-md-6 d-none d-md-block">
             <div id="carouselExampleCaptions" class="carousel slide auth-slider" data-ride="carousel">
                 <!-- <div id="carouselExampleCaptions" class="carousel carousel-fade slide auth-slider" data-ride="carousel"> -->
+            <!--
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="auth-prod-slidebg bg-1"></div>
+                        <div class="carousel-caption d-none d-md-block">
+                            <img src="{{ asset('/images/product/logo-isetks.jpg') }}" alt="product images"
+                                class="img-fluid mb-5">
+                            <h5> المعهد العالي للدراسات التكنولوجية بالقصرين</h5>
+                            <p class="mb-5">منظومة متابعة الصفقات العمومية</p>
+                        </div>
+                    </div>
+                </div>
+            -->
 
                 <div class="carousel-inner">
                     <div class="carousel-item active">
@@ -69,9 +82,8 @@
                             <p class="mb-5">منظومة متابعة الصفقات العمومية</p>
                         </div>
                     </div>
-
                 </div>
-                
+
             </div>
         </div>
     </div>
