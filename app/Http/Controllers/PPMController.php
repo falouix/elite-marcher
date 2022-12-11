@@ -15,9 +15,11 @@ use Auth;
 use Illuminate\Http\Request;
 use Log;
 use DB;
+use App\Common\Utility;
 
 class PPMController extends Controller
 {
+    use ApiResponser;
     public function __construct(IProjetRepository $repository)
     {
         $this->repository = $repository;
@@ -34,16 +36,6 @@ class PPMController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -51,7 +43,8 @@ class PPMController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Prevent XSS Attack
+        Utility::stripXSS($request);
     }
 
     /**
@@ -62,7 +55,8 @@ class PPMController extends Controller
      */
     public function show($id)
     {
-        //
+          $projet = Projet::select('*')->where('id', $id)->first();
+           return view('projets.ppm.show', compact('projet'));
     }
 
 
@@ -87,7 +81,15 @@ class PPMController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
+
+         $user = $this->repository->updatePPM($request->all(), $id);
+
+             $notification =  $this->notifyArr('تحيين المخطط السنوي للشراءات', '!تم تحيين المخطط التقديري السنوي لإبرام الصفقات العمومية بنجاح', 'success', true);
+
+         return redirect()->route('ppm.index')
+             ->with('notification', $notification);
     }
 
     /**

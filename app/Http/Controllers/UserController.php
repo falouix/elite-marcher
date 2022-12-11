@@ -136,6 +136,12 @@ class UserController extends Controller
        } else {
            $notification =  $this->notifyArr('!تعديل بينات المستعمل', '!تم تحيين بيانات المستعمل بنجاح', 'success', true);
        }
+       // gestion notifs
+       /*
+        * Delete all notifs from_table : projet , from_table_id : projet_id
+        * Generate new notifs for all future dates
+        */
+        
        return redirect()->route('users.index')
            ->with('notification', $notification);
     }

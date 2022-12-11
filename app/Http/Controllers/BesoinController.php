@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Log;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Validator;
+use App\Common\Utility;
 
 class BesoinController extends Controller
 {
@@ -80,6 +81,8 @@ class BesoinController extends Controller
      */
     public function store(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         //dd($request);
         $this->validate($request, [
             'date_besoin' => 'required',
@@ -127,6 +130,8 @@ class BesoinController extends Controller
      */
     public function update(Request $request, $id)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         $this->validate($request, [
             'date_besoin' => 'required|date',
             'annee_gestion' => 'required|min:4|max:4',
@@ -176,6 +181,7 @@ class BesoinController extends Controller
      */
     public function getLigneBesoinsByBesoin(Request $request)
     {
+
         Log::info("Ligne besoin datatable");
         Log::info($request);
         if ($request->ajax()) {
@@ -214,6 +220,8 @@ class BesoinController extends Controller
      */
     public function storeLigneBesoin(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         Log::info("Store Ligne besoin");
         Log::info($request);
         if ($request->file == 'undefined') {
@@ -280,6 +288,8 @@ class BesoinController extends Controller
      */
     public function storeLigneBesoinException(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         Log::info("Store Ligne besoin Exception - Projet Achat");
         Log::info($request);
         if ($request->file == 'undefined') {

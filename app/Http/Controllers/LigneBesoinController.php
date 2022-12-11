@@ -6,10 +6,11 @@ use App\Models\Besoin;
 use App\Models\Service;
 use App\Repositories\ILigneBesoinRepository;
 use Illuminate\Http\Request;
+use App\Common\Utility;
 
 class LigneBesoinController extends Controller
 {
-   
+
     public function __construct(ILigneBesoinRepository $repository)
     {
         $this->repository = $repository;
@@ -23,6 +24,8 @@ class LigneBesoinController extends Controller
 
     public function createOrUpdate(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         return $this->repository->createOrUpdate($request);
     }
 
@@ -35,7 +38,7 @@ class LigneBesoinController extends Controller
     {
         return $this->repository->f_edit($request->id);
     }
-   
+
     public function destroy(Request $request)
     {
         $id = $request->id;

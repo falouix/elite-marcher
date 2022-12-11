@@ -1,12 +1,12 @@
 @php
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-    $rtl = 'rtl';
-} else {
-    $lang = '';
-    $rtl = 'ltr';
-}
-$tbl_action = __('labels.tbl_action');
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+        $rtl = 'rtl';
+    } else {
+        $lang = '';
+        $rtl = 'ltr';
+    }
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
@@ -33,7 +33,7 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>عرض تفاصيل مشروع شراء</h5>
                 <div class="card-header-right">
-                    <a href="{{ route('besoins.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('projets.index') }}" class="btn btn-secondary">
                         العودة لقائمة مشاريع الشراءات
                         <i class="feather icon-corner-down-left"></i>
                     </a>
@@ -54,48 +54,50 @@ $tbl_action = __('labels.tbl_action');
                     </div>
                 @endif
 
-                {{-- Case Other Parties --}}
-
-                <input type="text" name="lignesprjt" id="lignesprjt" hidden>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="annee_gestion"> السنة المالية </label>
                             <input type="number" class="form-control" id='annee_gestion' name="annee_gestion"
                                 placeholder="أدخل السنة المالية" value='{{ $projet->annee_gestion }}' readonly>
-
                         </div>
                     </div>
-
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
                             <select class="form-control" id="type_demande" name="type_demande" disabled="true">
                                 <option value="all">الكل</option>
-                                <option value="1"  @if ($projet->type_demande ==1) selected = true @endif >مواد وخدمات</option>
-                                <option value="2"  @if ($projet->type_demande ==2) selected = true @endif >أشغال</option>
-                                <option value="3"  @if ($projet->type_demande ==3) selected = true @endif >دراسات</option>
+                                <option value="1" @if ($projet->type_demande == 1) selected = true @endif>مواد وخدمات
+                                </option>
+                                <option value="2" @if ($projet->type_demande == 2) selected = true @endif>أشغال
+                                </option>
+                                <option value="3" @if ($projet->type_demande == 3) selected = true @endif>دراسات
+                                </option>
                             </select>
 
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label class="form-label">طريقة الإبرام</label>
-                            <select class="form-control" id="nature_passation" name="nature_passation"  disabled="true">
+                            <select class="form-control" id="nature_passation" name="nature_passation" disabled="true">
                                 <option value="all">الكل</option>
-                                <option value="CONSULTATION" @if ($projet->nature_passation =="CONSULTATION") selected = true @endif >استشارة عادية</option>
-                                <option value="AOS" @if ($projet->nature_passation =="AOS") selected = true @endif >صفقة إجراءات مبسطة </option>
-                                <option value="AON" @if ($projet->nature_passation =="AOS") selected = true @endif>صفقة إجراءات عادية</option>
-                                <option value="AOGREGRE" @if ($projet->nature_passation =="AOS") selected = true @endif>صفقة بالتفاوض المباشر</option>
+                                <option value="CONSULTATION" @if ($projet->nature_passation == 'CONSULTATION') selected = true @endif>
+                                    استشارة عادية</option>
+                                <option value="AOS" @if ($projet->nature_passation == 'AOS') selected = true @endif>صفقة إجراءات
+                                    مبسطة </option>
+                                <option value="AON" @if ($projet->nature_passation == 'AOS') selected = true @endif>صفقة إجراءات
+                                    عادية</option>
+                                <option value="AOGREGRE" @if ($projet->nature_passation == 'AOS') selected = true @endif>صفقة
+                                    بالتفاوض المباشر</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">الموضوع</label>
-                            <input type="text" class="form-control" name="objet" id="objet" value="{{ $projet->objet }}" readonly>
+                            <input type="text" class="form-control" name="objet" id="objet"
+                                value="{{ $projet->objet }}" readonly>
                         </div>
                     </div>
                 </div>
@@ -121,7 +123,6 @@ $tbl_action = __('labels.tbl_action');
                                 <th>الكمية المصادقة</th>
                                 <th>الكلفة التقديرية للوحدة</th>
                                 <th>الكلفة التقديرية الجملية</th>
-                                <th>الملاحظات</th>
                             </thead>
 
                             <tfoot>
@@ -136,7 +137,6 @@ $tbl_action = __('labels.tbl_action');
                                     <th>الكمية المصادقة</th>
                                     <th>الكلفة التقديرية للوحدة</th>
                                     <th>الكلفة التقديرية الجملية</th>
-                                    <th>الملاحظات</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -156,17 +156,22 @@ $tbl_action = __('labels.tbl_action');
     </div>
 @endsection
 @section('srcipt-js')
-    <!-- datatable Js -->
-    <script src="{{ asset('/plugins/data-tables/js/datatables.min.js') }}"></script>
-    <script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
-    <!-- jquery-validation Js -->
-    <script src="{{ asset('/plugins/jquery-validation/js/jquery.validate.min.js') }}"></script>
+<!-- datatable Js -->
+<script src="{{ asset('/plugins/data-tables/js/datatables.min.js') }}"></script>
+<script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
+<!-- jquery-validation Js -->
+<script src="{{ asset('/plugins/jquery-validation/js/jquery.validate.min.js') }}"></script>
 
-    <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
-    <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
+<script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
+<script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
+<script src="{{ asset('/plugins/data-tables/js/sum().js') }}"></script>`
 
-    <!-- form-select-custom Js -->
-    <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
+<!-- form-select-custom Js -->
+<script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
+<!-- sweet alert Js -->
+<script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
+<!-- pnotify Js -->
+<script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
 
     <script>
         'use strict';
@@ -176,63 +181,7 @@ $tbl_action = __('labels.tbl_action');
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            // [ Initialize client-form validation ]
-            $('#validation-client_form').validate({
-                ignore: '.ignore, .select2-input',
-                focusInvalid: false,
-                rules: {
-                    'annee_gestion': {
-                        required: true,
-                    },
-                    'date_action_prevu': {
-                        required: true,
-                        date: true,
-                    },
-                },
-                messages: {
-                    annee_gestion: {
-                        required: "هذا الحقل إجباري",
-                        min_length: "السنة لا تقل عن 4 أرقام",
-                        max_length: "السنة لا تفوق أربعة أرقام"
-                    },
-                    date_action_prevu: {
-                        required: "هذا الحقل إجباري",
-                        date: "الرجاء الثبت من صحةالتاريخ",
-                    }
-                },
 
-                // Errors //
-
-                errorPlacement: function errorPlacement(error, element) {
-                    var $parent = $(element).parents('.form-group');
-
-                    // Do not duplicate errors
-                    if ($parent.find('.jquery-validation-error').length) {
-                        return;
-                    }
-
-                    $parent.append(
-                        error.addClass(
-                            'jquery-validation-error small form-text invalid-feedback')
-                    );
-                },
-                highlight: function(element) {
-                    var $el = $(element);
-                    var $parent = $el.parents('.form-group');
-
-                    $el.addClass('is-invalid');
-
-                    // Select2 and Tagsinput
-                    if ($el.hasClass('select2-hidden-accessible') || $el.attr(
-                            'data-role') === 'tagsinput') {
-                        $el.parent().addClass('is-invalid');
-                    }
-                },
-                unhighlight: function(element) {
-                    $(element).parents('.form-group').find('.is-invalid').removeClass(
-                        'is-invalid');
-                }
-            });
 
             var table = $('#table-cp').DataTable({
                 dom: 'frltipB',
@@ -295,13 +244,10 @@ $tbl_action = __('labels.tbl_action');
                 //serverSide: true,
                 serverMethod: 'POST',
                 ajax: {
-                    url: "{{ route('pais.datatable') }}",
+                    url: "{{ route('lignes-projets.data') }}",
                     data: function(data) {
-                        data.annee_gestion = $('#annee_gestion').val()
-                        data.services_id = $('#services_id').val()
-                        data.type_demande = $('#type_demande').val()
-                        data.nature_demande = 'all'
-                        data.mode = 'projets'
+                        data.projet_id = "{{ $projet->id }}"
+                        data.mode = 'lignes-projets'
                     },
                 },
                 language: {
@@ -316,6 +262,10 @@ $tbl_action = __('labels.tbl_action');
                         className: "id",
                     },
                     {
+                        data: "num_lot",
+                        className: "num_lot"
+                    },
+                    {
                         data: "libelle",
                         className: "libelle"
                     },
@@ -328,12 +278,8 @@ $tbl_action = __('labels.tbl_action');
                         className: "nature_demandes_id"
                     },
                     {
-                        data: "qte_demande",
-                        className: "qte_demande"
-                    },
-                    {
-                        data: "qte_valide",
-                        className: "qte_valide"
+                        data: "qte",
+                        className: "qte"
                     },
                     {
                         data: "cout_unite_ttc",
@@ -342,10 +288,6 @@ $tbl_action = __('labels.tbl_action');
                     {
                         data: "cout_total_ttc",
                         className: "cout_total_ttc"
-                    },
-                    {
-                        data: "libelle",
-                        className: "libelle"
                     },
                 ],
                 columnDefs: [{
@@ -358,11 +300,20 @@ $tbl_action = __('labels.tbl_action');
                         targets: 1
                     }
                 ],
+                drawCallback: function() {
+                        var api = this.api();
+                        $('#coutTotal').html(
+                            api.column(8, {
+                                page: 'current'
+                            }).data().sum()
+                        )
+                    },
                 select: {
                     style: 'os',
                     selector: 'td:first-child'
                 },
             });
+
 
 
             $('.dataTables_length').addClass('bs-select');

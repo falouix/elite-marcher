@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Repositories\Interfaces\IServiceRepository;
-use Illuminate\Http\Request;
-use Validator;
-use Log;
 use App\Traits\ApiResponser;
+use Illuminate\Http\Request;
+use Log;
+use Validator;
 
 class ServiceController extends Controller
 {
@@ -27,7 +27,7 @@ class ServiceController extends Controller
     {
         return view('services.index');
     }
- /**
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -35,13 +35,14 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-
-         Log::alert("Service store request");
+        // Prevent XSS Attack
+        Utility::stripXSS($request);
+        Log::alert("Service store request");
         Log::info($request);
         $validator = Validator::make($request->all(), [
             'libelle' => 'required|unique:services,libelle',
             'contact' => 'required',
-            'responsable' => 'required'
+            'responsable' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -52,7 +53,6 @@ class ServiceController extends Controller
         return $this->notify('المصالح/الداوئر أو المؤسسات', 'تم إضافة مصلحة/دائرة أو مؤسسة جديدة بنجاح');
     }
 
-
     public function edit(Request $request, $id)
     {
         Log::info("Service edit id ===> " . $id);
@@ -62,13 +62,14 @@ class ServiceController extends Controller
         }
     }
 
-
     public function update(Request $request, $id)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         $validator = Validator::make($request->all(), [
-            'libelle' => 'required|unique:services,libelle,'. $id,
+            'libelle' => 'required|unique:services,libelle,' . $id,
             'contact' => 'required',
-            'responsable' => 'required'
+            'responsable' => 'required',
         ]);
         if ($validator->fails()) {
             Log::critical($validator->errors());
@@ -88,7 +89,7 @@ class ServiceController extends Controller
         $this->repository->destroy($id);
         if (session()->has('delete_error')) {
 
-            return $this->notify('خطأ عند الحذف ', 'لا يمكن حذف  مصلحة/دائرة أو مؤسسة لها تسجيلات مرتبطة','error');
+            return $this->notify('خطأ عند الحذف ', 'لا يمكن حذف  مصلحة/دائرة أو مؤسسة لها تسجيلات مرتبطة', 'error');
         }
         return $this->notify('حذف  مصلحة/دائرة أو مؤسسة', 'تم حذف  مصلحة/دائرة أو مؤسسة بنجاح');
     }

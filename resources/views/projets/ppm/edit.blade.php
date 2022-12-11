@@ -187,61 +187,61 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="date-date_op_prvu">تعهد لجنة الشراءات بالملف</label>
-                                <input type="date" class="form-control" id='date_op_prvu' name="date_op_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_op_prvu }}">
-                                @if ($errors->has('date_op_prvu'))
-                                    <span class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                <label for="date-date_trsfert_ca_prvu">تعهد لجنة الشراءات بالملف</label>
+                                <input type="date" class="form-control" id='date_trsfert_ca_prvu' name="date_trsfert_ca_prvu"
+                                    placeholder="أدخل التاريخ" value="{{ $projet->date_trsfert_ca_prvu }}">
+                                @if ($errors->has('date_trsfert_ca_prvu'))
+                                    <span class="text-danger">{{ $errors->first('date_trsfert_ca_prvu') }}</span>
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="date-date_op_prvu">إحالة الملف على لجنة الصفقات</label>
-                                <input type="date" class="form-control" id='date_op_prvu' name="date_op_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_op_prvu }}">
-                                @if ($errors->has('date_op_prvu'))
-                                    <span class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                <label for="date-date_trsfert_cao_prvu">إحالة الملف على لجنة الصفقات</label>
+                                <input type="date" class="form-control" id='date_trsfert_cao_prvu' name="date_trsfert_cao_prvu"
+                                    placeholder="أدخل التاريخ" value="{{ $projet->date_trsfert_cao_prvu }}">
+                                @if ($errors->has('date_trsfert_cao_prvu'))
+                                    <span class="text-danger">{{ $errors->first('date_trsfert_cao_prvu') }}</span>
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="date-date_op_prvu"> إجابة لجنة الصفقات </label>
-                                <input type="date" class="form-control" id='date_op_prvu' name="date_op_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_op_prvu }}">
-                                @if ($errors->has('date_op_prvu'))
-                                    <span class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                <label for="date-date_repca_prvu"> إجابة لجنة الصفقات </label>
+                                <input type="date" class="form-control" id='date_op_prvu' name="date_repca_prvu"
+                                    placeholder="أدخل التاريخ" value="{{ $projet->date_repca_prvu }}">
+                                @if ($errors->has('date_repca_prvu'))
+                                    <span class="text-danger">{{ $errors->first('date_repca_prvu') }}</span>
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="date-date_op_prvu"> نشر نتائج المنافسة </label>
-                                <input type="date" class="form-control" id='date_op_prvu' name="date_op_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_op_prvu }}">
-                                @if ($errors->has('date_op_prvu'))
-                                    <span class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                <label for="date-date_pub_reslt_prvu"> نشر نتائج المنافسة </label>
+                                <input type="date" class="form-control" id='date_pub_reslt_prvu' name="date_pub_reslt_prvu"
+                                    placeholder="أدخل التاريخ" value="{{ $projet->date_pub_reslt_prvu }}">
+                                @if ($errors->has('date_pub_reslt_prvu'))
+                                    <span class="text-danger">{{ $errors->first('date_pub_reslt_prvu') }}</span>
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="date-date_op_prvu"> لتبليغ الصفقة</label>
-                                <input type="date" class="form-control" id='date_op_prvu' name="date_op_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_op_prvu }}">
-                                @if ($errors->has('date_op_prvu'))
-                                    <span class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                <label for="date-date_avis_soumissionaire_prvu"> لتبليغ الصفقة</label>
+                                <input type="date" class="form-control" id='date_avis_soumissionaire_prvu' name="date_avis_soumissionaire_prvu"
+                                    placeholder="أدخل التاريخ" value="{{ $projet->date_avis_soumissionaire_prvu }}">
+                                @if ($errors->has('date_avis_soumissionaire_prvu'))
+                                    <span class="text-danger">{{ $errors->first('date_avis_soumissionaire_prvu') }}</span>
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="date-date_op_prvu"> لبداية الإنجاز </label>
-                                <input type="date" class="form-control" id='date_op_prvu' name="date_op_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_op_prvu }}">
-                                @if ($errors->has('date_op_prvu'))
-                                    <span class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                <label for="date-date_ordre_serv_prvu"> لبداية الإنجاز </label>
+                                <input type="date" class="form-control" id='date_op_prvu' name="date_ordre_serv_prvu"
+                                    placeholder="أدخل التاريخ" value="{{ $projet->date_ordre_serv_prvu }}">
+                                @if ($errors->has('date_ordre_serv_prvu'))
+                                    <span class="text-danger">{{ $errors->first('date_ordre_serv_prvu') }}</span>
                                 @endif
                             </div>
                         </div>

@@ -114,7 +114,7 @@
                         <tfoot>
                             <tr>
                                 <th class="not-export-col" style="width: 30px"><input type="checkbox"
-                                        class="select-checkbox not-export-col" /> </th>
+                                        class=" not-export-col"/> </th>
                                 <th class="not-export-col"> </th>
                                 <th>الموضوع</th>
                                 <th>آجال الإنجاز</th>
@@ -184,16 +184,22 @@
                     {
                         text: '{{ __('inputs.btn_pdf') }}',
                         extend: 'pdfHtml5',
+
                         exportOptions: {
                             columns: ':visible:not(.not-export-col)'
-                        }
+                        },
                     },
                     {
                         text: '{{ __('inputs.btn_print') }}',
                         extend: 'print',
                         exportOptions: {
-                            columns: ':visible:not(.not-export-col)'
-                        }
+                            columns: ':visible:not(.not-export-col):not(.select-checkbox)'
+                           // columns: [6,7,8,9,10,11,12,13]
+                        },
+                        /*customize: function ( win ) {
+                          //  alert(JSON.stringify(win))
+                            $(win.document.body).css('direction', 'rtl');
+                        },*/
                     },
                 ],
 
@@ -224,7 +230,7 @@
                 // serverSide: true,
                 serverMethod: 'POST',
                 ajax: {
-                    url: "{{ route('projets.data') }}",
+                    url: "{{ route('ppm.data') }}",
                     data: function(data) {
                         data.annee_gestion = $('#annee_gestion').val()
                         data.services_id = 'all';

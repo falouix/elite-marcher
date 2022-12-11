@@ -69,7 +69,7 @@ $tbl_action = __('labels.tbl_action');
                 ]) !!}
                 <input type="text" name="lignesprjt" id="lignesprjt" hidden>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="annee_gestion"> السنة المالية </label>
                             <input type="number" class="form-control" id='annee_gestion' name="annee_gestion"
@@ -79,7 +79,7 @@ $tbl_action = __('labels.tbl_action');
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
                             <select class="form-control" id="type_demande" name="type_demande" disabled>
@@ -96,7 +96,7 @@ $tbl_action = __('labels.tbl_action');
                                 for="libelle"></label>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label class="form-label">طريقة الإبرام</label>
                             <select class="form-control" id="nature_passation" name="nature_passation">

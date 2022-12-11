@@ -307,6 +307,7 @@ $tbl_action = __('labels.tbl_action');
                         // data.services_id = $('#services_id').val()
                         data.type_demande = $('#type_demande').val()
                         data.natures_passation = $('#natures_passation').val()
+                        data.mode = "projet"
                     },
                 },
                 language: {

@@ -14,6 +14,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Log;
 use DB;
+use App\Common\Utility;
 
 class ProjetController extends Controller
 {
@@ -64,6 +65,8 @@ class ProjetController extends Controller
      */
     public function store(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         //dd($request->all());
         $this->validate($request, [
             'type_demande' => 'required',
@@ -145,6 +148,8 @@ class ProjetController extends Controller
      */
     public function update(Request $request, $id)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         $this->validate($request, [
             'type_demande' => 'required',
             'nature_passation' => 'required',
@@ -164,6 +169,8 @@ class ProjetController extends Controller
      * Add LigneProjet to LignesProjet from edit view
      */
     public function addLProjet(Request $request){
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         if ($request->ajax()) {
         $projet = Projet::find($request->projets_id);
         if($projet){
@@ -247,6 +254,8 @@ class ProjetController extends Controller
      */
     public function transfererProjet(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         Log::info("Transfert projet to Dossier Achat");
         Log::info($request);
         if ($request->ajax()) {

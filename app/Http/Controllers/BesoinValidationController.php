@@ -14,6 +14,7 @@ use Log;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Validator;
 use Config;
+use App\Common\Utility;
 
 class BesoinValidationController extends Controller
 {
@@ -61,6 +62,8 @@ class BesoinValidationController extends Controller
      */
     public function update(Request $request, $id)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         $this->validate($request, [
             'date_besoin' => 'required|date',
             'annee_gestion' => 'required|min:4|max:4',
@@ -78,6 +81,8 @@ class BesoinValidationController extends Controller
      */
     public function validerBesoin(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         Log::info("Validation besoin " .$request->id);
 
             $validator = Validator::make($request->all(), [
@@ -136,6 +141,8 @@ class BesoinValidationController extends Controller
      */
     public function updateLigneBesoin(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         Log::info($request);
 
         if ($request->ajax()) {

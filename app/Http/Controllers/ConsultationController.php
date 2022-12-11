@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Log;
 use Validator;
 use Carbon\Carbon;
+use App\Common\Utility;
 
 class ConsultationController extends Controller
 {
@@ -69,6 +70,8 @@ class ConsultationController extends Controller
      */
     public function cahierCharges(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         if ($request->ajax()) {
             Log::info("Cahier des charges validation from edit consultation view");
             Log::info($request);
@@ -114,6 +117,8 @@ class ConsultationController extends Controller
      */
     public function avisPub(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         if ($request->ajax()) {
             Log::info("Cahier des charges validation from edit consultation view");
             Log::info($request);
@@ -141,6 +146,8 @@ class ConsultationController extends Controller
      */
     public function store(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         //dd($request->all());
         $this->validate($request, [
             'type_demande' => 'required',
@@ -251,6 +258,8 @@ class ConsultationController extends Controller
      */
     public function update(Request $request, $id)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         $this->validate($request, [
             'type_demande' => 'required',
             'nature_passation' => 'required',

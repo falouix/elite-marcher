@@ -137,7 +137,7 @@ Route::group(
         Route::delete('lignes-projets', [ProjetController::class, 'destroyLigneProjet'])->name('lignes-projets.destroy');
         // Route PPM
         Route::resource('ppm', PPMController::class);
-        Route::post('ppm/datatable',[PPMController::class, 'getAllProjetsDatatable'])->name('projets.data');
+        Route::post('ppm/datatable',[PPMController::class, 'getAllProjetsDatatable'])->name('ppm.data');
 
 
         //route Articles

@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $date_projet
  * @property string|null $annee_gestion
  * @property string|null $objet
- * @property Carbon|null $date_action_prevu
  * @property string|null $type_demande
  * @property string|null $nature_passation
  * @property int|null $services_id
@@ -61,7 +60,6 @@ class Projet extends Model
 
 	protected $dates = [
 		'date_projet',
-		'date_action_prevu',
         'date_cc_prvu' ,
 	    'date_avis_prvu' ,
     	'date_op_prvu' ,
@@ -78,7 +76,6 @@ class Projet extends Model
 		'date_projet',
         'annee_gestion',
 		'objet',
-		'date_action_prevu',
 		'type_demande',
 		'nature_passation',
 		'services_id',
@@ -132,4 +129,43 @@ class Projet extends Model
     {
         return (new Carbon($this->attributes['date_action_prevu']))->format('Y-m-d');
     }
+    public function getDateCcPrvuAttribute()
+    {
+        return (new Carbon($this->attributes['date_cc_prvu']))->format('Y-m-d');
+    }
+    public function getDateAvisPrvuAttribute()
+    {
+        return (new Carbon($this->attributes['date_avis_prvu']))->format('Y-m-d');
+    }
+    public function getDateOpPrvuAttribute()
+    {
+        return (new Carbon($this->attributes['date_op_prvu']))->format('Y-m-d');
+    }
+    public function getDateTrsfertCaPrvuAttribute()
+    {
+        return (new Carbon($this->attributes['date_trsfert_ca_prvu']))->format('Y-m-d');
+    }
+    public function getDateTrsfertCaoPrvuAttribute()
+    {
+        return (new Carbon($this->attributes['date_trsfert_cao_prvu']))->format('Y-m-d');
+    }
+    public function getDateRepcaPrvuAttribute()
+    {
+        return (new Carbon($this->attributes['date_repca_prvu']))->format('Y-m-d');
+    }
+    public function getDatePubResltPrvuAttribute()
+    {
+        return (new Carbon($this->attributes['date_pub_reslt_prvu']))->format('Y-m-d');
+    }
+    public function getDateAvisSoumissionairePrvuAttribute()
+    {
+        return (new Carbon($this->attributes['date_avis_soumissionaire_prvu']))->format('Y-m-d');
+    }
+    public function getDateOrdreServPrvuAttribute()
+    {
+        return (new Carbon($this->attributes['date_ordre_serv_prvu']))->format('Y-m-d');
+    }
+
+
+
 }

@@ -1,112 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html dir="rtl" lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>طباعة</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Ma page</title>
     <style>
-        body {
-            background: rgb(204, 204, 204);
-        }
-
-        page {
-            background: white;
-            display: block;
-            margin: 0 auto;
-            margin-bottom: 0.5cm;
-            box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
-        }
-
-        page[size="A4"] {
-            width: 21cm;
-            height: 29.7cm;
-        }
-
-        page[size="A4"][layout="landscape"] {
-            width: 29.7cm;
-            height: 21cm;
-        }
-
-        page[size="A3"] {
-            width: 29.7cm;
-            height: 42cm;
-        }
-
-        page[size="A3"][layout="landscape"] {
-            width: 42cm;
-            height: 29.7cm;
-        }
-
-        page[size="A5"] {
-            width: 14.8cm;
-            height: 21cm;
-        }
-
-        page[size="A5"][layout="landscape"] {
-            width: 21cm;
-            height: 14.8cm;
-        }
-
-        @media print {
-
-            body,
-            page {
-                margin: 0;
-                box-shadow: 0;
+        * {
+                font-family: DejaVu Sans, sans-serif;
+                direction: rtl;
             }
-        }
     </style>
 </head>
-
 <body>
-    <page size="A4">
-        <center>
+<h1>Titre de la page 1</h1>
+<div>Contenu de la page 1
+<table border="1" >
+              <th>لنيلانيتنيبتيبلت</th>
+              <th>لنيلانيتنيبتيبلت</th>
+              <th>لنيلانيتنيبتيبلت</th>
+              <th>لنيلانيتنيبتيبلت</th>
+              <th>لنيلانيتنيبتيبلت</th>
+              <th>لنيلانيتنيبتيبلت</th>
+              <th>لنيلانيتنيبتيبلت</th>
+              <th>لنيلانيتنيبتيبلت</th>
+              <th>لنيلانيتنيبتيبلت</th>
+              <th>لنيلانيتنيبتيبلت</th>
+              <th>لنيلانيتنيبتيبلت</th>
+              <th></th>
+              <tbody>
+                @for ($i = 0; $i < 25; $i++)
+                <tr>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                  <td>باسياسياسيباسيباسيباسيباسياب</td>
+                </tr>
+                @endfor
 
+              </tbody>
+            </table>
+          </div>
+<!-- Saut de page -->
+<div style="page-break-after: always;" ></div>
 
-        <table border="2px" style="">
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-            <th>5</th>
-            <tbody>
-                <tr><td>12</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td></tr>
-                <tr><td>12</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td></tr>
-                <tr><td>12</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td></tr>
-                <tr><td>12</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td></tr>
-                <tr><td>12</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td></tr>
-            </tbody>
-        </table>
-    </center>
-    </page>
-    <page size="A4"></page>
-    <page size="A4" layout="landscape"></page>
-    <page size="A5"></page>
-    <page size="A5" layout="landscape"></page>
-    <page size="A3"></page>
-    <page size="A3" layout="landscape"></page>
+<h1>Titre de la page 2</h1>
+<div>Contenu de la page 2</div>
 </body>
-
 </html>

@@ -6,6 +6,7 @@ use App\Models\Etablissement;
 use App\Repositories\Interfaces\IEtablissementRepository;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponser;
+use App\Common\Utility;
 
 class EtablissementController extends Controller
 {
@@ -35,6 +36,8 @@ class EtablissementController extends Controller
      */
     public function store(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         /* $this->validate($request, [
         'file' => 'file|mimes:jpg,jpeg,bmp,png',
         ]);*/

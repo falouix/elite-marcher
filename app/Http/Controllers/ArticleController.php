@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Log;
 use Auth;
 use Validator;
+use App\Common\Utility;
 
 class ArticleController extends Controller
 {
@@ -32,16 +33,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -49,6 +40,8 @@ class ArticleController extends Controller
      */
     public function storeFromBesoin(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         Log::alert("Article store from besoin request");
         Log::info($request);
         $validator = Validator::make($request->all(), [
@@ -90,6 +83,8 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         Log::alert("Article store request");
         Log::info($request);
         $validator = Validator::make($request->all(), [
@@ -132,6 +127,8 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         \Log::alert("Update Article from view ".$request);
         $validator = Validator::make($request->all(), [
             'libelle' => 'required|unique:articles,libelle,' . $id,
@@ -153,6 +150,8 @@ class ArticleController extends Controller
      */
     public function valider(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         \Log::alert("Validate Article from Notif ".$request->id);
 
         $article = Article::find($request->id)->update([

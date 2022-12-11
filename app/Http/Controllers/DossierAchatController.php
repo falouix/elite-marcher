@@ -7,6 +7,7 @@ use App\Models\DossiersAchat;
 use App\Traits\ApiResponser;
 use App\Repositories\Interfaces\IDossierARepository;
 use Log;
+use App\Common\Utility;
 
 class DossierAchatController extends Controller
 {

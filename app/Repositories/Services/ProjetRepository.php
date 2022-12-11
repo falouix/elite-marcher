@@ -9,6 +9,7 @@ use App\Models\NatureDemande;
 use App\Models\Projet;use App\Repositories\Interfaces\IProjetRepository;
 use DB;
 use Log;
+use Carbon\Carbon;
 
 class ProjetRepository implements IProjetRepository
 {
@@ -34,12 +35,29 @@ class ProjetRepository implements IProjetRepository
         ]);
         return $Projet;
     }
-
-    public function getAllProjet($annee_gestion, $services_id, $type_demande, $nature_passation, $mode="projet")
+    public function updatePPM($request, $id)
     {
-        Log::info("projet mode : ".$mode. " / Nature Passation : ".$nature_passation);
+        $Projet = Projet::find($id);
+        $Projet->update([
+            'duree_travaux_prvu' => $request['duree_travaux_prvu'],
+            'date_cc_prvu' => $request['date_cc_prvu'],
+            'date_avis_prvu' => $request['date_avis_prvu'],
+            'date_op_prvu' => $request['date_op_prvu'],
+            'date_trsfert_ca_prvu' => $request['date_trsfert_ca_prvu'],
+            'date_trsfert_cao_prvu' => $request['date_trsfert_cao_prvu'],
+            'date_repca_prvu' => $request['date_repca_prvu'],
+            'date_pub_reslt_prvu' => $request['date_pub_reslt_prvu'],
+            'date_avis_soumissionaire_prvu' => $request['date_avis_soumissionaire_prvu'],
+            'date_ordre_serv_prvu' => $request['date_ordre_serv_prvu'],
+        ]);
+        return $Projet;
+    }
+
+    public function getAllProjet($annee_gestion, $services_id, $type_demande, $nature_passation, $mode = "projet")
+    {
+        Log::info("projet mode : " . $mode . " / Nature Passation : " . $nature_passation);
         $dataAction = "projets.datatable-actions";
-        if($mode =="ppm"){
+        if ($mode == "ppm") {
             $dataAction = "projets.ppm.datatable-actions";
         }
         if (!($annee_gestion)) {
@@ -99,6 +117,7 @@ class ProjetRepository implements IProjetRepository
                 }
                 return "";
             })
+
             ->addColumn('action', $dataAction)
             ->rawColumns(['id', 'nature_passationL', 'type_demandeL', 'service', 'action'])
             ->make(true);

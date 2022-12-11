@@ -11,6 +11,7 @@ use Log;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Validator;
 use Carbon\Carbon;
+use App\Common\Utility;
 
 class NatureDemandeController extends Controller
 {
@@ -39,6 +40,8 @@ class NatureDemandeController extends Controller
      */
     public function store(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         $validator = Validator::make($request->all(), [
             'libelle' => 'required|unique:nature_demandes,libelle',
         ]);
@@ -87,6 +90,8 @@ class NatureDemandeController extends Controller
      */
     public function update(Request $request, $id)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         Log::alert($id);
 
         $validator = Validator::make($request->all(), [

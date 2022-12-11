@@ -12,6 +12,7 @@ use Validator;
 use Storage;
 use File;
 use Illuminate\Support\Facades\Response;
+use App\Common\Utility;
 
 class FileUploadController extends Controller
 {
@@ -76,6 +77,8 @@ class FileUploadController extends Controller
      */
     public function fileUploadPost(Request $request)
     {
+         // Prevent XSS Attack
+         Utility::stripXSS($request);
         $validator = Validator::make($request->all(), [
             'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
             'file_name' => 'required',
