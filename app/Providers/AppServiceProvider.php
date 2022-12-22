@@ -108,6 +108,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Interfaces\IArticleRepository',
             'App\Repositories\Services\ArticleRepository'
         );
+        // ParamBesoins Repository
+        $this->app->bind(
+            'App\Repositories\Interfaces\IParamBesoinsRepository',
+            'App\Repositories\Services\ParamBesoinsRepository'
+        );
         // FileUpload Repository
         $this->app->bind(
             'App\Repositories\IFileUploadRepository',

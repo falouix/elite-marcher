@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class BesoinsParam
- * 
+ *
  * @property int $id
  * @property string $annee_gestion
  * @property Carbon $date_debut
@@ -47,4 +47,14 @@ class BesoinsParam extends Model
 		'created_by',
 		'updated_by'
 	];
+    public function getDateDebutAttribute()
+    {
+        return strftime('%Y-%m-%d %H:%M', strtotime($this->attributes['date_debut']));
+       // return (new Carbon($this->attributes['date_debut']))->format('Y/m/d H:i');
+    }
+    public function getDateFinAttribute()
+    {
+        return strftime('%Y-%m-%d %H:%M', strtotime($this->attributes['date_fin']));
+       // return (new Carbon($this->attributes['date_fin']))->format('Y/m/d H:i');
+    }
 }

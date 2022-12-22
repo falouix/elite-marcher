@@ -6,6 +6,7 @@ use App\Models\Titre;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\ITitreRepository;
 use Validator;
+use App\Common\Utility;
 
 class TitreController extends Controller
 {

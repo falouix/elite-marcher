@@ -7,7 +7,8 @@
         <div class="col-md-6">
             <div class="card-body">
 
-
+                <img src="{{ asset('/images/product/logo-isetks.jpg') }}" alt="product images"
+                class="img-fluid mb-5">
                 <h4 class="mb-3 f-w-400">{{ __('app.login_account') }}</h4>
                 @error('email')
 
@@ -59,30 +60,33 @@
             <div id="carouselExampleCaptions" class="carousel slide auth-slider" data-ride="carousel">
                 <!-- <div id="carouselExampleCaptions" class="carousel carousel-fade slide auth-slider" data-ride="carousel"> -->
             <!--
-                <div class="carousel-inner">
+ <div class="carousel-inner">
                     <div class="carousel-item active">
                         <div class="auth-prod-slidebg bg-1"></div>
                         <div class="carousel-caption d-none d-md-block">
-                            <img src="{{ asset('/images/product/logo-isetks.jpg') }}" alt="product images"
+                         <img src="{{ asset('/images/product/prod-1.jpg') }}" alt="product images"
                                 class="img-fluid mb-5">
-                            <h5> المعهد العالي للدراسات التكنولوجية بالقصرين</h5>
-                            <p class="mb-5">منظومة متابعة الصفقات العمومية</p>
+                                <h3>جامعة جندوبة</h3>
+                                <p class="mb-5">منظومة متابعة الصفقات العمومية</p>
+                            </div>
                         </div>
                     </div>
-                </div>
             -->
 
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="auth-prod-slidebg bg-1"></div>
-                        <div class="carousel-caption d-none d-md-block">
-                            <img src="{{ asset('/images/product/prod-1.jpg') }}" alt="product images"
-                                class="img-fluid mb-5">
-                            <h5>جامعة جندوبة</h5>
-                            <p class="mb-5">منظومة متابعة الصفقات العمومية</p>
-                        </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="auth-prod-slidebg bg-1"></div>
+                    <div class="carousel-caption d-none d-md-block">
+                        <!--<img src="{{ asset('/images/product/logo-isetks.jpg') }}" alt="product images"
+                            class="img-fluid mb-5">
+                            -->
+                        <h3 class="mb-50"> المعهد العالي للدراسات التكنولوجية بالقصرين</h3>
+                        <p class="mb-5">منظومة متابعة الصفقات العمومية</p>
                     </div>
                 </div>
+            </div>
+
+
 
             </div>
         </div>

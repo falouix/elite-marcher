@@ -2,17 +2,13 @@
 
 namespace App\Repositories\Services;
 
+use App\Models\AvisDossier;
 
-use App\Repositories\Interfaces\IDossierARepository;
-use Log;
-use Str;
-use App\Models\{
-    DossiersAchat,
-    LignesDossier,
-    CahiersCharge,
-    AvisDossier,
-    Offre,
-};
+use App\Models\CahiersCharge;
+
+use App\Models\DossiersAchat;
+use App\Models\LignesDossier;
+use App\Models\Offre;use App\Repositories\Interfaces\IDossierARepository;use Log;use Str;
 
 class DossierARepository implements IDossierARepository
 {
@@ -21,9 +17,9 @@ class DossierARepository implements IDossierARepository
         if (!($annee_gestion)) {
             $annee_gestion = strftime("%Y");
         }
+
         $query = DossiersAchat::select('*')
             ->where('annee_gestion', $annee_gestion);
-
         if ($type_demande != 'all') {
             $query->where('type_demande', $type_demande);
         }
@@ -133,17 +129,91 @@ class DossierARepository implements IDossierARepository
                 'type_demandeL', 'total_ttc', 'dashboard_action', 'action'])
             ->make(true);
     }
+    public function getAllDossierACustomer($annee_gestion, $situation_dossier, $type_demande, $type_dossier, $client_id = "all")
+    {
+        if (!($annee_gestion)) {
+            $annee_gestion = strftime("%Y");
+        }
+
+        $query = DossiersAchat::select('*')
+            ->where('annee_gestion', $annee_gestion);
+        if ($client_id != 'all') {
+            $query->where('soumissionaire_id', $client_id);
+        }
+        if ($type_demande != 'all') {
+            $query->where('type_demande', $type_demande);
+        }
+        if ($situation_dossier != 'all') {
+            $query->where('situation_dossier', $situation_dossier);
+        }
+         switch ($type_dossier) {
+            case 'CONSULTATION':
+                $dataAction = "customer.consultations.datatable-actions";
+                $query->where('type_dossier', 'CONSULTATION');
+                break;
+            case 'AOS':
+                $dataAction = "customer.AOS.datatable-actions";
+                $query->where('type_dossier', 'AOS');
+                break;
+            case 'AON':
+                $dataAction = "customer.AOS.datatable-actions";
+                $query->where('type_dossier', 'AON');
+                break;
+            case 'AOGREGRE':
+                $dataAction = "customer.AOGREGRE.datatable-actions";
+                $query->where('type_dossier', 'AOGREGRE');
+                break;
+            case 'all': // for dashboard
+                $dataAction = "customer.all-datatable-actions";
+                break;
+        }
+        Log::info("Result of query DossierAchats customer : " . $query->get());
+        return datatables()
+            ->of($query)
+            ->addColumn('select', static function () {
+                return null;
+            })
+
+            ->addColumn('situationDA', function ($dossier) {
+                switch ($dossier->situation_dossier) {
+                    case 1:
+                        return '<label class="badge btn-primary-gradient btn-sm" style="color: white;">بصدد الإعداد</label>';
+                    case 2:
+                        return '<label class="badge btn-success-gradient btn-sm" style="color: white;"> في انتظار العروض </label>';
+                    case 3:
+                        return '<label class="badge btn-secondary-gradient btn-sm" style="color: white;"> في الفرز </label>';
+                    case 4:
+                        return '<label class="badge btn-danger-gradient btn-sm" style="color: white;"> بصدد الإنجاز </label>';
+                    case 5:
+                        return '<label class="badge btn-warning-gradient btn-sm" style="color: white;"> القبول الوقتي</label>';
+                    case 6:
+                        return '<label class="badge badge-primary" style="color: white;">القبول النهائي</label>';
+                    case 7:
+                        return '<label class="badge badge-secondary" style="color: white;">ملف منتهي </label>';
+                    case 8:
+                        return '<label class="badge btn-dark-gradient btn-sm" style="color: white;">ملغى</label>';
+                }
+                return "";
+            })
+            ->addColumn('total_ttc', function ($dossier) {
+                return self::getTotalDossier($dossier->id);
+            })
+            ->addColumn('dashboard_action', 'customer.dhasboard-actions')
+            ->addColumn('action', $dataAction)
+            ->rawColumns(['id', 'situationDA', 'total_ttc', 'dashboard_action', 'action'])
+            ->make(true);
+    }
     public function getLigneDossierAsByDossierA($dossierId, $withRelations = 0)
     {
         $dataAction = "projets.ligneprojet-datatable-actions";
 
         $query = LignesDossier::select('*');
-        if ($withRelations == 1){
-           $query->with('dossiers_achat')->with('lignes_projet');
+        if ($withRelations == 1) {
+            $query->with('dossiers_achat')->with('lignes_projet');
         }
         $query->where('dossiers_achats_id', $dossierId);
 
-        Log::info("query LigneDossier num : ".$dossierId." result is : " . $query->get());
+        Log::info("query LigneDossier num : " . $dossierId . " result is : " . $query->get());
         return datatables()
             ->of($query)
             ->addColumn('select', static function () {
@@ -168,9 +238,10 @@ class DossierARepository implements IDossierARepository
         return DossiersAchat::Select('*')->with('lignes_dossiers')->where($key, '=', $value)
             ->first();
     }
-    public function getOffres($iddossier){
+    public function getOffres($iddossier)
+    {
         $query = Offre::select('*')
-        ->where('dossiers_achats_id', $iddossier);
+            ->where('dossiers_achats_id', $iddossier);
         $dataAction = "";
         return datatables()
             ->of($query)
@@ -192,12 +263,13 @@ class DossierARepository implements IDossierARepository
             ->rawColumns(['id', 'source_offre', 'action'])
             ->make(true);
     }
-    public function getCCDocs($idCC, $action ="file"){
+    public function getCCDocs($idCC, $action = "file")
+    {
         $query = CcDoc::select('*')
-        ->where('cahiers_charges_id', $idCC);
+            ->where('cahiers_charges_id', $idCC);
         $dataAction = "files.cc-docs";
-        if($action = "edit"){
-        $dataAction = "dossiers_achats.consultations.cc-datatable-actions";
+        if ($action = "edit") {
+            $dataAction = "dossiers_achats.consultations.cc-datatable-actions";
         }
         return datatables()
             ->of($query)
@@ -211,14 +283,14 @@ class DossierARepository implements IDossierARepository
     public function getDossierWithRelations($id, $relations)
     {
         return DossiersAchat::Select('*')->with($relations)
-            /*->with('lignes_dossiers')
-            ->with('cahiers_charges')
-            ->with('dossier_docs')
-            ->with('offres')
-            ->with('service_ordres')
-            ->with('enregistrements')
-            ->with('bcs_engagements')
-            ->with('avis_dossiers')*/
+        /*->with('lignes_dossiers')
+        ->with('cahiers_charges')
+        ->with('dossier_docs')
+        ->with('offres')
+        ->with('service_ordres')
+        ->with('enregistrements')
+        ->with('bcs_engagements')
+        ->with('avis_dossiers')*/
             ->where('id', $id)
             ->first();
     }
@@ -238,12 +310,12 @@ class DossierARepository implements IDossierARepository
 
     // مراحل الإنجاز المشتركة
     /* Cahier des charges */
-    public function cahierCharges($input){
+    public function cahierCharges($input)
+    {
         $cc = CahiersCharge::where('dossiers_achats_id', $input['dossiers_achats_id'])->first();
-        if($cc){
+        if ($cc) {
             return self::updateCC($input, $cc->id);
-        }
-        else{
+        } else {
             return self::createCC($input);
         }
     }
@@ -262,13 +334,13 @@ class DossierARepository implements IDossierARepository
         $cc->update($input);
         return $cc;
     }
-     /* Avis Pub */
-     public function avisPub($input){
-        $cc = AvisDossier::where('dossiers_achats_id',  $input['dossiers_achats_id'])->first();
-        if($cc){
+    /* Avis Pub */
+    public function avisPub($input)
+    {
+        $cc = AvisDossier::where('dossiers_achats_id', $input['dossiers_achats_id'])->first();
+        if ($cc) {
             return self::updateAvisPub($input, $cc->id);
-        }
-        else{
+        } else {
             return self::createAvisPub($input);
         }
     }
@@ -288,5 +360,12 @@ class DossierARepository implements IDossierARepository
         return $cc;
     }
 
+    public function updateSituationDossier($id, $situation_dossier): DossiersAchat
+    {
+        $dossier = DossiersAchat::find($id)->update([
+            'situation_dossier' => $situation_dossier,
+        ]);
+        return $dossier;
+    }
 
 }

@@ -6,6 +6,7 @@ use App\Models\Sparagraphe;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\ISparagrapheRepository;
 use Validator;
+use App\Common\Utility;
 
 class SparagrapheController extends Controller
 {
@@ -15,7 +16,7 @@ class SparagrapheController extends Controller
     }
 
     /**
-     * Display a listing of the resource. 
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */

@@ -14,6 +14,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Log;
 use DB;
+use App\Common\Utility;
 
 class GREGREController extends Controller
 {

@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property int|null $created_by
  * @property int|null $updated_by
+ * @property int|null $soumissionaire_id
  *
  * @property Annulation $annulation
  * @property Collection|AvisDossier[] $avis_dossiers
@@ -84,7 +85,8 @@ class DossiersAchat extends Model
 		'date_cloture',
 		'dossiers_achatscol',
 		'created_by',
-		'updated_by'
+		'updated_by',
+        'soumissionaire_id'
 	];
 
     protected static function boot()

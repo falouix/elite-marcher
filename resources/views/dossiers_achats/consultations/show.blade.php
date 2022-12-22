@@ -1,16 +1,16 @@
 @php
 
-$breadcrumb = 'الإستشارات';
-$subreadcrumb = 'عرض تفاصيل الإستشارة';
+    $breadcrumb = 'الإستشارات';
+    $subreadcrumb = 'عرض تفاصيل الإستشارة';
 
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-    $rtl = 'rtl';
-} else {
-    $lang = '';
-    $rtl = 'ltr';
-}
-$tbl_action = __('labels.tbl_action');
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+        $rtl = 'rtl';
+    } else {
+        $lang = '';
+        $rtl = 'ltr';
+    }
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
@@ -293,66 +293,129 @@ $tbl_action = __('labels.tbl_action');
                         <div class="tab-pane fade" id="cahiercharges" role="tabpanel"
                             aria-labelledby="cahiercharges-tab">
                             <div class="col-md-12"> <br>
-@php
-   $cahiers_charges = $dossier->cahiers_charges;
-@endphp
+                                @php
+                                    $cahiers_charges = $dossier->cahiers_charges;
+                                @endphp
 
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>تاريخ اعتزام نشر الإعلان :</label>
-                                        <input class="form-control" type="date" value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>ثمن اقتناء كراس الشروط :</label>
-                                        <input class="form-control" type="text" value='{{ $cahiers_charges->prix_cc ?? '' }}' readonly>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>طريقة قبول العروض :</label>
-                                        <select class="form-control" disabled>
-                                            <option {{ ($cahiers_charges != null && $cahiers_charges->type_reception == 1) ? 'selected' : '' }}>منظومة الشراءات على الخط</option>
-                                            <option {{ ($cahiers_charges != null && $cahiers_charges->type_reception == 2) ? 'selected' : '' }}> مكتب الضبط </option>
-                                            <option  {{ ($cahiers_charges != null && $cahiers_charges->type_reception == 3) ? 'selected' : '' }}> البريد </option>
-
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-md-6">
-                                        <label>طريقة فتح الظروف :</label>
-                                        <select class="form-control" disabled>
-                                            <option {{ ($cahiers_charges != null && $cahiers_charges->type_overture_plis == 1) ? 'selected' : '' }}>مالية علنية </option>
-                                            <option {{ ($cahiers_charges != null && $cahiers_charges->type_overture_plis == 2) ? 'selected' : '' }}>مالية وفنية علنية</option>
-                                            <option {{ ($cahiers_charges != null && $cahiers_charges->type_overture_plis == 3) ? 'selected' : '' }}>مالية وفنية غير علنية</option>
-                                        </select>
-                                    </div>
+<div class="form-row">
+    <input type="number" name="cahiers_charges_id" id="cahiers_charges_id"
+        value="0" hidden>
+    <div class="form-group col-md-6">
+        <label>تاريخ اعتزام نشر الإعلان :</label>
+        <input type="date" class="form-control" id='date_pub_prevu'
+            name="date_pub_prevu" placeholder="أدخل التاريخ"
+            value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
+        <label id="date_pub_prevu-error"
+            class="error jquery-validation-error small form-text invalid-feedback"
+            for="date_pub_prevu"></label>
+    </div>
+    <div class="form-group col-md-6">
+        <label>ثمن اقتناء كراس الشروط :</label>
+        <input class="form-control" type="number" min=0 max=99999999999,999
+            id="prix_cc" name="prix_cc"
+            value='{{ $cahiers_charges->prix_cc ?? '' }}'>
+        <label id="date_pub_prevu-error"
+            class="error jquery-validation-error small form-text invalid-feedback"
+            for="date_pub_prevu"></label>
+    </div>
 
 
-                                    <div class="form-group col-md-6">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1" {{  ($cahiers_charges != null && $cahiers_charges->caution_prov == 1) ? checked : '' }}>
-                                        <label class="custom-control-label" for="customCheck1">ضمان وقتي</label>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>مدة الضمان الوقتي :</label>
-                                        <input type="text" class="form-control" id="inputPassword2b" value="{{ $cahiers_charges->duree_caution_prov ?? ''}}"
-                                            readonly>
-                                    </div>
 
-                                    <div class="form-group col-md-6">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck2" >
-                                        <label class="custom-control-label" for="customCheck2">ضمان نهائي</label>
 
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>مدة الضمان النهائي :</label>
-                                        <input type="text" class="form-control" id="duree_caution_def"
-                                            readonly>
-                                    </div>
 
-                                    <div class="form-group col-md-6">
-                                        <label>مدة الإنجاز باليوم : </label>
-                                        <input class="mb-3 form-control form-control-lg" type="text" value='{{ $cahiers_charges->duree_travaux ?? '' }}' readonly>
-                                    </div>
-                                </div>
 
+
+    **
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    99999999999999996
+
+    <div class="form-vvvvv     vgroup col-md-6">
+        <label>طري1 cقة قبول العروض :</label>
+        <select class="form-control" id="type_reception" name="type_reception">
+            <option value="1"
+                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 1 ? 'selected' : '' }}>
+                منظومة الشراءات على الخط</option>
+            <option value="2"
+                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 2 ? 'selected' : '' }}>
+                مكتب الضبط </option>
+            <option value="3"
+                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 3 ? 'selected' : '' }}>
+                البريد </option>
+        </select>
+    </div>
+
+    <div class="form-group col-md-6">
+        <label>طريقة فتح الظروف :</label>
+        <select class="form-control" id="type_overture_plis"
+            name="type_overture_plis">
+            <option value="1"
+                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 1 ? 'selected' : '' }}>
+                مالية علنية </option>
+            <option value="2"
+                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 2 ? 'selected' : '' }}>
+                مالية وفنية علنية</option>
+            <option value="3"
+                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 3 ? 'selected' : '' }}>
+                مالية وفنية غير علنية</option>
+        </select>
+    </div>
+    <div class="form-group col-md-6">
+        <label>مدة الضمان الوقتي :</label>
+        <input type="number" class="form-control" id="duree_caution_prov"
+            name="duree_caution_prov" min=0 max=999
+            value="{{ $cahiers_charges->duree_caution_prov ?? '' }}">
+    </div>
+    <div class="form-group col-md-6">
+        <label>قيمة الضمان الوقتي :</label>
+        <input type="number" class="form-control" id="caution_prov"
+            name="caution_prov" min=1,000 max=99999999999,999
+            value="{{ $cahiers_charges->caution_prov ?? '' }}">
+    </div>
+
+    <div class="form-group col-md-6">
+        <label>مدة الضمان النهائي :</label>
+        <input type="number" class="form-control" id="duree_caution_def" min=0
+            max=999 value="{{ $cahiers_charges->duree_caution_def ?? '' }}">
+    </div>
+    <div class="form-group col-md-6">
+        <label>نسبة الضمان النهائي :</label>
+        <input type="number" class="form-control" id="caution_def"
+            name="caution_def" min=1 max=99
+            value="{{ $cahiers_charges->caution_def ?? '' }}">
+        <label id="caution_def-error"
+            class="error jquery-validation-error small form-text invalid-feedback"
+            for="caution_def"></label>
+    </div>
+    <div class="form-group col-md-12">
+        <label>مدة الإنجاز باليوم : </label>
+        <input class="mb-3 form-control form-control-lg" type="number"
+            id="duree_travaux" name="duree_travaux" min=1 max=999
+            value="{{ $cahiers_charges->duree_travaux ?? '' }}">
+        <label id="duree_travaux-error"
+            class="error jquery-validation-error small form-text invalid-feedback"
+            for="duree_travaux"></label>
+    </div>
+</div>
 
                                 <div class="dt-responsive table-responsive">
                                     <div class="card-body">
@@ -379,20 +442,20 @@ $tbl_action = __('labels.tbl_action');
                                             <table id="offres-table" class="table table-striped table-bordered nowrap">
                                                 <thead>
                                                     <th class="not-export-col" style="width: 30px"><input type="checkbox"
-                                                        class="select-checkbox not-export-col" /> </th>
-                                                <th class="not-export-col"></th>
+                                                            class="select-checkbox not-export-col" /> </th>
+                                                    <th class="not-export-col"></th>
 
-                                                   <th>تاريخ الوصول</th>
-                                                   <th>مرجع العرض</th>
-                                                   <th>عدد التسجيل بمكتب الضبط</th>
-                                                   <th>تاريخ التسجيل</th>
-                                                   <th>وصول العرض عن طريق</th>
-                                                   <th>عدد الأقساط</th>
-                                                   <th>الثمن</th>
-                                                   <th>المتعهد</th>
-                                                   <th>قرار لجنة فتح الظروف</th>
-                                                   <th>قرار اللجنة الفنية</th>
-                                                   <th>الملاحظات</th>
+                                                    <th>تاريخ الوصول</th>
+                                                    <th>مرجع العرض</th>
+                                                    <th>عدد التسجيل بمكتب الضبط</th>
+                                                    <th>تاريخ التسجيل</th>
+                                                    <th>وصول العرض عن طريق</th>
+                                                    <th>عدد الأقساط</th>
+                                                    <th>الثمن</th>
+                                                    <th>المتعهد</th>
+                                                    <th>قرار لجنة فتح الظروف</th>
+                                                    <th>قرار اللجنة الفنية</th>
+                                                    <th>الملاحظات</th>
                                                 </thead>
                                             </table>
                                         </div>
@@ -606,7 +669,10 @@ $tbl_action = __('labels.tbl_action');
             //Consultation Datatable
             var table = $('#ligneConsultation-table').DataTable({
                 dom: 'frltipB',
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "{{ __('labels.all') }}"]
+                ],
                 buttons: [{
                         text: '{{ __('inputs.btn_copy') }}',
                         extend: 'copyHtml5',
@@ -651,7 +717,7 @@ $tbl_action = __('labels.tbl_action');
                     });
                 },
                 processing: true,
-               // serverSide: true,
+                // serverSide: true,
                 serverMethod: 'POST',
                 ajax: {
                     url: "{{ route('lignes-dossier.data') }}",
@@ -666,7 +732,7 @@ $tbl_action = __('labels.tbl_action');
                         data: "select",
                         className: "select-checkbox"
                     },
-                    {
+                    {e
                         data: "id",
                         className: "id"
                     },
@@ -720,10 +786,13 @@ $tbl_action = __('labels.tbl_action');
 
             addSearchFooterDataTable("#ligneConsultation-table")
 
-              //Offres Datatable
-              var offres_table = $('#offres-table').DataTable({
+            //Offres Datatable
+            var offres_table = $('#offres-table').DataTable({
                 dom: 'frltipB',
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "{{ __('labels.all') }}"]
+                ],
                 buttons: [{
                         text: '{{ __('inputs.btn_copy') }}',
                         extend: 'copyHtml5',
@@ -768,7 +837,7 @@ $tbl_action = __('labels.tbl_action');
                     });
                 },
                 processing: true,
-               // serverSide: true,
+                // serverSide: true,
                 serverMethod: 'POST',
                 ajax: {
                     url: "{{ route('dossiers.offres.data') }}",
@@ -800,8 +869,8 @@ $tbl_action = __('labels.tbl_action');
                         className: "ref_bo"
                     },
                     {
-                        data : 'date_enregistrement',
-                        className : 'date_enregistrement',
+                        data: 'date_enregistrement',
+                        className: 'date_enregistrement',
                     },
                     {
                         data: "source_offre",
@@ -812,24 +881,24 @@ $tbl_action = __('labels.tbl_action');
                         className: "nbr_lots"
                     },
                     {
-                        data : 'prix_offre',
-                        className : 'prix_offre',
+                        data: 'prix_offre',
+                        className: 'prix_offre',
                     },
                     {
-                        data : 'soumissionaire_id',
-                        className : 'soumissionaire_id',
+                        data: 'soumissionaire_id',
+                        className: 'soumissionaire_id',
                     },
                     {
-                        data : 'decision_op',
-                        className : 'decision_op',
+                        data: 'decision_op',
+                        className: 'decision_op',
                     },
                     {
-                        data : 'decision_technique',
-                        className : 'decision_technique',
+                        data: 'decision_technique',
+                        className: 'decision_technique',
                     },
                     {
-                        data : 'observations',
-                        className : 'observations',
+                        data: 'observations',
+                        className: 'observations',
                     },
 
                 ],
@@ -868,11 +937,11 @@ $tbl_action = __('labels.tbl_action');
 
 
             var table = [
-                ['الشروط الإدارية',''],
-                ['الفنية','']
+                ['الشروط الإدارية', ''],
+                ['الفنية', '']
             ];
             $("#documents").DataTable({
-                data: dossiers.cc-docs.data,
+                data: dossiers.cc - docs.data,
                 columns: [{
 
                     title: 'الوثائق المكونة لكراس الشروط'
@@ -887,7 +956,10 @@ $tbl_action = __('labels.tbl_action');
             //Offres Datatable
             var offres_table = $('#documents').DataTable({
                 dom: 'frltipB',
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "{{ __('labels.all') }}"]
+                ],
                 buttons: [{
                         text: '{{ __('inputs.btn_copy') }}',
                         extend: 'copyHtml5',
@@ -932,7 +1004,7 @@ $tbl_action = __('labels.tbl_action');
                     });
                 },
                 processing: true,
-               // serverSide: true,
+                // serverSide: true,
                 serverMethod: 'POST',
                 ajax: {
                     url: "{{ route('dossiers.cc-docs.data') }}",
@@ -956,8 +1028,8 @@ $tbl_action = __('labels.tbl_action');
                         className: "libelle"
                     },
                     {
-                        data : 'action',
-                        className : 'action',
+                        data: 'action',
+                        className: 'action',
                     },
 
                 ],

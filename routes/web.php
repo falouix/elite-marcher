@@ -11,8 +11,10 @@ use App\Http\Controllers\{
     SettingController,SoumissionnaireController,
     SparagrapheController,TitreController,UserController,
     DossierAchatController,ConsultationController,AOSController,
-    AONController,GREGREController,NotifController,PPMController
+    AONController,GREGREController,NotifController,PPMController,
+    ParamBesoinsController,CustomerController
 };
+use App\Http\Controllers\Auth\ClientLoginController;
 /************************************************************************* */
 /*
 |--------------------------------------------------------------------------
@@ -29,13 +31,13 @@ Route::post('logout', function () {
     auth()->logout();
 
     Session()->flush();
-    //if(!$user) {return Redirect::to('/customer/login');}
-    return Redirect::to('/login');
+  //if(!$user) {return Redirect::to('/customer/login');}
+   return Redirect::to('/login');
+
 })->name('logout');
-//'localize', 'localizationRedirect', 'localeSessionRedirect', 'localeCookieRedirect', 'localeViewPath'
+
 Route::group(
     [
-        //'prefix' => LaravelLocalization::setLocale(),
         'middleware' => ['XSS'],
     ],
 
@@ -48,8 +50,8 @@ Route::group(
             return redirect('/customer/login');
         });
         Auth::routes(['logout' => false]);
-    }
-);
+    });
+
 //, 'localize', 'localizationRedirect', 'localeSessionRedirect', 'localeCookieRedirect', 'localeViewPath'
 Route::group(
     [
@@ -90,6 +92,9 @@ Route::group(
 
         Route::resource('soumissionnaires', SoumissionnaireController::class);
         Route::post('soumissionnaires/datatable', [SoumissionnaireController::class, 'getAllSoumissionnairesDatatable'])->name('soumissionnaires.datatable');
+
+        Route::post('clients-account', [SoumissionnaireController::class, 'createAccount'])->name('clients.createAccount');
+        Route::post('clients-suspend', [SoumissionnaireController::class, 'suspendAccount'])->name('clients.suspendAccount');
 
         Route::resource('etablissements', EtablissementController::class);
 
@@ -147,6 +152,10 @@ Route::group(
         Route::post('articles/select', [ArticleController::class, 'getAllArticlesToSelect'])->name('articles.select');
         Route::put('article/validate', [ArticleController::class, 'valider'])->name('articles.validate');
 
+         //route ParamBesoins
+         Route::resource('parambesoins', ParamBesoinsController::class);
+         Route::post('param-besoins/datatable', [ParamBesoinsController::class, 'getAllParamBesoinsDatatable'])->name('parambesoins.data');
+
         //route DossierAchats
         Route::post('dossiers/datatable', [DossierAchatController::class, 'getAllDossiersDatatable'])->name('dossiers.data');
         Route::post('lignesdossier/datatable', [DossierAchatController::class, 'getLigneDossierADataTable'])->name('lignes-dossier.data');
@@ -158,6 +167,7 @@ Route::group(
          // route Consultations
          Route::resource('consultations', ConsultationController::class);
          Route::post('consultations/cc', [ConsultationController::class, 'cahierCharges'])->name('consultation.cc');
+         Route::get('consultations/cc', [ConsultationController::class, 'getCahierCharges'])->name('consultation.cc');
          Route::post('consultations/avisPub', [ConsultationController::class, 'avisPub'])->name('consultation.avisPub');
          // route Appel Offre Normal
          Route::resource('aon', AONController::class);
@@ -178,5 +188,37 @@ Route::group(
         Route::post('file-data', [FileUploadController::class, 'getAllFilesByType'])->name('files.datatable');
         Route::delete('file-delete', [FileUploadController::class, 'fileUploadDelete'])->name('files.delete');
 
+
+
     }
 );
+Route::get('/customer/login', [ClientLoginController::class, 'showLoginForm'])->name('customer.login');
+Route::post('/customer/login', [ClientLoginController::class, 'login'])->name('customer.login.submit');
+Route::group(['prefix' => 'customer',
+    'middleware' => ['XSS','auth:client'],
+], function () {
+    // Route::get('/refreshcaptcha','Auth\ClientLoginController@refreshCaptcha');
+
+    Route::get('/register', [ClientLoginController::class, 'showRegisterForm'])->name('customer.register');
+    Route::get('/reset', [ClientLoginController::class, 'showMDPOubliee'])->name('customer.motDePasseOubliee');
+    Route::get('/reset/{token}', [ClientLoginController::class, 'showUpdatePassword'])->name('customer.showUpdatePassword');
+    Route::post('/reset', [ClientLoginController::class, 'reset'])->name('customer.sendmail');
+    Route::post('/reset/{token}', [ClientLoginController::class, 'UpdatePassword'])->name('customer.UpdatePassword');
+
+
+    //Route::post('customer-file-data', [FileUploadController::class, 'getAllFilesByType'])->name('customer-files.datatable');
+    //Route::get('file-customer/show/{id}/{param}', [FileUploadController::class, 'fileUploadGet'])->name('customer-file.upload.get');
+
+    Route::post('dossiers/datatable', [CustomerController::class, 'getAllDossiersDatatable'])->name('dossiers-clients.data');
+    Route::get('dossiers/{id}', [CustomerController::class, 'show'])->name('dossiers-clients.show');
+    Route::post('lignesdossier/datatable', [CustomerController::class, 'getLigneDossierADataTable'])->name('lignes-dossier-clients.data');
+    Route::post('dossiers/datatable/offres', [CustomerController::class, 'getOffresDataTable'])->name('dossiers-clients.offres.data');
+    Route::post('dossiers/datatable/ccdocs', [CustomerController::class, 'getCCDocsDatatable'])->name('dossiers-clients.cc-docs.data');
+    Route::get('customer-consultations/show/{consultation}', [ConsultationController::class,'showCustomer'])->name('customer-consultations.show');
+    Route::post('logout/', [ClientLoginController::class, 'logout'])->name('customer.logout');
+
+    Route::get('/', [CustomerController::class, 'index'])->name('customer.home');
+
+
+
+});

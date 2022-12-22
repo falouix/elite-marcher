@@ -26,8 +26,8 @@
                         <span style="color:rgb(231, 29, 29); font-weight:bold; font-size:20px;">بلاغ حول ظبط الحاجيات</span>
                         </br>
                         <span style="color:rgb(27, 25, 25); font-weight:bold; font-size:18px;"> تم تحديد آجال ضبط الحاجيات
-                            لسنة {{ strftime('%Y') }} بداية من {{ $paramBesoin->date_debut->format('Y/m/d H:i') }} إلى
-                            غاية {{ $paramBesoin->date_fin->format('Y/m/d H:i') }}</span>
+                            لسنة {{ strftime('%Y') }} بداية من {{ $paramBesoin->date_debut }} إلى
+                            غاية {{ $paramBesoin->date_fin }}</span>
                     </div>
                 @endif
             </div>

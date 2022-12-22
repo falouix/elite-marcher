@@ -85,7 +85,12 @@ class NotifController extends Controller
 
     // Axios & VueJs Functions
     public function getNotifs(){
-        
+
         return Notif:: all();
+    }
+    // Axios & VueJs Functions
+    public function getAllNotifsByUser($user_id){
+
+        return Notif:: select('*')->where();
     }
 }

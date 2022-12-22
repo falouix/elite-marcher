@@ -12356,7 +12356,7 @@ table.dataTable tbody>tr>.selected th.select-checkbox:after {
 
 .auth-prod-slider .carousel-caption {
     bottom: auto;
-    top: 50px;
+    top: 150px;
 }
 
 .auth-prod-slider .carousel-caption img {
@@ -12544,7 +12544,7 @@ table.dataTable tbody>tr>.selected th.select-checkbox:after {
 }
 
 .btn-pink-gradient {
-    color:white;
+    color: white;
     background: linear-gradient(to right, $pink 0%, #f36eae 100%);
     border: 1px solid $pink;
     &:hover {
@@ -12643,7 +12643,7 @@ table.dataTable tbody>tr>.selected th.select-checkbox:after {
     background: linear-gradient(120deg, #cdd2de 0%, $gray-100 100%);
     border: 1px solid #cdd2de;
     &:hover {
-        color:white;
+        color: white;
         background: linear-gradient(120deg, #c1c7d6 0%, #e0e5f1 100%);
         border-color: #cdd2de;
     }

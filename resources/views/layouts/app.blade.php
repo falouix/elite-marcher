@@ -341,19 +341,19 @@ $tbl_action = __('labels.tbl_action');
                                     var nbNotifActionsModel = 6
                                     if (afficheNotifDesktop == 'True') {
                                         showInernalNotif("info", 'إشعارات تذكير ', "لديك " + nbNotifModel + " إشعارات تذكير ", "", false)
-                                        customnotify('جامعة جندوبة', "لديك " + nbNotifModel + " إشعارات تذكير ", '');
+                                        customnotify('إشعار', "لديك " + nbNotifModel + " إشعارات تذكير ", '');
                                     }
                                     if (afficheNotifValidationDesktop == 'True') {
                                         showInernalNotif("success", " إشعارات تذكير لتثبيت المعلومات ", "لديك " + nbNotifValidationModel +
                                             "إشعارات تذكير لتثبيت المعلومات ",
                                             "", true)
-                                        customnotify('جامعة جندوبة', "لديك " + nbNotifValidationModel + " إشعارات تذكير لتثبيت المعلومات ",
+                                        customnotify('إشعار', "لديك " + nbNotifValidationModel + " إشعارات تذكير لتثبيت المعلومات ",
                                             '');
                                     }
                                     if (afficheNotifActionsDesktop == 'True') {
                                         showInernalNotif("error", "إشعارات تذكير لتثبيت المعلومات ",
                                             "لديك " + nbNotifActionsModel + " مهام يجب إنجازها ", "", false)
-                                        customnotify('جامعة جندوبة', "لديك " + nbNotifActionsModel + " مهام يجب إنجازها ", '');
+                                        customnotify('إشعار', "لديك " + nbNotifActionsModel + " مهام يجب إنجازها ", '');
                                     }
                                 }
 

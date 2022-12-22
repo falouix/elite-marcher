@@ -154,6 +154,12 @@
                                         class="pcoded-mtext">إعدادات عامة</span></a>
 
                             </li>
+                            <li data-username=" Settings ui">
+                                <a href="{{ route('parambesoins.index') }}" class="nav-link"><span
+                                        class="pcoded-micon"><i class="feather icon-sliders"></i></span><span
+                                        class="pcoded-mtext">إعدادات ضبط الحاجيات</span></a>
+
+                            </li>
                             <li class="pcoded-hasmenu"><a href="#" class="">المعطيات الأساسية</a>
                                 <ul class="pcoded-submenu">
                                     <li class=""><a href={{ route('services.index') }}

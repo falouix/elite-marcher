@@ -6,6 +6,7 @@ use App\Models\Chapitre;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\IChapitreRepository;
 use Validator;
+use App\Common\Utility;
 
 class ChapitreController extends Controller
 {
@@ -15,7 +16,7 @@ class ChapitreController extends Controller
     }
 
     /**
-     * Display a listing of the resource.  
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */

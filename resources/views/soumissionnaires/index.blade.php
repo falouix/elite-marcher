@@ -1,12 +1,12 @@
 @php
 
-$breadcrumb = __('breadcrumb.bread_soumissionnaires_list');
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-} else {
-    $lang = '';
-}
-$tbl_action = __('labels.tbl_action');
+    $breadcrumb = __('breadcrumb.bread_soumissionnaires_list');
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+    } else {
+        $lang = '';
+    }
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
@@ -406,13 +406,63 @@ $tbl_action = __('labels.tbl_action');
                 });
         }
 
-        /*
-        function multipleDelete(locale) {
-            var table = $('#soumissionnaire-table').DataTable();
-            var ids = table.rows('.selected').data();
-            var url = "";//soumissionnaires_datatable.multidestroy
-            multipleDeleteG(locale, "#soumissionnaire-table", ids, url);
+        function createCustomerAccount(id) {
+
+            swal({
+                    title: "{{ __('labels.swal_create_account') }}",
+                    text: "{{ __('labels.swal_create_account_info_text') }}",
+                    icon: "info",
+                    buttons: ["{{ __('labels.swal_cancel_btn') }}", "{{ __('labels.swal_create_account_btn') }}"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: "{{ route('clients.createAccount') }}",
+                            type: 'POST',
+                            data: {
+                                clients_id: id
+                            },
+                            success: function(response) {
+                                // console.log(response)
+                                $('#soumissionnaire-table').DataTable().ajax.reload();
+                                PnotifyCustom(response)
+                            }
+                        }); // ajax end
+
+                    }
+                });
+
         }
-        */
+
+        function suspendCustomerAccount(id) {
+            swal({
+                    title: "{{ __('labels.swal_suspend_account') }}",
+                    text: "{{ __('labels.swal_suspend_account_info_text') }}",
+                    icon: "info",
+                    buttons: ["{{ __('labels.swal_cancel_btn') }}", "{{ __('labels.swal_suspend_account_btn') }}"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: "{{ route('clients.suspendAccount') }}",
+                            type: 'POST',
+                            data: {
+                                clients_id: id
+                            },
+                            success: function(response) {
+                                // console.log(response)
+                                $('#soumissionnaire-table').DataTable().ajax.reload();
+                                PnotifyCustom(response)
+                            }
+                        }); // ajax end
+
+                    }
+                });
+
+        }
     </script>
 @endsection

@@ -8,7 +8,8 @@ use App\Models\{
     LignesDossier,
     LignesDossiersAchat,
     Service,
-    Notif
+    Notif,
+    Soumissionnaire
 };
 use App\Repositories\IFileUploadRepository;
 use App\Repositories\Interfaces\{
@@ -224,6 +225,41 @@ class ConsultationController extends Controller
 
         return view('dossiers_achats.consultations.show', compact('dossier'));
     }
+     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showCustomer(Request $request, $id)
+    {
+        /*->with('lignes_dossiers')
+        ->with('cahiers_charges')
+        ->with('dossier_docs')
+        ->with('offres')
+        ->with('service_ordres')
+        ->with('enregistrements')
+        ->with('bcs_engagements')
+        ->with('avis_dossiers')*/
+        $dossier = $this->dossierRepository->getDossierWithRelations($id, [
+                                                                            'cahiers_charges',
+                                                                            'commissions_ops',
+                                                                            'commissions_techniques'
+                                                                        ]);
+        switch ($dossier->type_demande) {
+            case '1':
+                $dossier->type_demande = "مواد وخدمات";
+                break;
+            case '2':
+                $dossier->type_demande = "أشغال";
+                break;
+            default:
+                $dossier->type_demande = "دراسات";
+                break;
+        }
+        $client = Soumissionnaire::select('*')->where('id',$dossier->soumissionaire_id)->first();
+        return view('dossiers_achats.consultations.show-customer', compact('dossier', 'client'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -233,7 +269,10 @@ class ConsultationController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $dossier = $this->dossierRepository->getDossierAByParam('id', $id);
+        //$dossier = $this->dossierRepository->getDossierAByParam('id', $id);
+        $dossier = $this->dossierRepository->getDossierWithRelations($id, [
+            'cahiers_charges',
+        ]);
         switch ($dossier->type_demande) {
             case '1':
                 $dossier->type_demande = "مواد وخدمات";

@@ -50,12 +50,12 @@
              created: function() {
 
                  this.getNotifs(
-                     'http://127.0.0.1:8000/getNotifs'
+                     '/getNotifs'
                  );
 
                  setInterval(() => {
                      this.getNotifs(
-                         'http://127.0.0.1:8000/getNotifs'
+                         '/getNotifs'
                      );
 
                  }, 1000 * 60 * 30);

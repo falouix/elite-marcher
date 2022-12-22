@@ -6,6 +6,7 @@ use App\Models\Paragraphe;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\IParagrapheRepository;
 use Validator;
+use App\Common\Utility;
 class ParagrapheController extends Controller
 {
     public function __construct(IParagrapheRepository $repository)
@@ -14,7 +15,7 @@ class ParagrapheController extends Controller
     }
 
     /**
-     * Display a listing of the resource. 
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
