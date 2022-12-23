@@ -1,10 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0098)https://www.registre-entreprises.tn/search/HistoriqueQuittanceRcc.do?action=printExtrait&id=327051 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width,height=device-height,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width,height=device-height,minimum-scale=1,maximum-scale=1,user-scalable=no">
 
     <title>نموذج الملحق ععد1</title>
 </head>
@@ -22,47 +24,51 @@
                             <div class="col-12 text-right">
                                 <h1>
                                     <strong>اﻟﺠﻤﻬﻮرﻳﺔ اﻟﺘﻮﻧﺴﻴﺔ
-										<br>
-										وزارة التعليم العالي والبحث العلمي
-										<br>
-										جــامعة جندوبة
-									</strong>
+                                        <br>
+                                        وزارة التعليم العالي والبحث العلمي
+                                        <br>
+                                        جــامعة جندوبة
+                                    </strong>
                                 </h1>
                             </div>
 
                             <div class="col-12 text-center mt-4 mb-4">
                                 <h1>نموذج الملحق عدد 1 </h1>
                                 <p>المخطط التقديري السنوي لإبرام الصفقات العمومية</p>
-                                <p> ********* السنة </p>
+                                <p> {{ $annee_gestion }} السنة </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row d-flex justify-content-between text-center align-items-center defaut-fiscal-container m-20-3">
+                <div
+                    class="row d-flex justify-content-between text-center align-items-center defaut-fiscal-container m-20-3">
                     <div class="right-top-container defaut-fiscal-left">
                         <h3 style="margin: 0;line-height: 2;">
-                            .............................................................................. :إسم المسؤول عن خلية الصفقات العمومية ولقبة</h3>
+                            .............................................................................. :إسم المسؤول
+                            عن خلية الصفقات العمومية ولقبة</h3>
                     </div>
 
                     <div class="right-top-container defaut-fiscal-right">
-                        <h3 style="margin: 0;line-height: 2;"> ............................................................................. :المشتري العمومي </h3>
+                        <h3 style="margin: 0;line-height: 2;">
+                            ............................................................................. :المشتري
+                            العمومي </h3>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between text-center align-items-center defaut-fiscal-container">
                     <div class="right-top-container defaut-fiscal-row" style="margin: 0;line-height: 2;">
-                        <strong> ................................ : الهاتف :................................  الفاكس :................................ العنوان الإلكتروني </strong>
+                        <strong> ................................ : الهاتف :................................ الفاكس
+                            :................................ العنوان الإلكتروني </strong>
                     </div>
                 </div>
                 <div class="row table-content border-0 m-20-3">
                     <div class="text-center col-12">
-                        <table width="100%" dir="rtl" style="
-                        border-collapse: collapse;
-                        border: 2px solid;
-                    ">
+                        <table width="100%" dir="rtl"
+                            style="border-collapse: collapse;
+                        border: 2px solid;">
                             <tbody>
                                 <tr style="font-size: 1.2em;">
-                                    <td rowspan="2">موضوع<br>الصفقة</td>
+                                    <td rowspan="2">موضوع الصفقة</td>
                                     <td rowspan="2">آجال<br>الإنجاز</td>
                                     <td rowspan="2">طريقة<br>الإبرام</td>
                                     <td rowspan="2">الإجراءات</td>
@@ -74,10 +80,8 @@
                                     <td>لإعداد كراسات<br>الشروط</td>
                                     <td>للإعلان<br>عن المنافسة</td>
                                     <td>لفتح<br>العروض</td>
-                                    <td>لتعهد <br>لجنة الشراءات
-                                        <br>بالملف</td>
-                                    <td>لإحالة الملف <br>على لجنة
-                                        <br>الصفقات</td>
+                                    <td>لتعهد<br>لجنة الشراءات<br>بالملف</td>
+                                    <td>لإحالة الملف <br>على لجنة<br>الصفقات</td>
                                     <td>لإجابة لجنة<br>الصفقات</td>
                                     <td>لنشر نتائج<br>المنافسة</td>
                                     <td>لتبليغ<br>الصفقة</td>
@@ -86,29 +90,66 @@
 
                             </tbody>
                             <tbody>
-                                @for ($i = 0; $i < 25; $i++)
-                                <tr>
-                                    <td>باسياسياسيباس<br>يباسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                    <td>باسياسياسيباسي<br>باسيباسيباسياب</td>
-                                </tr>
-                                @endfor
+
+                                @foreach ($ppm as $projet)
+                                    <tr>
+                                        <td>{{ $projet->objet }}</td>
+                                        <td>{{ $projet->duree_travaux_prvu }}</td>
+
+                                        @switch ($projet->nature_passation)
+                                            @case ('CONSULTATION')
+                                                <td>استشارة عادية</td>
+                                            @break
+
+                                            @case('AOS')
+                                                <td>صفقة إجراءات مبسطة</td>
+                                            @break
+
+                                            @case ('AON')
+                                                <td>صفقة إجراءات عادية</td>
+                                            @break
+
+                                            @default
+                                                <td>صفقة بالتفاوض المباشر</td>
+                                            @break
+                                        @endswitch
+                                        <td></td>
+                                        @switch($projet->source_finance)
+                                            @case(1)
+                                                <td>ميزانية الدولة</td>
+                                            @break
+
+                                            @case(2)
+                                                <td>قرض</td>
+                                            @break
+
+                                            @default
+                                                <td>هبة</td>
+                                            @break
+                                        @endswitch
+
+                                        <td>{{ $projet->date_cc_prvu }}</td>
+                                        <td>{{ $projet->date_avis_prvu }}</td>
+                                        <td>{{ $projet->date_op_prvu }}</td>
+                                        <td>{{ $projet->date_trsfert_ca_prvu }}</td>
+                                        <td>{{ $projet->date_trsfert_cao_prvu }}</td>
+                                        <td>{{ $projet->date_repca_prvu }}</td>
+                                        <td>{{ $projet->date_pub_reslt_prvu }}</td>
+                                        <td>{{ $projet->date_avis_soumissionaire_prvu }}</td>
+                                        <td>{{ $projet->date_ordre_serv_prvu }}</td>
+                                    </tr>
+                                @endforeach
+
+
                             </tbody>
                         </table>
                     </div>
                 </div>
-
+                <div class="row d-flex justify-content-between text-center align-items-center">
+                    <div class="left-top-center-container">
+                        <h3>الإمضــاء <br> الإسم واللقب والصفة</h3>
+                    </div>
+                </div>
                 <div class="row table-content  m-t-foot"></div>
                 <div class="col-12 text-right p-top-foot" dir="rtl">
                     (1) باليوم
@@ -305,11 +346,16 @@
             float: right;
             text-align: right;
         }
-
         .left-top-container {
             width: 25%;
             float: left;
             text-align: left;
+        }
+
+        .left-top-center-container {
+            width: 25%;
+            float: left;
+            text-align: center;
         }
 
         .arabic-name {
@@ -343,6 +389,7 @@
         .table-content table td {
             border: 1px solid;
             text-align: center;
+            white-space: pre;
         }
 
         .fl-left {
@@ -443,7 +490,9 @@
             margin-left: 6px;
         }
 
+
         @media print {
+
             body,
             page {
                 margin: 0;
@@ -509,11 +558,11 @@
             font-family: Times New Roman Georgia
         }
     </style>
-  <script>
-    window.onload = function() {
-       window.print();
-    };
-</script>
+    <script>
+        window.onload = function() {
+            window.print();
+        };
+    </script>
 </body>
 
 </html>

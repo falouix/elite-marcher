@@ -3,6 +3,7 @@ namespace App\Repositories\Interfaces;
 
 interface IProjetRepository {
     public function getAllProjet($annee_gestion, $services_id, $natures_demande_id, $nature_passation, $mode); // Return datatable
+    public function getAllProjetToPrint($annee_gestion, $services_id, $natures_demande_id, $nature_passation, $mode); // Return data to print
     public function create($request);
     public function update($request, $id);
     public function getProjetLigneProjetByParam($key,$value);

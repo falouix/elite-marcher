@@ -122,6 +122,34 @@ class ProjetRepository implements IProjetRepository
             ->rawColumns(['id', 'nature_passationL', 'type_demandeL', 'service', 'action'])
             ->make(true);
     }
+    public function getAllProjetToPrint($annee_gestion, $services_id, $type_demande, $nature_passation, $mode = "ppm")
+    {
+        Log::info("projet mode : " . $mode . " / Nature Passation : " . $nature_passation);
+
+        if (!($annee_gestion)) {
+            $annee_gestion = strftime("%Y");
+        }
+        $query = Projet::select('*')
+            ->where('annee_gestion', $annee_gestion)
+            ->with('service');
+
+        if ($services_id != 'all') {
+            Log::info("clause if service");
+            $query->where('services_id', $services_id);
+        }
+        if ($type_demande != 'all') {
+            Log::info("clause if type demande");
+            $query->where('type_demande', $type_demande);
+        }
+        if ($nature_passation != 'all') {
+            Log::info("clause if nature passation");
+            $query->where('nature_passation', $nature_passation);
+        }
+        $query->orderBy('transferer');
+        Log::info("Result of query projets : " . $query->get());
+        
+        return $query->get();
+    }
     public function getLigneProjetsByProjet($projet_id, $mode)
     {
         $dataAction = 'projets.lignes_projets.ligneprojet-datatable-actions';

@@ -64,7 +64,7 @@ class HomeController extends Controller
             ->where('type_dossier', 'AOGREGRE')
             ->groupBy('situation_dossier')
             ->get();
-        return view('pdf.ppm');
+      //  return view('pdf.ppm');
         //dd($count_dossiersGroupedConsultation);
         return view('home', compact('count_dossiersAnnuler','count_dossiersFini','count_dossiersEncours','count_dossiers', 'count_dossiersGroupedConsultation', 'count_dossiersGroupedAon', 'count_dossiersGroupedAos', 'count_dossiersGroupedGreGre'));
     }

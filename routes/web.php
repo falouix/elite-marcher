@@ -143,6 +143,7 @@ Route::group(
         // Route PPM
         Route::resource('ppm', PPMController::class);
         Route::post('ppm/datatable',[PPMController::class, 'getAllProjetsDatatable'])->name('ppm.data');
+        Route::post('ppm/print',[PPMController::class, 'printPPM'])->name('ppm.print');
 
 
         //route Articles

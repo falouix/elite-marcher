@@ -50,12 +50,15 @@
             <div class="card-header">
                 <h5>المخطط التقديري السنوي للشراءات</h5>
                 <div class="card-header-right">
-
-                    @can('besoins-list')
-                        <a type="button" class="btn btn-primary" href="#">
-                            طباعة
-                        </a>
-                    @endcan
+                        <form action="{{ route('ppm.print') }}" method="post" target="_blank">
+                            @csrf
+                            <input type="text" id="print_annee_gestion" name="print_annee_gestion" hidden>
+                            <input type="text" id="print_type_demande" name="print_type_demande" hidden>
+                            <input type="submit" value="Submit"  id="btn_submit" name="btn_submit" hidden >
+                            <button type="button" class="btn btn-primary" id="btn_print">
+                                طباعة
+                            </button>
+                          </form>
                 </div>
 
             </div>
@@ -377,6 +380,11 @@
             e.preventDefault();
             // var annee_gestion = $('#annee_gestion').val();
             $('#table-cp').DataTable().ajax.reload();
+        })
+        $('#btn_print').on("click", () => {
+            $('#print_annee_gestion').val($('#annee_gestion').val())
+            $('#print_type_demande').val($('#type_demande').val())
+            $("#btn_submit").click()
         })
     </script>
 @endsection

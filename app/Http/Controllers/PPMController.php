@@ -119,4 +119,18 @@ class PPMController extends Controller
         }
 
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     */
+    public function printPPM(Request $request){
+        $ppm = $this->repository->getAllProjetToPrint($request->print_annee_gestion, 'all', $request->print_type_demande, 'all', "ppm");
+        $annee_gestion = $request->print_annee_gestion;
+        if($ppm->count()>0){
+            return view('pdf.ppm', compact('ppm','annee_gestion'));
+        }
+    }
 }
