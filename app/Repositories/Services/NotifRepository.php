@@ -79,6 +79,13 @@ class NotifRepository implements INotifRepository
         ]);
         return $notif;
     }
+    // Delete Existant Notif and generate new notif
+    // exemple : lors de la modification des dates (date avis prevu : cahier des charges)
+    public function updateNotif($notifToUpdate){
+        Log::alert("Generate Update Notif from repository");
+        self::deleteNotif($notifToUpdate->from_table, $notifToUpdate->from_table_id);
+        return self::GenererNotif($notifToUpdate);
+    }
     public function ArchiverNotif($start_date, $end_date){
         return "";
     }
