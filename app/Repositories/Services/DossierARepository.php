@@ -2,10 +2,17 @@
 
 namespace App\Repositories\Services;
 
-use App\Models\{
-    DossiersAchat, LignesDossier, Etablissement, AvisDossier, CahiersCharge,
-    Offre, Reception, Cloture, Enregistrement, ServiceOrdre
-};
+use App\Models\Annulation;
+use App\Models\AvisDossier;
+use App\Models\CahiersCharge;
+use App\Models\Cloture;
+use App\Models\DossiersAchat;
+use App\Models\Enregistrement;
+use App\Models\Etablissement;
+use App\Models\LignesDossier;
+use App\Models\Offre;
+use App\Models\Reception;
+use App\Models\ServiceOrdre;
 use App\Repositories\Interfaces\IDossierARepository;
 use App\Repositories\Interfaces\INotifRepository;
 use Log;use Str;
@@ -452,7 +459,7 @@ class DossierARepository implements IDossierARepository
         $enreg = Enregistrement::find($id);
         if ($enreg) {
             $situationDossier = selft::getSituationDossierById($enreg->dossiers_achats_id);
-            if ($situationDossier!= null && ($situationDossier <= 3) ) {
+            if ($situationDossier != null && ($situationDossier <= 3)) {
                 $enreg->delete();
                 return true;
             }
@@ -484,7 +491,7 @@ class DossierARepository implements IDossierARepository
         $enreg = ServiceOrdre::find($id);
         if ($enreg) {
             $situationDossier = selft::getSituationDossierById($enreg->dossiers_achats_id);
-            if ($situationDossier!= null && ($situationDossier <= 4) ) {
+            if ($situationDossier != null && ($situationDossier <= 4)) {
                 $enreg->delete();
                 return true;
             }
@@ -516,7 +523,7 @@ class DossierARepository implements IDossierARepository
         $enreg = Reception::find($id);
         if ($enreg) {
             $situationDossier = selft::getSituationDossierById($enreg->dossiers_achats_id);
-            if ($situationDossier!= null && ($situationDossier <= 5) ) {
+            if ($situationDossier != null && ($situationDossier <= 5)) {
                 $enreg->delete();
                 return true;
             }
@@ -525,6 +532,35 @@ class DossierARepository implements IDossierARepository
         return false;
     }
     /* Fin Reception */
+    /* Annulation مرحلة إلغاء صفقة */
+    public function createOrUpdateAnnulation($request)
+    {
+        $input = $request->all();
+        $enreg = Annulation::updateOrCreate(
+            ['id' => $input->id],
+            [
+                'date_annul' => $input->date_annul,
+                'date_decision' => $input->date_decision,
+                'dossiers_achats_id' => $input->dossiers_achats_id,
+                'soumissionnaires_id' => $input->soumissionnaires_id,
+            ]
+        );
+        return $enreg;
+    }
+    public function deleteAnnulation($id)
+    {
+        $enreg = Annulation::find($id);
+        if ($enreg) {
+            //$situationDossier = selft::getSituationDossierById($enreg->dossiers_achats_id);
+            // if ($situationDossier!= null && ($situationDossier <= 6) ) {
+            $enreg->delete();
+            return true;
+            // }
+            //  return false;
+        }
+        return false;
+    }
+    /* Fin Annulation */
 
     /* Cloture مرحلة التسوية النهائية */
     public function createOrUpdateCloture($request)
@@ -548,7 +584,7 @@ class DossierARepository implements IDossierARepository
         $enreg = Cloture::find($id);
         if ($enreg) {
             $situationDossier = selft::getSituationDossierById($enreg->dossiers_achats_id);
-            if ($situationDossier!= null && ($situationDossier <= 6) ) {
+            if ($situationDossier != null && ($situationDossier <= 6)) {
                 $enreg->delete();
                 return true;
             }
@@ -557,7 +593,7 @@ class DossierARepository implements IDossierARepository
         return false;
     }
     /* Fin Cloture */
-    
+
     // Update Situation dossier : بصدد الإعداد 1\n، في انتظار العروض2\n في الفرز،3\n بصدد الإنجاز،4\n القبول الوقتي، 5\nالقبول النهائي،6\n ملف منتهي 7\n، ملغى
     public function updateSituationDossier($id, $situation_dossier): DossiersAchat
     {
