@@ -14,7 +14,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class ServiceOrdre
  * 
  * @property int $id
+ * @property Carbon|null $date_ordre
+ * @property Carbon|null $date_reception_ordre
+ * @property string|null $ref_ordre
  * @property int $dossiers_achats_id
+ * @property int|null $soumissionnaires_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -32,12 +36,22 @@ class ServiceOrdre extends Model
 
 	protected $casts = [
 		'dossiers_achats_id' => 'int',
+		'soumissionnaires_id' => 'int',
 		'created_by' => 'int',
 		'updated_by' => 'int'
 	];
 
+	protected $dates = [
+		'date_ordre',
+		'date_reception_ordre'
+	];
+
 	protected $fillable = [
+		'date_ordre',
+		'date_reception_ordre',
+		'ref_ordre',
 		'dossiers_achats_id',
+		'soumissionnaires_id',
 		'created_by',
 		'updated_by'
 	];

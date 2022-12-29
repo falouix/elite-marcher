@@ -13,7 +13,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Annulation
  * 
+ * @property Carbon|null $date_annul
+ * @property Carbon|null $date_decision
  * @property int $dossiers_achats_id
+ * @property int $soumissionnaires_id
+ * @property string $annul_doc
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -32,12 +36,22 @@ class Annulation extends Model
 
 	protected $casts = [
 		'dossiers_achats_id' => 'int',
+		'soumissionnaires_id' => 'int',
 		'created_by' => 'int',
 		'updated_by' => 'int'
 	];
 
+	protected $dates = [
+		'date_annul',
+		'date_decision'
+	];
+
 	protected $fillable = [
+		'date_annul',
+		'date_decision',
 		'dossiers_achats_id',
+		'soumissionnaires_id',
+		'annul_doc',
 		'created_by',
 		'updated_by'
 	];

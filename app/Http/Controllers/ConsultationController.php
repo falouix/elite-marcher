@@ -87,26 +87,6 @@ class ConsultationController extends Controller
                 return $this->error($validator->errors(), 403);
             }
             $cc = $this->dossierRepository->cahierCharges($request);
-            $dossier =
-            $dossier = $this->dossierRepository->getDossierAByParam('id', $request->dossiers_achats_id);
-            // Notification تاريخ اعتزام التنفيذ
-            if($cc){
-                $msg = "تذكير لإضافة الإعلان الإشهاري للإستشارة عدد [".$dossier->code_dossier."] بتاريخ [".$cc->date_pub_prevu."]";
-                // Create Notification To users
-                $newNotif = new Notif();
-                $newNotif->type = "RAPPEL";
-                $newNotif->texte = $msg;
-                $newNotif->from_table = "cahiers_charges";
-                $newNotif->from_table_id = $cc->id;
-                $newNotif->users_id = Auth::user()->id;
-                $newNotif->action = "";
-                $dateavis = Carbon::createFromFormat('Y-m-d', $cc->date_pub_prevu);
-                $newNotif->date_traitement = $dateavis->subDays(2);
-                $notif = $this->notifRepository->GenererNotif($newNotif);
-            }
-
-
-
             return $this->notify('كراس الشروط', 'تم تسجيل بيانات كراس الشروط بنجاح', $type = 'success', $rtl = true, $cc);
         }
 

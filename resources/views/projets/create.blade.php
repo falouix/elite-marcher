@@ -73,7 +73,6 @@ $tbl_action = __('labels.tbl_action');
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
                             <select class="form-control" id="type_demande" name="type_demande">
-                                <option value="all">الكل</option>
                                 <option value="1">مواد وخدمات</option>
                                 <option value="2">أشغال</option>
                                 <option value="3">دراسات</option>

@@ -2,16 +2,23 @@
 
 namespace App\Repositories\Services;
 
-use App\Models\AvisDossier;
-
-use App\Models\CahiersCharge;
-
-use App\Models\DossiersAchat;
-use App\Models\LignesDossier;
-use App\Models\Offre;use App\Repositories\Interfaces\IDossierARepository;use Log;use Str;
+use App\Models\{
+    DossiersAchat, LignesDossier, Etablissement, AvisDossier, CahiersCharge,
+    Offre, Reception, Cloture, Enregistrement, ServiceOrdre
+};
+use App\Repositories\Interfaces\IDossierARepository;
+use App\Repositories\Interfaces\INotifRepository;
+use Log;use Str;
 
 class DossierARepository implements IDossierARepository
 {
+    private $settings;
+    public function __construct(INotifRepository $notifRepository)
+    {
+        $this->notifRepository = $notifRepository;
+        $this->settings = Etablissement::first();
+    }
+
     public function getAllDossierA($annee_gestion, $situation_dossier, $type_demande, $type_dossier)
     {
         if (!($annee_gestion)) {
@@ -146,7 +153,7 @@ class DossierARepository implements IDossierARepository
         if ($situation_dossier != 'all') {
             $query->where('situation_dossier', $situation_dossier);
         }
-         switch ($type_dossier) {
+        switch ($type_dossier) {
             case 'CONSULTATION':
                 $dataAction = "customer.consultations.datatable-actions";
                 $query->where('type_dossier', 'CONSULTATION');
@@ -238,31 +245,6 @@ class DossierARepository implements IDossierARepository
         return DossiersAchat::Select('*')->with('lignes_dossiers')->where($key, '=', $value)
             ->first();
     }
-    public function getOffres($iddossier)
-    {
-        $query = Offre::select('*')
-            ->where('dossiers_achats_id', $iddossier);
-        $dataAction = "";
-        return datatables()
-            ->of($query)
-            ->addColumn('select', static function () {
-                return null;
-            })
-            ->editColumn('source_offre', function ($dossier) {
-                switch ($dossier->source_offre) {
-                    case 1:
-                        return 'Tuneps';
-                    case 2:
-                        return 'موقع المؤسسة';
-                    case 3:
-                        return 'مواقع أخرى';
-                }
-                return "";
-            })
-            ->addColumn('action', $dataAction)
-            ->rawColumns(['id', 'source_offre', 'action'])
-            ->make(true);
-    }
     public function getCCDocs($idCC, $action = "file")
     {
         $query = CcDoc::select('*')
@@ -314,10 +296,29 @@ class DossierARepository implements IDossierARepository
     {
         $cc = CahiersCharge::where('dossiers_achats_id', $input['dossiers_achats_id'])->first();
         if ($cc) {
-            return self::updateCC($input, $cc->id);
+            $cc = self::updateCC($input, $cc->id);
+            // Générer New Notif
         } else {
-            return self::createCC($input);
+            $cc = self::createCC($input);
+            // Update Notif
         }
+        // Générer Notif تاريخ اعتزام التنفيذ
+        if ($cc($this->settings->notif_session_op == true)) {
+            $dossier = self::getDossierAByParam('id', $input['dossiers_achats_id']);
+            $msg = "تذكير لإضافة الإعلان الإشهاري للملف عدد [" . $dossier->code_dossier . "] بتاريخ [" . $cc->date_pub_prevu . "]";
+            // Create Notification To users
+            $newNotif = new Notif();
+            $newNotif->type = "RAPPEL";
+            $newNotif->texte = $msg;
+            $newNotif->from_table = "cahiers_charges";
+            $newNotif->from_table_id = $cc->id;
+            $newNotif->users_id = Auth::user()->id;
+            $newNotif->action = "";
+            $dateavis = Carbon::createFromFormat('Y-m-d', $cc->date_pub_prevu);
+            $newNotif->date_traitement = $dateavis->subDays();
+            $notif = $this->notifRepository->updateNotif($newNotif);
+        }
+        return $cc;
     }
     private function createCC($request)
     {
@@ -334,14 +335,33 @@ class DossierARepository implements IDossierARepository
         $cc->update($input);
         return $cc;
     }
+    /* Fin Cahier des charges */
+
     /* Avis Pub */
     public function avisPub($input)
     {
-        $cc = AvisDossier::where('dossiers_achats_id', $input['dossiers_achats_id'])->first();
-        if ($cc) {
-            return self::updateAvisPub($input, $cc->id);
+        $avis = AvisDossier::where('dossiers_achats_id', $input['dossiers_achats_id'])->first();
+        if ($avis) {
+            $avis = self::updateAvisPub($input, $cc->id);
         } else {
-            return self::createAvisPub($input);
+            $avis = self::createAvisPub($input);
+            self::updateSituationDossier($avis->dossiers_achats_id, 2);
+        }
+        // Générer Notif ( New if createAvisPub , Update if updateAvisPub)
+        if ($avis && ($this->settings->notif_session_op == true)) {
+            $dossier = self::getDossierAByParam('id', $input['dossiers_achats_id']);
+            $msg = "تذكير بتاريخ فتح الظروف المتلعق بالملف عدد [" . $dossier->code_dossier . "] بتاريخ [" . $avis->date_ouverture_plis . "]";
+            // Create Notification To users
+            $newNotif = new Notif();
+            $newNotif->type = "RAPPEL";
+            $newNotif->texte = $msg;
+            $newNotif->from_table = "avis_dossiers";
+            $newNotif->from_table_id = $avis->id;
+            $newNotif->users_id = Auth::user()->id;
+            $newNotif->action = "";
+            $dateavis = Carbon::createFromFormat('Y-m-d', $avis->date_ouverture_plis);
+            $newNotif->date_traitement = $dateavis->subDays($this->settings->notif_duree_session_op);
+            $notif = $this->notifRepository->updateNotif($newNotif);
         }
     }
     private function createAvisPub($input)
@@ -359,13 +379,202 @@ class DossierARepository implements IDossierARepository
         $cc->update($input);
         return $cc;
     }
+    /* Fin Avis Pub */
 
+    /* Reception Offres مرحلة وصول العروض*/
+    // Liste des offres By DossierId
+    public function getOffres($iddossier)
+    {
+        $query = Offre::select('*')
+            ->where('dossiers_achats_id', $iddossier);
+        $dataAction = "";
+        return datatables()
+            ->of($query)
+            ->addColumn('select', static function () {
+                return null;
+            })
+            ->editColumn('source_offre', function ($dossier) {
+                switch ($dossier->source_offre) {
+                    case 1:
+                        return 'Tuneps';
+                    case 2:
+                        return 'موقع المؤسسة';
+                    case 3:
+                        return 'مواقع أخرى';
+                }
+                return "";
+            })
+            ->addColumn('action', $dataAction)
+            ->rawColumns(['id', 'source_offre', 'action'])
+            ->make(true);
+    }
+    public function addOffre($request)
+    {
+        Log::alert("Create Offre Request repository");
+        $input = $request->all();
+        $offre = Offre::create($input);
+        return $offre;
+    }
+    public function updateOffre($request, $id)
+    {
+        Log::alert("Create Offre Request repository");
+        $input = $request->all();
+        $offre = Offre::find($id)->update($input);
+        return $offre;
+    }
+    public function deleteOffre($id)
+    {
+        Log::alert("Delete Offre Request repository");
+        Offre::find($id)->delete();
+    }
+    /* Fin Reception Offres */
+
+    /* Enregistrement مرحلةتسجيل الصفقة*/
+    public function createOrUpdateEnregistrement($request)
+    {
+        $input = $request->all();
+        $enreg = Enregistrment::updateOrCreate(
+            ['id' => $input->id],
+            [
+                'date_signature' => $input->date_signature,
+                'date_enregistrement' => $input->date_enregistrement,
+                'date_copie_unique' => $input->date_copie_unique,
+                'ref_copie_unique' => $input->ref_copie_unique,
+                'type_enregistrement' => $input->type_enregistrement,
+                'dossiers_achats_id' => $input->dossiers_achats_id,
+                'soumissionnaires_id' => $input->soumissionnaires_id,
+            ]
+        );
+        return $enreg;
+    }
+    public function deleteEnregistrement($id)
+    {
+        $enreg = Enregistrement::find($id);
+        if ($enreg) {
+            $situationDossier = selft::getSituationDossierById($enreg->dossiers_achats_id);
+            if ($situationDossier!= null && ($situationDossier <= 3) ) {
+                $enreg->delete();
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    /* Fin Enregistrement */
+
+    /* Ordre de Service مرحلة إذن بداية الأشغال*/
+    public function createOrUpdateOrdreService($request)
+    {
+        $input = $request->all();
+        $enreg = ServiceOrdre::updateOrCreate(
+            ['id' => $input->id],
+            [
+                'date_ordre' => $input->date_ordre,
+                'date_reception_ordre' => $input->date_reception_ordre,
+                'ref_ordre' => $input->ref_ordre,
+                'ref_copie_unique' => $input->ref_copie_unique,
+                'dossiers_achats_id' => $input->dossiers_achats_id,
+                'soumissionnaires_id' => $input->soumissionnaires_id,
+            ]
+        );
+        return $enreg;
+    }
+    public function deleteOrdreService($id)
+    {
+        $enreg = ServiceOrdre::find($id);
+        if ($enreg) {
+            $situationDossier = selft::getSituationDossierById($enreg->dossiers_achats_id);
+            if ($situationDossier!= null && ($situationDossier <= 4) ) {
+                $enreg->delete();
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    /* Fin Ordre de Service */
+
+    /* Reception مرحلة القبول الوقتي أو النهائي */
+    public function createOrUpdateReception($request)
+    {
+        $input = $request->all();
+        $enreg = Reception::updateOrCreate(
+            ['id' => $input->id],
+            [
+                'date_reception' => $input->date_reception,
+                'type_reception' => $input->type_reception,
+                'duree_retard' => $input->duree_retard,
+                'taux_avancement' => $input->taux_avancement,
+                'dossiers_achats_id' => $input->dossiers_achats_id,
+                'soumissionnaires_id' => $input->soumissionnaires_id,
+            ]
+        );
+        return $enreg;
+    }
+    public function deleteReception($id)
+    {
+        $enreg = Reception::find($id);
+        if ($enreg) {
+            $situationDossier = selft::getSituationDossierById($enreg->dossiers_achats_id);
+            if ($situationDossier!= null && ($situationDossier <= 5) ) {
+                $enreg->delete();
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    /* Fin Reception */
+
+    /* Cloture مرحلة التسوية النهائية */
+    public function createOrUpdateCloture($request)
+    {
+        $input = $request->all();
+        $enreg = Cloture::updateOrCreate(
+            ['id' => $input->id],
+            [
+                'date_reception' => $input->date_reception,
+                'type_reception' => $input->type_reception,
+                'duree_retard' => $input->duree_retard,
+                'taux_avancement' => $input->taux_avancement,
+                'dossiers_achats_id' => $input->dossiers_achats_id,
+                'soumissionnaires_id' => $input->soumissionnaires_id,
+            ]
+        );
+        return $enreg;
+    }
+    public function deleteCloture($id)
+    {
+        $enreg = Cloture::find($id);
+        if ($enreg) {
+            $situationDossier = selft::getSituationDossierById($enreg->dossiers_achats_id);
+            if ($situationDossier!= null && ($situationDossier <= 6) ) {
+                $enreg->delete();
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    /* Fin Cloture */
+    
+    // Update Situation dossier : بصدد الإعداد 1\n، في انتظار العروض2\n في الفرز،3\n بصدد الإنجاز،4\n القبول الوقتي، 5\nالقبول النهائي،6\n ملف منتهي 7\n، ملغى
     public function updateSituationDossier($id, $situation_dossier): DossiersAchat
     {
         $dossier = DossiersAchat::find($id)->update([
             'situation_dossier' => $situation_dossier,
         ]);
         return $dossier;
+    }
+
+    // getSituation Dossier by Id
+    private function getSituationDossierById($id)
+    {
+        return DossierAchat::find($id);
+        if ($dossier) {
+            return $dossier->situation_dossier;
+        }
+        return null;
     }
 
 }
