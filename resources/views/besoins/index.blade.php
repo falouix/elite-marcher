@@ -46,7 +46,7 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>{{ __('cards.besoins_list') }}</h5>
                 <div class="card-header-right">
-                    
+
                     @can('besoins-list')
                         <a type="button" class="btn btn-primary" href="{{ route('besoins.create') }}">
                             <i class="feather icon-plus-circle"></i> {{ __('inputs.btn_create') }}
@@ -57,11 +57,7 @@ $tbl_action = __('labels.tbl_action');
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-1">
-                        <label> السنة المالية</label>
-                        <input type="text" class="form-control" id="annee_gestion" maxlength="4"  id="pin" pattern="\d{4}" value="{{ strftime("%Y"); }}" required/>
-                    </div>
-
+                    
                     @if (\Auth::user()->user_type =='admin')
                     <div class="col-md-3">
 
@@ -208,7 +204,7 @@ $tbl_action = __('labels.tbl_action');
                         } else {
                             data.services_id = $("#services_id").val()[0]
                         }
-                        data.annee_gestion = $('#annee_gestion').val();
+                        data.annee_gestion = $('#g_annee_gestion').val();
                         data.status = 'all';
                         data.mode = "all";
                     },
@@ -291,7 +287,7 @@ $tbl_action = __('labels.tbl_action');
         // Search button click event (reload dtatable)
         $('#btn_search_besoins').on('click', (e) => {
             e.preventDefault();
-            var annee_gestion = $('#annee_gestion').val();
+            var annee_gestion = $('#g_annee_gestion').val();
 
             $('#besoins-table').DataTable().ajax.reload();
 

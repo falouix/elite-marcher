@@ -52,11 +52,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-1">
-                        <label> السنة المالية</label>
-                        <input type="text" class="form-control" id="annee_gestion" maxlength="4" id="pin"
-                            pattern="\d{4}" value="{{ strftime('%Y') }}" required />
-                    </div>
+
 
                     @if (\Auth::user()->user_type == 'admin')
                         <div class="col-md-3">
@@ -241,7 +237,7 @@
                         } else {
                             data.services_id = $("#services_id").val()[0]
                         }
-                        data.annee_gestion = $('#annee_gestion').val();
+                        data.annee_gestion = $('#g_annee_gestion').val();
                         data.status = false;
                         data.mode = "validation";
                     },

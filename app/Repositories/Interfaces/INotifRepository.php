@@ -5,7 +5,8 @@ interface INotifRepository
 {
     public function getAllNotifByUser($user); // Return datatable ( if admin get all)
     public function getNotifsAxios(); // Liste notifs Axios VueJs
-    public function postNotifAction($id); 
+    public function getNotifsCountByType(); // Count notifs for desktop notification by type
+    public function postNotifAction($id);
     public function GenererNotif($newNotif);
     public function updateNotif($notifToUpdate);
     public function ArchiverNotif($start_date, $end_date);

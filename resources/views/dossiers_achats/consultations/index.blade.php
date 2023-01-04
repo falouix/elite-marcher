@@ -59,11 +59,7 @@ $tbl_action = __('labels.tbl_action');
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-1">
-                        <label> السنة المالية</label>
-                        <input type="text" class="form-control" id="annee_gestion" maxlength="4" id="pin"
-                            pattern="\d{4}" value="{{ strftime('%Y') }}" required />
-                    </div>
+
                     <div class="col-md-3">
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
@@ -228,7 +224,7 @@ $tbl_action = __('labels.tbl_action');
                 ajax: {
                     url: "{{ route('dossiers.data') }}",
                     data: function(data) {
-                        data.annee_gestion = $('#annee_gestion').val()
+                        data.annee_gestion = $('#g_annee_gestion').val()
 
                          data.situation_dossier = $('#situation_dossier').val()
                         data.type_demande = $('#type_demande').val()

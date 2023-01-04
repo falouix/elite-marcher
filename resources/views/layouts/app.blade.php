@@ -331,29 +331,24 @@ $tbl_action = __('labels.tbl_action');
                                     }
                                 }
 
-                                function showNotifG() {
-                                    var afficheNotifDesktop = 'True'
-                                    var afficheNotifValidationDesktop = 'True'
-                                    var afficheNotifActionsDesktop = 'True'
-                                    var nbNotifModel = 10
-                                    var nbNotifValidationModel = 2
-                                    var nbNotifActionsModel = 6
-                                    if (afficheNotifDesktop == 'True') {
-                                        showInernalNotif("info", 'إشعارات تذكير ', "لديك " + nbNotifModel + " إشعارات تذكير ", "", false)
-                                        customnotify('إشعار', "لديك " + nbNotifModel + " إشعارات تذكير ", '');
+                                function showNotifG(nbNotifRappel, nbNotifValidation, nbNotifMessage) {
+                                    //alert("yes")
+                                    if (nbNotifValidation >0) {
+                                        showInernalNotif("error", "إشعارات  لتثبيت المهام ",
+                                            "لديك " + nbNotifValidation + " مهام يجب إنجازها ", "", false)
+                                        customnotify('إشعارات المهام', "لديك " + nbNotifValidation + " مهام يجب إنجازها ", '');
                                     }
-                                    if (afficheNotifValidationDesktop == 'True') {
-                                        showInernalNotif("success", " إشعارات تذكير لتثبيت المعلومات ", "لديك " + nbNotifValidationModel +
-                                            "إشعارات تذكير لتثبيت المعلومات ",
+                                    if (nbNotifRappel > 0) {
+                                        showInernalNotif("info", 'إشعارات تذكير ', "لديك " + nbNotifRappel + " إشعارات تذكير ", "")
+                                        customnotify('إشعارات تذكير', "لديك " + nbNotifRappel + " إشعارات تذكير ", '');
+                                    }
+                                    if (nbNotifMessage >0) {
+                                        showInernalNotif("success", " إشعارات أخرى ", "لديك " + nbNotifMessage +
+                                            "إشعارات للإعلام",
                                             "", true)
-                                        customnotify('إشعار', "لديك " + nbNotifValidationModel + " إشعارات تذكير لتثبيت المعلومات ",
-                                            '');
+                                            customnotify('إشعارات أخرى', "لديك " + nbNotifMessage + " إشعارات أخرى للإعلام ", '');
                                     }
-                                    if (afficheNotifActionsDesktop == 'True') {
-                                        showInernalNotif("error", "إشعارات تذكير لتثبيت المعلومات ",
-                                            "لديك " + nbNotifActionsModel + " مهام يجب إنجازها ", "", false)
-                                        customnotify('إشعار', "لديك " + nbNotifActionsModel + " مهام يجب إنجازها ", '');
-                                    }
+
                                 }
 
                                 function showInernalNotif(type, title, desc, url, hide) {

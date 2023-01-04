@@ -183,6 +183,7 @@ Route::group(
          // Route Notifs Axios
          Route::get('/getNotifs',[NotifController::class, 'getNotifs']);
          Route::post('/notifAction',[NotifController::class, 'postNotifAction']);
+         Route::post('/notifDesktop',[NotifController::class, 'postNotifDesktop'])->name('notifs.desktop');
 
 
         Route::get('file-upload/show/{id}/{param}', [FileUploadController::class, 'fileUploadGet'])->name('file.upload.get');

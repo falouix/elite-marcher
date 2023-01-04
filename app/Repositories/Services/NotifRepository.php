@@ -93,6 +93,32 @@ class NotifRepository implements INotifRepository
             "notifsMessage" => $notifsMessage,
         ];
     }
+    public function getNotifsCountByType()
+    {
+        $notifsRappel = 0;
+        if (Auth::user()->hasPermissionTo('notifs-rappel')) {
+            $notifsRappel = Notif::select('id')->where('type', 'RAPPEL')->count();
+        }
+        $notifsValidation = 0;
+        if (Auth::user()->hasPermissionTo('notifs-validation')) {
+            $notifsValidation = Notif::select('id')->where('type', 'VALIDATION')->count();
+        }
+        $notifsMessage = 0;
+        if (Auth::user()->hasPermissionTo('notifs-message')) {
+            $notifsMessage = Notif::select('id')->where('type', 'MESSAGE')->count();
+        }
+        // $ntifs = Notif::select('*')->get()->groupBy('type');
+        Log::emergency([
+            "notifsRappelCount" => $notifsRappel,
+            "notifsValidationCount" => $notifsValidation,
+            "notifsMessageCount" => $notifsMessage,
+        ]);
+        return [
+            "notifsRappelCount" => $notifsRappel,
+            "notifsValidationCount" => $notifsValidation,
+            "notifsMessageCount" => $notifsMessage,
+        ];
+    }
     public function getAllNotifByUser($user)
     {
         if (Auth::user()->user_type == "admin") {

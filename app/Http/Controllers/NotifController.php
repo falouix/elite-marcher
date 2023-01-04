@@ -101,6 +101,9 @@ class NotifController extends Controller
         $this->repository->postNotifAction($request->notifs_id);
         return $this->notify('تثبيت الإشعار', 'تم تثبيت الإشعار مع وضع علامة مقروءة بالنسبة للمستعمل الحالي');
     }
+    public function postNotifDesktop(){
+        return $this->repository->getNotifsCountByType();
+    }
 
 
 }

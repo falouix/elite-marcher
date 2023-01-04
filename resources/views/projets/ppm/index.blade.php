@@ -64,11 +64,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-2">
-                        <label> السنة المالية</label>
-                        <input type="text" class="form-control" id="annee_gestion" maxlength="4" id="pin"
-                            pattern="\d{4}" value="{{ strftime('%Y') }}" required />
-                    </div>
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
@@ -160,7 +156,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var annee_gestion = $('#annee_gestion').val()
+            var annee_gestion = $('#g_annee_gestion').val()
             var services_id = $('#services_id').val()
             var type_demande = $('#type_demande').val()
             var natures_demande = $('#natures_demande').val()
@@ -235,7 +231,7 @@
                 ajax: {
                     url: "{{ route('ppm.data') }}",
                     data: function(data) {
-                        data.annee_gestion = $('#annee_gestion').val()
+                        data.annee_gestion = $('#g_annee_gestion').val()
                         data.services_id = 'all';
                         // data.services_id = $('#services_id').val()
                         data.type_demande = $('#type_demande').val()
@@ -382,7 +378,7 @@
             $('#table-cp').DataTable().ajax.reload();
         })
         $('#btn_print').on("click", () => {
-            $('#print_annee_gestion').val($('#annee_gestion').val())
+            $('#print_annee_gestion').val($('#g_annee_gestion').val())
             $('#print_type_demande').val($('#type_demande').val())
             $("#btn_submit").click()
         })
