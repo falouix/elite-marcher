@@ -67,7 +67,7 @@
  <!-- Incomeing-section end -->
 
  <script>
-     
+
 
      new Vue({
          el: '#app',
@@ -110,7 +110,7 @@
                      })
                      .then(function(response) {
                          console.log(response);
-                         PnotifyCustom(response)
+                         PnotifyCustom(response.data)
                      })
                      .catch(function(error) {
                          console.log(error);

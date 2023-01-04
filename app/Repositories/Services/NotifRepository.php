@@ -60,7 +60,7 @@ class NotifRepository implements INotifRepository
                 $users_count = User::permission('notifs-validation-action')->count();
                 break;
             default:
-                $users_count = User::permission('notifs-validation-action') > count();
+                $users_count = User::permission('notifs-validation-action')-> count();
                 break;
         }
         $users_read_notif_count = LignesNotif::where('notifs_id', $id)->count();
