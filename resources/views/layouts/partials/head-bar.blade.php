@@ -34,6 +34,7 @@
                 <li class="nav-item">
                     <input type="text" class="form-control" id="g_annee_gestion" maxlength="4" pattern="\d{4}" value="2022" required="">
                 </li>
+
                 <li>
                     <div class="dropdown">
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon feather icon-bell"></i></a>
@@ -42,6 +43,7 @@
                          @endcomponent
                     </div>
                 </li>
+                
                 <li><a href="{{ url('/chatify') }}" class="ddisplayChatbox" target="_blank"><i class="icon feather icon-mail"></i></a></li>
                 <li>
                     <div class="dropdown drp-user">

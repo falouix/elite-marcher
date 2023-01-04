@@ -4,7 +4,7 @@
 @if($valider == false)
 <button  class="btn btn-icon btn-rounded btn-primary"
         title="تفعيل المادة" onclick="validerArticle({{ $id }})">
-        <i class="feather icon-edit-1"></i>
+        <i class="feather icon-check-square"></i>
 </button>
 @endif
 

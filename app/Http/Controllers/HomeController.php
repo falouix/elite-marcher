@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\DossiersAchat;
+use App\Models\Offres;
+use App\Models\AvisDossier;
 use DB;
 
 class HomeController extends Controller

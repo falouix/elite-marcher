@@ -1,5 +1,5 @@
+ <!DOCTYPE html>
 <html>
-
 <head>
     @include('layouts.partials.head')
     @yield('head-script')
@@ -189,7 +189,6 @@ $tbl_action = __('labels.tbl_action');
                                     }
                                     new PNotify(opts);
                                 }
-
 
                                 function multipleDeleteG(locale, tableId, ids, url) {
 
@@ -468,6 +467,7 @@ $tbl_action = __('labels.tbl_action');
                                     }
                                     new PNotify(opts);
                                 }
+
                             </script>
                             @if (Session::has('notification'))
                                 <script>

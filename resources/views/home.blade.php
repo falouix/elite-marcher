@@ -19,8 +19,6 @@
         <div class="row">
             <!-- [ shadows ] start -->
             <div class="col-md-12">
-
-
                 @if ($besoins_actif)
                     <div class="shadow-lg p-3 mb-1 bg-white rounded" style="text-align:center;">
                         <span style="color:rgb(231, 29, 29); font-weight:bold; font-size:20px;">بلاغ حول ظبط الحاجيات</span>
@@ -33,82 +31,65 @@
             </div>
             <!-- [ shadows ] end -->
         </div>
-        <div class="row mt-3">
-            <!-- [ cards ] start -->
-            @can('dashboard-list')
+        @can('dashboard-list')
+            <div class="row mt-3">
+                <!-- [ cards ] start -->
+
                 <!-- [ Statistics ] Start-->
                 <!-- [ Calendar ] Start-->
                 @can('dossiers-list')
-                <div class="col-md-6">
-                    <div class="card">
-
-                        <div class="card-header">
-                            <h5>ملفات الشراءات</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label> السنة المالية</label>
-                                    <input type="text" class="form-control" id="annee_gestion" maxlength="4" id="pin"
-                                        pattern="\d{4}" value="{{ strftime('%Y') }}" required />
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">طبيعة الطلب</label>
-                                        <select class="form-control" id="type_demande">
-                                            <option value="all">الكل</option>
-                                            <option value="1">مواد وخدمات</option>
-                                            <option value="2">أشغال</option>
-                                            <option value="3">دراسات</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">وضعية الملف</label>
-                                        <select class="form-control" id="situation_dossier" name="situation_dossier">
-                                            <option value="all">الكل</option>
-                                            <option value="1">بصدد الإعداد</option>
-                                            <option value="2">في انتظار العروض</option>
-                                            <option value="3">في الفرز</option>
-                                            <option value="4">بصدد الإنجاز</option>
-                                            <option value="5">القبول الوقتي</option>
-                                            <option value="6">القبول النهائي</option>
-                                            <option value="7">ملف منتهي </option>
-                                            <option value="8">ملغى</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <button class="btn btn-primary-gradient " id="btn_search_projets" type="submit"
-                                        style="margin-top: 32px">
-                                        {{ __('inputs.btn_search') }}
-                                    </button>
-                                </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>ملفات الشراءات</h5>
                             </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label> السنة المالية</label>
+                                        <input type="text" class="form-control" id="annee_gestion" maxlength="4" id="pin"
+                                            pattern="\d{4}" value="{{ strftime('%Y') }}" required />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">طبيعة الطلب</label>
+                                            <select class="form-control" id="type_demande">
+                                                <option value="all">الكل</option>
+                                                <option value="1">مواد وخدمات</option>
+                                                <option value="2">أشغال</option>
+                                                <option value="3">دراسات</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">وضعية الملف</label>
+                                            <select class="form-control" id="situation_dossier" name="situation_dossier">
+                                                <option value="all">الكل</option>
+                                                <option value="1">بصدد الإعداد</option>
+                                                <option value="2">في انتظار العروض</option>
+                                                <option value="3">في الفرز</option>
+                                                <option value="4">بصدد الإنجاز</option>
+                                                <option value="5">القبول الوقتي</option>
+                                                <option value="6">القبول النهائي</option>
+                                                <option value="7">ملف منتهي </option>
+                                                <option value="8">ملغى</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                            <div class="dt-responsive table-responsive">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-primary-gradient " id="btn_search_projets" type="submit"
+                                            style="margin-top: 32px">
+                                            {{ __('inputs.btn_search') }}
+                                        </button>
+                                    </div>
+                                </div>
 
-                                <table id="table-cp" class="table table-striped table-bordered nowrap">
-                                    <thead>
-                                        <th class="not-export-col" style="width: 30px"><input type="checkbox"
-                                                class="select-checkbox not-export-col" /> </th>
-                                        <th class="not-export-col"> </th>
-                                        <th>ملف عدد</th>
-                                        <th>وضعية الملف</th>
-                                        <th>الموضوع</th>
-                                        <th>الإطار</th>
-                                        <th>مشروع عدد</th>
-                                        <th>جهة التمويل</th>
-                                        <th>طريقة التمويل</th>
-                                        <th>طبيعة الأسعار</th>
-                                        <th>الكلفة التقديرية</th>
-                                        <th>تاريخ الختم</th>
-                                        <th class="not-export-col">قرار</th>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
+                                <div class="dt-responsive table-responsive">
+
+                                    <table id="table-cp" class="table table-striped table-bordered nowrap">
+                                        <thead>
                                             <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                                     class="select-checkbox not-export-col" /> </th>
                                             <th class="not-export-col"> </th>
@@ -123,13 +104,30 @@
                                             <th>الكلفة التقديرية</th>
                                             <th>تاريخ الختم</th>
                                             <th class="not-export-col">قرار</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th class="not-export-col" style="width: 30px"><input type="checkbox"
+                                                        class="select-checkbox not-export-col" /> </th>
+                                                <th class="not-export-col"> </th>
+                                                <th>ملف عدد</th>
+                                                <th>وضعية الملف</th>
+                                                <th>الموضوع</th>
+                                                <th>الإطار</th>
+                                                <th>مشروع عدد</th>
+                                                <th>جهة التمويل</th>
+                                                <th>طريقة التمويل</th>
+                                                <th>طبيعة الأسعار</th>
+                                                <th>الكلفة التقديرية</th>
+                                                <th>تاريخ الختم</th>
+                                                <th class="not-export-col">قرار</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 @endcan
 
                 <!-- [ cards ] end -->
@@ -137,161 +135,158 @@
 
                     <div class="row">
                         @can('statistic-list')
-                        <!-- [ clients_count ] start -->
-                        <div class="col-md-4">
-                            <div class="card ticket-card">
-                                <div class="card-body">
-                                    <p class="m-b-25 bg-c-green lbl-card"><i class="fas fa-folder-open m-r-5"></i>
-                                        ملفات بصدد الإنجاز</p>
-                                    <div class="text-center">
-                                        <h2 class="m-b-0 d-inline-block text-c-green">{{ $count_dossiersEncours }}</h2>
-                                        <p class="m-b-0 d-inline-block"> ملف</p>
+                            <!-- [ clients_count ] start -->
+                            <div class="col-md-4">
+                                <div class="card ticket-card">
+                                    <div class="card-body">
+                                        <p class="m-b-25 bg-c-green lbl-card"><i class="fas fa-folder-open m-r-5"></i>
+                                            ملفات بصدد الإنجاز</p>
+                                        <div class="text-center">
+                                            <h2 class="m-b-0 d-inline-block text-c-green">{{ $count_dossiersEncours }}</h2>
+                                            <p class="m-b-0 d-inline-block"> ملف</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- [ clients_count ] end -->
-                        <!-- [ session_count ] start -->
-                        <div class="col-md-4">
-                            <div class="card ticket-card">
-                                <div class="card-body">
-                                    <p class="m-b-25 bg-c-blue lbl-card"><i class="fas fa-file-archive m-r-5"></i>
-                                        الملفات المنجزة
-                                    </p>
-                                    <div class="text-center">
-                                        <h2 class="m-b-0 d-inline-block text-c-blue">{{ $count_dossiersFini }}</h2>
-                                        <p class="m-b-0 d-inline-block"> ملف</p>
+                            <!-- [ clients_count ] end -->
+                            <!-- [ session_count ] start -->
+                            <div class="col-md-4">
+                                <div class="card ticket-card">
+                                    <div class="card-body">
+                                        <p class="m-b-25 bg-c-blue lbl-card"><i class="fas fa-file-archive m-r-5"></i>
+                                            الملفات المنجزة
+                                        </p>
+                                        <div class="text-center">
+                                            <h2 class="m-b-0 d-inline-block text-c-blue">{{ $count_dossiersFini }}</h2>
+                                            <p class="m-b-0 d-inline-block"> ملف</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- [ session_count ] end -->
-                        <!-- [ cases_count ] start -->
-                        <div class="col-md-4">
-                            <div class="card ticket-card">
-                                <div class="card-body">
-                                    <p class="m-b-25 bg-c-red lbl-card"><i class="fas fa-folder-minus m-r-5"></i>
-                                        الملفات الملغاة
-                                    </p>
-                                    <div class="text-center">
-                                        <h2 class="m-b-0 d-inline-block text-c-red">{{ $count_dossiersAnnuler }}</h2>
-                                        <p class="m-b-0 d-inline-block">ملف</p>
+                            <!-- [ session_count ] end -->
+                            <!-- [ cases_count ] start -->
+                            <div class="col-md-4">
+                                <div class="card ticket-card">
+                                    <div class="card-body">
+                                        <p class="m-b-25 bg-c-red lbl-card"><i class="fas fa-folder-minus m-r-5"></i>
+                                            الملفات الملغاة
+                                        </p>
+                                        <div class="text-center">
+                                            <h2 class="m-b-0 d-inline-block text-c-red">{{ $count_dossiersAnnuler }}</h2>
+                                            <p class="m-b-0 d-inline-block">ملف</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- [ cases_count ] end -->
-                        <!-- [ total_payment_expenses ] end -->
-                        <!-- [ statistics_payement_incomes ] start -->
-                        <div class="col-xl-12 col-md-12">
-                            <div class="card table-card">
-                                <div class="card-header borderless">
-                                    <h5>ملفات الشراءات حسب الوضعية ونوع الطلب</h5>
-                                </div>
-                                <div class="card-body px-0 py-0">
-                                    <div class="table-responsive">
-                                        <div class="revenue-scroll ps ps--active-y" style="height:415px;position:relative;">
-                                            <table class="table table-hover mb-0">
-                                                <th>وضعية الملف</th>
-                                                <th>العدد</th>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><i class="fas fa-caret-left text-c-green f-20">الإستشارات</i></td>
-                                                        <td> </td>
-                                                    </tr>
-                                                    @foreach ($count_dossiersGroupedConsultation as $item)
+                            <!-- [ cases_count ] end -->
+                            <!-- [ total_payment_expenses ] end -->
+                            <!-- [ statistics_payement_incomes ] start -->
+                            <div class="col-xl-12 col-md-12">
+                                <div class="card table-card">
+                                    <div class="card-header borderless">
+                                        <h5>ملفات الشراءات حسب الوضعية ونوع الطلب</h5>
+                                    </div>
+                                    <div class="card-body px-0 py-0">
+                                        <div class="table-responsive">
+                                            <div class="revenue-scroll ps ps--active-y" style="height:415px;position:relative;">
+                                                <table class="table table-hover mb-0">
+                                                    <th>وضعية الملف</th>
+                                                    <th>العدد</th>
+                                                    <tbody>
                                                         <tr>
-                                                            <td>
-                                                                {!! App\Common\Utility::getSituationDossierLabel($item->situation_dossier) !!}
-                                                            </td>
-                                                            <td>
-                                                                <h6 class="text-c-green">{{ $item->totalBySituation }}</h6>
-                                                            </td>
+                                                            <td><i class="fas fa-caret-left text-c-green f-20">الإستشارات</i></td>
+                                                            <td> </td>
                                                         </tr>
-                                                    @endforeach
-                                                    <tr>
-                                                        <td><i class="text-c-green f-20">طلبات العروض</i></td>
-                                                        <td> </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><i class="fas fa-caret-left text-c-green f-20">إجراءات مبسطة</i>
-                                                        </td>
-                                                        <td> </td>
-                                                    </tr>
-                                                    @foreach ($count_dossiersGroupedAos as $item)
+                                                        @foreach ($count_dossiersGroupedConsultation as $item)
+                                                            <tr>
+                                                                <td>
+                                                                    {!! App\Common\Utility::getSituationDossierLabel($item->situation_dossier) !!}
+                                                                </td>
+                                                                <td>
+                                                                    <h6 class="text-c-green">{{ $item->totalBySituation }}</h6>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
                                                         <tr>
-                                                            <td>
-                                                                {!! App\Common\Utility::getSituationDossierLabel($item->situation_dossier) !!}
-                                                            </td>
-                                                            <td>
-                                                                <h6 class="text-c-green">{{ $item->totalBySituation }}</h6>
-                                                            </td>
+                                                            <td><i class="text-c-green f-20">طلبات العروض</i></td>
+                                                            <td> </td>
                                                         </tr>
-                                                    @endforeach
-                                                    <tr>
-                                                        <td><i class="fas fa-caret-left text-c-green f-24">إجراءات عادية</i>
-                                                        </td>
-                                                        <td> </td>
-                                                    </tr>
-                                                    @foreach ($count_dossiersGroupedAon as $item)
                                                         <tr>
-                                                            <td>
-                                                                {!! App\Common\Utility::getSituationDossierLabel($item->situation_dossier) !!}
+                                                            <td><i class="fas fa-caret-left text-c-green f-20">إجراءات مبسطة</i>
                                                             </td>
-                                                            <td>
-                                                                <h6 class="text-c-green">{{ $item->totalBySituation }}</h6>
-                                                            </td>
+                                                            <td> </td>
                                                         </tr>
-                                                    @endforeach
-                                                    <tr>
-                                                        <td><i class="fas fa-caret-left text-c-green f-24">التفاوض المباشر</i>
-                                                        </td>
-                                                        <td> </td>
-                                                    </tr>
-                                                    @foreach ($count_dossiersGroupedGreGre as $item)
+                                                        @foreach ($count_dossiersGroupedAos as $item)
+                                                            <tr>
+                                                                <td>
+                                                                    {!! App\Common\Utility::getSituationDossierLabel($item->situation_dossier) !!}
+                                                                </td>
+                                                                <td>
+                                                                    <h6 class="text-c-green">{{ $item->totalBySituation }}</h6>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
                                                         <tr>
-                                                            <td>
-                                                                {!! App\Common\Utility::getSituationDossierLabel($item->situation_dossier) !!}
+                                                            <td><i class="fas fa-caret-left text-c-green f-24">إجراءات عادية</i>
                                                             </td>
-                                                            <td>
-                                                                <h6 class="text-c-green">{{ $item->totalBySituation }}</h6>
-                                                            </td>
+                                                            <td> </td>
                                                         </tr>
-                                                    @endforeach
+                                                        @foreach ($count_dossiersGroupedAon as $item)
+                                                            <tr>
+                                                                <td>
+                                                                    {!! App\Common\Utility::getSituationDossierLabel($item->situation_dossier) !!}
+                                                                </td>
+                                                                <td>
+                                                                    <h6 class="text-c-green">{{ $item->totalBySituation }}</h6>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        <tr>
+                                                            <td><i class="fas fa-caret-left text-c-green f-24">التفاوض المباشر</i>
+                                                            </td>
+                                                            <td> </td>
+                                                        </tr>
+                                                        @foreach ($count_dossiersGroupedGreGre as $item)
+                                                            <tr>
+                                                                <td>
+                                                                    {!! App\Common\Utility::getSituationDossierLabel($item->situation_dossier) !!}
+                                                                </td>
+                                                                <td>
+                                                                    <h6 class="text-c-green">{{ $item->totalBySituation }}</h6>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
 
-                                                </tbody>
-                                            </table>
-                                            <div class="ps__rail-x" style="left: 0px; bottom: -450px;">
-                                                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                            </div>
-                                            <div class="ps__rail-y" style="top: 450px; height: 415px; right: 0px;">
-                                                <div class="ps__thumb-y" tabindex="0" style="top: 216px; height: 199px;">
+                                                    </tbody>
+                                                </table>
+                                                <div class="ps__rail-x" style="left: 0px; bottom: -450px;">
+                                                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                                                </div>
+                                                <div class="ps__rail-y" style="top: 450px; height: 415px; right: 0px;">
+                                                    <div class="ps__thumb-y" tabindex="0" style="top: 216px; height: 199px;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
+                            </div>
                         @endcan
-                        <!-- [ statistics_incomes ] end -->
-                        @if(\Auth::user()->can('dossiers-list') || \Auth::user()->can('statistic-list'))
-                        @component('components.notifs_home', ["col"=>"6"])
-                                    @endcomponent
-                        @endif
+
                     </div>
                     <!-- [ row 2 ] end -->
                 </div>
-
-                @if(!\Auth::user()->can('dossiers-list') && !\Auth::user()->can('statistic-list'))
-                @component('components.notifs_home', ["col"=>"12"])
-                            @endcomponent
-
+            </div>
+            <div class="row">
+                <!-- [ statistics_incomes ] end -->
+                @if (\Auth::user()->can('dossiers-list') || \Auth::user()->can('statistic-list'))
+                    @component('components.notifs_home', ['col' => '12'])
+                    @endcomponent
                 @endif
-                <!-- [ Statistics ] End-->
-            @endcan
-        </div>
+            </div>
+        @endcan
+
 
     </div>
 @endsection
@@ -304,18 +299,22 @@
     <script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
     <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
     <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
-<!-- Vue JS AXIOS -->
-<script src="{{ asset('/js/vue.js') }}"></script>
-<script src="{{ asset('/js/axios.min.js') }}"></script>
-<script src="{{ asset('/js/vue-axios.min.js') }}"></script>
+    <!-- Vue JS AXIOS -->
+    <script src="{{ asset('/js/vue.js') }}"></script>
+    <script src="{{ asset('/js/axios.min.js') }}"></script>
+    <script src="{{ asset('/js/vue-axios.min.js') }}"></script>
     <!--
-        <script src="https://unpkg.com/vue@2.5.17/dist/vue.js"></script>
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script src="https://unpkg.com/vue-axios@2.1.4/dist/vue-axios.min.js"></script>
-    -->
+                <script src="https://unpkg.com/vue@2.5.17/dist/vue.js"></script>
+                <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+                <script src="https://unpkg.com/vue-axios@2.1.4/dist/vue-axios.min.js"></script>
+            -->
 
     <script>
         $(document).ready(function() {
+            window.axios.defaults.headers.common = {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            };
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -485,13 +484,14 @@
                 }
             });
 
-            // [ incomeing-scroll ] start
+            /*[ incomeing-scroll ] start
             var px = new PerfectScrollbar('.incomeing-scroll', {
                 wheelSpeed: .5,
                 swipeEasing: 0,
                 wheelPropagation: 1,
                 minScrollbarLength: 40,
             });
+            */
             showNotifG()
 
         });

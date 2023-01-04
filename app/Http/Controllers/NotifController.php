@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Notif;
 use Illuminate\Http\Request;
+use App\Repositories\Interfaces\INotifRepository;
+use App\Traits\ApiResponser;
+use Auth;
+use Log;
 
 class NotifController extends Controller
 {
+    use ApiResponser;
+    public function __construct(INotifRepository $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -83,14 +92,15 @@ class NotifController extends Controller
         //
     }
 
-    // Axios & VueJs Functions
+    // Axios & VueJs getNotifs
     public function getNotifs(){
-
-        return Notif:: all();
+        return $this->repository->getNotifsAxios();
     }
-    // Axios & VueJs Functions
-    public function getAllNotifsByUser($user_id){
-
-        return Notif:: select('*')->where();
+    public function postNotifAction(Request $request){
+        Log::info("Contenu de notification from axios view");
+        $this->repository->postNotifAction($request->notifs_id);
+        return $this->notify('تثبيت الإشعار', 'تم تثبيت الإشعار مع وضع علامة مقروءة بالنسبة للمستعمل الحالي');
     }
+
+
 }

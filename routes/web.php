@@ -178,10 +178,11 @@ Route::group(
          Route::resource('aogregre', GREGREController::class);
 
          //route Notifications
-        Route::resource('notifs', ArticleController::class);
-        Route::post('notifs/datatable', [ArticleController::class, 'getAllArticlesDatatable'])->name('notifs.data');
+        Route::resource('notifs', NotifController::class);
+        Route::post('notifs/datatable', [NotifController::class, 'getAllNotifDatatable'])->name('notifs.data');
          // Route Notifs Axios
          Route::get('/getNotifs',[NotifController::class, 'getNotifs']);
+         Route::post('/notifAction',[NotifController::class, 'postNotifAction']);
 
 
         Route::get('file-upload/show/{id}/{param}', [FileUploadController::class, 'fileUploadGet'])->name('file.upload.get');

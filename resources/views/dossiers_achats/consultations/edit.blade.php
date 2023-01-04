@@ -220,7 +220,7 @@
                                     @endphp
                                     <div class="form-row">
                                         <input type="number" name="cahiers_charges_id" id="cahiers_charges_id"
-                                            value="0" hidden>
+                                            value="{{ $cahiers_charges->id ?? '' }}" hidden>
                                         <div class="form-group col-md-6">
                                             <label>تاريخ اعتزام نشر الإعلان :</label>
                                             <input type="date" class="form-control" id='date_pub_prevu'

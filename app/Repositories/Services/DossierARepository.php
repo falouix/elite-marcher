@@ -434,6 +434,36 @@ class DossierARepository implements IDossierARepository
         Log::alert("Delete Offre Request repository");
         Offre::find($id)->delete();
     }
+    /*****   عدد الملفات المسحوبة */
+    public function getCountOffres($id)
+    {
+        $count_offres = DB::table('offres')
+        // ->select( DB::raw('count(ref_offre) as countOffre') )
+            ->where('dossiers_achats_id', 12)
+            ->count();
+        // get date_validite from avis
+        $avis = AvisDossier::select('date_validite')->where('dossiers_achats_id', 12)->first();
+        if ($avis) {
+
+            $count_offresDansDelais = DB::table('offres')
+            // ->select( DB::raw('count(ref_offre) as countOffre') )
+                ->where('dossiers_achats_id', 12)
+                ->where('date_arrive', '<=', $avis->date_validite)
+                ->count();
+            $count_offreHorsDelais = $count_offres - $count_offresDansDelais;
+            $arrayCountOffres = [
+                "count_offres" => $count_offres,
+                "count_offresDansDelais" => $count_offresDansDelais,
+                "count_offreHorsDelais" => $count_offreHorsDelais,
+            ];
+            return $arrayCountOffres;
+        }
+        return $arrayCountOffres = [
+            "count_offres" => $count_offres,
+            "count_offresDansDelais" => $count_offres,
+            "count_offreHorsDelais" => 0,
+        ];
+    }
     /* Fin Reception Offres */
 
     /* Enregistrement مرحلةتسجيل الصفقة*/
