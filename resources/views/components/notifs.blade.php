@@ -16,7 +16,9 @@
                     <p><strong>@{{ item.texte }}</strong>
                         <span class="n-time text-muted"><button type="button" class="btn btn-default"
                                 @click="goToAction(item.id)">
-                                <i class="icon feather icon-eye m-r-10" title="وضع علامة مقروءة"></i> </button>
+                                <i class="icon feather icon-eye m-r-10" title="تثبيت المهمة"></i> </button>
+                            <a v-if="item.action !=''" :href="item.action" title="الذهاب إلى المهمة"
+                                target="_blank"><i class="icon feather icon-external-link"></i></a>
                         </span>
                     </p>
                 </div>
@@ -32,6 +34,8 @@
                         <span class="n-time text-muted"><button type="button" class="btn btn-default"
                                 @click="goToAction(item.id)">
                                 <i class="icon feather icon-check-circle m-r-10" title="تثبيت"></i> </button>
+                            <a v-if="item.action !=''" :href="item.action" title="الذهاب إلى المهمة"
+                                target="_blank"><i class="icon feather icon-external-link"></i></a>
                         </span>
                     </p>
                 </div>
@@ -73,15 +77,15 @@
             };
         },
         created: function() {
-            this.getNotifs(
-                '/getNotifs'
-            );
-            setInterval(() => {
+            const timer = setInterval(() => {
                 this.getNotifs(
                     '/getNotifs'
                 );
+            }, 10000);
 
-            }, 1000 * 60 * 30);
+            this.$once("hook:beforeDestroy", () => {
+                clearInterval(timer);
+            });
         },
 
         methods: {
@@ -95,28 +99,29 @@
             },
             goToAction(id) {
                 var ref = this
-                if(confirm("أنت بصدد تثبيت الإشعار!"+ "\n" +"سيقوم البرنامج بوضع علامة مقروءة وتثبيت الإشعار")){
+                if (confirm("أنت بصدد تثبيت الإشعار!" + "\n" +
+                        "سيقوم البرنامج بوضع علامة مقروءة وتثبيت الإشعار")) {
 
 
-                // Send a POST request
-                axios({
-                        method: 'post',
-                        url: '/notifAction',
-                        data: {
-                            notifs_id: id
-                        }
-                    })
-                    .then(function(response) {
-                        console.log(response);
-                        PnotifyCustom(response.data)
-                        ref.getNotifs(
-                    '/getNotifs'
-                );
+                    // Send a POST request
+                    axios({
+                            method: 'post',
+                            url: '/notifAction',
+                            data: {
+                                notifs_id: id
+                            }
+                        })
+                        .then(function(response) {
+                            console.log(response);
+                            PnotifyCustom(response.data)
+                            ref.getNotifs(
+                                '/getNotifs'
+                            );
 
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
                 }
 
             }

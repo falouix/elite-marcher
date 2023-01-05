@@ -32,14 +32,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $notif_duree_pa
  * @property bool|null $notif_publication_achat
  * @property int|null $notif_duree_publication
+ * @property bool|null $notif_cc
+ * @property int $notif_duree_cc
+ * @property int $notif_avis_pub
+ * @property int $notif_duree_pub
+ * @property int $notif_caution_provisoire
+ * @property int $notif_duree_caution_provisoire
+ * @property bool $notif_caution_final
+ * @property int|null $notif_duree_caution_final
  * @property bool|null $notif_session_op
  * @property int|null $notif_duree_session_op
- * @property bool|null $notif_date_caution_final
- * @property int|null $notif_duree_caution_final
  * @property bool|null $notif_delais_rp
  * @property int|null $notif_duree_rp
  * @property bool|null $notif_delais_rd
  * @property int|null $notif_duree_rd
+ * @property int|null $notif_date_trsfert_ca_prvu
+ * @property int|null $notif_duree_trsfert_ca_prvu
+ * @property int|null $notif_date_trsfert_cao_prvu
+ * @property int|null $notif_duree_trsfert_cao_prvu
+ * @property int|null $notif_date_pub_reslt_prvu
+ * @property int|null $notif_duree_pub_reslt_prvu
  * @property Carbon|null $datedeb_besoin
  * @property Carbon|null $datefin_besoin
  * @property Carbon|null $created_at
@@ -63,14 +75,26 @@ class Etablissement extends Model
 		'notif_duree_pa' => 'int',
 		'notif_publication_achat' => 'bool',
 		'notif_duree_publication' => 'int',
+		'notif_cc' => 'bool',
+		'notif_duree_cc' => 'int',
+		'notif_avis_pub' => 'int',
+		'notif_duree_pub' => 'int',
+		'notif_caution_provisoire' => 'int',
+		'notif_duree_caution_provisoire' => 'int',
+		'notif_caution_final' => 'bool',
+		'notif_duree_caution_final' => 'int',
 		'notif_session_op' => 'bool',
 		'notif_duree_session_op' => 'int',
-		'notif_date_caution_final' => 'bool',
-		'notif_duree_caution_final' => 'int',
 		'notif_delais_rp' => 'bool',
 		'notif_duree_rp' => 'int',
 		'notif_delais_rd' => 'bool',
 		'notif_duree_rd' => 'int',
+		'notif_date_trsfert_ca_prvu' => 'int',
+		'notif_duree_trsfert_ca_prvu' => 'int',
+		'notif_date_trsfert_cao_prvu' => 'int',
+		'notif_duree_trsfert_cao_prvu' => 'int',
+		'notif_date_pub_reslt_prvu' => 'int',
+		'notif_duree_pub_reslt_prvu' => 'int',
 		'created_by' => 'int',
 		'updated_by' => 'int'
 	];
@@ -99,14 +123,26 @@ class Etablissement extends Model
 		'notif_duree_pa',
 		'notif_publication_achat',
 		'notif_duree_publication',
+		'notif_cc',
+		'notif_duree_cc',
+		'notif_avis_pub',
+		'notif_duree_pub',
+		'notif_caution_provisoire',
+		'notif_duree_caution_provisoire',
+		'notif_caution_final',
+		'notif_duree_caution_final',
 		'notif_session_op',
 		'notif_duree_session_op',
-		'notif_date_caution_final',
-		'notif_duree_caution_final',
 		'notif_delais_rp',
 		'notif_duree_rp',
 		'notif_delais_rd',
 		'notif_duree_rd',
+		'notif_date_trsfert_ca_prvu',
+		'notif_duree_trsfert_ca_prvu',
+		'notif_date_trsfert_cao_prvu',
+		'notif_duree_trsfert_cao_prvu',
+		'notif_date_pub_reslt_prvu',
+		'notif_duree_pub_reslt_prvu',
 		'datedeb_besoin',
 		'datefin_besoin',
 		'created_by',

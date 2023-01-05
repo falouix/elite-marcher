@@ -171,8 +171,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             <div class="col-sm-6 ">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="ajouter_annee"
-                                        name="ajouter_annee" value="{{ $settings->ajouter_annee }}"
-                                        {{ $settings->ajouter_annee ? 'checked' : '' }} checked>
+                                        name="ajouter_annee" {{ $settings->ajouter_annee ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="ajouter_annee">
                                         {{ __('labels.tbl_ajouter_annee') }}
@@ -183,8 +182,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             <div class="col-sm-6 ">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="reset_code" name="reset_code"
-                                        value="{{ $settings->reset_code }}" {{ $settings->reset_code ? 'checked' : '' }}
-                                        checked>
+                                         {{ $settings->reset_code ? 'checked' : '' }}>
                                     <label class="form-check-label" for="reset_code">
                                         {{ __('labels.tbl_reset_code') }}
                                     </label>
@@ -201,104 +199,132 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             <div class="col-sm-4 ">
                                 <div class="form-group">
                                     <input id="notif_validation_besoins" name="notif_validation_besoins" type="checkbox"
-                                        value="{{ $settings->notif_validation_besoins }}">
+                                        {{ $settings->notif_validation_besoins ? 'checked' : '' }}>
                                     <label> {{ __('labels.tbl_validation_besoins') }} </label>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
+                            {{-- CC --}}
                             <div class="col-sm-6 ">
                                 <div class="form-group">
-                                   <label>{{ __('labels.tbl_notif_pa') }}</label>
+                                    <label> تفعيل تنبيه لإعداد كراس الشروط </label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_pa" value="{{ $settings->notif_pa }}">
+                                                name="notif_cc" {{ $settings->notif_cc ? 'checked' : ''  }}>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_pa" value="{{ $settings->notif_duree_pa }}" min="1" max="99">
+                                        name="notif_duree_cc" value="{{ $settings->notif_duree_cc }}" min="1" max="99">
                                     </div>
                                 </div>
                             </div>
+                            {{-- Fin CC --}}
+                            {{-- Avis publication --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label> تفعيل تنبيه للإعلان عن المنافسة قبل</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                name="notif_avis_pub" {{ $settings->notif_avis_pub ? 'checked' : ''  }}>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                        name="notif_duree_pub" value="{{ $settings->notif_duree_pub }}" min="1" max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Fin publication --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label> تفعيل تنبيه لجلسة الفرز قبل  </label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                name="notif_publication_achat" {{ $settings->notif_publication_achat ? 'checked' : ''  }}>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                        name="notif_duree_publication" {{ $settings->notif_duree_publication ? 'checked' : ''  }} min="1" max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Caution Provisoire --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label>تفعيل تنبيه بحلول آجال الضمان الوقتي قبل </label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                name="notif_caution_provisoire" value="{{ $settings->notif_caution_provisoire }}">
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                        name="notif_duree_caution_provisoire" value="{{ $settings->notif_duree_caution_provisoire }}" min="1" max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Fin Caution Provisoire --}}
+                            {{-- Caution final --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label>تنبيه يحلول آجال الضمان النهائي قبل </label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                name="notif_caution_final" value="{{ $settings->notif_caution_final }}">
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                        name="notif_duree_caution_final" value="{{ $settings->notif_duree_caution_final }}" min="1" max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Fin Caution final --}}
+                             {{-- Reception Provisoire --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label>{{ __('labels.tbl_notif_duree_rp') }}</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                name="notif_delais_rp" value="{{ $settings->notif_delais_rp }}">
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                        name="notif_duree_rp" value="{{ $settings->notif_duree_rp }}" min="1" max="99">
+                                    </div>
+                                </div>
+                            </div>
+                             {{-- Fin Reception Provisoire --}}
+                              {{-- Reception Defenitive --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label> تفعيل تنبيه بحلول آجال الإستلام الوقتي قبل </label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                name="notif_delais_rd" value="{{ $settings->notif_delais_rd }}">
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                        name="notif_duree_rd" value="{{ $settings->notif_duree_rd }}" min="1" max="99">
+                                    </div>
+                                </div>
+                            </div>
+                             {{-- Fin Reception Defenitive --}}
+                        </div>
 
-                            <div class="col-sm-6 ">
-                                <div class="form-group">
-                                    <label>{{ __('labels.tbl_notif_publication_achat') }}</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_publication_achat" value="{{ $settings->notif_publication_achat }}">
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_publication" value="{{ $settings->notif_duree_publication }}" min="1" max="99">
-                                    </div>
-                                </div>
-                            </div>
 
-                        
-                            <div class="col-sm-6 ">
-                                <div class="form-group">
-                                    <input name="notif_reglagesGeneraux_op" type="hidden" value="0">
-                                    <input id="notif_reglagesGeneraux_op" name="notif_reglagesGeneraux_op"
-                                        type="checkbox" value="1"
-                                        {{ old('notif_reglagesGeneraux_op' ? 'checked' : '') }}>
-                                    <label>{{ __('labels.tbl_notif_reglagesGeneraux_op') }}</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_publication_achat" value="{{ $settings->notif_publication_achat }}">
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_publication" value="{{ $settings->notif_duree_publication }}" min="1" max="99">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-7 ">
-                                <div class="form-group">
-                                    <input id="notif_duree_reglagesGeneraux_op" name="notif_duree_reglagesGeneraux_op"
-                                        type="number" class="form-control form-control-sm"
-                                        placeholder="{{ __('labels.tbl_notif_duree_reglagesGeneraux_op') }}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 ">
-                                <div class="form-group">
-                                     <input id="notif_date_caution_final" name="notif_date_caution_final" type="checkbox"
-                                        value="1" {{ old('notif_date_caution_final' ? 'checked' : '') }}>
-                                    <label> {{ __('labels.tbl_notif_date_caution_final') }}</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-7 ">
-                                <div class="form-group">
-                                    <input id="notif_duree_caution_final" name="notif_duree_caution_final" type="number"
-                                        class="form-control form-control-sm"
-                                        placeholder="{{ __('labels.tbl_notif_duree_caution_final') }}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 ">
-                                <div class="form-group">
-                                    <input id="notif_delais_rp" name="notif_delais_rp" type="checkbox" value="1"
-                                        {{ old('notif_delais_rp' ? 'checked' : '') }}>
-                                    <label>{{ __('labels.tbl_notif_delais_rp') }}</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-7 ">
-                                <div class="form-group">
-                                    <input id="notif_duree_rp" name="notif_duree_rp" type="number"
-                                        class="form-control form-control-sm"
-                                        placeholder="{{ __('labels.tbl_notif_duree_rp') }}">
-                                </div>
-                            </div>
-                        </div>
 
                     </div>
                     {{-- etablissement parametreAvertissement Tab end --}}

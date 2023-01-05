@@ -15,7 +15,8 @@ class ParamBesoinsRepository implements IParamBesoinsRepository
         Log::info($request);
         // dd($request);
         //dd($request['date_Article']);
-        $param = BesoinsParam::create($request);
+
+        $param = BesoinsParam::create($request->all());
         return $param;
     }
 

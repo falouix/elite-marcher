@@ -21,9 +21,13 @@
                                  <td><i class="text-c-green f-20">إشعارات التذكير</i></td>
                              </tr>
                              <tr v-for="item in  items.notifsRappel">
-                                 <td><button type="button" class="btn btn-default" title="" data-toggle="tooltip"
-                                         data-original-title="وضع علامة مقروءة" @click="goToAction(item.id)"><i
-                                             class="icon feather icon-eye"></i> تثبيت</button></td>
+                                 <td><button type="button" class="btn btn-icon btn-rounded btn-warning"
+                                         title="وضع علامة مقروءة" @click="goToAction(item.id)"><i
+                                             class="icon feather icon-eye"></i></button>
+                                     <a v-if="item.action !=''" :href="item.action"
+                                         class="btn btn-icon btn-rounded btn-primary" title="الذهاب إلى المهمة"
+                                         target="_blank"><i class="icon feather icon-external-link"></i></a>
+                                 </td>
                                  <td style="white-space: break-spaces;">@{{ item.texte }}</td>
                              </tr>
                          @endcan
@@ -33,11 +37,12 @@
                                  <td><i class="text-c-red f-20">إشعارات المهام</i></td>
                              </tr>
                              <tr class="table-warning" v-for="item in  items.notifsValidation">
-                                 <td>
-                                     <button type="button" class="btn btn-gradient-danger" title=""
-                                         data-toggle="tooltip" data-original-title="الإطلاع والتثبيت"
-                                         @click="goToAction(item.id)"><i class="feather icon-check-square"></i>
-                                         تثبيت</button>
+                                 <td><button type="button" class="btn btn-icon btn-rounded btn-danger"
+                                         title="تثبيت المهمة" @click="goToAction(item.id)"><i
+                                             class="icon feather icon-check-circle"></i></button>
+                                     <a v-if="item.action !=''" :href="item.action"
+                                         class="btn btn-icon btn-rounded btn-primary" title="الذهاب إلى المهمة"
+                                         target="_blank"><i class="icon feather icon-external-link"></i></a>
                                  </td>
                                  <td style="white-space: break-spaces;">@{{ item.texte }}</td>
                              </tr>
@@ -67,8 +72,6 @@
  <!-- Incomeing-section end -->
 
  <script>
-
-
      new Vue({
          el: '#app',
          data() {
@@ -79,16 +82,15 @@
          },
          created: function() {
 
-             this.getNotifs(
-                 '/getNotifs'
-             );
+            const timer = setInterval(() => {
+                this.getNotifs(
+                    '/getNotifs'
+                );
+            }, 10000);
 
-             setInterval(() => {
-                 this.getNotifs(
-                     '/getNotifs'
-                 );
-
-             }, 1000 * 60 * 30);
+            this.$once("hook:beforeDestroy", () => {
+                clearInterval(timer);
+            });
          },
 
          methods: {
@@ -99,22 +101,32 @@
                  }).catch(err => {});
              },
              goToAction(id) {
-                 axios.post('/notifAction')
-                 // Send a POST request
-                 axios({
-                         method: 'post',
-                         url: '/notifAction',
-                         data: {
-                             notifs_id: id,
-                         }
-                     })
-                     .then(function(response) {
-                         console.log(response);
-                         PnotifyCustom(response.data)
-                     })
-                     .catch(function(error) {
-                         console.log(error);
-                     });
+                 var ref = this
+                 if (confirm("أنت بصدد تثبيت الإشعار!" + "\n" +
+                         "سيقوم البرنامج بوضع علامة مقروءة وتثبيت الإشعار")) {
+
+
+                     // Send a POST request
+                     axios({
+                             method: 'post',
+                             url: '/notifAction',
+                             data: {
+                                 notifs_id: id
+                             }
+                         })
+                         .then(function(response) {
+                             console.log(response);
+                             PnotifyCustom(response.data)
+                             ref.getNotifs(
+                                 '/getNotifs'
+                             );
+
+                         })
+                         .catch(function(error) {
+                             console.log(error);
+                         });
+                 }
+
              }
          }
      })

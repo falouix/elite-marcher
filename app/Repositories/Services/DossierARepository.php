@@ -310,7 +310,7 @@ class DossierARepository implements IDossierARepository
             // Update Notif
         }
         // Générer Notif تاريخ اعتزام التنفيذ
-        if ($cc($this->settings->notif_session_op == true)) {
+        if ($cc && ($this->settings->notif_session_op == true)) {
             $dossier = self::getDossierAByParam('id', $input['dossiers_achats_id']);
             $msg = "تذكير لإضافة الإعلان الإشهاري للملف عدد [" . $dossier->code_dossier . "] بتاريخ [" . $cc->date_pub_prevu . "]";
             // Create Notification To users
@@ -322,7 +322,7 @@ class DossierARepository implements IDossierARepository
             $newNotif->users_id = Auth::user()->id;
             $newNotif->action = "";
             $dateavis = Carbon::createFromFormat('Y-m-d', $cc->date_pub_prevu);
-            $newNotif->date_traitement = $dateavis->subDays();
+            $newNotif->date_traitement = $dateavis->subDays($this->settings->notif_duree_session_op);
             $notif = $this->notifRepository->updateNotif($newNotif);
         }
         return $cc;

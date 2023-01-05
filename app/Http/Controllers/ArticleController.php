@@ -59,7 +59,7 @@ class ArticleController extends Controller
             'valider' => false,
         ]);
         if($article){
-            $msg = "قام المستعمل [". Auth::user()->name ."] بإضافة مادة جديدة للحاجيات بصفة في إنتظار المصادقة ";
+            $msg = "قام المستعمل [". Auth::user()->name ."] بإضافة مادة جديدة[". $article->libelle ."] للحاجيات بصفة في إنتظار المصادقة ";
             // Create Notification To users
             $newNotif = new Notif();
             $newNotif->type = "VALIDATION";
@@ -67,7 +67,7 @@ class ArticleController extends Controller
             $newNotif->from_table = "articles";
             $newNotif->from_table_id = $article->id;
             $newNotif->users_id = Auth::user()->id;
-            $newNotif->action = "";
+            $newNotif->action = route('articles.index');
             $notif = $this->notifRepository->GenererNotif($newNotif);
         }
 

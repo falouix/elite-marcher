@@ -319,38 +319,8 @@
             for="date_pub_prevu"></label>
     </div>
 
-
-
-
-
-
-
-    **
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    99999999999999996
-
-    <div class="form-vvvvv     vgroup col-md-6">
-        <label>طري1 cقة قبول العروض :</label>
+    <div class="form-group col-md-6">
+        <label>طريقة قبول العروض :</label>
         <select class="form-control" id="type_reception" name="type_reception">
             <option value="1"
                 {{ $cahiers_charges != null && $cahiers_charges->type_reception == 1 ? 'selected' : '' }}>

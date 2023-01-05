@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Besoin;
 use App\Models\LignesBesoin;
 use App\Models\Service;
+use App\Models\Notif;
 use App\Repositories\IFileUploadRepository;
 use App\Repositories\Interfaces\IBesoinRepository;
+use App\Repositories\Interfaces\INotifRepository;
 use App\Traits\ApiResponser;
 use Auth;
 use Illuminate\Http\Request;
@@ -19,9 +21,11 @@ use App\Common\Utility;
 class BesoinValidationController extends Controller
 {
     use ApiResponser;
-    public function __construct(IBesoinRepository $repository)
+    public function __construct(IBesoinRepository $repository, INotifRepository $notifRepository)
     {
         $this->repository = $repository;
+        $this->notifRepository = $notifRepository;
+      //  $this->settings = Etablissement::first();
     }
     /**
      * Display a listing of the resource.
@@ -101,6 +105,18 @@ class BesoinValidationController extends Controller
                 $besoin->doc_validation =  $path . $fileName;
                 $besoin->valider = 1;
                 $besoin->save();
+//$service = Service::selet('libelle')->where('id', $besoin->services_id)->first();
+                // if notif_validation_besoins is true the Generate Notif
+                $msg = "قام المستعمل [". Auth::user()->name ."]يالمصادقة على الحاجيات الخاصة بالمصلحة[ ......]";
+                // Create Notification To users
+                $newNotif = new Notif();
+                $newNotif->type = "MESSAGE";
+                $newNotif->texte = $msg;
+                $newNotif->from_table = "besoins";
+                $newNotif->from_table_id = $besoin->id;
+                $newNotif->users_id = Auth::user()->id;
+                $newNotif->action = '';
+                $notif = $this->notifRepository->GenererNotif($newNotif);
             }
         return $this->notify('المصادقة على الحاجيات', 'تمت المصادقة على الحاجيات  بنجاح');
     }
