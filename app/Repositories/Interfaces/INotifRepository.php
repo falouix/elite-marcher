@@ -3,7 +3,7 @@ namespace App\Repositories\Interfaces;
 
 interface INotifRepository
 {
-    public function getAllNotifByUser($user); // Return datatable ( if admin get all)
+    public function getAllNotifByUser(); // Return datatable ( if admin get all)
     public function getNotifsAxios(); // Liste notifs Axios VueJs
     public function getNotifsCountByType(); // Count notifs for desktop notification by type
     public function postNotifAction($id);

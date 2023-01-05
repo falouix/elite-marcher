@@ -105,5 +105,9 @@ class NotifController extends Controller
         return $this->repository->getNotifsCountByType();
     }
 
+    public function getAllNotifDatatable(){
+        return $this->repository->getAllNotifByUser();
+    }
+
 
 }

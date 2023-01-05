@@ -90,12 +90,14 @@
                 axios.get(uri).then((res) => {
                     this.now = 'sgsgsgssgsgs';
                     this.items = res.data
-                    alert(JSON.stringify(items))
 
                 }).catch(err => {});
             },
             goToAction(id) {
-                axios.post('/notifAction')
+                var ref = this
+                if(confirm("أنت بصدد تثبيت الإشعار!"+ "\n" +"سيقوم البرنامج بوضع علامة مقروءة وتثبيت الإشعار")){
+
+
                 // Send a POST request
                 axios({
                         method: 'post',
@@ -107,10 +109,16 @@
                     .then(function(response) {
                         console.log(response);
                         PnotifyCustom(response.data)
+                        ref.getNotifs(
+                    '/getNotifs'
+                );
+
                     })
                     .catch(function(error) {
                         console.log(error);
                     });
+                }
+
             }
         }
     })

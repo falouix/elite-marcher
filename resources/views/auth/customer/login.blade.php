@@ -7,7 +7,7 @@
         <div class="col-md-6">
             <div class="card-body">
 
-                <img src="{{ asset('/images/product/logo-isetks.jpg') }}" alt="product images"
+                <img src="{{ asset('/images/product/prod-1.jpg') }}" alt="product images"
                 class="img-fluid mb-5">
                 <h4 class="mb-3 f-w-400">{{ __('app.login_account') }} >المزود</h4>
                 @error('email')

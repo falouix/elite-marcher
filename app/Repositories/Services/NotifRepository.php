@@ -119,34 +119,39 @@ class NotifRepository implements INotifRepository
             "notifsMessageCount" => $notifsMessage,
         ];
     }
-    public function getAllNotifByUser($user)
+    public function getAllNotifByUser()
     {
         if (Auth::user()->user_type == "admin") {
-            $query = Notif::select('*')::withTrashed();
+            $query = Notif::withTrashed();
         } else {
             $query = Notif::select('*');
         }
-        $dataAction = "notifs.notif-actions";
-        $query = Notif::select('*')->where('');
-        if ($type) {
-            $query->where('natures_demande_id', $type);
-        }
-        $query->orderByDesc('libelle');
+        $dataAction = "notifs.datatable-actions";
+
+        $query->orderByDesc('type');
         return datatables()
             ->of($query)
             ->addColumn('select', static function () {
                 return null;
             })
-            ->addColumn('status', function ($article) {
-                if ($article->valider == true) {
-                    return '<label class="badge badge-success">مفعل</label>';
-                } else {
-                    return '<label class="badge badge-info">غير مفعل</label>';
+            ->addColumn('type_notif', function ($article) {
+                switch ($article->type) {
+                    case 'VALIDATION':
+                        # code...
+
+                    return '<label class="badge badge-danger">إشعارات مهام</label>';
+                        case 'RAPPEL':
+                            # code...
+                    return '<label class="badge badge-success">إشعارات تذكير</label>';
+
+                    default:
+                        # code...
+                    return '<label class="badge badge-info">إشعارات أخرى</label>';
+
                 }
-                return '<label class="badge badge-info">غير مفعل</label>';
             })
             ->addColumn('action', $dataAction)
-            ->rawColumns(['id', 'status', 'action'])
+            ->rawColumns(['id', 'type_notif', 'action'])
             ->make(true);
     }
 
