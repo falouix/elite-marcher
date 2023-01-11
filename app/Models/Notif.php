@@ -17,18 +17,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $type
  * @property bool $valider
  * @property string $texte
- * @property string $user_group
+ * @property string|null $user_group
+ * @property int|null $user_service
  * @property string|null $from_table
  * @property int|null $from_table_id
- * @property int|null $users_id
+ * @property int $users_id
  * @property Carbon|null $read_at
  * @property string $action
  * @property Carbon|null $date_action
  * @property int|null $traiter_par
  * @property Carbon|null $date_traitement
- * @property string|null $deleted_at
+ * @property int|null $services_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
  *
  * @package App\Models
  */
@@ -39,9 +41,11 @@ class Notif extends Model
 
 	protected $casts = [
 		'valider' => 'bool',
+		'user_service' => 'int',
 		'from_table_id' => 'int',
 		'users_id' => 'int',
-		'traiter_par' => 'int'
+		'traiter_par' => 'int',
+		'services_id' => 'int'
 	];
 
 	protected $dates = [
@@ -55,6 +59,7 @@ class Notif extends Model
 		'valider',
 		'texte',
 		'user_group',
+		'user_service',
 		'from_table',
 		'from_table_id',
 		'users_id',
@@ -62,7 +67,8 @@ class Notif extends Model
 		'action',
 		'date_action',
 		'traiter_par',
-		'date_traitement'
+		'date_traitement',
+		'services_id'
 	];
     public function lignes_notifs()
 	{

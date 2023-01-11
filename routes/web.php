@@ -180,6 +180,7 @@ Route::group(
          //route Notifications
         Route::resource('notifs', NotifController::class);
         Route::post('notifs/datatable', [NotifController::class, 'getAllNotifDatatable'])->name('notifs.data');
+        Route::post('lignes-notifs/datatable', [NotifController::class, 'getLignesNotifByNotifDatatable'])->name('lignes-notifs.data');
          // Route Notifs Axios
          Route::get('/getNotifs',[NotifController::class, 'getNotifs']);
          Route::post('/notifAction',[NotifController::class, 'postNotifAction']);

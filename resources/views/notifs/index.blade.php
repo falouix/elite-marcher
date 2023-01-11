@@ -1,12 +1,12 @@
 @php
 
-$breadcrumb = 'قائمة الإشعارات';
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-} else {
-    $lang = '';
-}
-$tbl_action = __('labels.tbl_action');
+    $breadcrumb = 'قائمة الإشعارات';
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+    } else {
+        $lang = '';
+    }
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
@@ -56,7 +56,6 @@ $tbl_action = __('labels.tbl_action');
                             <th>نص الإشعار</th>
                             <th>النوع</th>
                             <th>تاريخ التثبيت</th>
-                            <th>{{ $tbl_action }}</th>
                         </thead>
 
                         <tfoot>
@@ -66,15 +65,38 @@ $tbl_action = __('labels.tbl_action');
                                 <th>نص الإشعار</th>
                                 <th>النوع</th>
                                 <th>تاريخ التثبيت</th>
-                                <th>{{ $tbl_action }}</th>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
+            <div class="card-header">
+                <h5>تفاصيل الإشعارات</h5>
+                <div class="card-header-right">
+
+                </div>
+
+            </div>
+            <div class="card-body">
+                <div class="dt-responsive table-responsive">
+                    <table id="lignesnotif-table" class="table table-striped table-bordered nowrap">
+                        <thead>
+                            <th>المستخدم</th>
+                            <th>تاريخ الإطلاع</th>
+                        </thead>
+
+                        <tfoot>
+                            <tr>
+                                <th>المستخدم</th>
+                                <th>تاريخ الإطلاع</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <input type="hidden" id="notifs_id" value="0">
         </div>
     </div>
-
 @endsection
 @section('srcipt-js')
     <!-- datatable Js -->
@@ -136,27 +158,11 @@ $tbl_action = __('labels.tbl_action');
                         className: 'type_notif'
                     },
                     {
-                        data: "deleted_at",
-                        className: 'deleted_at'
-                    },
-                    {
-                        data: 'action',
-                        className: 'action',
-                        visible: 'false'
+                        data: "date_traitement",
+                        className: 'date_traitement'
                     },
                 ],
                 responsive: true,
-
-                columnDefs: [{
-                        orderable: false,
-                        className: 'select-checkbox',
-                        targets: 0
-                    },
-                    {
-                        visible: false,
-                        targets: 1
-                    }
-                ],
                 select: {
                     style: 'os',
                     selector: 'td:first-child'
@@ -166,21 +172,92 @@ $tbl_action = __('labels.tbl_action');
             });
             table
                 .on('select', function(e, dt, type, indexes) {
-                    // var rowData = table.rows( indexes ).data().toArray();
-                    //console.log( rowData );
-                    SelectedRowCountBtnDelete(table)
+                    if (table.$(".selected").length > 1) {
+                        table.$(".selected").removeClass('selected');
+                        $(this).addClass("selected");
+                    }
+                    var rowData = table.rows(indexes).data().toArray();
+                    //console.log( rowData[0].id );
+                    $('#notifs_id').val(rowData[0].id)
+                    // refresh datatable
+                    $('#lignesnotif-table').DataTable().ajax.reload();
+
                 })
                 .on('deselect', function(e, dt, type, indexes) {
-                    SelectedRowCountBtnDelete(table)
+                    $('#notifs_id').val(0)
+                    // refresh datatable
+                    $('#lignesnotif-table').DataTable().ajax.reload();
                 });
-
-            $('.dataTables_length').addClass('bs-select');
 
             // Setup - add a text input to each footer cell
 
             addSearchFooterDataTable("#article-table")
 
-            })
+            // LignesNotifDataTable
+            var tableligneNotif = $('#lignesnotif-table').DataTable({
+                //dom: 'Bfrtip',
+                initComplete: function() {
+                    // Apply the search
+                    this.api().columns().every(function() {
+                        var that = this;
 
+                        $('input', this.footer()).on('keyup change clear', function() {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                processing: true,
+                //serverSide: true,
+                serverMethod: 'POST',
+                ajax: {
+                    url: "{{ route('lignes-notifs.data') }}",
+                    data: function(data) {
+                        data.notifs_id = $('#notifs_id').val()
+                    },
+                },
+                deferRender: true,
+
+                language: {
+                    url: "{{ $lang }}"
+                },
+                columns: [
+                    {
+                        data: "user_name",
+                        className: 'user_name'
+                    },
+                    {
+                        data: "read_at",
+                        className: 'read_at'
+                    },
+                ],
+                responsive: true,
+                select: {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+                // select: { style: 'multi+shift' },
+
+            });
+            tableligneNotif
+                .on('select', function(e, dt, type, indexes) {
+                    // var rowData = table.rows( indexes ).data().toArray();
+                    //console.log( rowData );
+
+                })
+                .on('deselect', function(e, dt, type, indexes) {
+
+                });
+
+
+
+            // Setup - add a text input to each footer cell
+
+            addSearchFooterDataTable("#lignesnotif-table")
+            $('.dataTables_length').addClass('bs-select');
+        })
     </script>
 @endsection

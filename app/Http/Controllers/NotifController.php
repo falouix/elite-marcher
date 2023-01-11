@@ -108,6 +108,10 @@ class NotifController extends Controller
     public function getAllNotifDatatable(){
         return $this->repository->getAllNotifByUser();
     }
+    public function getLignesNotifByNotifDatatable(Request $request){
+        Log::critical("Notif Id : ".$request->notifs_id );
+        return $this->repository->getLignesNotifByNotif($request->notifs_id);
+    }
 
 
 }

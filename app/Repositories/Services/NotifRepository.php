@@ -2,9 +2,7 @@
 
 namespace App\Repositories\Services;
 
-use App\Models\{
-    Notif, LignesNotif, User
-};
+use App\Models\{Notif, LignesNotif, User};
 use App\Repositories\Interfaces\INotifRepository;
 use Auth;
 use carbon\Carbon;
@@ -14,7 +12,7 @@ class NotifRepository implements INotifRepository
 {
     public function create($request)
     {
-        Log::alert("Create Notif Request repository");
+        Log::alert('Create Notif Request repository');
         Log::info($request['libelle']);
         // dd($request);
         //dd($request['date_Notif']);
@@ -48,7 +46,8 @@ class NotifRepository implements INotifRepository
     {
         $users_count = 0;
         LignesNotif::create([
-            'read_at' => Carbon::now(),
+            //'read_at' => Carbon::now(),
+            'date_traitement' => Carbon::now(),
             'users_ids' => Auth::user()->id,
             'notifs_id' => $id,
         ]);
@@ -60,13 +59,13 @@ class NotifRepository implements INotifRepository
                 $users_count = User::permission('notifs-validation-action')->count();
                 break;
             default:
-                $users_count = User::permission('notifs-validation-action')-> count();
+                $users_count = User::permission('notifs-validation-action')->count();
                 break;
         }
         $users_read_notif_count = LignesNotif::where('notifs_id', $id)->count();
-        Log::alert("count users read notif ".$users_read_notif_count);
-        Log::alert("count users permission action notif ".$users_count);
-        if (($users_count > 0 && $users_read_notif_count > 0) && ($users_count == $users_read_notif_count)) {
+        Log::alert('count users read notif ' . $users_read_notif_count);
+        Log::alert('count users permission action notif ' . $users_count);
+        if ($users_count > 0 && $users_read_notif_count > 0 && $users_count == $users_read_notif_count) {
             Notif::find($id)->delete();
         }
     }
@@ -74,59 +73,131 @@ class NotifRepository implements INotifRepository
     public function getNotifsAxios()
     {
         $notifsRappel = null;
-        if (Auth::user()->hasPermissionTo('notifs-rappel')) {
-            $notifsRappel = Notif::select('*')->where('type', 'RAPPEL')->get();
+        if (Auth::user()->user_type != 'admin') {
+            if (Auth::user()->hasPermissionTo('notifs-rappel')) {
+                $notifsRappel = Notif::select('*')
+                    ->where('type', 'RAPPEL')
+                    ->where('user_service', Auth::user()->services_id)
+                    ->get();
+            }
+            $notifsValidation = null;
+            if (Auth::user()->hasPermissionTo('notifs-validation')) {
+                $notifsValidation = Notif::select('*')
+                    ->where('type', 'VALIDATION')
+                    ->where('user_group', Auth::user()->user_type)
+                    ->where('user_service', Auth::user()->services_id)
+                    ->get();
+            }
+            $notifsMessage = null;
+            if (Auth::user()->hasPermissionTo('notifs-message')) {
+                $notifsMessage = Notif::select('*')
+                    ->where('type', 'MESSAGE')
+                    ->where('user_group', Auth::user()->user_type)
+                    ->where('user_service', Auth::user()->services_id)
+                    ->get();
+            }
+        } else {
+            if (Auth::user()->hasPermissionTo('notifs-rappel')) {
+                $notifsRappel = Notif::select('*')
+                    ->where('type', 'RAPPEL')
+                    ->where('user_group', Auth::user()->user_type)
+                    ->get();
+            }
+            $notifsValidation = null;
+            if (Auth::user()->hasPermissionTo('notifs-validation')) {
+                $notifsValidation = Notif::select('*')
+                    ->where('type', 'VALIDATION')
+                    ->where('user_group', Auth::user()->user_type)
+                    ->get();
+            }
+            $notifsMessage = null;
+            if (Auth::user()->hasPermissionTo('notifs-message')) {
+                $notifsMessage = Notif::select('*')
+                    ->where('type', 'MESSAGE')
+                    ->where('user_group', Auth::user()->user_type)
+                    ->get();
+            }
         }
-        $notifsValidation = null;
-        if (Auth::user()->hasPermissionTo('notifs-validation')) {
-            $notifsValidation = Notif::select('*')->where('type', 'VALIDATION')->get();
-        }
-        $notifsMessage = null;
-        if (Auth::user()->hasPermissionTo('notifs-message')) {
-            $notifsMessage = Notif::select('*')->where('type', 'MESSAGE')->get();
-        }
+
         // $ntifs = Notif::select('*')->get()->groupBy('type');
 
         return [
-            "notifsRappel" => $notifsRappel,
-            "notifsValidation" => $notifsValidation,
-            "notifsMessage" => $notifsMessage,
+            'notifsRappel' => $notifsRappel,
+            'notifsValidation' => $notifsValidation,
+            'notifsMessage' => $notifsMessage,
         ];
     }
     public function getNotifsCountByType()
     {
         $notifsRappel = 0;
-        if (Auth::user()->hasPermissionTo('notifs-rappel')) {
-            $notifsRappel = Notif::select('id')->where('type', 'RAPPEL')->count();
-        }
         $notifsValidation = 0;
-        if (Auth::user()->hasPermissionTo('notifs-validation')) {
-            $notifsValidation = Notif::select('id')->where('type', 'VALIDATION')->count();
-        }
         $notifsMessage = 0;
-        if (Auth::user()->hasPermissionTo('notifs-message')) {
-            $notifsMessage = Notif::select('id')->where('type', 'MESSAGE')->count();
+        if (Auth::user()->user_type != 'admin') {
+            if (Auth::user()->hasPermissionTo('notifs-rappel')) {
+                $notifsRappel = Notif::select('id')
+                    ->where('type', 'RAPPEL')
+                    ->where('user_group', Auth::user()->user_type)
+                    ->where('user_service', Auth::user()->services_id)
+                    ->count();
+            }
+
+            if (Auth::user()->hasPermissionTo('notifs-validation')) {
+                $notifsValidation = Notif::select('id')
+                    ->where('type', 'VALIDATION')
+                    ->where('user_group', Auth::user()->user_type)
+                    ->where('user_service', Auth::user()->services_id)
+                    ->count();
+            }
+
+            if (Auth::user()->hasPermissionTo('notifs-message')) {
+                $notifsMessage = Notif::select('id')
+                    ->where('type', 'MESSAGE')
+                    ->where('user_group', Auth::user()->user_type)
+                    ->where('user_service', Auth::user()->services_id)
+                    ->count();
+            }
+        } else {
+            if (Auth::user()->hasPermissionTo('notifs-rappel')) {
+                $notifsRappel = Notif::select('id')
+                    ->where('type', 'RAPPEL')
+                    ->count();
+            }
+
+            if (Auth::user()->hasPermissionTo('notifs-validation')) {
+                $notifsValidation = Notif::select('id')
+                    ->where('type', 'VALIDATION')
+                    ->count();
+            }
+
+            if (Auth::user()->hasPermissionTo('notifs-message')) {
+                $notifsMessage = Notif::select('id')
+                    ->where('type', 'MESSAGE')
+                    ->count();
+            }
         }
+
         // $ntifs = Notif::select('*')->get()->groupBy('type');
         Log::emergency([
-            "notifsRappelCount" => $notifsRappel,
-            "notifsValidationCount" => $notifsValidation,
-            "notifsMessageCount" => $notifsMessage,
+            'notifsRappelCount' => $notifsRappel,
+            'notifsValidationCount' => $notifsValidation,
+            'notifsMessageCount' => $notifsMessage,
         ]);
         return [
-            "notifsRappelCount" => $notifsRappel,
-            "notifsValidationCount" => $notifsValidation,
-            "notifsMessageCount" => $notifsMessage,
+            'notifsRappelCount' => $notifsRappel,
+            'notifsValidationCount' => $notifsValidation,
+            'notifsMessageCount' => $notifsMessage,
         ];
     }
     public function getAllNotifByUser()
     {
-        if (Auth::user()->user_type == "admin") {
+        if (Auth::user()->user_type == 'admin') {
             $query = Notif::withTrashed();
         } else {
-            $query = Notif::select('*');
+            $query = Notif::withTrashed()
+                ->where('user_group', Auth::user()->user_type)
+                ->where('user_service', Auth::user()->services_id);
         }
-        $dataAction = "notifs.datatable-actions";
+        $dataAction = 'notifs.datatable-actions';
 
         $query->orderByDesc('type');
         return datatables()
@@ -139,31 +210,54 @@ class NotifRepository implements INotifRepository
                     case 'VALIDATION':
                         # code...
 
-                    return '<label class="badge badge-danger">إشعارات مهام</label>';
-                        case 'RAPPEL':
-                            # code...
-                    return '<label class="badge badge-success">إشعارات تذكير</label>';
+                        return '<label class="badge badge-danger">إشعارات مهام</label>';
+                    case 'RAPPEL':
+                        # code...
+                        return '<label class="badge badge-success">إشعارات تذكير</label>';
 
                     default:
                         # code...
-                    return '<label class="badge badge-info">إشعارات أخرى</label>';
-
+                        return '<label class="badge badge-info">إشعارات أخرى</label>';
                 }
             })
             ->addColumn('action', $dataAction)
             ->rawColumns(['id', 'type_notif', 'action'])
             ->make(true);
     }
+    public function getLignesNotifByNotif($notif_id)
+    {
+        if (Auth::user()->user_type == 'admin') {
+            $query = LignesNotif::select('*')->where('notifs_id', $notif_id);
+        }
+        else{
+            $query = LignesNotif::select('*')->where('notifs_id', $notif_id)->where('users_ids',Auth::user()->id);
+        }
+        Log::info($query->get());
+        return datatables()
+            ->of($query)
+            ->addColumn('select', static function () {
+                return null;
+            })
+            ->addColumn('user_name', function ($article) {
+                $user = User::select('name')->where('id', $article->users_ids)->first();
+                return $user->name ?? '';
+            })
+            ->rawColumns(['id', 'user_name'])
+            ->make(true);
+    }
+
 
     public function GenererNotif($newNotif)
     {
-        Log::alert("Generate Notif from repository");
+        Log::alert('Generate Notif from repository');
         $notif = Notif::create([
             'type' => $newNotif->type,
             'texte' => $newNotif->texte,
             'from_table' => $newNotif->from_table,
             'from_table_id' => $newNotif->from_table_id,
             'users_id' => $newNotif->users_id,
+            'user_group' => Auth::user()->user_type,
+            'user_service' => Auth::user()->services_id,
             'action' => $newNotif->action,
             'valider' => false,
         ]);
@@ -173,21 +267,23 @@ class NotifRepository implements INotifRepository
     // exemple : lors de la modification des dates (date avis prevu : cahier des charges)
     public function updateNotif($notifToUpdate)
     {
-        Log::alert("Generate Update Notif from repository");
+        Log::alert('Generate Update Notif from repository');
         self::deleteNotif($notifToUpdate->from_table, $notifToUpdate->from_table_id);
         return self::GenererNotif($notifToUpdate);
     }
     public function ArchiverNotif($start_date, $end_date)
     {
-        return "";
+        return '';
     }
     public function GetArchiveNotif()
     {
-        return "";
+        return '';
     }
     public function deleteNotif($from_table, $from_table_id)
     {
-        Notif::where('from_table', $from_table)->where('from_table_id', $from_table_id)->first()->delete();
+        Notif::where('from_table', $from_table)
+            ->where('from_table_id', $from_table_id)
+            ->first()
+            ->delete();
     }
-
 }
