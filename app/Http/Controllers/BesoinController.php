@@ -209,7 +209,7 @@ class BesoinController extends Controller
     public function editLigneBesoin(Request $request)
     {
         if ($request->ajax()) {
-            return LignesBesoin::select('*')->with('document')->where('id', $request->id)->first();
+            return LignesBesoin::select('*')->with(['document','nature_demande'])->where('id', $request->id)->first();
         }
     }
     /**

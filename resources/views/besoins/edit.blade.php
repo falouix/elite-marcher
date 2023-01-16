@@ -114,7 +114,7 @@ $tbl_action = __('labels.tbl_action');
                 <form id="cp_form" action="#">
                     <input type="hidden" name="lignebesoin_id" id="lignebesoin_id" value="0">
                     <div class="row">
-                       
+
 
                         <div class="col-md-3">
                             <div class="form-group">
@@ -144,14 +144,14 @@ $tbl_action = __('labels.tbl_action');
                             <div class="form-group">
                                 <label class="form-label">الكمية المطلوية</label>
                                 <input type="number" class="form-control" name="qte_demande" placeholder="الكمية..."
-                                    value="{{ old('qte_demande') }}" onchange="calculTotal()">
+                                    value="0" onchange="calculTotal()">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">الكلفة التقديرية للوحدة</label>
                                 <input type="number" class="form-control" name="cout_unite_ttc"
-                                    placeholder="كلفة الوحدة..." value="{{ old('cout_unite_ttc') }}"
+                                    placeholder="كلفة الوحدة..." value="0"
                                     onchange="calculTotal()">
                             </div>
                         </div>
@@ -880,35 +880,17 @@ $tbl_action = __('labels.tbl_action');
                     $("input[name=cout_total_ttc]").val(response.cout_total_ttc)
                     // Set selected
                     $("#type_demande").val(response.type_demande)
-                    $('#type_demande').trigger('change');
-                    console.log("dfdf " + response.nature_demandes_id);
                     var natures_demandeSelect = $('#natures_demande');
-                    $.ajax({
-                        type: 'GET',
-                        url: '/natures_demande/Select2/' + response.nature_demandes_id
-                    }).then(function(data) {
-                        // create the option and append to Select2
-                        var option = new Option(data.libelle, data.id, true, true);
-                        natures_demandeSelect.append(option).trigger('change');
-                        // manually trigger the `select2:select` event
-                        natures_demandeSelect.trigger({
-                            type: 'select2:select',
-                            params: {
-                                data: data
-                            }
-                        });
-                    });
+                    var option = new Option(response.nature_demande.libelle, response.nature_demande.id, true, true);
+                    natures_demandeSelect.append(option).trigger('selecet2');
+
                     var article_Select = $('#articles_id');
                     // create the option and append to Select2
                     var option = new Option(response.libelle, response.articles_id, true, true);
-                    article_Select.append(option).trigger('change');
-                    // manually trigger the `select2:select` event
-                    article_Select.trigger({
-                        type: 'select2:select',
-                        /*params: {
-                            data: data
-                        }*/
-                    });
+                    article_Select.append(option).trigger('select2');
+
+
+
                     if (response.document) {
                         $("input[name=file_name]").val(response.document.libelle);
                     }

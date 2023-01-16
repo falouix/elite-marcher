@@ -252,7 +252,7 @@
                             <thead>
                                 <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                         class="select-checkbox not-export-col" /> </th>
-                                <th class="not-export-col">id</th>
+                                <th class="not-export-col"></th>
                                 <th>المادة</th>
                                 <th>طبيعة الطلب</th>
                                 <th>نوع الطلب</th>
@@ -266,7 +266,7 @@
                                 <tr>
                                     <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                             class="select-checkbox not-export-col" /> </th>
-                                    <th class="not-export-col">id</th>
+                                    <th class="not-export-col"></th>
                                     <th>المادة</th>
                                     <th>طبيعة الطلب</th>
                                     <th>نوع الطلب</th>
@@ -390,10 +390,6 @@
                         className: "id",
                     },
                     {
-                        data: "num_lot",
-                        className: "num_lot"
-                    },
-                    {
                         data: "libelle",
                         className: "libelle"
                     },
@@ -404,6 +400,10 @@
                     {
                         data: "nature_demandes_id",
                         className: "nature_demandes_id"
+                    },
+                    {
+                        data: "qte",
+                        className: "qte"
                     },
                     {
                         data: "qte",
