@@ -322,7 +322,7 @@ class DossierARepository implements IDossierARepository
             $newNotif->users_id = Auth::user()->id;
             $newNotif->action = "";
             $dateavis = Carbon::createFromFormat('Y-m-d', $cc->date_pub_prevu);
-            $newNotif->date_traitement = $dateavis->subDays($this->settings->notif_duree_session_op);
+            $newNotif->read_at = $dateavis->subDays($this->settings->notif_duree_session_op)->format('Y-md');
             $notif = $this->notifRepository->updateNotif($newNotif);
         }
         return $cc;
@@ -367,7 +367,7 @@ class DossierARepository implements IDossierARepository
             $newNotif->users_id = Auth::user()->id;
             $newNotif->action = "";
             $dateavis = Carbon::createFromFormat('Y-m-d', $avis->date_ouverture_plis);
-            $newNotif->date_traitement = $dateavis->subDays($this->settings->notif_duree_session_op);
+            $newNotif->read_at = $dateavis->subDays($this->settings->notif_duree_session_op)->format('Y-m-d');
             $notif = $this->notifRepository->updateNotif($newNotif);
         }
     }

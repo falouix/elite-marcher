@@ -18,8 +18,6 @@
     <link rel="stylesheet" href="{{ asset('/plugins/pnotify/css/pnotify.custom.min.css') }}">
     <!-- pnotify-custom css -->
     <link rel="stylesheet" href="{{ asset('/css/pages/pnotify.css') }}">
-    <!-- select2 css -->
-    <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
 @endsection
 
 @section('breadcrumb')
@@ -56,6 +54,7 @@
                             <th>نص الإشعار</th>
                             <th>النوع</th>
                             <th>تاريخ التثبيت</th>
+                            <th>{{ $tbl_action }}</th>
                         </thead>
 
                         <tfoot>
@@ -65,6 +64,7 @@
                                 <th>نص الإشعار</th>
                                 <th>النوع</th>
                                 <th>تاريخ التثبيت</th>
+                                <th>{{ $tbl_action }}</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -105,12 +105,15 @@
     <!-- sweet alert Js -->
     <script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
     <!-- pnotify Js -->
-    <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
-    <!-- form-select-custom Js -->
-    <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
-
+    <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></scrip
+    <script src="{{ asset('/js/axios.min.js') }}"></script>
+    <script src="{{ asset('/js/vue-axios.min.js') }}"></script>
     <script>
         $(document).ready(function() {
+            window.axios.defaults.headers.common = {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            };
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -160,6 +163,11 @@
                     {
                         data: "date_traitement",
                         className: 'date_traitement'
+                    },
+                    {
+                        data: 'action',
+                        className: 'action',
+                        visible: 'false'
                     },
                 ],
                 responsive: true,

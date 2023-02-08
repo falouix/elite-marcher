@@ -105,9 +105,10 @@ class BesoinValidationController extends Controller
                 $besoin->doc_validation =  $path . $fileName;
                 $besoin->valider = 1;
                 $besoin->save();
-//$service = Service::selet('libelle')->where('id', $besoin->services_id)->first();
+
+                $service = (Service::select('libelle')->where('id', $besoin->services_id)->first()) ?? '';
                 // if notif_validation_besoins is true the Generate Notif
-                $msg = "قام المستعمل [". Auth::user()->name ."]يالمصادقة على الحاجيات الخاصة بالمصلحة[ ......]";
+                $msg = "قام المستعمل [". Auth::user()->name ."]يالمصادقة على الحاجيات الخاصة بالمصلحة[ ".$service."]";
                 // Create Notification To users
                 $newNotif = new Notif();
                 $newNotif->type = "MESSAGE";
@@ -115,7 +116,8 @@ class BesoinValidationController extends Controller
                 $newNotif->from_table = "besoins";
                 $newNotif->from_table_id = $besoin->id;
                 $newNotif->users_id = Auth::user()->id;
-                $newNotif->action = '';
+                $newNotif->read_at = Carbon::now()->format('d-m-Y');
+                $newNotif->action = route('pais.index');
                 $notif = $this->notifRepository->GenererNotif($newNotif);
             }
         return $this->notify('المصادقة على الحاجيات', 'تمت المصادقة على الحاجيات  بنجاح');

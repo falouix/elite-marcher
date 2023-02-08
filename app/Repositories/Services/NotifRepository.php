@@ -19,8 +19,9 @@ class NotifRepository implements INotifRepository
         $Notif = Notif::create($request);
         return $Notif;
     }
-    public function postNotifAction($id)
+    public function postNotifAction($id, $mode='user')
     {
+       // Log::alert("Mode Notif Action : ".$mode);
         $notif = Notif::find($id);
         if ($notif) {
             switch ($notif->type) {
@@ -39,18 +40,22 @@ class NotifRepository implements INotifRepository
                     self::markNotifAsRead($notif->id, 'MESSAGE');
                     break;
             }
+            // Mark As Read For All Users if Mode is Admin
+            if((Auth::user()->user_type == 'admin') && $mode =='admin'){
+                Notif::find($id)->delete();
+            }
         }
     }
 
     private function markNotifAsRead($id, $type)
     {
-        $users_count = 0;
         LignesNotif::create([
             //'read_at' => Carbon::now(),
             'date_traitement' => Carbon::now(),
             'users_ids' => Auth::user()->id,
             'notifs_id' => $id,
         ]);
+        $users_count = 0;
         switch ($type) {
             case 'RAPPEL':
                 $users_count = User::permission('notifs-rappel-action')->count();
@@ -160,18 +165,21 @@ class NotifRepository implements INotifRepository
             if (Auth::user()->hasPermissionTo('notifs-rappel')) {
                 $notifsRappel = Notif::select('id')
                     ->where('type', 'RAPPEL')
+                    ->where('user_group', Auth::user()->user_type)
                     ->count();
             }
 
             if (Auth::user()->hasPermissionTo('notifs-validation')) {
                 $notifsValidation = Notif::select('id')
                     ->where('type', 'VALIDATION')
+                    ->where('user_group', Auth::user()->user_type)
                     ->count();
             }
 
             if (Auth::user()->hasPermissionTo('notifs-message')) {
                 $notifsMessage = Notif::select('id')
                     ->where('type', 'MESSAGE')
+                    ->where('user_group', Auth::user()->user_type)
                     ->count();
             }
         }
@@ -259,6 +267,7 @@ class NotifRepository implements INotifRepository
             'user_group' => Auth::user()->user_type,
             'user_service' => Auth::user()->services_id,
             'action' => $newNotif->action,
+            'read_at' => $newNotif->read_at,
             'valider' => false,
         ]);
         return $notif;

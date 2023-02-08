@@ -98,7 +98,7 @@ class NotifController extends Controller
     }
     public function postNotifAction(Request $request){
         Log::info("Contenu de notification from axios view");
-        $this->repository->postNotifAction($request->notifs_id);
+        $this->repository->postNotifAction($request->notifs_id, $request->mode);
         return $this->notify('تثبيت الإشعار', 'تم تثبيت الإشعار مع وضع علامة مقروءة بالنسبة للمستعمل الحالي');
     }
     public function postNotifDesktop(){

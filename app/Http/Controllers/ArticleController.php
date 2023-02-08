@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Log;
 use Auth;
 use Validator;
+use Carbon\Carbon;
 use App\Common\Utility;
 
 class ArticleController extends Controller
@@ -59,7 +60,7 @@ class ArticleController extends Controller
             'valider' => false,
         ]);
         if($article){
-            $msg = "قام المستعمل [". Auth::user()->name ."] بإضافة مادة جديدة[". $article->libelle ."] للحاجيات بصفة في إنتظار المصادقة ";
+            $msg = "قام المستعمل [". Auth::user()->name ."] بإضافة مادة جديدة[". $article->libelle ."] للحاجيات في إنتظار المصادقة ";
             // Create Notification To users
             $newNotif = new Notif();
             $newNotif->type = "VALIDATION";
@@ -67,6 +68,8 @@ class ArticleController extends Controller
             $newNotif->from_table = "articles";
             $newNotif->from_table_id = $article->id;
             $newNotif->users_id = Auth::user()->id;
+            $newNotif->users_id = Auth::user()->id;
+            $newNotif->read_at =  Carbon::now()->format('d-m-Y');
             $newNotif->action = route('articles.index');
             $notif = $this->notifRepository->GenererNotif($newNotif);
         }

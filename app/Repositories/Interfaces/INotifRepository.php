@@ -8,7 +8,7 @@ interface INotifRepository
     public function getNotifsAxios(); // Liste notifs Axios VueJs
     public function getNotifsCountByType(); // Count notifs for desktop notification by type
 
-    public function postNotifAction($id);
+    public function postNotifAction($id, $mode='user');
     public function GenererNotif($newNotif);
     public function updateNotif($notifToUpdate);
     public function ArchiverNotif($start_date, $end_date);
