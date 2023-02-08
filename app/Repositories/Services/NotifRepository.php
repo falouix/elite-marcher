@@ -83,6 +83,7 @@ class NotifRepository implements INotifRepository
                 $notifsRappel = Notif::select('*')
                     ->where('type', 'RAPPEL')
                     ->where('user_service', Auth::user()->services_id)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->get();
             }
             $notifsValidation = null;
@@ -91,6 +92,7 @@ class NotifRepository implements INotifRepository
                     ->where('type', 'VALIDATION')
                     ->where('user_group', Auth::user()->user_type)
                     ->where('user_service', Auth::user()->services_id)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->get();
             }
             $notifsMessage = null;
@@ -99,6 +101,7 @@ class NotifRepository implements INotifRepository
                     ->where('type', 'MESSAGE')
                     ->where('user_group', Auth::user()->user_type)
                     ->where('user_service', Auth::user()->services_id)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->get();
             }
         } else {
@@ -106,6 +109,7 @@ class NotifRepository implements INotifRepository
                 $notifsRappel = Notif::select('*')
                     ->where('type', 'RAPPEL')
                     ->where('user_group', Auth::user()->user_type)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->get();
             }
             $notifsValidation = null;
@@ -113,6 +117,7 @@ class NotifRepository implements INotifRepository
                 $notifsValidation = Notif::select('*')
                     ->where('type', 'VALIDATION')
                     ->where('user_group', Auth::user()->user_type)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->get();
             }
             $notifsMessage = null;
@@ -120,6 +125,7 @@ class NotifRepository implements INotifRepository
                 $notifsMessage = Notif::select('*')
                     ->where('type', 'MESSAGE')
                     ->where('user_group', Auth::user()->user_type)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->get();
             }
         }
@@ -143,6 +149,7 @@ class NotifRepository implements INotifRepository
                     ->where('type', 'RAPPEL')
                     ->where('user_group', Auth::user()->user_type)
                     ->where('user_service', Auth::user()->services_id)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->count();
             }
 
@@ -151,6 +158,7 @@ class NotifRepository implements INotifRepository
                     ->where('type', 'VALIDATION')
                     ->where('user_group', Auth::user()->user_type)
                     ->where('user_service', Auth::user()->services_id)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->count();
             }
 
@@ -159,6 +167,7 @@ class NotifRepository implements INotifRepository
                     ->where('type', 'MESSAGE')
                     ->where('user_group', Auth::user()->user_type)
                     ->where('user_service', Auth::user()->services_id)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->count();
             }
         } else {
@@ -166,6 +175,7 @@ class NotifRepository implements INotifRepository
                 $notifsRappel = Notif::select('id')
                     ->where('type', 'RAPPEL')
                     ->where('user_group', Auth::user()->user_type)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->count();
             }
 
@@ -173,6 +183,7 @@ class NotifRepository implements INotifRepository
                 $notifsValidation = Notif::select('id')
                     ->where('type', 'VALIDATION')
                     ->where('user_group', Auth::user()->user_type)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->count();
             }
 
@@ -180,6 +191,7 @@ class NotifRepository implements INotifRepository
                 $notifsMessage = Notif::select('id')
                     ->where('type', 'MESSAGE')
                     ->where('user_group', Auth::user()->user_type)
+                    ->where('read_at','<=',Carbon::now()->format('Y-m-d'))
                     ->count();
             }
         }
@@ -203,7 +215,8 @@ class NotifRepository implements INotifRepository
         } else {
             $query = Notif::withTrashed()
                 ->where('user_group', Auth::user()->user_type)
-                ->where('user_service', Auth::user()->services_id);
+                ->where('user_service', Auth::user()->services_id)
+                ->where('read_at','<=',Carbon::now()->format('Y-m-d'));
         }
         $dataAction = 'notifs.datatable-actions';
 
@@ -267,7 +280,7 @@ class NotifRepository implements INotifRepository
             'user_group' => Auth::user()->user_type,
             'user_service' => Auth::user()->services_id,
             'action' => $newNotif->action,
-            'read_at' => $newNotif->read_at,
+            'read_at' => ($newNotif->read_at ?? Carbon::now()->format('Y-m-d')),
             'valider' => false,
         ]);
         return $notif;

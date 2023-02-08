@@ -10,6 +10,7 @@ use App\Models\LignesBesoin;
 use App\Models\DossiersAchat;
 use App\Repositories\IFileUploadRepository;
 use App\Repositories\Interfaces\IProjetRepository;
+use App\Repositories\Interfaces\INotifRepository;
 use App\Traits\ApiResponser;
 use Auth;
 use Illuminate\Http\Request;
@@ -20,9 +21,10 @@ use App\Common\Utility;
 class PPMController extends Controller
 {
     use ApiResponser;
-    public function __construct(IProjetRepository $repository)
+    public function __construct(IProjetRepository $repository, INotifRepository $notifRepository)
     {
         $this->repository = $repository;
+        $this->notifRepository = $notifRepository;
     }
     /**
      * Display a listing of the resource.
@@ -84,9 +86,11 @@ class PPMController extends Controller
          // Prevent XSS Attack
          Utility::stripXSS($request);
 
-         $user = $this->repository->updatePPM($request->all(), $id);
-
-             $notification =  $this->notifyArr('تحيين المخطط السنوي للشراءات', '!تم تحيين المخطط التقديري السنوي لإبرام الصفقات العمومية بنجاح', 'success', true);
+         $ppm = $this->repository->updatePPM($request->all(), $id);
+         $this->notifRepository->GenererNotifPPM($ppm);
+         // Generate new notifs
+         
+         $notification =  $this->notifyArr('تحيين المخطط السنوي للشراءات', '!تم تحيين المخطط التقديري السنوي لإبرام الصفقات العمومية بنجاح', 'success', true);
 
          return redirect()->route('ppm.index')
              ->with('notification', $notification);

@@ -61,7 +61,7 @@ $tbl_action = __('labels.tbl_action');
                 {!! Form::open(['route' => 'projets.store', 'method' => 'POST', 'id' => 'validation-projet_form']) !!}
                 <input type="text" name="lignesprjt" id="lignesprjt" hidden>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-3" hidden>
                         <div class="form-group">
                             <label for="annee_gestion"> السنة المالية </label>
                             <input type="number" class="form-control" id='annee_gestion' name="annee_gestion"
@@ -72,7 +72,7 @@ $tbl_action = __('labels.tbl_action');
                     <div class="col-md-3">
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
-                            <select class="form-control" id="type_demande" name="type_demande">
+                            <select class="form-control" id="gtype_demande" name="type_demande">
                                 <option value="1">مواد وخدمات</option>
                                 <option value="2">أشغال</option>
                                 <option value="3">دراسات</option>
@@ -97,18 +97,16 @@ $tbl_action = __('labels.tbl_action');
                                 for="libelle"></label>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <button class="btn btn-primary-gradient" id="btn_search_pai" type="submit"
-                            style="margin-top: 32px">
-                            {{ __('inputs.btn_search') }}
-                        </button>
-                    </div>
+
                 </div>
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">الموضوع</label>
                             <input type="text" class="form-control" name="objet" id="objet">
+                            <label id="objet-error"
+                            class="error jquery-validation-error small form-text invalid-feedback"
+                            for="objet"></label>
                         </div>
                     </div>
                 </div>
@@ -295,63 +293,7 @@ $tbl_action = __('labels.tbl_action');
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            // [ Initialize client-form validation ]
-            $('#validation-client_form').validate({
-                ignore: '.ignore, .select2-input',
-                focusInvalid: false,
-                rules: {
-                    'annee_gestion': {
-                        required: true,
-                    },
-                    'date_action_prevu': {
-                        required: true,
-                        date: true,
-                    },
-                },
-                messages: {
-                    annee_gestion: {
-                        required: "هذا الحقل إجباري",
-                        min_length: "السنة لا تقل عن 4 أرقام",
-                        max_length: "السنة لا تفوق أربعة أرقام"
-                    },
-                    date_action_prevu: {
-                        required: "هذا الحقل إجباري",
-                        date: "الرجاء الثبت من صحةالتاريخ",
-                    }
-                },
 
-                // Errors //
-
-                errorPlacement: function errorPlacement(error, element) {
-                    var $parent = $(element).parents('.form-group');
-
-                    // Do not duplicate errors
-                    if ($parent.find('.jquery-validation-error').length) {
-                        return;
-                    }
-
-                    $parent.append(
-                        error.addClass(
-                            'jquery-validation-error small form-text invalid-feedback')
-                    );
-                },
-                highlight: function(element) {
-                    var $el = $(element);
-                    var $parent = $el.parents('.form-group');
-
-                    $el.addClass('is-invalid');
-
-                    // Select2 and Tagsinput
-                    if ($el.hasClass('select2-hidden-accessible') || $el.attr(
-                            'data-role') === 'tagsinput') {
-                        $el.parent().addClass('is-invalid');
-                    }
-                },
-                unhighlight: function(element) {
-                    $(element).parents('.form-group').find('.is-invalid').removeClass(
-                        'is-invalid');
-                }
-            });
             // [ Initialize client-form validation ]
             $('#cp_form').validate({
                 ignore: '.ignore, .select2-input',
@@ -465,7 +407,7 @@ $tbl_action = __('labels.tbl_action');
                     data: function(data) {
                         data.annee_gestion = $('#annee_gestion').val()
                         data.services_id = 'all'
-                        data.type_demande = $('#type_demande').val()
+                        data.type_demande = $('#gtype_demande').val()
                         data.nature_demande = 'all'
                         data.mode = 'projets'
                     },
@@ -551,7 +493,7 @@ $tbl_action = __('labels.tbl_action');
                     let sum = 0
                     items.each((index) => {
                         sum += parseFloat(index.sumcout_total_ttc)
-                        console.log(sum);
+                      //  console.log(sum);
                     });
                     $('#coutTotal').html(sum)
                 })
@@ -561,7 +503,7 @@ $tbl_action = __('labels.tbl_action');
                     let sum = 0
                     items.each((index) => {
                         sum += parseFloat(index.sumcout_total_ttc)
-                        console.log(sum);
+                      //  console.log(sum);
                     });
                     $('#coutTotal').html(sum)
 
@@ -699,7 +641,7 @@ $tbl_action = __('labels.tbl_action');
         })
 
         // Search button click event (reload dtatable)
-        $('#btn_search_pai').on('click', (e) => {
+        $('#gtype_demande').on('change', (e) => {
             e.preventDefault();
             $('#table-cp').DataTable().ajax.reload();
 

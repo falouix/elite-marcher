@@ -27,7 +27,7 @@
                                         <br>
                                         وزارة التعليم العالي والبحث العلمي
                                         <br>
-                                        جــامعة جندوبة
+                                        {{ $settings->libelle }}
                                     </strong>
                                 </h1>
                             </div>
@@ -45,20 +45,19 @@
                     class="row d-flex justify-content-between text-center align-items-center defaut-fiscal-container m-20-3">
                     <div class="right-top-container defaut-fiscal-left">
                         <h3 style="margin: 0;line-height: 2;">
-                            .............................................................................. :إسم المسؤول
-                            عن خلية الصفقات العمومية ولقبة</h3>
+                             إسم المسؤول عن خلية الصفقات العمومية ولقبة : {{ $settings->responsable }} </h3>
                     </div>
 
                     <div class="right-top-container defaut-fiscal-right">
                         <h3 style="margin: 0;line-height: 2;">
-                            ............................................................................. :المشتري
-                            العمومي </h3>
+                            المشتري العمومي : {{ $settings->libelle  }}
+                        </h3>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between text-center align-items-center defaut-fiscal-container">
                     <div class="right-top-container defaut-fiscal-row" style="margin: 0;line-height: 2;">
-                        <strong> ................................ : الهاتف :................................ الفاكس
-                            :................................ العنوان الإلكتروني </strong>
+                        <strong> {{ $settings->tel }} : الهاتف  :{{ $settings->fax }} الفاكس
+                              {{ $settings->email }} : العنوان الإلكتروني  </strong>
                     </div>
                 </div>
                 <div class="row table-content border-0 m-20-3">
@@ -113,7 +112,23 @@
                                                 <td>صفقة بالتفاوض المباشر</td>
                                             @break
                                         @endswitch
-                                        <td></td>
+                                        @switch ($projet->nature_passation)
+                                            @case ('CONSULTATION')
+                                                <td>عادية</td>
+                                            @break
+
+                                            @case('AOS')
+                                                <td>مبسطة</td>
+                                            @break
+
+                                            @case ('AON')
+                                                <td>عادية</td>
+                                            @break
+
+                                            @default
+                                                <td> </td>
+                                            @break
+                                        @endswitch
                                         @switch($projet->source_finance)
                                             @case(1)
                                                 <td>ميزانية الدولة</td>
@@ -153,12 +168,12 @@
                 <div class="row table-content  m-t-foot"></div>
                 <div class="col-12 text-right p-top-foot" dir="rtl">
                     <h4>
-                    (1) باليوم
-                    <br> (2) طلب عروض مفتوح أو مضيق أو على مرحلتين أو تفاوض مباشر
-                    <br> (3) مبسطة أو عادية
-                    <br> (4) ميزانية ـ هبة أو قرض من .......(ذكر مصدر التمويل) ـ أو طلب عروض مع طلب تمويل
-                    <br> (5) إدراج التاريخ بإعتماد اليوم والشهر والسنة (ي ي /ش ش /س س)
-                    <br> (6) خاص بالصفقات المبرمة حسب الإجراءات المبسطة
+                        (1) باليوم
+                        <br> (2) طلب عروض مفتوح أو مضيق أو على مرحلتين أو تفاوض مباشر
+                        <br> (3) مبسطة أو عادية
+                        <br> (4) ميزانية ـ هبة أو قرض من .......(ذكر مصدر التمويل) ـ أو طلب عروض مع طلب تمويل
+                        <br> (5) إدراج التاريخ بإعتماد اليوم والشهر والسنة (ي ي /ش ش /س س)
+                        <br> (6) خاص بالصفقات المبرمة حسب الإجراءات المبسطة
                     </h4>
                 </div>
             </div>
@@ -348,6 +363,7 @@
             float: right;
             text-align: right;
         }
+
         .left-top-container {
             width: 25%;
             float: left;

@@ -12,13 +12,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Etablissement
- * 
+ *
  * @property int $id
  * @property string|null $libelle
  * @property string|null $matricule_fiscale
+ * @property string|null $responsable
  * @property string|null $email
  * @property string|null $adresse
- * @property string|null $responsable
+ * @property string|null $tel
+ * @property string|null $fax
  * @property string|null $entete
  * @property string|null $code_pa
  * @property string|null $code_consult

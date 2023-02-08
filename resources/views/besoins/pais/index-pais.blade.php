@@ -120,33 +120,25 @@ $tbl_action = __('labels.tbl_action');
                     <table id="table-cp" class="table table-striped table-bordered nowrap">
                         <thead>
                             <th class="not-export-col" style="width: 30px"><input type="checkbox"
-                                    class="select-checkbox not-export-col" /> </th>
-                            <th class="not-export-col">id</th>
-                            <th>المادة</th>
-                            <th>طبيعة الطلب</th>
-                            <th>نوع الطلب</th>
-                            <th>الكمية المطلوبة</th>
-                            <th>الكمية المصادقة</th>
-                            <th>الكلفة التقديرية للوحدة</th>
-                            <th>الكلفة التقديرية الجملية</th>
-                            <th>الملاحظات</th>
-                            <th class="not-export-col">{{ $tbl_action }}</th>
+                                class="select-checkbox not-export-col" /> </th>
+                        <th>المادة</th>
+                        <th>طبيعة الطلب</th>
+                        <th>نوع الطلب</th>
+                        <th>الكمية المطلوبة</th>
+                        <th>الكمية المصادقة</th>
+                        <th>الكلفة التقديرية الجملية</th>
                         </thead>
 
                         <tfoot>
                             <tr>
                                 <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                         class="select-checkbox not-export-col" /> </th>
-                                <th class="not-export-col">id</th>
                                 <th>المادة</th>
                                 <th>طبيعة الطلب</th>
                                 <th>نوع الطلب</th>
                                 <th>الكمية المطلوبة</th>
                                 <th>الكمية المصادقة</th>
-                                <th>الكلفة التقديرية للوحدة</th>
                                 <th>الكلفة التقديرية الجملية</th>
-                                <th>الملاحظات</th>
-                                <th class="not-export-col">{{ $tbl_action }}</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -218,17 +210,8 @@ $tbl_action = __('labels.tbl_action');
                             exportOptions: {
                                 columns: ':visible:not(.not-export-col)'
                             }
-                        },
+                        }
                     ],
-
-                    scrollY: true,
-                    scrollX: true,
-                    scrollCollapse: true,
-                    paging: false,
-                    fixedColumns: {
-                        leftColumns: 0,
-                        rightColumns: 1
-                    },
                     initComplete: function() {
                         // Apply the search
                         this.api().columns().every(function() {
@@ -244,6 +227,8 @@ $tbl_action = __('labels.tbl_action');
                                 });
                         });
                     },
+                    scrollY: '750px',
+                    scrollCollapse: true,
                     processing: true,
                     // serverSide: true,
                     serverMethod: 'POST',
@@ -270,10 +255,6 @@ $tbl_action = __('labels.tbl_action');
                             className: "select-checkbox"
                         },
                         {
-                            data: "id",
-                            className: "id",
-                        },
-                        {
                             data: "libelle",
                             className: "libelle"
                         },
@@ -286,46 +267,30 @@ $tbl_action = __('labels.tbl_action');
                             className: "nature_demandes_id"
                         },
                         {
-                            data: "qte_demande",
+                            data: "sumqte_demande",
                             className: "qte_demande"
                         },
                         {
-                            data: "qte_valide",
+                            data: "sumqte_valide",
                             className: "qte_valide"
                         },
                         {
-                            data: "cout_unite_ttc",
-                            className: "cout_unite_ttc"
-                        },
-                        {
-                            data: "cout_total_ttc",
+                            data: "sumcout_total_ttc",
                             className: "cout_total_ttc"
-                        },
-                        {
-                            data: "libelle",
-                            className: "libelle"
-                        },
-                        {
-                            data: 'action',
-                            className: 'action',
-                            visible: 'false'
                         }
                     ],
-
+                   // responsive: true,
                     columnDefs: [{
                             orderable: false,
                             className: 'select-checkbox',
                             targets: 0
                         },
-                        {
-                            visible: false,
-                            targets: 1
-                        }
+
                     ],
                     drawCallback: function() {
                         var api = this.api();
                         $('#coutTotal').html(
-                            api.column(8, {
+                            api.column(6, {
                                 page: 'current'
                             }).data().sum()
                         )
@@ -337,15 +302,6 @@ $tbl_action = __('labels.tbl_action');
                     // select: { style: 'multi+shift' },
 
                 });
-                table
-                    .on('select', function(e, dt, type, indexes) {
-                        // var rowData = table.rows( indexes ).data().toArray();
-                        //console.log( rowData );
-                        SelectedRowCountBtnDelete(table)
-                    })
-                    .on('deselect', function(e, dt, type, indexes) {
-                        SelectedRowCountBtnDelete(table)
-                    });
 
                 $('.dataTables_length').addClass('bs-select');
 

@@ -17,7 +17,7 @@ class ProjetRepository implements IProjetRepository
     {
         $Projet = Projet::create([
             'objet' => $request['objet'],
-            'date_action_prevu' => $request['date_action_prevu'],
+           // 'date_action_prevu' => $request['date_action_prevu'],
             'type_demande' => $request['type_demande'],
             'nature_passation' => $request['nature_passation'],
             'annee_gestion' => $request['annee_gestion'],
@@ -147,7 +147,7 @@ class ProjetRepository implements IProjetRepository
         }
         $query->orderBy('transferer');
         Log::info("Result of query projets : " . $query->get());
-        
+
         return $query->get();
     }
     public function getLigneProjetsByProjet($projet_id, $mode)

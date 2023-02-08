@@ -29,12 +29,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $cc = \App\Models\CahiersCharge::find(5)->first();
-
-        $dateavis = Carbon::createFromFormat('Y-m-d', $cc->date_pub_prevu);
-
-        $read_at = $dateavis->subDays(10)->format('Y-m-d');
-        dd($read_at);
         // get infos by current year
         //dd(Carbon::now()->subDays(30)->format('d-m-Y'));
         $annee_gestion = strftime('%Y');

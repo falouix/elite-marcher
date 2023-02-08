@@ -141,7 +141,7 @@
                         <div class="form-group">
                             <label for="duree_travaux_prvu">آجال الإنجاز  </label>
                             <input type="number" class="form-control" id='duree_travaux_prvu' name="duree_travaux_prvu"
-                                placeholder="آجال الإنجاز" value='{{ $projet->duree_travaux_prvu }}'>
+                                placeholder="آجال الإنجاز" value='{{ $projet->duree_travaux_prvu ?? 0 }}'>
                             @if ($errors->has('duree_travaux_prvu'))
                                 <span class="text-danger">{{ $errors->first('duree_travaux_prvu') }}</span>
                             @endif
