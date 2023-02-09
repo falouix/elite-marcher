@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Projet;
-use App\Models\LignesProjet;
-use App\Models\Service;
-use App\Models\LignesBesoin;
-use App\Models\DossiersAchat;
-use App\Repositories\IFileUploadRepository;
-use App\Repositories\Interfaces\IProjetRepository;
-use App\Repositories\Interfaces\INotifRepository;
+use Illuminate\Http\Request;
+use App\Common\Utility;
+use App\Models\{
+    DossiersAchat,Projet,Etablissement,Notif
+};
+use App\Repositories\Interfaces\{
+    INotifRepository,IProjetRepository
+};
 use App\Traits\ApiResponser;
 use Auth;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Log;
-use DB;
-use App\Common\Utility;
 
 class PPMController extends Controller
 {
@@ -25,6 +22,7 @@ class PPMController extends Controller
     {
         $this->repository = $repository;
         $this->notifRepository = $notifRepository;
+        $this->settings = Etablissement::first();
     }
     /**
      * Display a listing of the resource.
@@ -34,7 +32,7 @@ class PPMController extends Controller
     public function index()
     {
 
-        return view('projets.ppm.index',);
+        return view('projets.ppm.index', );
     }
 
     /**
@@ -57,10 +55,9 @@ class PPMController extends Controller
      */
     public function show($id)
     {
-          $projet = Projet::select('*')->where('id', $id)->first();
-           return view('projets.ppm.show', compact('projet'));
+        $projet = Projet::select('*')->where('id', $id)->first();
+        return view('projets.ppm.show', compact('projet'));
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -83,17 +80,48 @@ class PPMController extends Controller
      */
     public function update(Request $request, $id)
     {
-         // Prevent XSS Attack
-         Utility::stripXSS($request);
+        // Prevent XSS Attack
+        Utility::stripXSS($request);
+        $ppm = $this->repository->updatePPM($request->all(), $id);
+       // dd($ppm);
+        // Generate new notifs
+        if($this->settings->notif_cc){
+            $codedossier= (DossiersAchat::select('code_dossier')->where('code_projet', $ppm->code_projet)->first()->code_projet) ?? '';
+            // if notif_validation_besoins is true the Generate Notif
+            $msg = "تذكير بموعد البدأ في إجراءات الملف عدد[" . $codedossier . "], التاريخ المتوقع لإعداد كراس الشروط [" . $ppm->date_cc_prvu . "]";
+            // Create Notification To users
+            $newNotif = new Notif();
+            $newNotif->type = "MESSAGE";
+            $newNotif->texte = $msg;
+            $newNotif->from_table = "DossiersAchat";
+            $newNotif->from_table_id = $ppm->id;
+            $newNotif->users_id = Auth::user()->id;
+            
+            $dateavis = Carbon::createFromFormat('Y-m-d', $ppm->date_cc_prvu);
+            $newNotif->read_at = $dateavis->subDays($this->settings->notif_duree_cc)->format('Y-m-d');
+            /*switch ($ppm->type_dossier) {
+                case 'CONSULTATION':
+                    $newNotif->action = route('consultations.edit', ['consultation' => $dossierA->id]);
+                    break;
+                case 'AOS':
+                    $newNotif->action = route('aos.edit', ['aos' => $dossierA->id]);
+                    break;
+                case 'AON':
+                    $newNotif->action = route('aon.edit', ['aon' => $dossierA->id]);
+                    break;
+                case 'AOGREGRE':
+                    $newNotif->action = route('aogregre.edit', ['aogregre' => $dossierA->id]);
+                break;
+            }*/
+            $newNotif->action = "";
+           // dd($newNotif);
+            $notif = $this->notifRepository->GenererNotif($newNotif);
+        }
 
-         $ppm = $this->repository->updatePPM($request->all(), $id);
-         $this->notifRepository->GenererNotifPPM($ppm);
-         // Generate new notifs
-         
-         $notification =  $this->notifyArr('تحيين المخطط السنوي للشراءات', '!تم تحيين المخطط التقديري السنوي لإبرام الصفقات العمومية بنجاح', 'success', true);
 
-         return redirect()->route('ppm.index')
-             ->with('notification', $notification);
+        $notification = $this->notifyArr('تحيين المخطط السنوي للشراءات', '!تم تحيين المخطط التقديري السنوي لإبرام الصفقات العمومية بنجاح', 'success', true);
+        return redirect()->route('ppm.index')
+            ->with('notification', $notification);
     }
 
     /**
@@ -130,11 +158,12 @@ class PPMController extends Controller
      * @param  \Illuminate\Http\Request  $request
      *
      */
-    public function printPPM(Request $request){
+    public function printPPM(Request $request)
+    {
         $ppm = $this->repository->getAllProjetToPrint($request->print_annee_gestion, 'all', $request->print_type_demande, 'all', "ppm");
         $annee_gestion = $request->print_annee_gestion;
-        if($ppm->count()>0){
-            return view('pdf.ppm', compact('ppm','annee_gestion'));
+        if ($ppm->count() > 0) {
+            return view('pdf.ppm', compact('ppm', 'annee_gestion'));
         }
     }
 }
