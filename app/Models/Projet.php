@@ -114,6 +114,10 @@ class Projet extends Model
         static::updating(function ($model) {
             $model->updated_by = Auth::user()->id;
         });
+        static::deleting(function($model) { // before delete() method call this
+            $model->lignes_projets()->forceDelete();
+            // do the rest of the cleanup...
+       });
     }
     public function service()
 	{

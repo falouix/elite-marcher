@@ -57,7 +57,7 @@ $tbl_action = __('labels.tbl_action');
             </div>
             <div class="card-body">
                 <div class="row">
-                    
+
                     @if (\Auth::user()->user_type =='admin')
                     <div class="col-md-3">
 
@@ -322,12 +322,6 @@ $tbl_action = __('labels.tbl_action');
                         }); // ajax end
                     }
                 });
-        }
-         function multipleDelete(locale) {
-            var table = $('#besoins-table').DataTable();
-            var ids = table.rows('.selected').data();
-            var url = "{{ route('besoins_datatable.multidestroy') }}";
-            multipleDeleteG(locale, "#besoins-table", ids, url);
         }
 
     </script>

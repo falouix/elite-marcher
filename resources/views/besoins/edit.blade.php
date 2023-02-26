@@ -38,7 +38,7 @@ $tbl_action = __('labels.tbl_action');
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h5>{{ $sub_breadcrumb }}</h5>
+                <h5>{{ $sub_breadcrumb }} [{{$besoin->service->libelle ?? '' }}]</h5>
                 <div class="card-header-right">
 
                     @if ($besoin->valider == false)

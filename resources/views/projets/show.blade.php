@@ -123,6 +123,7 @@
                                 <th>الكمية المصادقة</th>
                                 <th>الكلفة التقديرية للوحدة</th>
                                 <th>الكلفة التقديرية الجملية</th>
+                                <th>قرار</th>
                             </thead>
 
                             <tfoot>
@@ -137,6 +138,7 @@
                                     <th>الكمية المصادقة</th>
                                     <th>الكلفة التقديرية للوحدة</th>
                                     <th>الكلفة التقديرية الجملية</th>
+                                    <th>قرار</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -289,6 +291,10 @@
                         data: "cout_total_ttc",
                         className: "cout_total_ttc"
                     },
+                    {
+                        data: "actionPPM",
+                        className: "actionPPM"
+                    }
                 ],
                 columnDefs: [{
                         orderable: false,

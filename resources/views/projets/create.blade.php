@@ -1,12 +1,12 @@
 @php
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-    $rtl = 'rtl';
-} else {
-    $lang = '';
-    $rtl = 'ltr';
-}
-$tbl_action = __('labels.tbl_action');
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+        $rtl = 'rtl';
+    } else {
+        $lang = '';
+        $rtl = 'ltr';
+    }
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
@@ -60,6 +60,7 @@ $tbl_action = __('labels.tbl_action');
                 {{-- Case Other Parties --}}
                 {!! Form::open(['route' => 'projets.store', 'method' => 'POST', 'id' => 'validation-projet_form']) !!}
                 <input type="text" name="lignesprjt" id="lignesprjt" hidden>
+                <input type="text" name="lbsoins_ids" id="lbsoins_ids" hidden>
                 <div class="row">
                     <div class="col-md-3" hidden>
                         <div class="form-group">
@@ -104,9 +105,8 @@ $tbl_action = __('labels.tbl_action');
                         <div class="form-group">
                             <label class="form-label">الموضوع</label>
                             <input type="text" class="form-control" name="objet" id="objet">
-                            <label id="objet-error"
-                            class="error jquery-validation-error small form-text invalid-feedback"
-                            for="objet"></label>
+                            <label id="objet-error" class="error jquery-validation-error small form-text invalid-feedback"
+                                for="objet"></label>
                         </div>
                     </div>
                 </div>
@@ -234,7 +234,7 @@ $tbl_action = __('labels.tbl_action');
                                 <th>الكمية المصادقة</th>
                                 <th>الكلفة التقديرية للوحدة</th>
                                 <th>الكلفة التقديرية الجملية</th>
-                                <th>الملاحظات</th>
+                                <th class="not-export-col">ids</th>
                             </thead>
 
                             <tfoot>
@@ -249,7 +249,7 @@ $tbl_action = __('labels.tbl_action');
                                     <th>الكمية المصادقة</th>
                                     <th>الكلفة التقديرية للوحدة</th>
                                     <th>الكلفة التقديرية الجملية</th>
-                                    <th>الملاحظات</th>
+                                    <th class="not-export-col">ids</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -452,8 +452,9 @@ $tbl_action = __('labels.tbl_action');
                         className: "sumcout_total_ttc"
                     },
                     {
-                        data: "description",
-                        className: "description"
+                        data: 'ids',
+                        className: 'ids',
+                        visible: 'false'
                     },
                 ],
                 columnDefs: [{
@@ -493,7 +494,7 @@ $tbl_action = __('labels.tbl_action');
                     let sum = 0
                     items.each((index) => {
                         sum += parseFloat(index.sumcout_total_ttc)
-                      //  console.log(sum);
+                        //  console.log(sum);
                     });
                     $('#coutTotal').html(sum)
                 })
@@ -503,7 +504,7 @@ $tbl_action = __('labels.tbl_action');
                     let sum = 0
                     items.each((index) => {
                         sum += parseFloat(index.sumcout_total_ttc)
-                      //  console.log(sum);
+                        //  console.log(sum);
                     });
                     $('#coutTotal').html(sum)
 
@@ -675,22 +676,27 @@ $tbl_action = __('labels.tbl_action');
             if (verif > 0) {
                 return false
             }
-            var ids = add_cp();
-            //alert(JSON.stringify(ids))
+            var {
+                ids,
+                lb_ids
+            } = add_cp();
+             alert(JSON.stringify(lb_ids))
             $('#lignesprjt').val(JSON.stringify(ids))
+            $('#lbsoins_ids').val(lb_ids)
             $("#btn_submit").click()
         })
 
         function add_cp() {
             var table = $('#table-cp').DataTable();
             var ids = $.map(table.rows('.selected').data(), function(item) {
-                console.log(item)
+                // console.log(item)
                 return item.id
             });
-            // console.log(ids)
-            // alert(table.rows('.selected').data().length + ' row(s) selected');
-
-            return (ids);
+            var lb_ids = $.map(table.rows('.selected').data(), function(item) {
+                // console.log(item)
+                return item.ids
+            });
+            return {ids, lb_ids};
         }
     </script>
 @endsection

@@ -69,6 +69,10 @@ class Besoin extends Model
         static::updating(function ($model) {
             $model->updated_by = Auth::user()->id;
         });
+        static::deleting(function($model) { // before delete() method call this
+            $model->lignes_besoins()->forceDelete();
+            // do the rest of the cleanup...
+       });
     }
 
 	public function service()

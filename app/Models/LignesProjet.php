@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $nature_demandes_id
  * @property int $projets_id
  * @property int $lignes_besoin_id
+ * @property string|null $lbsoins_ids
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -59,6 +60,7 @@ class LignesProjet extends Model
 		'libelle',
 		'articles_id',
 		'lignes_besoin_id',
+        'lbsoins_ids',
 		'qte',
 		'cout_unite_ttc',
 		'cout_total_ttc',

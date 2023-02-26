@@ -96,7 +96,7 @@ class PPMController extends Controller
             $newNotif->from_table = "DossiersAchat";
             $newNotif->from_table_id = $ppm->id;
             $newNotif->users_id = Auth::user()->id;
-            
+
             $dateavis = Carbon::createFromFormat('Y-m-d', $ppm->date_cc_prvu);
             $newNotif->read_at = $dateavis->subDays($this->settings->notif_duree_cc)->format('Y-m-d');
             /*switch ($ppm->type_dossier) {

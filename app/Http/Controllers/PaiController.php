@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use App\Models\Projet;
 use App\Repositories\Interfaces\IPaiRepository;
 use Illuminate\Http\Request;
 use Log;
@@ -62,6 +63,20 @@ class PaiController extends Controller
         }
         return view('besoins.pais.ppm', compact('services'));
         //return view('besoins.pais.index-pais', compact('services'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($projet, $id)
+    {
+        $codeProjet = Projet::select('code_pa')->first($projet)->code_pa ?? ".....";
+        $lignesBesoins = $this->repository->getLignesBesoinsPAISByLP($id);
+        //dd($lignesBesoins);
+         return view('besoins.pais.details-pais', compact('lignesBesoins','codeProjet'));
     }
 
 

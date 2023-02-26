@@ -11,11 +11,13 @@ use App\Models\Enregistrement;
 use App\Models\Etablissement;
 use App\Models\LignesDossier;
 use App\Models\Offre;
+use App\Models\Notif;
 use App\Models\Reception;
 use App\Models\ServiceOrdre;
 use App\Repositories\Interfaces\IDossierARepository;
 use App\Repositories\Interfaces\INotifRepository;
-use Log;use Str;
+use Log;use Str;use Auth;
+use Carbon\Carbon;
 
 class DossierARepository implements IDossierARepository
 {
@@ -320,9 +322,9 @@ class DossierARepository implements IDossierARepository
             $newNotif->from_table = "cahiers_charges";
             $newNotif->from_table_id = $cc->id;
             $newNotif->users_id = Auth::user()->id;
-            $newNotif->action = "";
-            $dateavis = Carbon::createFromFormat('Y-m-d', $cc->date_pub_prevu);
-            $newNotif->read_at = $dateavis->subDays($this->settings->notif_duree_session_op)->format('Y-md');
+            $newNotif->action = route('consultations.edit', $dossier->id);
+            $newNotif->read_at = Carbon::parse($cc->date_pub_prevu)->subDays($this->settings->notif_avis_pub)->format('Y-m-d');
+            Log::info("read_at : ".$newNotif->read_at);
             $notif = $this->notifRepository->updateNotif($newNotif);
         }
         return $cc;
@@ -366,8 +368,8 @@ class DossierARepository implements IDossierARepository
             $newNotif->from_table_id = $avis->id;
             $newNotif->users_id = Auth::user()->id;
             $newNotif->action = "";
-            $dateavis = Carbon::createFromFormat('Y-m-d', $avis->date_ouverture_plis);
-            $newNotif->read_at = $dateavis->subDays($this->settings->notif_duree_session_op)->format('Y-m-d');
+            $newNotif->read_at = Carbon::parse( $avis->date_ouverture_plis)->subDays($this->settings->notif_duree_session_op)->format('Y-m-d');
+            Log::info("avis pub read_at : ".$newNotif->read_at);
             $notif = $this->notifRepository->updateNotif($newNotif);
         }
     }
@@ -482,6 +484,7 @@ class DossierARepository implements IDossierARepository
                 'soumissionnaires_id' => $input->soumissionnaires_id,
             ]
         );
+        self::updateSituationDossier($input->dossiers_achats_id, 3);
         return $enreg;
     }
     public function deleteEnregistrement($id)
@@ -514,6 +517,7 @@ class DossierARepository implements IDossierARepository
                 'soumissionnaires_id' => $input->soumissionnaires_id,
             ]
         );
+        self::updateSituationDossier($input->dossiers_achats_id, 4);
         return $enreg;
     }
     public function deleteOrdreService($id)
@@ -546,6 +550,13 @@ class DossierARepository implements IDossierARepository
                 'soumissionnaires_id' => $input->soumissionnaires_id,
             ]
         );
+        //situation dossier
+        if($input->type_reception == '1'){
+            self::updateSituationDossier($input->dossiers_achats_id, 5);
+        }else{
+            self::updateSituationDossier($input->dossiers_achats_id, 6);
+        }
+
         return $enreg;
     }
     public function deleteReception($id)
@@ -575,6 +586,7 @@ class DossierARepository implements IDossierARepository
                 'soumissionnaires_id' => $input->soumissionnaires_id,
             ]
         );
+        self::updateSituationDossier($input->dossiers_achats_id, 8);
         return $enreg;
     }
     public function deleteAnnulation($id)
@@ -607,6 +619,7 @@ class DossierARepository implements IDossierARepository
                 'soumissionnaires_id' => $input->soumissionnaires_id,
             ]
         );
+        self::updateSituationDossier($input->dossiers_achats_id, 7);
         return $enreg;
     }
     public function deleteCloture($id)

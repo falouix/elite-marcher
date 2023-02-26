@@ -241,7 +241,7 @@
                 </div>
                 <div class="card-body">
 
-                    <h4> محتوى المسشروع</h4>
+                    <h4> محتوى المشروع</h4>
 
                     <div class="dt-responsive table-responsive">
 
@@ -260,6 +260,7 @@
                                 <th>الكمية المصادقة</th>
                                 <th>الكلفة التقديرية للوحدة</th>
                                 <th>الكلفة التقديرية الجملية</th>
+                                <th class="not-export-col">قرار</th>
                             </thead>
 
                             <tfoot>
@@ -274,6 +275,7 @@
                                     <th>الكمية المصادقة</th>
                                     <th>الكلفة التقديرية للوحدة</th>
                                     <th>الكلفة التقديرية الجملية</th>
+                                    <th class="not-export-col">قرار</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -417,6 +419,10 @@
                         data: "cout_total_ttc",
                         className: "cout_total_ttc"
                     },
+                    {
+                        data: "actionPPM",
+                        className: "actionPPM"
+                    }
                 ],
                 columnDefs: [{
                         orderable: false,

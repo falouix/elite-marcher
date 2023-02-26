@@ -103,7 +103,7 @@ class BesoinController extends Controller
      */
     public function show($id)
     {
-        $besoin = Besoin::select('*')->where('id', $id)->first();
+        $besoin = Besoin::select('*')->with('service')->where('id', $id)->first();
         return view('besoins.show', compact('besoin'));
     }
 
@@ -116,7 +116,7 @@ class BesoinController extends Controller
     public function edit($id)
     {
         //$besoin = $this->repository->getBesoinByParam('id', $id);
-        $besoin = Besoin::select('*')->where('id', $id)->first();
+        $besoin = Besoin::select('*')->with('service')->where('id', $id)->first();
         $userService = Service::select('*')->where('id', $besoin->services_id)->first();
         return view('besoins.edit', compact('userService', 'besoin'));
     }

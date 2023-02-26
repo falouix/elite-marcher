@@ -1,11 +1,12 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
+
 <head>
     @include('layouts.partials.head')
     @yield('head-script')
 </head>
 @php
-$tbl_action = __('labels.tbl_action');
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 <body>
@@ -96,6 +97,7 @@ $tbl_action = __('labels.tbl_action');
                             {{-- Single delete modal --}}
                             @yield('srcipt-js')
                             <script>
+                               
                                 // Add selected row count to Mulitiple Delete Btn
                                 function SelectedRowCountBtnDelete(table) {
                                     if (table.rows('.selected').data().length > 0) {
@@ -231,10 +233,10 @@ $tbl_action = __('labels.tbl_action');
                                                     var loader = new PNotify({
                                                         title: "{{ __('labels.pnotify_title') }}",
                                                         text: '<div class="progress progress-striped active" style="margin:0">\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span class="sr-only">0%</span>\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span class="sr-only">0%</span>\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>',
                                                         addclass: PnClass,
                                                         stack: stack_top_left,
                                                         icon: 'icon-spinner4 spinner',
@@ -333,7 +335,7 @@ $tbl_action = __('labels.tbl_action');
 
                                 function showNotifG(nbNotifRappel, nbNotifValidation, nbNotifMessage) {
                                     //alert("yes")
-                                    if (nbNotifValidation >0) {
+                                    if (nbNotifValidation > 0) {
                                         showInernalNotif("error", "إشعارات  لتثبيت المهام ",
                                             "لديك " + nbNotifValidation + " مهام يجب إنجازها ", "", false)
                                         customnotify('إشعارات المهام', "لديك " + nbNotifValidation + " مهام يجب إنجازها ", '');
@@ -342,14 +344,15 @@ $tbl_action = __('labels.tbl_action');
                                         showInernalNotif("info", 'إشعارات تذكير ', "لديك " + nbNotifRappel + " إشعارات تذكير ", "")
                                         customnotify('إشعارات تذكير', "لديك " + nbNotifRappel + " إشعارات تذكير ", '');
                                     }
-                                    if (nbNotifMessage >0) {
+                                    if (nbNotifMessage > 0) {
                                         showInernalNotif("success", " إشعارات أخرى ", "لديك " + nbNotifMessage +
                                             "إشعارات للإعلام",
                                             "", true)
-                                            customnotify('إشعارات أخرى', "لديك " + nbNotifMessage + " إشعارات أخرى للإعلام ", '');
+                                        customnotify('إشعارات أخرى', "لديك " + nbNotifMessage + " إشعارات أخرى للإعلام ", '');
                                     }
 
                                 }
+
 
                                 function showInernalNotif(type, title, desc, url, hide) {
 
@@ -462,7 +465,6 @@ $tbl_action = __('labels.tbl_action');
                                     }
                                     new PNotify(opts);
                                 }
-
                             </script>
                             @if (Session::has('notification'))
                                 <script>

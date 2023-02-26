@@ -51,9 +51,6 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>المخطط السنوي للحاجيات</h5>
                 <div class="card-header-right">
-                        <a type="button" class="btn btn-primary" href="#">
-                            <i class="feather icon-plus-circle"></i> طباعة
-                        </a>
 
                 </div>
 

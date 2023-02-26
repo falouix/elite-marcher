@@ -37,7 +37,7 @@ $tbl_action = __('labels.tbl_action');
             <div class="card-header">
                 <h5>تحيين مشروع شراء</h5>
                 <div class="card-header-right">
-                    <a href="{{ route('besoins.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('projets.index') }}" class="btn btn-secondary">
                         العودة لقائمة مشاريع الشراءات
                         <i class="feather icon-corner-down-left"></i>
                     </a>
@@ -68,6 +68,7 @@ $tbl_action = __('labels.tbl_action');
                     'id' => 'validation-projet_form',
                 ]) !!}
                 <input type="text" name="lignesprjt" id="lignesprjt" hidden>
+                <input type="text" name="lbsoins_ids" id="lbsoins_ids" hidden>
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
@@ -236,6 +237,7 @@ $tbl_action = __('labels.tbl_action');
                                 <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                         class="select-checkbox not-export-col" /> </th>
                                 <th class="not-export-col">id</th>
+                                <th class="not-export-col">ids</th>
                                 <th>قسط عدد</th>
                                 <th>المادة</th>
                                 <th>طبيعة الطلب</th>
@@ -251,6 +253,7 @@ $tbl_action = __('labels.tbl_action');
                                     <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                             class="select-checkbox not-export-col" /> </th>
                                     <th class="not-export-col">id</th>
+                                    <th class="not-export-col">ids</th>
                                     <th>قسط عدد</th>
                                     <th>المادة</th>
                                     <th>طبيعة الطلب</th>
@@ -532,6 +535,11 @@ $tbl_action = __('labels.tbl_action');
                         className: "id",
                     },
                     {
+                        data: 'lbsoins_ids',
+                        className: 'lbsoins_ids',
+                        visible: false
+                    },
+                    {
                         data: "num_lot",
                         className: "num_lot"
                     },
@@ -564,6 +572,7 @@ $tbl_action = __('labels.tbl_action');
                         className: 'action',
                         visible: 'false'
                     },
+
                 ],
                 columnDefs: [{
                         orderable: false,
@@ -572,7 +581,7 @@ $tbl_action = __('labels.tbl_action');
                     },
                     {
                         visible: false,
-                        targets: 1
+                        targets: [1,2]
                     }
                 ],
                 drawCallback: function() {
@@ -912,14 +921,22 @@ $tbl_action = __('labels.tbl_action');
                 $('#nature_passation-error').text('الرجاء إختيار  طريقة الإبرام');
                 $('#nature_passation-error').show()
             }
+            var objet = $('#objet').val()
+            if (objet === 'all') {
+                verif = verif + 1
+                $('#objet').addClass('is-invalid')
+                $('#objet-error').text('الرجاء تحديد موضوع الإبرام');
+                $('#objet-error').show()
+            }
 
 
             if (verif > 0) {
                 return false
             }
-            var ids = add_cp();
-            //alert(JSON.stringify(ids))
+            var {ids,lb_ids} = add_cp();
+
             $('#lignesprjt').val(JSON.stringify(ids))
+            $('#lbsoins_ids').val(JSON.stringify(lb_ids))
             $("#btn_submit").click()
         })
 
@@ -929,10 +946,11 @@ $tbl_action = __('labels.tbl_action');
                 // console.log(item)
                 return item.id
             });
-            //console.log(ids)
-            // alert(table.rows('.selected').data().length + ' row(s) selected');
-
-            return (ids);
+            var lb_ids = $.map(table.rows('.selected').data(), function(item) {
+                // console.log(item)
+                return item.ids
+            });
+            return {ids,lb_ids};
         }
 
 

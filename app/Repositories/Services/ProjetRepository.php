@@ -153,6 +153,7 @@ class ProjetRepository implements IProjetRepository
     public function getLigneProjetsByProjet($projet_id, $mode)
     {
         $dataAction = 'projets.lignes_projets.ligneprojet-datatable-actions';
+        $dataActionPPM = 'projets.lignes_projets.ppm-ligneprojet-datatable';
         $query = DB::table('lignes_projets')->Where('lignes_projets.deleted_at', null)->join('lignes_besoins', 'lignes_besoins.id', '=', 'lignes_projets.lignes_besoin_id')
             ->join('projets', 'projets.id', '=', 'lignes_projets.projets_id')
             ->selectRaw('lignes_projets.id,
@@ -163,7 +164,9 @@ class ProjetRepository implements IProjetRepository
                      lignes_besoins.type_demande,
                      lignes_besoins.docs_id,
                      lignes_projets.qte,
-                     lignes_projets.cout_total_ttc
+                     lignes_projets.cout_total_ttc,
+                     lignes_projets.lbsoins_ids,
+                     lignes_projets.projets_id
                      ')
             ->where('lignes_projets.projets_id', $projet_id);
 
@@ -199,7 +202,8 @@ class ProjetRepository implements IProjetRepository
             })
 
             ->addColumn('action', $dataAction)
-            ->rawColumns(['type_demande', 'nature_demandes_id', 'action'])
+            ->addColumn('actionPPM', $dataActionPPM)
+            ->rawColumns(['type_demande', 'nature_demandes_id', 'action', 'actionPPM'])
             ->make(true);
     }
 
@@ -248,7 +252,9 @@ class ProjetRepository implements IProjetRepository
 
     public function destroy($id)
     {
-        Projet::find($id)->delete();
+        Projet::find($id)->forceDelete();
+        LignesBesoin::where('projets_id', $id)->update(['projets_id'=> null]);
+
     }
     public function destroyLigneProjet($id)
     {

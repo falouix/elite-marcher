@@ -193,12 +193,12 @@ class BesoinRepository implements IBesoinRepository
     }
     public function destroy($id)
     {
-        Besoin::find($id)->delete();
+        Besoin::find($id)->forceDelete();
         // return Response()->json(['success' => 'Projet deleted successfully.']);
     }
     public function multiDestroy($ids)
     {
-        Besoin::whereIn('id', $ids)->delete();
+        Besoin::whereIn('id', $ids)->forceDelete();
     }
 
 }

@@ -128,6 +128,7 @@ Route::group(
         //route Pai : Générateur du plan d'investissement annulle des achats
        // Route::get('pais', PaiController::class);
         Route::get('pais', [PaiController::class, 'indexPais'])->name('pais.index');
+        Route::get('pais/show/{projet}/{id}', [PaiController::class, 'show'])->name('pais.show');
         Route::get('pais/projet', [PaiController::class, 'indexPais'])->name('pais.indexPais');
         Route::post('pais/datatable', [PaiController::class, 'getAllPaiDatatable'])->name('pais.datatable');
         Route::post('pais-projet/datatable', [PaiController::class, 'getAllPaiProjetDatatable'])->name('pais-projet.datatable');

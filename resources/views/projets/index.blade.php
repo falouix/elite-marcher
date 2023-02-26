@@ -438,5 +438,36 @@ $tbl_action = __('labels.tbl_action');
             $('#nature_passation').val(nature_passation)
             $('#add_dossierAchat').modal('show');
         }
+        function deleteFromDataTableBtn(id) {
+            //  let id = $('#tbl_btn_delete').attr('data-id');
+
+            var url = "{{ route('projets.destroy', ['projet' => ':id']) }}";
+            url = url.replace(':id', id);
+            swal({
+                    title: "{{ __('labels.swal_delete_title') }}",
+                    text: "{{ __('labels.swal_delete_text') }}",
+                    icon: "warning",
+                    buttons: ["{{ __('labels.swal_cancel_btn') }}", "{{ __('labels.swal_confirm_btn') }}"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            type: 'DELETE',
+                            dataType: 'JSON',
+                            url: url,
+                            success: function(response) {
+                                console.log(response)
+                                //alert(JSON.stringify(response))
+                                // refresh data or remove only tr
+                                deleteSingleRowDataTable("#table-cp")
+                                $('#table-cp').DataTable().ajax.reload();
+                                PnotifyCustom(response)
+                            }
+                        }); // ajax end
+                    }
+                });
+        }
     </script>
 @endsection

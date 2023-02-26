@@ -490,7 +490,7 @@
                 minScrollbarLength: 40,
             });
             */
-          
+
             $.ajax({
                 url: "{{route('notifs.desktop')}}",
                 type: 'POST',

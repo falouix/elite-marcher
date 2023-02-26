@@ -86,7 +86,7 @@
                 this.getNotifs(
                     '/getNotifs'
                 );
-            }, 10000);
+            }, 3000);
 
             this.$once("hook:beforeDestroy", () => {
                 clearInterval(timer);

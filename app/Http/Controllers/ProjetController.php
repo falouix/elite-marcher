@@ -76,30 +76,43 @@ class ProjetController extends Controller
             'annee_gestion' => 'required|max:4|min:4',
             'objet' => 'required',
         ]);
+        $v = explode(",",$request->lbsoins_ids);
+     //  dd($v );
+      //  dd(json_decode($request->lbsoins_ids));
         $projet = $this->repository->create($request->all());
-       //dd($projet);
+
        if($projet){
         // create ligne projet
         if ($request->lignesprjt) {
-                foreach (json_decode($request->lignesprjt) as $item) {
-                    $ligneBesoin = LignesBesoin::find($item);
-                   // dd($ligneBesoin);
-                    if($ligneBesoin){
+            $sumQte = 0; $sumCout_total_ttc = 0;
+            //foreach ( explode(",",$request->lbsoins_ids) as $item) {
+            //    foreach ( explode(",",$request->lbsoins_ids) as $item) {
+                    $lignesBesoin = DB::table('lignes_besoins')->join('besoins', 'besoins.id', '=', 'lignes_besoins.besoins_id')
+                    ->selectRaw('lignes_besoins.id,libelle,type_demande,
+                    SUM(qte_demande) AS sumqte_demande,
+                    SUM(qte_valide) AS sumqte_valide,
+                    SUM(cout_total_ttc) AS sumcout_total_ttc
+                    ')->whereIn('lignes_besoins.id', explode(",",$request->lbsoins_ids))->get();
+                    
+                    if($lignesBesoin->count() > 0){
+                        $ligneBesoin = $lignesBesoin[0];
                         LignesProjet::create([
                             'num_lot' => NULL,
                             'libelle' => ($ligneBesoin->libelle) ? $ligneBesoin->libelle : NULL,
                             'lignes_besoin_id' => $ligneBesoin->id,
-                            'qte' => $ligneBesoin->qte_valide,
-                            'cout_unite_ttc' =>$ligneBesoin->cout_unite_ttc,
-                            'cout_total_ttc' => $ligneBesoin->cout_total_ttc,
-                            //'type_demande' => $ligneBesoin->type_demande,
+                            'qte' => $ligneBesoin->sumqte_valide,
+                            'cout_unite_ttc' => ($ligneBesoin->sumcout_total_ttc / $ligneBesoin->sumqte_valide),
+                            'cout_total_ttc' => $ligneBesoin->sumcout_total_ttc,
+                            'lbsoins_ids' => $request->lbsoins_ids,
                             //'nature_demandes_id' => $ligneBesoin->nature_demandes_id,
                             'projets_id' => $projet->id,
                         ]);
-                        $ligneBesoin->projets_id = $projet->id;
-                        $ligneBesoin->save();
+                        LignesBesoin::whereIn('id', explode(",",$request->lbsoins_ids))->update([
+                            "projets_id"=>$projet->id
+                        ]);
                     }
-                }
+                //}
+            //}
         }
        }
         $notification = $this->notifyArr('إضافة مشروع شراء', '!تم إضافة مشروع شراء بنجاح', 'success', true);

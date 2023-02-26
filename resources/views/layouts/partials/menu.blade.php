@@ -4,9 +4,17 @@
         <div class="navbar-brand header-logo">
             <a href="{{ url('/') }}" class="b-brand">
                 <div class="b-bg">
-                    L
+                    ج.ج
                 </div>
-                <span class="b-title">{{ __('app.app_name') }}</span>
+                <span class="b-title"> @php
+                    $userService = App\Models\Service::select('*')
+                        ->where('id', \Auth::user()->services_id)
+                        ->first();
+                @endphp
+                    @if ($userService)
+                        {{ $userService->libelle }}
+                    @endif
+                </span>
             </a>
             <a class="mobile-menu" id="mobile-collapse" href="#"><span></span></a>
         </div>

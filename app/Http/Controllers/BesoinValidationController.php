@@ -16,6 +16,7 @@ use Log;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Validator;
 use Config;
+use Carbon\Carbon;
 use App\Common\Utility;
 
 class BesoinValidationController extends Controller
@@ -97,7 +98,7 @@ class BesoinValidationController extends Controller
                 return $this->error($validator->errors(), 403);
             }
          // ajout de document s'il existe
-         $besoin = Besoin::select('*')->first($request->besoins_id);
+         $besoin = Besoin::select('*')->find($request->besoins_id);
             if ($besoin) {
                 $fileName = 'besoin_doc_validation' . time() . '.' . $request->file->extension();
                 $path = 'app/documents/' . Config::get('constants.besoin_documents') . '/' . $request->besoins_id . '/';
@@ -106,7 +107,7 @@ class BesoinValidationController extends Controller
                 $besoin->valider = 1;
                 $besoin->save();
 
-                $service = (Service::select('libelle')->where('id', $besoin->services_id)->first()) ?? '';
+                $service = (Service::select('libelle')->where('id', $besoin->services_id)->first()->libelle) ?? '';
                 // if notif_validation_besoins is true the Generate Notif
                 $msg = "قام المستعمل [". Auth::user()->name ."]يالمصادقة على الحاجيات الخاصة بالمصلحة[ ".$service."]";
                 // Create Notification To users

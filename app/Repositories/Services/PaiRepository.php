@@ -3,6 +3,8 @@
 namespace App\Repositories\Services;
 
 use App\Models\NatureDemande;
+use App\Models\LignesProjet;
+use App\Models\LignesBesoin;
 use App\Repositories\Interfaces\IPaiRepository;
 use DB;
 use Log;
@@ -12,6 +14,7 @@ class PaiRepository implements IPaiRepository
     // المخطط السنوي للحاجيات
     public function getPAI($services_id, $annee_gestion, $type_demande, $nature_demande, $mode)
     {
+        Log::info('Mode in repository is : '.$mode);
         if ($mode != 'projets') {
             $grouped = DB::table('lignes_besoins')->join('besoins', 'besoins.id', '=', 'lignes_besoins.besoins_id')
             ->selectRaw('libelle,type_demande,nature_demandes_id,cout_unite_ttc,
@@ -19,13 +22,14 @@ class PaiRepository implements IPaiRepository
             SUM(qte_demande) AS sumqte_demande,
             SUM(qte_valide) AS sumqte_valide,
             SUM(cout_total_ttc) AS sumcout_total_ttc
-        ');
+            ');
         } else {
             $grouped = DB::table('lignes_besoins')->selectRaw('id,libelle,type_demande,nature_demandes_id,cout_unite_ttc,
             description,besoins_id,projets_id,docs_id,qte_demande,qte_valide,cout_total_ttc,
             SUM(qte_demande) AS sumqte_demande,
             SUM(qte_valide) AS sumqte_valide,
-            SUM(cout_total_ttc) AS sumcout_total_ttc
+            SUM(cout_total_ttc) AS sumcout_total_ttc,
+            GROUP_CONCAT(id) as ids
         ');
         }
 
@@ -64,6 +68,7 @@ class PaiRepository implements IPaiRepository
         }
         //->get();
         Log::alert('Pai grouped query');
+        Log::info($grouped->toSql());
         Log::info($grouped->get());
 
         return datatables()
@@ -111,7 +116,7 @@ class PaiRepository implements IPaiRepository
                         lignes_projets.cout_unite_ttc,
                         lignes_besoins.nature_demandes_id,
                         lignes_besoins.type_demande,
-                        lignes_besoins.docs_id,
+                        lignes_besoins.lbsoins_ids,
                         SUM(qte) AS sumqte,
                         SUM(lignes_besoins.qte_demande) AS sumqte_dem,
                         SUM(lignes_projets.cout_total_ttc) AS sumcout_total_ttc
@@ -177,5 +182,26 @@ class PaiRepository implements IPaiRepository
             ->addColumn('action', $dataAction)
             ->rawColumns(['type_demande', 'nature_demandes_id', 'action'])
             ->make(true);
+    }
+    public function getLignesBesoinsPAISByLP($lpId){
+        $lprojet = LignesProjet::select('lbsoins_ids')->where('id', $lpId)->first();
+        if ($lprojet){
+            $lbesoins_ids = explode(',',$lprojet->lbsoins_ids);
+            $lignesBesoin = DB::table('lignes_besoins')
+            ->join('besoins', 'lignes_besoins.besoins_id', '=', 'besoins.id')
+            ->join('nature_demandes', 'lignes_besoins.nature_demandes_id', '=', 'nature_demandes.id')
+            ->join('services', 'besoins.services_id', '=', 'services.id')
+            ->selectRaw('lignes_besoins.libelle,lignes_besoins.qte_demande,lignes_besoins.qte_valide,
+            lignes_besoins.cout_unite_ttc,lignes_besoins.cout_total_ttc,
+            nature_demandes.libelle AS nature_demande, services.libelle AS service,
+            CASE
+                WHEN lignes_besoins.type_demande = 1  THEN "مواد وخدمات"
+                 WHEN lignes_besoins.type_demande = 1  THEN "أشغال"
+                ELSE "دراسات"
+            END AS type_demande
+            ')->whereIn('lignes_besoins.id',$lbesoins_ids)->get();
+           // dd($lignesBesoin);
+            return $lignesBesoin;
+        }
     }
 }
