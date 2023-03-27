@@ -290,7 +290,7 @@ class NotifRepository implements INotifRepository
     public function updateNotif($notifToUpdate)
     {
         Log::alert('Generate Update Notif from repository');
-        self::deleteNotif($notifToUpdate->from_table, $notifToUpdate->from_table_id);
+      self::deleteNotif($notifToUpdate->from_table, $notifToUpdate->from_table_id);
         return self::GenererNotif($notifToUpdate);
     }
     public function ArchiverNotif($start_date, $end_date)
@@ -303,9 +303,11 @@ class NotifRepository implements INotifRepository
     }
     public function deleteNotif($from_table, $from_table_id)
     {
-        Notif::where('from_table', $from_table)
+        if (isset($from_table) && isset($from_table_id)){
+            Notif::where('from_table', $from_table)
             ->where('from_table_id', $from_table_id)
-            ->first()
             ->delete();
+        }
+
     }
 }

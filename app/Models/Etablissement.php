@@ -12,15 +12,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Etablissement
- *
+ * 
  * @property int $id
  * @property string|null $libelle
  * @property string|null $matricule_fiscale
- * @property string|null $responsable
  * @property string|null $email
  * @property string|null $adresse
- * @property string|null $tel
- * @property string|null $fax
+ * @property string|null $responsable
  * @property string|null $entete
  * @property string|null $code_pa
  * @property string|null $code_consult
@@ -38,12 +36,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $notif_duree_cc
  * @property int $notif_avis_pub
  * @property int $notif_duree_pub
- * @property int $notif_caution_provisoire
- * @property int $notif_duree_caution_provisoire
- * @property bool $notif_caution_final
- * @property int|null $notif_duree_caution_final
  * @property bool|null $notif_session_op
  * @property int|null $notif_duree_session_op
+ * @property bool|null $notif_date_caution_final
+ * @property int|null $notif_duree_caution_final
+ * @property int|null $notif_caution_provisoire
+ * @property int|null $notif_duree_caution_provisoire
  * @property bool|null $notif_delais_rp
  * @property int|null $notif_duree_rp
  * @property bool|null $notif_delais_rd
@@ -81,12 +79,12 @@ class Etablissement extends Model
 		'notif_duree_cc' => 'int',
 		'notif_avis_pub' => 'int',
 		'notif_duree_pub' => 'int',
-		'notif_caution_provisoire' => 'int',
-		'notif_duree_caution_provisoire' => 'int',
-		'notif_caution_final' => 'bool',
-		'notif_duree_caution_final' => 'int',
 		'notif_session_op' => 'bool',
 		'notif_duree_session_op' => 'int',
+		'notif_date_caution_final' => 'bool',
+		'notif_duree_caution_final' => 'int',
+		'notif_caution_provisoire' => 'int',
+		'notif_duree_caution_provisoire' => 'int',
 		'notif_delais_rp' => 'bool',
 		'notif_duree_rp' => 'int',
 		'notif_delais_rd' => 'bool',
@@ -129,12 +127,12 @@ class Etablissement extends Model
 		'notif_duree_cc',
 		'notif_avis_pub',
 		'notif_duree_pub',
-		'notif_caution_provisoire',
-		'notif_duree_caution_provisoire',
-		'notif_caution_final',
-		'notif_duree_caution_final',
 		'notif_session_op',
 		'notif_duree_session_op',
+		'notif_date_caution_final',
+		'notif_duree_caution_final',
+		'notif_caution_provisoire',
+		'notif_duree_caution_provisoire',
 		'notif_delais_rp',
 		'notif_duree_rp',
 		'notif_delais_rd',

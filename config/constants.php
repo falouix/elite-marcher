@@ -28,7 +28,9 @@ return [
     'poa_docuements' => 'poa_docuements',
 
     'legal_docuements' => 'legal_links',
-    
+
     'besoin_documents' => 'besoin_documents',
+    'commissions_ops_docs' => 'commissions_ops_docs',
+
 
 ];

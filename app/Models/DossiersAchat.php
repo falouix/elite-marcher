@@ -148,12 +148,12 @@ class DossiersAchat extends Model
 
 	public function annulation()
 	{
-		return $this->hasOne(Annulation::class, 'dossiers_achats_id');
+		return $this->hasOne(Annulation::class, 'dossiers_achats_id')->withDefault();
 	}
 
 	public function avis_dossiers()
 	{
-		return $this->hasMany(AvisDossier::class, 'dossiers_achats_id');
+		return $this->hasOne(AvisDossier::class, 'dossiers_achats_id')->withDefault();
 	}
 
 	public function bcs_engagements()
@@ -163,12 +163,12 @@ class DossiersAchat extends Model
 
 	public function cahiers_charges()
 	{
-		return $this->hasOne(CahiersCharge::class, 'dossiers_achats_id');
+		return $this->hasOne(CahiersCharge::class, 'dossiers_achats_id')->withDefault();
 	}
 
 	public function cloture()
 	{
-		return $this->hasOne(Cloture::class, 'dossiers_achats_id');
+		return $this->hasOne(Cloture::class, 'dossiers_achats_id')->withDefault();
 	}
 
 	public function commissions_ops()

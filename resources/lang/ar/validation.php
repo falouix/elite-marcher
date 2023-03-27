@@ -170,9 +170,14 @@ return [
         'description'                  => '"ملاحظات/التفاصيل"',
         'payement_status_id'                  => '"طريقة الدفع"',
         'url'                  => '"الرابط"',
-        'captcha'                  => 'رمز التحقق'
-
-
+        'captcha'                  => 'رمز التحقق',
+        //Avis Pub
+        'ref_avis' => '"مرجع الإعلان"',
+        'texte_avis' => '"نص الإعلان"',
+        'duree_avis' => '"مدة الإعلان باليوم"',
+        'date_debut_avis' => '"تاريخ أول ظهور للإعلان"',
+        'date_validite' => '"آخر أجل لقبول العروض"',
+        'date_ouverture_plis' => '"تاريخ فتح الظروف"',
     ],
 
 ];

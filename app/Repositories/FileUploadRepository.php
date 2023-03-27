@@ -68,6 +68,21 @@ class FileUploadRepository implements IFileUploadRepository
                         'path' => $path . $fileName,
                         'created_by' => Auth::user()->id,
                     ]);
+                    case 'commissions_ops_docs':
+                        Log::info($request);
+                        $fileName = 'commissions_ops_docs' . time() . '.' . $request->file->extension();
+                        $path = 'app/documents/' . Config::get('constants.commissions_ops_docs') . '/' . $request->dossiers_achats_id . '/';
+                        $request->file->move(storage_path($path), $fileName);
+                        // Storage::move($request->file, $fileName);
+                        $CcDoc =  DossierDoc::create([
+                            'libelle' => $request->file_name,
+                            // 1 : Commission OPS ; 2 : Commission technique(جلسات الفرز)
+                            // 3 :bcs_egagements_docs
+                            'type_id' => $request->type_id,
+                            'dossiers_achats_id' => $request->dossiers_achats_id,
+                            'path' => $path . $fileName,
+                            'created_by' => Auth::user()->id,
+                        ]);
 
                     return $CcDoc;
 

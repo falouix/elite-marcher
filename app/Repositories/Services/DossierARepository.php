@@ -312,7 +312,7 @@ class DossierARepository implements IDossierARepository
             // Update Notif
         }
         // Générer Notif تاريخ اعتزام التنفيذ
-        if ($cc && ($this->settings->notif_session_op == true)) {
+        if ($cc && ($this->settings->notif_avis_pub == true)) {
             $dossier = self::getDossierAByParam('id', $input['dossiers_achats_id']);
             $msg = "تذكير لإضافة الإعلان الإشهاري للملف عدد [" . $dossier->code_dossier . "] بتاريخ [" . $cc->date_pub_prevu . "]";
             // Create Notification To users
@@ -323,7 +323,7 @@ class DossierARepository implements IDossierARepository
             $newNotif->from_table_id = $cc->id;
             $newNotif->users_id = Auth::user()->id;
             $newNotif->action = route('consultations.edit', $dossier->id);
-            $newNotif->read_at = Carbon::parse($cc->date_pub_prevu)->subDays($this->settings->notif_avis_pub)->format('Y-m-d');
+            $newNotif->read_at = Carbon::parse($cc->date_pub_prevu)->subDays($this->settings->notif_duree_pub)->format('Y-m-d');
             Log::info("read_at : ".$newNotif->read_at);
             $notif = $this->notifRepository->updateNotif($newNotif);
         }
@@ -349,18 +349,19 @@ class DossierARepository implements IDossierARepository
     /* Avis Pub */
     public function avisPub($input)
     {
+        Log::info('avis pub add or update from repository');
         $avis = AvisDossier::where('dossiers_achats_id', $input['dossiers_achats_id'])->first();
         if ($avis) {
-            $avis = self::updateAvisPub($input, $cc->id);
+            $avis = self::updateAvisPub($input, $avis->id);
         } else {
             $avis = self::createAvisPub($input);
             self::updateSituationDossier($avis->dossiers_achats_id, 2);
         }
+        $dossier = self::getDossierAByParam('id', $input['dossiers_achats_id']);
         // Générer Notif ( New if createAvisPub , Update if updateAvisPub)
         if ($avis && ($this->settings->notif_session_op == true)) {
-            $dossier = self::getDossierAByParam('id', $input['dossiers_achats_id']);
+            // Notif OP
             $msg = "تذكير بتاريخ فتح الظروف المتلعق بالملف عدد [" . $dossier->code_dossier . "] بتاريخ [" . $avis->date_ouverture_plis . "]";
-            // Create Notification To users
             $newNotif = new Notif();
             $newNotif->type = "RAPPEL";
             $newNotif->texte = $msg;
@@ -369,14 +370,32 @@ class DossierARepository implements IDossierARepository
             $newNotif->users_id = Auth::user()->id;
             $newNotif->action = "";
             $newNotif->read_at = Carbon::parse( $avis->date_ouverture_plis)->subDays($this->settings->notif_duree_session_op)->format('Y-m-d');
-            Log::info("avis pub read_at : ".$newNotif->read_at);
-            $notif = $this->notifRepository->updateNotif($newNotif);
+            Log::info("OUVERTURE DES PLIS read_at : ".$newNotif->read_at);
+            $this->notifRepository->updateNotif($newNotif);
+        }
+        if ($avis && ($this->settings->notif_caution_provisoire == true)) {
+            $cc = CahiersCharge::where('dossiers_achats_id', $input['dossiers_achats_id'])->first();
+            // Notif CautionProvisoire
+            $newNotif = new Notif();
+            $newNotif->type = "RAPPEL";
+            $newNotif->texte = $msg;
+            $newNotif->from_table = "avis_dossiers";
+            $newNotif->from_table_id = $avis->id;
+            $newNotif->users_id = Auth::user()->id;
+            $newNotif->action = "";
+
+            $newNotif->read_at = Carbon::parse($avis->date_validite)->addDays($cc->duree_caution_prov +1)->format('Y-m-d');
+            $msg = "تذكير بحلول آجال الضمان النهائي المتلعق بالملف عدد [" . $dossier->code_dossier . "] بتاريخ [" . $newNotif->read_at . "]";
+
+            $newNotif->read_at = Carbon::parse($newNotif->read_at)->subDays($this->settings->notif_duree_caution_provisoire)->format('Y-m-d');
+            Log::info("CAUTION PROVISOIRE read_at : ".$newNotif->read_at);
+            $this->notifRepository->updateNotif($newNotif);
         }
     }
-    private function createAvisPub($input)
+    private function createAvisPub($request)
     {
-        Log::alert("Create CC Request repository");
         $input = $request->all();
+        Log::info("request create avis pub repository : ");
         $cc = AvisDossier::create($input);
         return $cc;
     }
@@ -638,7 +657,7 @@ class DossierARepository implements IDossierARepository
     /* Fin Cloture */
 
     // Update Situation dossier : بصدد الإعداد 1\n، في انتظار العروض2\n في الفرز،3\n بصدد الإنجاز،4\n القبول الوقتي، 5\nالقبول النهائي،6\n ملف منتهي 7\n، ملغى
-    public function updateSituationDossier($id, $situation_dossier): DossiersAchat
+    public function updateSituationDossier($id, $situation_dossier)
     {
         $dossier = DossiersAchat::find($id)->update([
             'situation_dossier' => $situation_dossier,

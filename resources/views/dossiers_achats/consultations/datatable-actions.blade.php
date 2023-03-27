@@ -1,12 +1,12 @@
 
 @can('consultations-view')
-<a href="{{ route('consultations.show', ['consultation'=> $id]) }}" class="btn btn-icon btn-rounded btn-primary" title="{{ __('inputs.btn_view') }}">
+<a href="{{ route('consultations.show', ['consultation'=> encrypt($id)]) }}" class="btn btn-icon btn-rounded btn-primary" title="{{ __('inputs.btn_view') }}">
     <i class="feather icon-eye"></i>
 </a>
 @endcan
 
 @can('consultations-edit')
-<a href="{{ route('consultations.edit', $id) }}" class="btn btn-icon btn-rounded btn-success"
+<a href="{{ route('consultations.edit', encrypt($id)) }}" class="btn btn-icon btn-rounded btn-success"
         title="{{ __('inputs.btn_edit') }}">
         <i class="feather icon-edit"></i>
     </a>

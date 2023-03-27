@@ -11,6 +11,9 @@
         $rtl = 'ltr';
     }
     $tbl_action = __('labels.tbl_action');
+
+    $avisDossier = $dossier->avis_dossiers;
+   // dd($avisDossier);
 @endphp
 
 @extends('layouts.app')
@@ -382,8 +385,7 @@
                     <div class="card-header">
                         <a href="#" class="text-secondary"> الإعلان الإشهاري</a>
                         <div class="card-header-right">
-                            <button type="button" class="btn btn-success" id="btn_add_cc"
-                                onclick="pubAvis({{ $dossier->id }})">
+                            <button type="button" class="btn btn-success" id="btn_add_pubAvis">
                                 تسجيل البيانات
                                 <i class="feather icon-plus-circle"></i>
                             </button>
@@ -393,47 +395,66 @@
                         <div class="col-md-12">
                             <div class="row">
                                 {{--  Publication Avis  form start --}}
+                                <input type="number" name="avisPubId" id="avisPubId" value="{{$avisDossier->id ?? '0'}}" hidden>
                                 <div class="col-md-12">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label>مرجع الإعلان</label>
                                             <input type="text" class="form-control" id='ref_avis' name="ref_avis"
-                                                placeholder="...المرجع" required>
+                                                placeholder="...المرجع" value="{{$avisDossier->ref_avis ?? ''}}" required>
+                                                <label id="ref_avis-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="ref_avis"></label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>موجه إلى </label>
                                             <select class="form-control" id="destination" name="destination">
-                                                <option value="1">منظومة الشراءات على الخط</option>
-                                                <option value="2">موقع المؤسسة</option>
-                                                <option value="3">مةاقع أخرى</option>
+                                                <option value="1" @if($avisDossier->destination == '1') selected="selected" @endif>منظومة الشراءات على الخط</option>
+                                                <option value="2" @if($avisDossier->destination == '2') selected="selected" @endif>موقع المؤسسة</option>
+                                                <option value="3" @if($avisDossier->destination == '3') selected="selected" @endif>مواقع أخرى</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>نص الإعلان</label>
-                                            <textarea class="form-control" id="texte_avis" name="texte_avis" placeholder="نص الإعلان..."></textarea>
+                                            <textarea class="form-control" id="texte_avis" name="texte_avis" placeholder="نص الإعلان...">{{$avisDossier->texte_avis}}</textarea>
+                                            <label id="texte_avis-error"
+                                            class="error jquery-validation-error small form-text invalid-feedback"
+                                            for="texte_avis"></label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>تاريخ أول ظهور للإعلان </label>
                                             <input type="datetime-local" class="form-control" id='date_debut_avis'
-                                                name="date_debut_avis" placeholder="أدخل التاريخ" required>
+                                                name="date_debut_avis" placeholder="أدخل التاريخ" value="{{$avisDossier->date_debut_avis ?? ''}}" required>
+                                                <label id="date_debut_avis-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="date_debut_avis"></label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>مدة الإعلان باليوم</label>
                                             <input type="number" class="form-control" id="duree_avis" name="duree_avis"
-                                                min=0 max=99>
+                                                min=0 max=99  value="{{$avisDossier->duree_avis ?? '0'}}" >
+                                                <label id="duree_avis-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="duree_avis"></label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>آخر أجل لقبول العروض </label>
                                             <input type="datetime-local" class="form-control" id='date_validite'
-                                                name="date_validite" placeholder="أدخل التاريخ" required>
+                                                name="date_validite" placeholder="أدخل التاريخ"  value="{{$avisDossier->date_validite ?? ''}}" required>
+                                                <label id="date_validite-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="date_validite"></label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>تاريخ فتح الظروف </label>
-                                            <input type="datetime-local" class="form-control" id='date_ouverture_plis'
-                                                name="date_ouverture_plis" placeholder="أدخل التاريخ" required>
+                                               <input type="datetime-local" class="form-control" id='date_ouverture_plis'
+                                                name="date_ouverture_plis" placeholder="أدخل التاريخ"  value="{{$avisDossier->date_ouverture_plis ?? ''}}" required>
+                                                <label id="date_ouverture_plis-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="date_ouverture_plis"></label>
                                         </div>
                                     </div>
-                                    {{--  Cahier des charges form end --}}
+                                    {{-- AvisPub form end --}}
                                 </div>
                             </div>
                         </div>
@@ -442,9 +463,7 @@
                 </div>
             </div>
             {{-- Publication Avis Card End --}}
-
         </div>
-
         {{-- Reception Offres Card Start --}}
         <div class="row" id="card-receptionOffres" name="card" style="display: none;">
             <div class="col-md-12 col-sm-12">
@@ -452,7 +471,6 @@
                     <div class="card-header">
                         <a href="#" class="text-secondary">وصول العروض</a>
                         <div class="card-header-right">
-
                         </div>
                     </div>
                     <div class="card-body">
@@ -537,7 +555,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         {{-- Reception Offres Card End --}}
     </div>
@@ -732,6 +749,113 @@
 
 
 
+
+        // Create cc
+        $('#btn_add_cc').click(() => {
+            var $url = "{{ route('consultation.cc') }}"
+            var $type = "POST";
+
+            $.ajax({
+                url: $url,
+                type: $type,
+                data: {
+                    dossiers_achats_id: {{ $dossier->id }},
+                    date_pub_prevu: $('#date_pub_prevu').val(),
+                    prix_cc: $('#prix_cc').val(),
+                    type_reception: $('#type_reception').val(),
+                    type_overture_plis: $('#type_overture_plis').val(),
+                    duree_travaux: $('#duree_travaux').val(),
+                    caution_prov: $('#caution_prov').val(),
+                    duree_caution_prov: $('#duree_caution_prov').val(),
+                    caution_def: $('#caution_def').val(),
+                    duree_caution_def: $('#duree_caution_def').val(),
+                },
+                success: function(response) {
+                    $('#date_pub_prevu').removeClass('is-invalid')
+                    $('#duree_travaux').removeClass('is-invalid')
+                    $('#cahiers_charges_id').val(response.data.id)
+                    PnotifyCustom(response)
+                },
+                error: function(errors) {
+
+                    if (errors.responseJSON.message.date_pub_prevu != null) {
+                        $('#date_pub_prevu').addClass('is-invalid')
+                        $('#date_pub_prevu-error').text(errors.responseJSON.message.date_pub_prevu);
+                    }
+
+                    if (errors.responseJSON.message.duree_travaux != null) {
+                        $('#duree_travaux').addClass('is-invalid')
+                        $('#duree_travaux-error').text(errors.responseJSON.message.duree_travaux);
+                    }
+                    if (errors.responseJSON.message.caution_def != null) {
+                        $('#caution_def').addClass('is-invalid')
+                        $('#caution_def-error').text(errors.responseJSON.message.caution_def);
+                    }
+                }
+            }); // ajax end
+
+        })
+        // Create Avis Pub
+        $('#btn_add_pubAvis').click(() => {
+            var $url = "{{ route('consultation.avisPub') }}"
+            var $type = "POST";
+
+            $.ajax({
+                url: $url,
+                type: $type,
+                data: {
+                    dossiers_achats_id: {{ $dossier->id }},
+                    ref_avis: $('#ref_avis').val(),
+                    texte_avis: $('#texte_avis').val(),
+                    destination: $('#destination').val(),
+                    duree_avis: $('#duree_avis').val(),
+                    date_debut_avis: $('#date_debut_avis').val(),
+                    date_validite: $('#date_validite').val(),
+                    date_ouverture_plis: $('#date_ouverture_plis').val(),
+                },
+                success: function(response) {
+                    $('#ref_avis').removeClass('is-invalid')
+                    $('#date_debut_avis').removeClass('is-invalid')
+                    $('#date_validite').removeClass('is-invalid')
+                    $('#duree_avis').removeClass('is-invalid')
+                    $('#date_ouverture_plis').removeClass('is-invalid')
+
+                    PnotifyCustom(response)
+                },
+                error: function(errors) {
+
+                    $('#ref_avis').removeClass('is-invalid')
+                    $('#date_debut_avis').removeClass('is-invalid')
+                    $('#date_validite').removeClass('is-invalid')
+                    $('#duree_avis').removeClass('is-invalid')
+                    $('#date_ouverture_plis').removeClass('is-invalid')
+
+                    if (errors.responseJSON.message.ref_avis != null) {
+                        $('#ref_avis').addClass('is-invalid')
+                        $('#ref_avis-error').text(errors.responseJSON.message.ref_avis);
+                    }
+
+                    if (errors.responseJSON.message.date_debut_avis != null) {
+                        $('#date_debut_avis').addClass('is-invalid')
+                        $('#date_debut_avis-error').text(errors.responseJSON.message.date_debut_avis);
+                    }
+                    if (errors.responseJSON.message.date_validite != null) {
+                        $('#date_validite').addClass('is-invalid')
+                        $('#date_validite-error').text(errors.responseJSON.message.date_validite);
+                    }
+                    if (errors.responseJSON.message.duree_avis != null) {
+                        $('#duree_avis').addClass('is-invalid')
+                        $('#duree_avis-error').text(errors.responseJSON.message.duree_avis);
+                    }
+                    if (errors.responseJSON.message.date_ouverture_plis != null) {
+                        $('#date_ouverture_plis').addClass('is-invalid')
+                        $('#date_ouverture_plis-error').text(errors.responseJSON.message.date_ouverture_plis);
+                    }
+                }
+            }); // ajax end
+
+        })
+        //Create Offres
         $('#add-offre').click(() => {
             //$('#libelle').removeClass('is-invalid')
             $('.spinner-border').removeAttr('hidden');
@@ -792,53 +916,6 @@
 
                 }
             }); // ajax end
-        })
-
-
-        // Create cc
-        $('#btn_add_cc').click(() => {
-            var $url = "{{ route('consultation.cc') }}"
-            var $type = "POST";
-
-            $.ajax({
-                url: $url,
-                type: $type,
-                data: {
-                    dossiers_achats_id: {{ $dossier->id }},
-                    date_pub_prevu: $('#date_pub_prevu').val(),
-                    prix_cc: $('#prix_cc').val(),
-                    type_reception: $('#type_reception').val(),
-                    type_overture_plis: $('#type_overture_plis').val(),
-                    duree_travaux: $('#duree_travaux').val(),
-                    caution_prov: $('#caution_prov').val(),
-                    duree_caution_prov: $('#duree_caution_prov').val(),
-                    caution_def: $('#caution_def').val(),
-                    duree_caution_def: $('#duree_caution_def').val(),
-                },
-                success: function(response) {
-                    $('#date_pub_prevu').removeClass('is-invalid')
-                    $('#duree_travaux').removeClass('is-invalid')
-                    $('#cahiers_charges_id').val(response.data.id)
-                    PnotifyCustom(response)
-                },
-                error: function(errors) {
-
-                    if (errors.responseJSON.message.date_pub_prevu != null) {
-                        $('#date_pub_prevu').addClass('is-invalid')
-                        $('#date_pub_prevu-error').text(errors.responseJSON.message.date_pub_prevu);
-                    }
-
-                    if (errors.responseJSON.message.duree_travaux != null) {
-                        $('#duree_travaux').addClass('is-invalid')
-                        $('#duree_travaux-error').text(errors.responseJSON.message.duree_travaux);
-                    }
-                    if (errors.responseJSON.message.caution_def != null) {
-                        $('#caution_def').addClass('is-invalid')
-                        $('#caution_def-error').text(errors.responseJSON.message.caution_def);
-                    }
-                }
-            }); // ajax end
-
         })
         // Delete CC files
         function deleteFile(id) {

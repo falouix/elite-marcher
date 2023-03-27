@@ -170,7 +170,8 @@ Route::group(
          Route::resource('consultations', ConsultationController::class);
          Route::post('consultations/cc', [ConsultationController::class, 'cahierCharges'])->name('consultation.cc');
          Route::get('consultations/cc', [ConsultationController::class, 'getCahierCharges'])->name('consultation.cc');
-         Route::post('consultations/avisPub', [ConsultationController::class, 'avisPub'])->name('consultation.avisPub');
+         Route::post('consultations/avis/avisPub', [ConsultationController::class, 'avisPub'])->name('consultation.avisPub');
+         ////Route::post('consultations/avisPub', [ConsultationController::class, 'getAvisPub'])->name('consultation.avisPub');
          // route Appel Offre Normal
          Route::resource('aon', AONController::class);
          // route Appel Offre Simplifié

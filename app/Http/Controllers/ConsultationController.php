@@ -2,21 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{
-    DossiersAchat,
-    LignesBesoin,
-    LignesDossier,
-    LignesDossiersAchat,
-    Service,
-    Notif,
-    Soumissionnaire
-};
+use App\Models\{DossiersAchat, LignesBesoin, LignesDossier,
+    LignesDossiersAchat, Service,
+     Notif, Soumissionnaire,
+     CahiersCharge};
 use App\Repositories\IFileUploadRepository;
-use App\Repositories\Interfaces\{
-    IConsultationRepository,
-    IDossierARepository,
-    INotifRepository
-};
+use App\Repositories\Interfaces\{IConsultationRepository, IDossierARepository, INotifRepository};
 use App\Traits\ApiResponser;
 use Auth;
 use Illuminate\Http\Request;
@@ -28,8 +19,7 @@ use App\Common\Utility;
 class ConsultationController extends Controller
 {
     use ApiResponser;
-    public function __construct(IConsultationRepository $repository, IDossierARepository $dossierRepository,
-                                IFileUploadRepository $fileRepository, INotifRepository $notifRepository)
+    public function __construct(IConsultationRepository $repository, IDossierARepository $dossierRepository, IFileUploadRepository $fileRepository, INotifRepository $notifRepository)
     {
         $this->repository = $repository;
         $this->dossierRepository = $dossierRepository;
@@ -46,7 +36,7 @@ class ConsultationController extends Controller
     {
         //$tot = LignesDossier::select('cout_total_ttc')->where('dossiers_achats_id',12)->sum('cout_total_ttc');
         //dd($tot);
-        return view('dossiers_achats.consultations.index', );
+        return view('dossiers_achats.consultations.index');
     }
 
     /**
@@ -57,7 +47,9 @@ class ConsultationController extends Controller
     public function create()
     {
         if (Auth::user()->user_type == 'user') {
-            $services = Service::select('id', 'libelle')->where('id', Auth::user()->services_id)->get();
+            $services = Service::select('id', 'libelle')
+                ->where('id', Auth::user()->services_id)
+                ->get();
         }
         if (Auth::user()->user_type == 'admin') {
             $services = Service::select('id', 'libelle')->get();
@@ -71,10 +63,10 @@ class ConsultationController extends Controller
      */
     public function cahierCharges(Request $request)
     {
-         // Prevent XSS Attack
-         Utility::stripXSS($request);
+        // Prevent XSS Attack
+        Utility::stripXSS($request);
         if ($request->ajax()) {
-            Log::info("Cahier des charges validation from edit consultation view");
+            Log::info('Cahier des charges validation from edit consultation view');
             Log::info($request);
 
             $validator = Validator::make($request->all(), [
@@ -89,7 +81,6 @@ class ConsultationController extends Controller
             $cc = $this->dossierRepository->cahierCharges($request);
             return $this->notify('كراس الشروط', 'تم تسجيل بيانات كراس الشروط بنجاح', $type = 'success', $rtl = true, $cc);
         }
-
     }
     /**
      * Show the form for creating a new resource.
@@ -98,26 +89,35 @@ class ConsultationController extends Controller
      */
     public function avisPub(Request $request)
     {
-         // Prevent XSS Attack
-         Utility::stripXSS($request);
+        // Prevent XSS Attack
+        Utility::stripXSS($request);
         if ($request->ajax()) {
-            Log::info("Cahier des charges validation from edit consultation view");
+            Log::info('Avis Pub validation from edit consultation view');
             Log::info($request);
-            /*
-            $validator = Validator::make($request->all(), [
-            'dossiers_achats_id' => 'required',
-            'date_pub_prevu' => 'required|date',
-            'duree_travaux' => 'required|numeric|min:1|max:999',
-            ]);
+            $cc = CahiersCharge::where('dossiers_achats_id', $request['dossiers_achats_id'])->first();
+            if ($cc) {
+                $validator = Validator::make($request->all(), [
+                    'dossiers_achats_id' => 'required',
+                    'ref_avis' => 'required',
+                    //'texte_avis' => 'required',
+                    'destination' => 'required',
+                    'date_debut_avis' => 'required|date_format:Y-m-d\TH:i',
+                    'date_validite' => 'required|date_format:Y-m-d\TH:i',
+                    'date_ouverture_plis' => 'required|date_format:Y-m-d\TH:i',
+                    'duree_avis' => 'required|numeric|min:1|max:999',
+                ]);
 
-            if ($validator->fails()) {
-            return $this->error($validator->errors(), 403);
+                if ($validator->fails()) {
+                    Log::alert("message : ".$validator->errors());
+                    return $this->error($validator->errors(), 403);
+                }
+
+                $avisPub = $this->dossierRepository->avisPub($request);
+                return $this->notify('الإعلان الإشهاري', 'تم تسجيل بيانات الإعلان الإشهاري بنجاح', 'success', true, $avisPub);
+            } else {
+                return $this->notify('الإعلان الإشهاري', 'لا يمكن تسجيل الإعلان الإشهار قبل إعداد كراس الشروط','error', true);
             }
-             */
-            $cc = $this->dossierRepository->avisPub($request);
-            return $this->notify('الإعلان الإشهاري', 'تم تسجيل بيانات الإعلان الإشهاري بنجاح', 'success', true, $cc);
         }
-
     }
     /**
      * Store a newly created resource in storage.
@@ -127,8 +127,8 @@ class ConsultationController extends Controller
      */
     public function store(Request $request)
     {
-         // Prevent XSS Attack
-         Utility::stripXSS($request);
+        // Prevent XSS Attack
+        Utility::stripXSS($request);
         //dd($request->all());
         $this->validate($request, [
             'type_demande' => 'required',
@@ -149,7 +149,7 @@ class ConsultationController extends Controller
                     if ($ligneBesoin) {
                         LignesDossiersAchat::create([
                             'num_lot' => null,
-                            'libelle' => ($ligneBesoin->libelle) ? $ligneBesoin->libelle : null,
+                            'libelle' => $ligneBesoin->libelle ? $ligneBesoin->libelle : null,
                             'lignes_besoin_id' => $ligneBesoin->id,
                             'qte' => $ligneBesoin->qte_valide,
                             'cout_unite_ttc' => $ligneBesoin->cout_unite_ttc,
@@ -166,7 +166,8 @@ class ConsultationController extends Controller
         }
         $notification = $this->notifyArr('إضافة مشروع شراء', '!تم إضافة مشروع شراء بنجاح', 'success', true);
 
-        return redirect()->route('projets.index')
+        return redirect()
+            ->route('projets.index')
             ->with('notification', $notification);
     }
 
@@ -186,26 +187,23 @@ class ConsultationController extends Controller
         ->with('enregistrements')
         ->with('bcs_engagements')
         ->with('avis_dossiers')*/
-        $dossier = $this->dossierRepository->getDossierWithRelations($id, [
-                                                                            'cahiers_charges',
-                                                                            'commissions_ops',
-                                                                            'commissions_techniques'
-                                                                        ]);
+        $id = decrypt($id);
+        $dossier = $this->dossierRepository->getDossierWithRelations($id, ['cahiers_charges', 'commissions_ops', 'commissions_techniques']);
         switch ($dossier->type_demande) {
             case '1':
-                $dossier->type_demande = "مواد وخدمات";
+                $dossier->type_demande = 'مواد وخدمات';
                 break;
             case '2':
-                $dossier->type_demande = "أشغال";
+                $dossier->type_demande = 'أشغال';
                 break;
             default:
-                $dossier->type_demande = "دراسات";
+                $dossier->type_demande = 'دراسات';
                 break;
         }
 
         return view('dossiers_achats.consultations.show', compact('dossier'));
     }
-     /**
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -221,23 +219,21 @@ class ConsultationController extends Controller
         ->with('enregistrements')
         ->with('bcs_engagements')
         ->with('avis_dossiers')*/
-        $dossier = $this->dossierRepository->getDossierWithRelations($id, [
-                                                                            'cahiers_charges',
-                                                                            'commissions_ops',
-                                                                            'commissions_techniques'
-                                                                        ]);
+        $dossier = $this->dossierRepository->getDossierWithRelations($id, ['cahiers_charges', 'commissions_ops', 'commissions_techniques']);
         switch ($dossier->type_demande) {
             case '1':
-                $dossier->type_demande = "مواد وخدمات";
+                $dossier->type_demande = 'مواد وخدمات';
                 break;
             case '2':
-                $dossier->type_demande = "أشغال";
+                $dossier->type_demande = 'أشغال';
                 break;
             default:
-                $dossier->type_demande = "دراسات";
+                $dossier->type_demande = 'دراسات';
                 break;
         }
-        $client = Soumissionnaire::select('*')->where('id',$dossier->soumissionaire_id)->first();
+        $client = Soumissionnaire::select('*')
+            ->where('id', $dossier->soumissionaire_id)
+            ->first();
         return view('dossiers_achats.consultations.show-customer', compact('dossier', 'client'));
     }
 
@@ -249,19 +245,18 @@ class ConsultationController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        $id = decrypt($id);
         //$dossier = $this->dossierRepository->getDossierAByParam('id', $id);
-        $dossier = $this->dossierRepository->getDossierWithRelations($id, [
-            'cahiers_charges',
-        ]);
+        $dossier = $this->dossierRepository->getDossierWithRelations($id, ['cahiers_charges', 'avis_dossiers']);
         switch ($dossier->type_demande) {
             case '1':
-                $dossier->type_demande = "مواد وخدمات";
+                $dossier->type_demande = 'مواد وخدمات';
                 break;
             case '2':
-                $dossier->type_demande = "أشغال";
+                $dossier->type_demande = 'أشغال';
                 break;
             default:
-                $dossier->type_demande = "دراسات";
+                $dossier->type_demande = 'دراسات';
                 break;
         }
 
@@ -277,8 +272,8 @@ class ConsultationController extends Controller
      */
     public function update(Request $request, $id)
     {
-         // Prevent XSS Attack
-         Utility::stripXSS($request);
+        // Prevent XSS Attack
+        Utility::stripXSS($request);
         $this->validate($request, [
             'type_demande' => 'required',
             'nature_passation' => 'required',
@@ -290,7 +285,8 @@ class ConsultationController extends Controller
         $projet = $this->repository->update($request->all());
         $notification = $this->notifyArr('تحيين مشروع شراء', '!تم تحيين مشروع شراء بنجاح', 'success', true);
 
-        return redirect()->route('projets.index')
+        return redirect()
+            ->route('projets.index')
             ->with('notification', $notification);
     }
 
@@ -311,7 +307,6 @@ class ConsultationController extends Controller
         LignesDossiersAchat::find($request->id)->delete();
 
         return $this->notify('مشروع شراء', 'تم حذف المادة من مشروع الشراء بنجاح');
-
     }
     /**
      * Process datatables ajax request.
@@ -320,14 +315,13 @@ class ConsultationController extends Controller
      */
     public function getAllDossiersAchatsDatatable(Request $request)
     {
-        Log::alert("Pai Request Params from view");
+        Log::alert('Pai Request Params from view');
         Log::info($request);
         if ($request->annee_gestion) {
             if ($request->ajax()) {
                 return $this->repository->getAllDossiersAchat($request->annee_gestion, $request->services_id, $request->type_demande, $request->natures_passation);
             }
         }
-
     }
     /**
      * Process datatables LignesDossiersAchat ajax request.
@@ -336,11 +330,10 @@ class ConsultationController extends Controller
      */
     public function getLigneDossiersAchatsByDossiersAchat(Request $request)
     {
-        Log::info("Ligne projet datatable");
+        Log::info('Ligne projet datatable');
         Log::info($request);
         if ($request->ajax()) {
             return $this->repository->getLigneDossiersAchatsByDossiersAchat($request->projet_id, $request->mode);
         }
     }
-
 }

@@ -208,7 +208,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             {{-- CC --}}
                             <div class="col-sm-6 ">
                                 <div class="form-group">
-                                    <label> تفعيل تنبيه لإعداد كراس الشروط </label>
+                                    <label> تفعيل التنبيهات المتعلقة بكراس الشروط </label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
@@ -246,11 +246,11 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_publication_achat" {{ $settings->notif_publication_achat ? 'checked' : ''  }}>
+                                                name="notif_publication_achat" {{ $settings->notif_session_op ? 'checked' : ''  }}>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_publication" {{ $settings->notif_duree_publication ? 'checked' : ''  }} min="1" max="99">
+                                        name="notif_duree_session_op" value="{{ $settings->notif_duree_session_op }}" min="1" max="99">
                                     </div>
                                 </div>
                             </div>

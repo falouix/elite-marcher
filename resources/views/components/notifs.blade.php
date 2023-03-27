@@ -1,8 +1,8 @@
 <div id="notif-bar-app">
 <a class="dropdown-toggle" href="#" data-toggle="dropdown">
 
-    <v-icon v-if="bellIcon === 'on'" ><i class="icon feather icon-bell" style="color:red;"></i></v-icon>
-        <v-icon v-else><i class="icon feather icon-bell-off"></i></v-icon>
+    <span v-if="bellIcon === 'on'" ><i class="icon feather icon-bell" style="color:red;"></i></span>
+        <span v-else><i class="icon feather icon-bell-off"></i></span>
 </a>
 
 
@@ -99,7 +99,7 @@
 
             const timerDsktop = setInterval(() => {
                this.getDesktopNotifs();
-           }, 180000);
+           }, 900000);
 
            this.$once("hook:beforeDestroy", () => {
                clearInterval(timer);
