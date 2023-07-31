@@ -95,7 +95,6 @@
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_pubAvis" class="btn btn-danger-gradient btn-block"
                                         onclick='return showHideSteps("#card-pubAvis");'>
-                                        <i class="fas fa-gavel tx-20 pl-2" aria-hidden="true"></i>
                                         الإعلان الإشهاري
                                     </button>
                                 </div>
@@ -104,7 +103,6 @@
                                     <button type="button" id="btnPartial_receptionOffre"
                                         class="btn btn-warning-gradient btn-block"
                                         onclick='return showHideSteps("#card-receptionOffres");'>
-                                        <i class="fas fa-gavel tx-20 pl-2" aria-hidden="true"></i>
                                         وصول العروض
                                     </button>
                                 </div>
@@ -112,8 +110,7 @@
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_comOuverturePlis"
                                         class="btn btn-success-gradient btn-block"
-                                        onclick='return showHideSteps("#card-cc");'>
-                                        <i class="far fa-clock tx-20 pl-2" aria-hidden="true"></i>
+                                        onclick='return showHideSteps("#card-comOuverturePlis");'>
                                         جلسات فتح الظروف
                                     </button>
                                 </div>
@@ -122,8 +119,7 @@
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_comOuvertureTech"
                                         class="btn btn-secondary-gradient btn-block"
-                                        onclick='return showHideSteps("#card-cc");'>
-                                        <i class="fe fe-dollar-sign tx-20 pl-2"></i>
+                                        onclick='return showHideSteps("#card-comOuvertureTech");'>
                                         جلسات الفرز
                                     </button>
                                 </div>
@@ -131,7 +127,7 @@
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_engagement"
                                         class="btn btn-success-gradient btn-block"
-                                        onclick='return showHideSteps("#card-cc");'>
+                                        onclick='return showHideSteps("#card-engagement");'>
                                         <i class="fe fe-dollar-sign tx-20 pl-2"></i>
                                         اسناد الصفقة
                                     </button>
@@ -139,16 +135,14 @@
 
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_enregistrementOffre"
-                                        class="btn btn-info-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
-                                        <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
+                                        class="btn btn-info-gradient btn-block" onclick='return showHideSteps("#card-enregistrementOffre");'>
                                         تسجيل الصفقة
                                     </button>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_ordreService"
-                                        class="btn btn-dark-gradient btn-block" onclick='return showHideSteps("#card-cc");'>
-                                        <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
+                                        class="btn btn-dark-gradient btn-block" onclick='return showHideSteps("#card-ordreService");'>
                                         إذن بداية الأشغال
                                     </button>
                                 </div>
@@ -156,7 +150,7 @@
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_receptionProvisoire"
                                         class="btn btn-danger-gradient btn-block"
-                                        onclick='return showHideSteps("#card-cc");'>
+                                        onclick='return showHideSteps("#card-receptionProvisoire");'>
                                         <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
                                         القبول الوقتي
                                     </button>
@@ -165,7 +159,7 @@
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button"
                                         id="btnPartial_receptionDefinitif"class="btn btn-warning-gradient btn-block"
-                                        onclick='return showHideSteps("#card-cc");'>
+                                        onclick='return showHideSteps("#card-receptionDefinitif");'>
                                         <i class="fas fa-sort-amount-up-alt tx-20 pl-2" aria-hidden="true"></i>
                                         القبول النهائي
                                     </button>
@@ -174,8 +168,7 @@
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_clotureDossier"
                                         class="btn btn-secondary-gradient btn-block"
-                                        onclick='return showHideSteps("#card-cc");'>
-                                        <i class="fas fa-cogs tx-20 pl-2" aria-hidden="true"></i>
+                                        onclick='return showHideSteps("#card-clotureDossier");'>
                                         التسوية النهائية
                                     </button>
                                 </div>
@@ -183,13 +176,10 @@
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_annulationOffre"
                                         class="btn btn-danger-gradient btn-block"
-                                        onclick='return showHideSteps("#card-cc");'>
-                                        <i class="fas fa-cogs tx-20 pl-2" aria-hidden="true"></i>
+                                        onclick='return showHideSteps("#card-annulationOffre");'>
                                         الغاء الصفقة
                                     </button>
                                 </div>
-
-
 
                             </div>
                         </div>
@@ -476,87 +466,947 @@
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row">
-                                {{--  Cahier des charges  form start --}}
-                                <form id="form-id">
-                                    <div class="col-md-12">
+                                {{--  Reception des Offres  form start --}}
+                                <div class="col-md-12">
+                                    <div class="m-t-10">
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label>تاريخ وصول العرض</label>
-                                                <input type="datetime-local" class="form-control" id='date_arrive'
-                                                    name="date_arrive" placeholder="أدخل التاريخ" required>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>طريقة وصول العرض</label>
-                                                <select class="form-control" id="source_offre" name="source_offre">
-                                                    <option value="1">منظومة الشراءات على الخط</option>
-                                                    <option value="2">مكتب الضبط</option>
-                                                    <option value="3">البريد</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>مرجع العرض</label>
-                                                <input type="text" class="form-control" name="ref_offre"
-                                                    id="ref_offre" placeholder="مرجع العرض">
-                                            </div>
-
-                                            <div class="form-group col-md-6">
-                                                <label>عدد التسجيل بمكتب الضبط</label>
-                                                <input type="text" class="form-control" name="ref_bo" id="ref_bo"
-                                                    placeholder="عدد التسجيل">
-                                            </div>
                                             <div class="form-group col-md-12">
-                                                <label>الملاحظات</label>
-                                                <input type="text" class="form-control" id="observation"
-                                                    name="observation">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name"
+                                                    id="file_name" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                               <select class="form-control" name="ofrres_typeDoc" id="ofrres_typeDoc">
+                                                @foreach ($type_docs['RECEPTION_OFFRES'] as $item)
+                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
+                                                @endforeach
+                                               </select>
+
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file" name="file"
+                                                    class="form-control form-control-file" id="file">
+                                                <label id="file-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file"></label>
                                             </div>
                                         </div>
-                                        <div class="form-group col-md-12">
-                                            <a href="javascript:void(0);" class="btn btn-rounded btn-info" id='add-offre'
-                                                for-table='#table-offres'>
-                                                <i class="feather icon-plus"></i>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
                                                 <span class="spinner-border spinner-border-sm" role="status"
                                                     hidden></span>
-                                                <span id="btn_add_poa_title">إضافة إلى الجدول</span>
-
-                                            </a>
-                                        </div>
-                                        <div class="dt-responsive table-responsive">
-                                            <table id="table-offres" class="table table-striped table-bordered nowrap">
-                                                <thead>
-                                                    <th class="not-export-col" style="width: 30px"><input type="checkbox"
-                                                            class="select-checkbox not-export-col" /> </th>
-                                                    <th class="not-export-col"> </th>
-                                                    <th>تاريخ وصول العرض</th>
-                                                    <th>المرجع</th>
-                                                    <th>عدد التسجيل بمكتب الضبط</th>
-                                                    <th>تاريخ التسجيل</th>
-                                                    <th class="not-export-col">{{ $tbl_action }}</th>
-                                                </thead>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th class="not-export-col" style="width: 30px"><input
-                                                                type="checkbox" class="select-checkbox not-export-col" />
-                                                        </th>
-                                                        <th class="not-export-col"> </th>
-                                                        <th>تاريخ وصول العرض</th>
-                                                        <th>المرجع</th>
-                                                        <th>عدد التسجيل بمكتب الضبط</th>
-                                                        <th>تاريخ التسجيل</th>
-                                                        <th class="not-export-col">{{ $tbl_action }}</th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
                                         </div>
                                     </div>
-                                </form>
-                                {{--  Cahier des charges form end --}}
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-receptionOffres" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- Reception des Offres form end --}}
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
         {{-- Reception Offres Card End --}}
+        {{-- Session OP Card Start --}}
+        <div class="row" id="card-comOuverturePlis" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">جلسات فتح الضروف</a>
+                        <div class="card-header-right">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  Session OP  form start --}}
+                                <div class="col-md-12">
+                                    <div class="m-t-10">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name"
+                                                    id="file_name" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                               <select class="form-control" name="sessionOP_typeDoc" id="sessionOP_typeDoc">
+                                                @foreach ($type_docs['SESSION_OP'] as $item)
+                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
+                                                @endforeach
+                                               </select>
+
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file" name="file"
+                                                    class="form-control form-control-file" id="file">
+                                                <label id="file-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-comOuverturePlis" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- Session OP form end --}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{-- Session OP Card End --}}
+        {{-- Commission OP Tech Card Start --}}
+        <div class="row" id="card-comOuvertureTech" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">جلسات فتح الضروف</a>
+                        <div class="card-header-right">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  Session OP  form start --}}
+                                <div class="col-md-12">
+                                    <div class="m-t-10">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name"
+                                                    id="file_name" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                               <select class="form-control" name="commissionOPTech_typeDoc" id="commissionOPTech_typeDoc">
+                                                @foreach ($type_docs['COM_OPTECH'] as $item)
+                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
+                                                @endforeach
+                                               </select>
+
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file" name="file"
+                                                    class="form-control form-control-file" id="file">
+                                                <label id="file-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-comOuvertureTech" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- Session OP form end --}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{-- Commission OP Tech Card End --}}
+        {{-- Engagement Card Start --}}
+        <div class="row" id="card-engagement" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">التعهد وإسناد الصفقة</a>
+                        <div class="card-header-right">
+                            <button type="button" class="btn btn-success" id="btn_addEdit_soumissionaire">
+                                المتعهد
+                                <i class="feather icon-plus-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  Engagement form start --}}
+                                <div class="col-md-12">
+                                    <div class="m-t-10">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name"
+                                                    id="file_name" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                               <select class="form-control" name="engagement_typeDoc" id="engagement_typeDoc">
+                                                @foreach ($type_docs['ENGAGEMENT'] as $item)
+                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
+                                                @endforeach
+                                               </select>
+
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file_engagement" name="file_engagement"
+                                                    class="form-control form-control-file">
+                                                <label id="file-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-egagement" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- Engagement form end --}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{-- engagement Card End --}}
+        {{-- Enregistement Offre Card Start --}}
+        <div class="row" id="card-enregistrementOffre" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">تسجيل الصفقة</a>
+                        <div class="card-header-right">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  enregistrementOffre form start --}}
+                                <div class="col-md-12">
+                                    <div class="m-t-10">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name"
+                                                    id="file_name_engregistrement" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name_engregistrement-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name_engregistrement"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                               <select class="form-control" name="engregistrement_typeDoc" id="engregistrement_typeDoc">
+                                                @foreach ($type_docs['ENREGISTREMENT'] as $item)
+                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
+                                                @endforeach
+                                               </select>
+
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file" name="file_enregistrement"
+                                                    class="form-control form-control-file" id="file_enregistrement">
+                                                <label id="file_enregistrement-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_enregistrement"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-enregistrementOffre" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- enregistrementOffre form end --}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{-- Enregistement Offre  Card End --}}
+        {{-- ordreService Offre Card End --}}
+        <div class="row" id="card-ordreService" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">الأذون</a>
+                        <div class="card-header-right">
+                            <button type="button" class="btn btn-success" id="btn_add_ordre">
+                                تسجيل البيانات
+                                <i class="feather icon-plus-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  ordreService form start --}}
+                                <div class="col-md-12">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>التاريخ المبرمج لبداية الأشغال :</label>
+                                            <input type="date" class="form-control" id='date_debut_prevu'
+                                                name="date_debut_prevu" placeholder="أدخل التاريخ"
+                                                value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
+                                            <label id="date_pub_prevu-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="date_pub_prevu"></label>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>التاريخ الفعلي لبداية الأشغال :</label>
+                                            <input type="date" class="form-control" id='date_ordre'
+                                                name="date_ordre" placeholder="أدخل التاريخ"
+                                                value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' required>
+                                            <label id="date_pub_prevu-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="date_pub_prevu"></label>
+                                        </div>
+                                    </div>
+                                    <div class="m-t-10">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name_ordreServices"
+                                                    id="file_name_ordreServices" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name_ordreServices-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name_ordreServices"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                               <select class="form-control" name="ordreService_typeDoc" id="ordreService_typeDoc">
+                                                @foreach ($type_docs['ORDRE_SERVICE'] as $item)
+                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
+                                                @endforeach
+                                               </select>
+
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file_ordreServices" name="file_ordreServices"
+                                                    class="form-control form-control-file">
+                                                <label id="file_ordreServices-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_ordreServices"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-ordreService" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- ordreService form end --}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{-- ordreService Card End --}}
+        {{-- receptionProvisoire Card Start--}}
+        <div class="row" id="card-receptionProvisoire" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">القبول الوقتي</a>
+                        <div class="card-header-right">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  receptionProvisoire form start --}}
+                                <div class="col-md-12">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>التاريخ المبرمج  للقبول الوقتي :</label>
+                                            <input type="date" class="form-control" id='date_receptionP_prevu'
+                                                name="date_receptionP_prevu" placeholder="أدخل التاريخ"
+                                                value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>التاريخ الفعلي للقبول الوقتي :</label>
+                                            <input type="date" class="form-control" id='date_receptionP'
+                                                name="date_receptionP" placeholder="أدخل التاريخ"
+                                                value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' required>
+                                            <label id="date_receptionP-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="date_receptionP"></label>
+                                        </div>
+                                    </div>
+                                    <div class="m-t-10">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name_receptionP"
+                                                    id="file_name_receptionP" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name_receptionP-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name_receptionP"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                               <select class="form-control" name="receptionP_typeDoc" id="recepionP_typeDoc">
+                                                @foreach ($type_docs['RECEPTIONPROVISOIRE'] as $item)
+                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
+                                                @endforeach
+                                               </select>
+
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file_receptionP" name="file_receptionP"
+                                                    class="form-control form-control-file">
+                                                <label id="file_receptionP-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_receptionP"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-receptionProvisoire" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- ordreService form end --}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{-- receptionProvisoire Card End --}}
+        {{-- receptionDefinitif Card Start End --}}
+        <div class="row" id="card-receptionDefinitif" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">القبول النهائي</a>
+                        <div class="card-header-right">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  receptionDefinitif form start --}}
+                                <div class="col-md-12">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>التاريخ المبرمج  للقبول النهائي :</label>
+                                            <input type="date" class="form-control" id='date_receptionD_prevu'
+                                                name="date_receptionD_prevu" placeholder="أدخل التاريخ"
+                                                value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>التاريخ الفعلي للقبول النهائي :</label>
+                                            <input type="date" class="form-control" id='date_receptionD'
+                                                name="date_receptionD" placeholder="أدخل التاريخ"
+                                                value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' required>
+                                            <label id="date_receptionD-error"
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="date_receptionD"></label>
+                                        </div>
+                                    </div>
+                                    <div class="m-t-10">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name_receptionD"
+                                                    id="file_name_receptionD" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name_receptionD-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name_receptionD"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                               <select class="form-control" name="receptionD_typeDoc" id="receptionD_typeDoc">
+                                                @foreach ($type_docs['RECEPTIONDEFINITIVE'] as $item)
+                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
+                                                @endforeach
+                                               </select>
+
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file_receptionD" name="file_receptionD"
+                                                    class="form-control form-control-file">
+                                                <label id="file_receptionD-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_receptionD"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-receptionDefinitif" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- receptionDefinitif form end --}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{-- receptionDefinitif Card End --}}
+        {{-- clotureDossier Card End --}}
+        <div class="row" id="card-clotureDossier" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">التسوية النهائية</a>
+                        <div class="card-header-right">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  clotureDossier form start --}}
+                                <div class="col-md-12">
+                                    <div class="m-t-10">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name_cloture"
+                                                    id="file_name_cloture" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name_cloture-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name_cloture"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                               <select class="form-control" name="cloture_typeDoc" id="cloture_typeDoc">
+                                                @foreach ($type_docs['CLOTURE'] as $item)
+                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
+                                                @endforeach
+                                               </select>
+
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file_cloture" name="file_cloture"
+                                                    class="form-control form-control-file">
+                                                <label id="file-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_cloture"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-clotureDossier" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- clotureDossier form end --}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{-- clotureDossier Card End --}}
+        {{-- annulationOffre Card Start  --}}
+        <div class="row" id="card-annulationOffre" name="card" style="display: none;">
+            <div class="col-md-12 col-sm-12">
+                <div class="card card-border-c-blue">
+                    <div class="card-header">
+                        <a href="#" class="text-secondary">إلغاء الصفقة</a>
+                        <div class="card-header-right">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                {{--  annulationOffre form start --}}
+                                <div class="col-md-12">
+                                    <div class="m-t-10">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <input type="text" class="form-control" name="file_name_annulation"
+                                                    id="file_name_annulation" placeholder="{{ __('labels.tbl_file_libelle') }}"
+                                                    value="">
+                                                <label id="file_name_annulation-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_name_annulation"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                               <select class="form-control" name="annulation_typeDoc" id="annulation_typeDoc">
+                                                @foreach ($type_docs['ANNULATION'] as $item)
+                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
+                                                @endforeach
+                                               </select>
+
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
+                                                <input type="file" id="file_annulation" name="file_annulation"
+                                                    class="form-control form-control-file">
+                                                <label id="file_annulation-error"
+                                                    class="error jquery-validation-error small form-text invalid-feedback"
+                                                    for="file_annulation"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" type="submit" id="btn_add_file">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    hidden></span>
+                                                {{ __('inputs.btn_create') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="table-annulationOffre" class="table table-striped table-bordered nowrap"
+                                            style="width: 100%">
+                                            <thead>
+                                                <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                                </th>
+                                                <th>id</th>
+                                                <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                <th>{{ $tbl_action }}</th>
+                                                <th>{{ __('labels.tbl_created_at') }}</th>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width: 30px"><input type="checkbox"
+                                                            class="select-checkbox" />
+                                                    </th>
+                                                    <th>id</th>
+                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                                    <th>{{ $tbl_action }}</th>
+                                                    <th>{{ __('labels.tbl_created_at') }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- annulationOffre form end --}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{-- annulationOffre Card End --}}
+
     </div>
 @endsection
 @section('srcipt-js')

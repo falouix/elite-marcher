@@ -58,6 +58,7 @@ class DossierAchatController extends Controller
      */
     public function edit(Request $request, $id)
     {
+
         $dossier = $this->repository->getDossierWithRelations($id);
         switch ($dossier->type_demande) {
             case '1':

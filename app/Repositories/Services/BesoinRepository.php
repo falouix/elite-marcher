@@ -175,13 +175,11 @@ class BesoinRepository implements IBesoinRepository
 
     public function getBesoinByParam($key, $value)
     {
-        return Besoin::Select('*')->where($key, '=', $value)
-            ->get()->first();
+        return Besoin::Select('*')->where($key, '=', $value)->first();
     }
     public function getBesoinLigneBesoinByParam($key, $value)
     {
-        return Besoin::Select('*')->with('lignes_besoins')->where($key, '=', $value)
-            ->get()->first();
+        return Besoin::Select('*')->with('lignes_besoins')->where($key, '=', $value)->first();
     }
     public function validerBesoin($id)
     {

@@ -99,7 +99,7 @@
                                     </td>
                                     <td class="text-right" style="padding: 0.3rem; border-top:white;">
 
-                                        {{ ($client->libelle)?? '' }}
+                                        {{ $client->libelle ?? '' }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -110,7 +110,7 @@
                                         </h6>
                                     </td>
                                     <td class="text-right" style="padding: 0.3rem; border-top:white;">
-                                        {{ ($client->matricule_fiscale)?? '' }}
+                                        {{ $client->matricule_fiscale ?? '' }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -121,7 +121,7 @@
                                         </h6>
                                     </td>
                                     <td class="text-right" style="padding: 0.3rem; border-top:white;">
-                                        {{ ($client->tel_fax)?? '' }}
+                                        {{ $client->tel_fax ?? '' }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -131,7 +131,7 @@
                                         </h6>
                                     </td>
                                     <td class="text-right" style="padding: 0.3rem; border-top:white;">
-                                        {{ ($client->email)?? '' }}
+                                        {{ $client->email ?? '' }}
                                     </td>
                                 </tr>
 
@@ -142,7 +142,7 @@
                                         </h6>
                                     </td>
                                     <td class="text-right" style="padding: 0.3rem; border-top:white;">
-                                        {{ ($client->adresse)?? '' }}
+                                        {{ $client->adresse ?? '' }}
                                     </td>
                                 </tr>
 
@@ -185,27 +185,6 @@
                                 href="#cahiercharges" role="tab" aria-controls="cahiercharges" aria-selected="false"><i
                                     class="fas fa-file-alt m-2"></i>كراس الشروط</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-uppercase" id="offres-tab" data-toggle="tab" href="#offres"
-                                role="tab" aria-controls="offres" aria-selected="false"><i
-                                    class="fas fa-business-time m-2"></i>
-                                العروض
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-uppercase" id="sessions-tab" data-toggle="tab" href="#sessions"
-                                role="tab" aria-controls="sessions" aria-selected="false"><i
-                                    class="fas fa-business-time m-2"></i>
-                                الجلسات
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-uppercase" id="soumission-tab" data-toggle="tab" href="#soumission"
-                                role="tab" aria-controls="soumission" aria-selected="false"><i
-                                    class="fas fa-business-time m-2"></i>
-                                التعهد واسناد الصفقة
-                            </a>
-                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link text-uppercase" id="docs-tab" data-toggle="tab" href="#docs"
@@ -215,8 +194,7 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         {{-- contenu consultation start --}}
-                        <div class="tab-pane fade show active" id="contenu" role="tabpanel"
-                            aria-labelledby="contenu-tab">
+                        <div class="tab-pane fade show active" id="contenu" role="tabpanel" aria-labelledby="contenu-tab">
                             <div class="col-md-12">
 
                                 <table id="ligneConsultation-table" class="table table-striped table-bordered nowrap">
@@ -254,27 +232,26 @@
                                     $cahiers_charges = $dossier->cahiers_charges;
                                 @endphp
 
-<div class="form-row">
-    <input type="number" name="cahiers_charges_id" id="cahiers_charges_id"
-        value="0" hidden>
-    <div class="form-group col-md-6">
-        <label>تاريخ اعتزام نشر الإعلان :</label>
-        <input type="date" class="form-control" id='date_pub_prevu'
-            name="date_pub_prevu" placeholder="أدخل التاريخ"
-            value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
-        <label id="date_pub_prevu-error"
-            class="error jquery-validation-error small form-text invalid-feedback"
-            for="date_pub_prevu"></label>
-    </div>
-    <div class="form-group col-md-6">
-        <label>ثمن اقتناء كراس الشروط :</label>
-        <input class="form-control" type="number" min=0 max=99999999999,999
-            id="prix_cc" name="prix_cc"
-            value='{{ $cahiers_charges->prix_cc ?? '' }}'>
-        <label id="date_pub_prevu-error"
-            class="error jquery-validation-error small form-text invalid-feedback"
-            for="date_pub_prevu"></label>
-    </div>
+                                <div class="form-row">
+                                    <input type="number" name="cahiers_charges_id" id="cahiers_charges_id"
+                                        value="0" hidden>
+                                    <div class="form-group col-md-6">
+                                        <label>تاريخ اعتزام نشر الإعلان :</label>
+                                        <input type="date" class="form-control" id='date_pub_prevu'
+                                            name="date_pub_prevu" placeholder="أدخل التاريخ"
+                                            value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
+                                        <label id="date_pub_prevu-error"
+                                            class="error jquery-validation-error small form-text invalid-feedback"
+                                            for="date_pub_prevu"></label>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>ثمن اقتناء كراس الشروط :</label>
+                                        <input class="form-control" type="number" min=0 max=99999999999,999
+                                            id="prix_cc" name="prix_cc" value='{{ $cahiers_charges->prix_cc ?? '' }}'>
+                                        <label id="date_pub_prevu-error"
+                                            class="error jquery-validation-error small form-text invalid-feedback"
+                                            for="date_pub_prevu"></label>
+                                    </div>
 
 
 
@@ -282,14 +259,7 @@
 
 
 
-    **
-
-
-
-
-
-
-
+                                    **
 
 
 
@@ -304,75 +274,80 @@
 
 
 
-    99999999999999996
 
-    <div class="form-vvvvv     vgroup col-md-6">
-        <label>طري1 cقة قبول العروض :</label>
-        <select class="form-control" id="type_reception" name="type_reception">
-            <option value="1"
-                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 1 ? 'selected' : '' }}>
-                منظومة الشراءات على الخط</option>
-            <option value="2"
-                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 2 ? 'selected' : '' }}>
-                مكتب الضبط </option>
-            <option value="3"
-                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 3 ? 'selected' : '' }}>
-                البريد </option>
-        </select>
-    </div>
 
-    <div class="form-group col-md-6">
-        <label>طريقة فتح الظروف :</label>
-        <select class="form-control" id="type_overture_plis"
-            name="type_overture_plis">
-            <option value="1"
-                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 1 ? 'selected' : '' }}>
-                مالية علنية </option>
-            <option value="2"
-                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 2 ? 'selected' : '' }}>
-                مالية وفنية علنية</option>
-            <option value="3"
-                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 3 ? 'selected' : '' }}>
-                مالية وفنية غير علنية</option>
-        </select>
-    </div>
-    <div class="form-group col-md-6">
-        <label>مدة الضمان الوقتي :</label>
-        <input type="number" class="form-control" id="duree_caution_prov"
-            name="duree_caution_prov" min=0 max=999
-            value="{{ $cahiers_charges->duree_caution_prov ?? '' }}">
-    </div>
-    <div class="form-group col-md-6">
-        <label>قيمة الضمان الوقتي :</label>
-        <input type="number" class="form-control" id="caution_prov"
-            name="caution_prov" min=1,000 max=99999999999,999
-            value="{{ $cahiers_charges->caution_prov ?? '' }}">
-    </div>
 
-    <div class="form-group col-md-6">
-        <label>مدة الضمان النهائي :</label>
-        <input type="number" class="form-control" id="duree_caution_def" min=0
-            max=999 value="{{ $cahiers_charges->duree_caution_def ?? '' }}">
-    </div>
-    <div class="form-group col-md-6">
-        <label>نسبة الضمان النهائي :</label>
-        <input type="number" class="form-control" id="caution_def"
-            name="caution_def" min=1 max=99
-            value="{{ $cahiers_charges->caution_def ?? '' }}">
-        <label id="caution_def-error"
-            class="error jquery-validation-error small form-text invalid-feedback"
-            for="caution_def"></label>
-    </div>
-    <div class="form-group col-md-12">
-        <label>مدة الإنجاز باليوم : </label>
-        <input class="mb-3 form-control form-control-lg" type="number"
-            id="duree_travaux" name="duree_travaux" min=1 max=999
-            value="{{ $cahiers_charges->duree_travaux ?? '' }}">
-        <label id="duree_travaux-error"
-            class="error jquery-validation-error small form-text invalid-feedback"
-            for="duree_travaux"></label>
-    </div>
-</div>
+
+
+
+
+                                    99999999999999996
+
+                                    <div class="form-vvvvv     vgroup col-md-6">
+                                        <label>طري1 cقة قبول العروض :</label>
+                                        <select class="form-control" id="type_reception" name="type_reception">
+                                            <option value="1"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 1 ? 'selected' : '' }}>
+                                                منظومة الشراءات على الخط</option>
+                                            <option value="2"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 2 ? 'selected' : '' }}>
+                                                مكتب الضبط </option>
+                                            <option value="3"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 3 ? 'selected' : '' }}>
+                                                البريد </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>طريقة فتح الظروف :</label>
+                                        <select class="form-control" id="type_overture_plis" name="type_overture_plis">
+                                            <option value="1"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 1 ? 'selected' : '' }}>
+                                                مالية علنية </option>
+                                            <option value="2"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 2 ? 'selected' : '' }}>
+                                                مالية وفنية علنية</option>
+                                            <option value="3"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 3 ? 'selected' : '' }}>
+                                                مالية وفنية غير علنية</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>مدة الضمان الوقتي :</label>
+                                        <input type="number" class="form-control" id="duree_caution_prov"
+                                            name="duree_caution_prov" min=0 max=999
+                                            value="{{ $cahiers_charges->duree_caution_prov ?? '' }}">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>قيمة الضمان الوقتي :</label>
+                                        <input type="number" class="form-control" id="caution_prov" name="caution_prov"
+                                            min=1,000 max=99999999999,999
+                                            value="{{ $cahiers_charges->caution_prov ?? '' }}">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>مدة الضمان النهائي :</label>
+                                        <input type="number" class="form-control" id="duree_caution_def" min=0 max=999
+                                            value="{{ $cahiers_charges->duree_caution_def ?? '' }}">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>نسبة الضمان النهائي :</label>
+                                        <input type="number" class="form-control" id="caution_def" name="caution_def"
+                                            min=1 max=99 value="{{ $cahiers_charges->caution_def ?? '' }}">
+                                        <label id="caution_def-error"
+                                            class="error jquery-validation-error small form-text invalid-feedback"
+                                            for="caution_def"></label>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>مدة الإنجاز باليوم : </label>
+                                        <input class="mb-3 form-control form-control-lg" type="number"
+                                            id="duree_travaux" name="duree_travaux" min=1 max=999
+                                            value="{{ $cahiers_charges->duree_travaux ?? '' }}">
+                                        <label id="duree_travaux-error"
+                                            class="error jquery-validation-error small form-text invalid-feedback"
+                                            for="duree_travaux"></label>
+                                    </div>
+                                </div>
 
                                 <div class="dt-responsive table-responsive">
                                     <div class="card-body">
@@ -390,7 +365,7 @@
                             </div>
                         </div>
                         {{-- Cahier Charges Tab end --}}
-                        {{-- Cahier Charges Tab start --}}
+                        {{-- docs Tab start --}}
                         <div class="tab-pane fade" id="offres" role="tabpanel" aria-labelledby="offres-tab">
                             <div class="col-md-12"> <br>
                                 <div class="dt-responsive table-responsive">
@@ -421,176 +396,8 @@
 
                             </div>
                         </div>
-                        {{-- Cahier Charges Tab end --}}
+                        {{-- docs Tab end --}}
 
-                        {{-- Sessions Tab start --}}
-                        <div class="tab-pane fade" id="sessions" role="tabpanel" aria-labelledby="sessions-tab">
-                            <div class="row" id="session-container">
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="card card-border-c-green">
-                                        <div class="card-header">
-
-                                            <a href="#!" class="text-secondary">
-                                                جلسة
-                                            </a>
-                                            <span class="label label-primary float-right">
-                                                فتح الضروف
-                                            </span>
-                                        </div>
-                                        <div class="card-body card-task">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <p class="task-detail">
-                                                        تجربة تعديل تفصيل جلسة
-                                                    </p>
-                                                    <p class="task-due">
-                                                        <strong class="label label-primary">
-                                                            <strong>
-                                                                تاريخ الجلسة :
-                                                            </strong>
-                                                            08-12-2022
-                                                        </strong>
-
-
-                                                        <strong class="label label-danger">
-                                                            <strong>
-                                                                تاريخ الجلسة القادمة :
-                                                            </strong>
-                                                            01-01-2023
-                                                        </strong>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <hr>
-
-                                            <div class="task-board">
-                                                <a href="#" class="btn btn-secondary btn-sm b-none txt-muted"
-                                                    type="button" data-id="23" id="btn_session_edit">
-                                                    <i class="feather icon-eye"></i>
-                                                    عرض التفاصيل
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="card card-border-c-green">
-                                        <div class="card-header">
-
-                                            <a href="#!" class="text-secondary">
-                                                جلسة
-                                            </a>
-                                            <span class="label label-primary float-right">
-                                                فرز
-                                            </span>
-                                        </div>
-                                        <div class="card-body card-task">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <p class="task-detail">
-                                                        تجربة تعديل تفصيل جلسة
-                                                    </p>
-                                                    <p class="task-due">
-                                                        <strong class="label label-primary">
-                                                            <strong>
-                                                                تاريخ الجلسة :
-                                                            </strong>
-                                                            08-12-2022
-                                                        </strong>
-
-
-                                                        <strong class="label label-danger">
-                                                            <strong>
-                                                                تاريخ الجلسة القادمة :
-                                                            </strong>
-                                                            01-01-2023
-                                                        </strong>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <hr>
-
-                                            <div class="task-board">
-                                                <a href="#" class="btn btn-secondary btn-sm b-none txt-muted"
-                                                    type="button" data-id="23" id="btn_session_edit">
-                                                    <i class="feather icon-eye"></i>
-                                                    عرض التفاصيل
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- Sessions Tab end --}}
-                        {{-- Annexes Tab start --}}
-                        <div class="tab-pane fade" id="soumission" role="tabpanel" aria-labelledby="soumission-tab">
-                            <div class="col-md-12"> <br>
-
-                            </div>
-                        </div>
-                        {{-- Annexes Tab end --}}
-                        {{-- Sessions Tab end --}}
-
-
-                        <div class="tab-pane fade" id="docs" role="tabpanel" aria-labelledby="docs-tab">
-                            <div class="m-t-30">
-                                <div class="form-row">
-
-                                    <div class="form-group col-md-6">
-                                        <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }} </label>
-                                        <input type="text" class="form-control" name="file_name" id="file_name"
-                                            placeholder="{{ __('labels.tbl_file_libelle') }}" value="">
-                                        <label id="file_name-error"
-                                            class="error jquery-validation-error small form-text invalid-feedback"
-                                            for="file_name"></label>
-                                    </div>
-
-                                    <div class="form-group col-md-6">
-                                        <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
-                                        <input type="file" id="file" name="file"
-                                            class="form-control form-control-file" id="file">
-                                        <label id="file-error"
-                                            class="error jquery-validation-error small form-text invalid-feedback"
-                                            for="file"></label>
-                                    </div>
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button class="btn btn-primary" type="submit" id="btn_add_file">
-                                        <span class="spinner-border spinner-border-sm" role="status" hidden></span>
-                                        {{ __('inputs.btn_create') }}
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="dt-responsive table-responsive">
-                                <table id="docs-table" class="table table-striped table-bordered nowrap"
-                                    style="width: 100%">
-                                    <thead>
-                                        <th style="width: 30px"><input type="checkbox" class="select-checkbox" /> </th>
-                                        <th>id</th>
-                                        <th>{{ __('labels.tbl_file_libelle') }}</th>
-                                        <th>{{ $tbl_action }}</th>
-                                        <th>{{ __('labels.tbl_created_at') }}</th>
-                                    </thead>
-
-                                    <tfoot>
-                                        <tr>
-                                            <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
-                                            </th>
-                                            <th>id</th>
-                                            <th>{{ __('labels.tbl_file_libelle') }}</th>
-                                            <th>{{ $tbl_action }}</th>
-                                            <th>{{ __('labels.tbl_created_at') }}</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-
-                        </div>
                     </div>
 
                 </div>
@@ -689,7 +496,8 @@
                         data: "select",
                         className: "select-checkbox"
                     },
-                    {e
+                    {
+                        e
                         data: "id",
                         className: "id"
                     },

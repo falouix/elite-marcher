@@ -12,7 +12,7 @@ use App\Http\Controllers\{
     SparagrapheController,TitreController,UserController,
     DossierAchatController,ConsultationController,AOSController,
     AONController,GREGREController,NotifController,PPMController,
-    ParamBesoinsController,CustomerController
+    ParamBesoinsController,CustomerController,TypeDocController
 };
 use App\Http\Controllers\Auth\ClientLoginController;
 /************************************************************************* */
@@ -153,7 +153,9 @@ Route::group(
         Route::post('articles/store', [ArticleController::class, 'storeFromBesoin'])->name('articles.storeFromBesoin');
         Route::post('articles/select', [ArticleController::class, 'getAllArticlesToSelect'])->name('articles.select');
         Route::put('article/validate', [ArticleController::class, 'valider'])->name('articles.validate');
-
+ //route types_docs
+ Route::resource('types_docs', ArticleController::class);
+ Route::post('types_docs/datatable', [TypeDocController::class, 'getAllArticlesDatatable'])->name('types_docs.data');
          //route ParamBesoins
          Route::resource('parambesoins', ParamBesoinsController::class);
          Route::post('param-besoins/datatable', [ParamBesoinsController::class, 'getAllParamBesoinsDatatable'])->name('parambesoins.data');

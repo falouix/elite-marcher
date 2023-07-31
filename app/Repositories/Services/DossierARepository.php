@@ -322,7 +322,7 @@ class DossierARepository implements IDossierARepository
             $newNotif->from_table = "cahiers_charges";
             $newNotif->from_table_id = $cc->id;
             $newNotif->users_id = Auth::user()->id;
-            $newNotif->action = route('consultations.edit', $dossier->id);
+            $newNotif->action = route('consultations.edit', ecnrypt($dossier->id));
             $newNotif->read_at = Carbon::parse($cc->date_pub_prevu)->subDays($this->settings->notif_duree_pub)->format('Y-m-d');
             Log::info("read_at : ".$newNotif->read_at);
             $notif = $this->notifRepository->updateNotif($newNotif);
@@ -385,7 +385,7 @@ class DossierARepository implements IDossierARepository
             $newNotif->action = "";
 
             $newNotif->read_at = Carbon::parse($avis->date_validite)->addDays($cc->duree_caution_prov +1)->format('Y-m-d');
-            $msg = "تذكير بحلول آجال الضمان النهائي المتلعق بالملف عدد [" . $dossier->code_dossier . "] بتاريخ [" . $newNotif->read_at . "]";
+            $msg = "تذكير بحلول آجال الضمان الوقتي المتلعق بالملف عدد [" . $dossier->code_dossier . "] بتاريخ [" . $newNotif->read_at . "]";
 
             $newNotif->read_at = Carbon::parse($newNotif->read_at)->subDays($this->settings->notif_duree_caution_provisoire)->format('Y-m-d');
             Log::info("CAUTION PROVISOIRE read_at : ".$newNotif->read_at);
@@ -503,7 +503,7 @@ class DossierARepository implements IDossierARepository
                 'soumissionnaires_id' => $input->soumissionnaires_id,
             ]
         );
-        self::updateSituationDossier($input->dossiers_achats_id, 3);
+        self::updateSituationDossier($enreg->dossiers_achats_id, 3);
         return $enreg;
     }
     public function deleteEnregistrement($id)
@@ -530,13 +530,25 @@ class DossierARepository implements IDossierARepository
             [
                 'date_ordre' => $input->date_ordre,
                 'date_reception_ordre' => $input->date_reception_ordre,
-                'ref_ordre' => $input->ref_ordre,
-                'ref_copie_unique' => $input->ref_copie_unique,
                 'dossiers_achats_id' => $input->dossiers_achats_id,
                 'soumissionnaires_id' => $input->soumissionnaires_id,
             ]
         );
-        self::updateSituationDossier($input->dossiers_achats_id, 4);
+        self::updateSituationDossier($enreg->dossiers_achats_id, 4);
+        // Notif Reception Provisoire
+         $newNotif = new Notif();
+         $newNotif->type = "RAPPEL";
+         $newNotif->from_table = "ServiceOrdre";
+         $newNotif->from_table_id = $enreg->id;
+         $newNotif->users_id = Auth::user()->id;
+         $newNotif->action = "";
+
+         $newNotif->read_at = Carbon::parse($enreg->date_ordre)->addDays($cc->duree_travaux)->format('Y-m-d');
+         $msg = "تذكير بحلول آجال القبول الوقتي للأشغال المتلعق بالملف عدد [" . $enreg->dossiers_achats_id . "] بتاريخ [" . $newNotif->read_at . "]";
+         $newNotif->texte = $msg;
+         $newNotif->read_at = Carbon::parse($newNotif->read_at)->subDays($this->settings->notif_duree_caution_provisoire)->format('Y-m-d');
+         Log::info("RECEPTION PROVISOIRE read_at : ".$newNotif->read_at);
+         $this->notifRepository->updateNotif($newNotif);
         return $enreg;
     }
     public function deleteOrdreService($id)
@@ -563,17 +575,35 @@ class DossierARepository implements IDossierARepository
             [
                 'date_reception' => $input->date_reception,
                 'type_reception' => $input->type_reception,
-                'duree_retard' => $input->duree_retard,
-                'taux_avancement' => $input->taux_avancement,
                 'dossiers_achats_id' => $input->dossiers_achats_id,
-                'soumissionnaires_id' => $input->soumissionnaires_id,
             ]
         );
         //situation dossier
         if($input->type_reception == '1'){
-            self::updateSituationDossier($input->dossiers_achats_id, 5);
+            self::updateSituationDossier($enreg->dossiers_achats_id, 5);
         }else{
-            self::updateSituationDossier($input->dossiers_achats_id, 6);
+            // Type : Reception definitive
+            self::updateSituationDossier($enreg->dossiers_achats_id, 6);
+            // Notif Caution Definitif
+            if ($this->settings->notif_date_caution_final == true) {
+                $cc = CahiersCharge::where('dossiers_achats_id', $enreg->dossiers_achats_id)->first();
+                // Notif CautionDefinitif
+                // Méthode de calcul à voir avec UJ
+                $newNotif = new Notif();
+                $newNotif->type = "RAPPEL";
+                $newNotif->texte = $msg;
+                $newNotif->from_table = "receptions";
+                $newNotif->from_table_id = $enreg->id;
+                $newNotif->users_id = Auth::user()->id;
+                $newNotif->action = "";
+                $newNotif->read_at = Carbon::parse($cc->date_validite)->addDays($cc->duree_caution_prov +1)->format('Y-m-d');
+                $msg = "تذكير بحلول آجال الضمان الوقتي المتلعق بالملف عدد [" . $dossier->code_dossier . "] بتاريخ [" . $newNotif->read_at . "]";
+
+                $newNotif->read_at = Carbon::parse($newNotif->read_at)->subDays($this->settings->notif_duree_caution_provisoire)->format('Y-m-d');
+                Log::info("CAUTION PROVISOIRE read_at : ".$newNotif->read_at);
+                $this->notifRepository->updateNotif($newNotif);
+            }
+
         }
 
         return $enreg;

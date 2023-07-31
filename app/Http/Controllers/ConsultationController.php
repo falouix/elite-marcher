@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\{DossiersAchat, LignesBesoin, LignesDossier,
     LignesDossiersAchat, Service,
      Notif, Soumissionnaire,
-     CahiersCharge};
+     CahiersCharge, TypesDoc};
 use App\Repositories\IFileUploadRepository;
 use App\Repositories\Interfaces\{IConsultationRepository, IDossierARepository, INotifRepository};
 use App\Traits\ApiResponser;
 use Auth;
 use Illuminate\Http\Request;
 use Log;
+use DB;
 use Validator;
 use Carbon\Carbon;
 use App\Common\Utility;
@@ -219,6 +220,7 @@ class ConsultationController extends Controller
         ->with('enregistrements')
         ->with('bcs_engagements')
         ->with('avis_dossiers')*/
+        $id = decrypt($id);
         $dossier = $this->dossierRepository->getDossierWithRelations($id, ['cahiers_charges', 'commissions_ops', 'commissions_techniques']);
         switch ($dossier->type_demande) {
             case '1':
@@ -245,6 +247,7 @@ class ConsultationController extends Controller
      */
     public function edit(Request $request, $id)
     {
+
         $id = decrypt($id);
         //$dossier = $this->dossierRepository->getDossierAByParam('id', $id);
         $dossier = $this->dossierRepository->getDossierWithRelations($id, ['cahiers_charges', 'avis_dossiers']);
@@ -259,8 +262,11 @@ class ConsultationController extends Controller
                 $dossier->type_demande = 'دراسات';
                 break;
         }
+        // Types Docs grouped by type
+        $type_docs = DB::table('types_docs')->select('id','libelle', 'type_doc')
+        ->get()->groupBy('type_doc');
 
-        return view('dossiers_achats.consultations.edit', compact('dossier'));
+        return view('dossiers_achats.consultations.edit', compact('dossier','type_docs'));
     }
 
     /**

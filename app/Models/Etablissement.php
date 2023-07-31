@@ -19,7 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $email
  * @property string|null $adresse
  * @property string|null $responsable
- * @property string|null $entete
+ * @property string|null $tel
+ * @property string|null $fax
  * @property string|null $code_pa
  * @property string|null $code_consult
  * @property string|null $code_aon
@@ -40,15 +41,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $notif_duree_session_op
  * @property bool|null $notif_date_caution_final
  * @property int|null $notif_duree_caution_final
- * @property int|null $notif_caution_provisoire
+ * @property bool|null $notif_caution_provisoire
  * @property int|null $notif_duree_caution_provisoire
  * @property bool|null $notif_delais_rp
  * @property int|null $notif_duree_rp
  * @property bool|null $notif_delais_rd
  * @property int|null $notif_duree_rd
- * @property int|null $notif_date_trsfert_ca_prvu
+ * @property bool|null $notif_date_trsfert_ca_prvu
  * @property int|null $notif_duree_trsfert_ca_prvu
- * @property int|null $notif_date_trsfert_cao_prvu
+ * @property bool|null $notif_date_trsfert_cao_prvu
  * @property int|null $notif_duree_trsfert_cao_prvu
  * @property int|null $notif_date_pub_reslt_prvu
  * @property int|null $notif_duree_pub_reslt_prvu
@@ -83,15 +84,15 @@ class Etablissement extends Model
 		'notif_duree_session_op' => 'int',
 		'notif_date_caution_final' => 'bool',
 		'notif_duree_caution_final' => 'int',
-		'notif_caution_provisoire' => 'int',
+		'notif_caution_provisoire' => 'bool',
 		'notif_duree_caution_provisoire' => 'int',
 		'notif_delais_rp' => 'bool',
 		'notif_duree_rp' => 'int',
 		'notif_delais_rd' => 'bool',
 		'notif_duree_rd' => 'int',
-		'notif_date_trsfert_ca_prvu' => 'int',
+		'notif_date_trsfert_ca_prvu' => 'bool',
 		'notif_duree_trsfert_ca_prvu' => 'int',
-		'notif_date_trsfert_cao_prvu' => 'int',
+		'notif_date_trsfert_cao_prvu' => 'bool',
 		'notif_duree_trsfert_cao_prvu' => 'int',
 		'notif_date_pub_reslt_prvu' => 'int',
 		'notif_duree_pub_reslt_prvu' => 'int',
@@ -110,7 +111,8 @@ class Etablissement extends Model
 		'email',
 		'adresse',
 		'responsable',
-		'entete',
+		'tel',
+		'fax',
 		'code_pa',
 		'code_consult',
 		'code_aon',

@@ -122,9 +122,9 @@ return [
   'tbl_offer_from' => 'نوع العرض',
 
   /*****ِClientOffer Table */
-  'tbl_file_libelle' => 'إسم الملف/الصورة',
-  'tbl_file_file' => 'رفع الملف/الصورة',
-  'tbl_file_view' => 'عرض الملف/الصورة',
+  'tbl_file_libelle' => 'إسم الملف/الوثيقة',
+  'tbl_file_file' => 'رفع الملف/الوثيقة',
+  'tbl_file_view' => 'عرض الملف/الوثيقة',
 
   /*****LegalLink Table */
   'tbl_legal_libelle' => 'التسمية',

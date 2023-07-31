@@ -8,7 +8,7 @@ if ($locale == 'ar') {
 }
 $breadcrumb = __('breadcrumb.bread_etablissements');
 $sub_breadcrumb = __('breadcrumb.bread_etablissements');
-
+//dd($etablissement);
 @endphp
 
 @extends('layouts.app')
@@ -83,7 +83,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                 <div class="form-group">
                                     <label class="form-label"> معرف المؤسسة</label>
                                     <input type="text" class="form-control" name="matricule_fiscale"
-                                        placeholder=" المعرف..." value="{{ $settings->matricule_fiscale }}">
+                                        placeholder=" المعرف..." value="{{ $etablissement->matricule_fiscale ?? '' }}">
                                 </div>
                             </div>
 
@@ -91,7 +91,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                 <div class="form-group">
                                     <label class="form-label">{{ __('labels.tbl_libelle') }}</label>
                                     <input type="text" class="form-control" name="libelle"
-                                        placeholder="{{ __('labels.tbl_libelle') }}..." value="{{ $settings->libelle }}">
+                                        placeholder="{{ __('labels.tbl_libelle') }}..." value="{{ $etablissement->libelle ?? ''  }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -99,14 +99,30 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <label class="form-label"> {{ __('labels.tbl_responsable') }}</label>
                                     <input type="responsable" class="form-control" name="responsable"
                                         placeholder=" {{ __('labels.tbl_responsable') }}..."
-                                        value="{{ $settings->responsable }}">
+                                        value="{{ $etablissement->responsable ?? ''  }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label"> {{ __('labels.tbl_email') }} </label>
                                     <input type="email" class="form-control" name="email"
-                                        placeholder=" {{ __('labels.tbl_adresse') }} ..." value="{{ $settings->email }}">
+                                        placeholder=" {{ __('labels.tbl_adresse') }} ..." value="{{ $etablissement->email ?? ''  }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">الهاتف</label>
+                                    <input type="responsable" class="form-control" name="tel"
+                                        placeholder=" الهاتف..."
+                                        value="{{ $etablissement->tel ?? ''  }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">الفاكس</label>
+                                    <input type="responsable" class="form-control" name="fax"
+                                        placeholder=" الفاكس..."
+                                        value="{{ $etablissement->fax ?? ''  }}">
                                 </div>
                             </div>
 
@@ -114,7 +130,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                 <div class="form-group">
                                     <label class="form-label">{{ __('labels.tbl_adresse') }}</label>
                                     <input type="text" class="form-control" name="adresse"
-                                        placeholder="{{ __('labels.tbl_adresse') }}..." value="{{ $settings->adresse }}">
+                                        placeholder="{{ __('labels.tbl_adresse') }}..." value="{{ $etablissement->adresse ?? ''  }}">
                                 </div>
                             </div>
 
@@ -131,7 +147,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <label class="form-label"> {{ __('labels.tbl_code_pa') }}</label>
                                     <input type="text" class="form-control" name="code_pa"
                                         placeholder=" {{ __('labels.tbl_code_pa') }}..."
-                                        value="{{ $settings->code_pa }}">
+                                        value="{{ $etablissement->code_pa ?? 'PA{code}/{Annee}'  }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -139,7 +155,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <label class="form-label">{{ __('labels.tbl_code_consult') }}</label>
                                     <input type="text" class="form-control" name="code_consult"
                                         placeholder="{{ __('labels.tbl_code_consult') }}..."
-                                        value="{{ $settings->code_consult }}">
+                                        value="{{ $etablissement->code_consult ?? 'C{code}/{annee}' }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -147,7 +163,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <label class="form-label">طلب عروض إجراءات عادية </label>
                                     <input type="text" class="form-control" name="code_aon"
                                         placeholder="ترقيم ..."
-                                        value="{{ $settings->code_aon }}">
+                                        value="{{ $etablissement->code_aon ?? 'AON{code}/{annee}'  }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -155,7 +171,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <label class="form-label">طلب عروض إجراءات مبسطة </label>
                                     <input type="text" class="form-control" name="code_aos"
                                         placeholder="ترقيم ..."
-                                        value="{{ $settings->code_aos }}">
+                                        value="{{ $etablissement->code_aos ?? 'AOS{code}/{annee}'  }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -163,7 +179,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <label class="form-label">طلب عروض بالتفاوض المباشر </label>
                                     <input type="text" class="form-control" name="code_gg"
                                         placeholder="ترقيم التفاوض المباشر..."
-                                        value="{{ $settings->code_gg }}">
+                                        value="{{ $etablissement->code_gg ?? 'AGG{code}/{annee}'  }}">
                                 </div>
                             </div>
                         </div>
@@ -171,7 +187,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             <div class="col-sm-6 ">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="ajouter_annee"
-                                        name="ajouter_annee" {{ $settings->ajouter_annee ? 'checked' : '' }}>
+                                        name="ajouter_annee" {{ $etablissement->ajouter_annee ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="ajouter_annee">
                                         {{ __('labels.tbl_ajouter_annee') }}
@@ -182,7 +198,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             <div class="col-sm-6 ">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="reset_code" name="reset_code"
-                                         {{ $settings->reset_code ? 'checked' : '' }}>
+                                         {{ $etablissement->reset_code ? 'checked' : '' }}>
                                     <label class="form-check-label" for="reset_code">
                                         {{ __('labels.tbl_reset_code') }}
                                     </label>
@@ -199,7 +215,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             <div class="col-sm-4 ">
                                 <div class="form-group">
                                     <input id="notif_validation_besoins" name="notif_validation_besoins" type="checkbox"
-                                        {{ $settings->notif_validation_besoins ? 'checked' : '' }}>
+                                        {{ $etablissement->notif_validation_besoins ? 'checked' : '' }}>
                                     <label> {{ __('labels.tbl_validation_besoins') }} </label>
                                 </div>
                             </div>
@@ -213,11 +229,11 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_cc" {{ $settings->notif_cc ? 'checked' : ''  }}>
+                                                name="notif_cc" {{ $etablissement->notif_cc ? 'checked' : ''  }}>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_cc" value="{{ $settings->notif_duree_cc }}" min="1" max="99">
+                                        name="notif_duree_cc" value="{{ $etablissement->notif_duree_cc }}" min="1" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -230,11 +246,11 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_avis_pub" {{ $settings->notif_avis_pub ? 'checked' : ''  }}>
+                                                name="notif_avis_pub" {{ $etablissement->notif_avis_pub ? 'checked' : ''  }}>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_pub" value="{{ $settings->notif_duree_pub }}" min="1" max="99">
+                                        name="notif_duree_pub" value="{{ $etablissement->notif_duree_pub }}" min="1" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -246,11 +262,11 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_publication_achat" {{ $settings->notif_session_op ? 'checked' : ''  }}>
+                                                name="notif_session_op" {{ $etablissement->notif_session_op ? 'checked' : ''  }}>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_session_op" value="{{ $settings->notif_duree_session_op }}" min="1" max="99">
+                                        name="notif_duree_session_op" value="{{ $etablissement->notif_duree_session_op }}" min="1" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -261,12 +277,12 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_caution_provisoire" value="{{ $settings->notif_caution_provisoire }}">
+                                                 <input type="checkbox" aria-label="Checkbox for following text input"
+                                                name="notif_caution_provisoire" {{ $etablissement->notif_caution_provisoire ? 'checked' : ''  }}>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_caution_provisoire" value="{{ $settings->notif_duree_caution_provisoire }}" min="1" max="99">
+                                        name="notif_duree_caution_provisoire" value="{{ $etablissement->notif_duree_caution_provisoire }}" min="1" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -279,11 +295,11 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_caution_final" value="{{ $settings->notif_caution_final }}">
-                                            </div>
+                                                name="notif_date_caution_final" {{ $etablissement->notif_date_caution_final ? 'checked' : ''  }}>
+                                               </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_caution_final" value="{{ $settings->notif_duree_caution_final }}" min="1" max="99">
+                                        name="notif_duree_caution_final" value="{{ $etablissement->notif_duree_caution_final }}" min="1" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -296,11 +312,11 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_delais_rp" value="{{ $settings->notif_delais_rp }}">
-                                            </div>
+                                                name="notif_delais_rp" {{ $etablissement->notif_delais_rp ? 'checked' : ''  }}>
+                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_rp" value="{{ $settings->notif_duree_rp }}" min="1" max="99">
+                                        name="notif_duree_rp" value="{{ $etablissement->notif_duree_rp }}" min="1" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -308,16 +324,17 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                               {{-- Reception Defenitive --}}
                             <div class="col-sm-6 ">
                                 <div class="form-group">
-                                    <label> تفعيل تنبيه بحلول آجال الإستلام الوقتي قبل </label>
+                                    <label> تفعيل تنبيه بحلول آجال الإستلام النهائي قبل </label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_delais_rd" value="{{ $settings->notif_delais_rd }}">
+                                                name="notif_delais_rd" {{ $etablissement->notif_delais_rd ? 'checked' : ''  }}>
+
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_rd" value="{{ $settings->notif_duree_rd }}" min="1" max="99">
+                                        name="notif_duree_rd" value="{{ $etablissement->notif_duree_rd }}" min="1" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -336,7 +353,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
 
                     </button>
 
-                    <a href="{{ route('settings.index') }}" class="btn btn-danger" style="float: left;">
+                    <a href="{{ route('etablissements.index') }}" class="btn btn-danger" style="float: left;">
                         <i class="feather icon-minus-circle"></i>
                         {{ __('inputs.btn_cancel') }}
                     </a>

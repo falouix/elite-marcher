@@ -24,7 +24,7 @@ class EtablissementController extends Controller
      */
     public function index()
     {
-        $etablissement = Etablissement::find(1);
+        $etablissement = Etablissement::first();
         return view('etablissements.index', compact('etablissement'));
     }
 
@@ -37,28 +37,36 @@ class EtablissementController extends Controller
     public function store(Request $request)
     {
          // Prevent XSS Attack
-         Utility::stripXSS($request);
-        /* $this->validate($request, [
-        'file' => 'file|mimes:jpg,jpeg,bmp,png',
-        ]);*/
+        Utility::stripXSS($request);
         $settings = Etablissement::first();
         $mode = 'create';
         if ($settings) {
             $mode = 'update';
         }
-        //dd($request->file);
         $input = $request->all();
+       // dd($request);
+        (isset($input["ajouter_annee"]) && $input["ajouter_annee"] == "on") ? $input["ajouter_annee"] ="1" : $input["ajouter_annee"] ="0";
+        (isset($input["reset_code"]) && $input["reset_code"] == "on") ? $input["reset_code"] ="1" : $input["reset_code"] ="0";
+        (isset($input["notif_validation_besoins"]) && $input["notif_validation_besoins"] == "on") ? $input["notif_validation_besoins"] ="1" : $input["notif_validation_besoins"] ="0";
+        (isset($input["notif_cc"]) && $input["notif_cc"] == "on") ? $input["notif_cc"] ="1" : $input["notif_cc"] ="0";
+        (isset($input["notif_avis_pub"]) && $input["notif_avis_pub"] == "on") ? $input["notif_avis_pub"] ="1" : $input["notif_avis_pub"] ="0";
+        (isset($input["notif_session_op"]) && $input["notif_session_op"] == "on") ? $input["notif_session_op"] ="1" : $input["notif_session_op"] ="0";
+        (isset($input["notif_caution_provisoire"]) && $input["notif_caution_provisoire"] == "on") ? $input["notif_caution_provisoire"] ="1" : $input["notif_caution_provisoire"] ="0";
+        (isset($input["notif_date_caution_final"]) && $input["notif_date_caution_final"] == "on") ? $input["notif_date_caution_final"] ="1" : $input["notif_caution_final"] ="0";
+        (isset($input["notif_delais_rp"]) && $input["notif_delais_rp"] == "on") ? $input["notif_delais_rp"] ="1" : $input["notif_delais_rp"] ="0";
+        (isset($input["notif_delais_rd"]) && $input["notif_delais_rd"] == "on") ? $input["notif_delais_rd"] ="1" : $input["notif_delais_rd"] ="0";
+       // $input["notif_publication_achat"] == "on" ? $input["notif_publication_achat"] ="1" : $input["notif_publication_achat"] ="0";
+         //dd($input);
+        // dd(Etablissement::find(1)->update($input));
         switch ($mode) {
             case 'update':
                 Etablissement::first()->update($input);
-                break;
+
             default:
             Etablissement::create($input);
-                break;
+
         }
          $notification = $this->notifyArr('ظبط إعدادات النظام', '!تم ظبط إعدادات النظام بنجاح', 'success', true);
-
-
         return redirect()->route('etablissements.index')
             ->with('notification', $notification);
     }

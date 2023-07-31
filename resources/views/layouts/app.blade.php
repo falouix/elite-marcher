@@ -97,7 +97,7 @@
                             {{-- Single delete modal --}}
                             @yield('srcipt-js')
                             <script>
-                               
+
                                 // Add selected row count to Mulitiple Delete Btn
                                 function SelectedRowCountBtnDelete(table) {
                                     if (table.rows('.selected').data().length > 0) {
@@ -338,17 +338,17 @@
                                     if (nbNotifValidation > 0) {
                                         showInernalNotif("error", "إشعارات  لتثبيت المهام ",
                                             "لديك " + nbNotifValidation + " مهام يجب إنجازها ", "", false)
-                                        customnotify('إشعارات المهام', "لديك " + nbNotifValidation + " مهام يجب إنجازها ", '');
+                                        customnotify('إشعارات المهام', "لديك " + nbNotifValidation + " مهام يجب إنجازها ", "{{route('notifs.index')}}");
                                     }
                                     if (nbNotifRappel > 0) {
                                         showInernalNotif("info", 'إشعارات تذكير ', "لديك " + nbNotifRappel + " إشعارات تذكير ", "")
-                                        customnotify('إشعارات تذكير', "لديك " + nbNotifRappel + " إشعارات تذكير ", '');
+                                        customnotify('إشعارات تذكير', "لديك " + nbNotifRappel + " إشعارات تذكير ", "{{route('notifs.index')}}");
                                     }
                                     if (nbNotifMessage > 0) {
                                         showInernalNotif("success", " إشعارات أخرى ", "لديك " + nbNotifMessage +
                                             "إشعارات للإعلام",
                                             "", true)
-                                        customnotify('إشعارات أخرى', "لديك " + nbNotifMessage + " إشعارات أخرى للإعلام ", '');
+                                        customnotify('إشعارات أخرى', "لديك " + nbNotifMessage + " إشعارات أخرى للإعلام ", "{{route('notifs.index')}}");
                                     }
 
                                 }

@@ -141,6 +141,7 @@ class AppServiceProvider extends ServiceProvider
                 $besoins_actif = Carbon::now()->between($paramBesoin->date_debut, $paramBesoin->date_fin);
             }
             $settings = Etablissement::first();
+            //dd(!$settings);
             if(!$settings){
                 $settings = Etablissement::create();
             }
