@@ -209,7 +209,7 @@
                                 {{--  Cahier des charges  form start --}}
                                 <div class="col-md-12">
                                     @php
-                                        $cahiers_charges = $dossier->cahiers_charges;
+                                        $cahiers_charges = $dossier->cahiers_charges[0];
                                     @endphp
                                     <div class="form-row">
                                         <input type="number" name="cahiers_charges_id" id="cahiers_charges_id"
@@ -662,9 +662,11 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                <select class="form-control" name="commissionOPTech_typeDoc" id="commissionOPTech_typeDoc">
+                                                @if($type_docs['COM_OPTECH'] ??  null)
                                                 @foreach ($type_docs['COM_OPTECH'] as $item)
                                                 <option value="{{$item->id}}">{{ $item->libelle }}</option>
                                                 @endforeach
+                                                @endif
                                                </select>
 
                                             </div>
@@ -755,9 +757,11 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                <select class="form-control" name="engagement_typeDoc" id="engagement_typeDoc">
+                                                @if($type_docs['ENGAGEMENT'] ??  null)
                                                 @foreach ($type_docs['ENGAGEMENT'] as $item)
                                                 <option value="{{$item->id}}">{{ $item->libelle }}</option>
                                                 @endforeach
+                                                @endif
                                                </select>
 
                                             </div>
@@ -844,9 +848,11 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                <select class="form-control" name="engregistrement_typeDoc" id="engregistrement_typeDoc">
+                                                @if($type_docs['ENREGISTREMENT'] ?? null)
                                                 @foreach ($type_docs['ENREGISTREMENT'] as $item)
                                                 <option value="{{$item->id}}">{{ $item->libelle }}</option>
                                                 @endforeach
+                                                @endif
                                                </select>
 
                                             </div>
@@ -957,9 +963,11 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                <select class="form-control" name="ordreService_typeDoc" id="ordreService_typeDoc">
+                                                @if($type_docs['ORDRE_SERVICE'] ?? null)
                                                 @foreach ($type_docs['ORDRE_SERVICE'] as $item)
                                                 <option value="{{$item->id}}">{{ $item->libelle }}</option>
                                                 @endforeach
+                                                @endif
                                                </select>
 
                                             </div>
@@ -1063,9 +1071,11 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                <select class="form-control" name="receptionP_typeDoc" id="recepionP_typeDoc">
+                                                @if($type_docs['RECEPTIONPROVISOIRE'] ?? null)
                                                 @foreach ($type_docs['RECEPTIONPROVISOIRE'] as $item)
                                                 <option value="{{$item->id}}">{{ $item->libelle }}</option>
                                                 @endforeach
+                                                @endif
                                                </select>
 
                                             </div>
@@ -1169,9 +1179,11 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                <select class="form-control" name="receptionD_typeDoc" id="receptionD_typeDoc">
+                                                @if($type_docs['RECEPTIONDEFINITIVE'] ?? null)
                                                 @foreach ($type_docs['RECEPTIONDEFINITIVE'] as $item)
                                                 <option value="{{$item->id}}">{{ $item->libelle }}</option>
                                                 @endforeach
+                                                @endif
                                                </select>
 
                                             </div>
@@ -1258,9 +1270,11 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                <select class="form-control" name="cloture_typeDoc" id="cloture_typeDoc">
+                                                @if($type_docs['CLOTURE'] ?? null)
                                                 @foreach ($type_docs['CLOTURE'] as $item)
                                                 <option value="{{$item->id}}">{{ $item->libelle }}</option>
                                                 @endforeach
+                                                @endif
                                                </select>
 
                                             </div>
@@ -1347,9 +1361,11 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                <select class="form-control" name="annulation_typeDoc" id="annulation_typeDoc">
+                                                @if( $type_docs['ANNULATION'] ?? null)
                                                 @foreach ($type_docs['ANNULATION'] as $item)
                                                 <option value="{{$item->id}}">{{ $item->libelle }}</option>
                                                 @endforeach
+                                                @endif
                                                </select>
 
                                             </div>

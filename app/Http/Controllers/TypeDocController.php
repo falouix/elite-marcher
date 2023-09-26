@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TypesDoc;
 use App\Models\Notif;
-use App\Repositories\Interfaces\INotifRepository;
+use App\Repositories\Interfaces\ITypesDocRepository;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Log;
@@ -17,10 +17,10 @@ class TypeDocController extends Controller
 {
     use ApiResponser;
     private $newNotif;
-    public function __construct( INotifRepository $notifRepository)
+    public function __construct( ITypesDocRepository $repository)
     {
 
-        $this->notifRepository = $notifRepository;
+        $this->repository = $repository;
     }
     /**
      * Display a listing of the resource.
@@ -38,54 +38,11 @@ class TypeDocController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeFromBesoin(Request $request)
-    {
-         // Prevent XSS Attack
-         Utility::stripXSS($request);
-        Log::alert("Article store from besoin request");
-        Log::info($request);
-        $validator = Validator::make($request->all(), [
-            'libelle' => 'required|unique:types_docs,libelle',
-        ]);
-
-        if ($validator->fails()) {
-            Log::critical($validator->errors());
-            return $this->error($validator->errors(), 403);
-        }
-        $article = Article::create([
-            'libelle' => $request->libelle,
-            'type_doc' => $request->type_doc,
-        ]);
-        if($article){
-            $msg = "قام المستعمل [". Auth::user()->name ."] بإضافة توع وثيقة جديدة[". $article->libelle ."] ";
-            // Create Notification To users
-            $newNotif = new Notif();
-            $newNotif->type = "RAPPEL";
-            $newNotif->texte = $msg;
-            $newNotif->from_table = "articles";
-            $newNotif->from_table_id = $article->id;
-            $newNotif->users_id = Auth::user()->id;
-            $newNotif->users_id = Auth::user()->id;
-            $newNotif->read_at =  Carbon::now()->format('d-m-Y');
-            $newNotif->action = route('types_docs.index');
-            $notif = $this->notifRepository->GenererNotif($newNotif);
-        }
-
-
-        return $this->notify(' إعدادات', 'تم إضافة نوع وثيقة جديدة ');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
          // Prevent XSS Attack
          Utility::stripXSS($request);
-        Log::alert("Article store request");
+        Log::alert("TypesDocs store request");
         Log::info($request);
         $validator = Validator::make($request->all(), [
             'libelle' => 'required|unique:types_docs,libelle',
@@ -94,12 +51,11 @@ class TypeDocController extends Controller
             Log::critical($validator->errors());
             return $this->error($validator->errors(), 403);
         }
-        Article::create([
+        TypesDoc::create([
             'libelle' => $request->libelle,
             'type_doc' => $request->type_doc,
-            'valider' => true,
         ]);
-        return $this->notify('المواد أو الطلبات', 'تم إضافة مادة جديدة بنجاح');
+        return $this->notify('أنواع الوثائق', 'تم إضافة نوع وثيقة جديدة بنجاح');
     }
 
 
@@ -110,11 +66,11 @@ class TypeDocController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        Log::info("Article edit id ===> " . $id);
+        Log::info("TypesDoc edit id ===> " . $id);
         if ($request->ajax()) {
-            $article = TypesDoc::find($id);
-            Log::info("Article edit details ===> " . $article);
-            return response()->json($article);
+            $TypesDoc = TypesDoc::find($id);
+            Log::info("TypesDoc edit details ===> " . $TypesDoc);
+            return response()->json($TypesDoc);
         }
     }
     /**
@@ -128,21 +84,21 @@ class TypeDocController extends Controller
     {
          // Prevent XSS Attack
          Utility::stripXSS($request);
-        \Log::alert("Update Article from view ".$request);
+        \Log::alert("Update TypesDoc from view ".$request);
         $validator = Validator::make($request->all(), [
             'libelle' => 'required|unique:types_docs,libelle,' . $id,
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors(), 403);
         }
-        Article::find($id)->update([
+        TypesDoc::find($id)->update([
             'libelle' => $request->libelle,
-            'natures_demande_id' => $request->natures_demande_id,
+            'type_doc' => $request->type_doc,
         ]);
-        return $this->notify(' المواد أو الطلبات', 'تم تحيين المادة بنجاح');
+        return $this->notify('أنواع الوثائق ', 'تم تحيين نوع الوثيقة بنجاح');
     }
     /**
-     * Update the specified resource in storage. : Valider Article
+     * Update the specified resource in storage. : Valider TypesDoc
      * * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -161,25 +117,12 @@ class TypeDocController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAllArticlesDatatable(Request $request)
+    public function getAllTypeDocsDatatable(Request $request)
     {
-        Log::alert("Articles Request from view");
-        Log::info($request->nature_demande);
+        Log::alert("TypesDocs Request from view");
         if ($request->ajax()) {
-            return $this->repository->getAllArticle($request->nature_demande);
+            return $this->repository->getAllTypesDoc();
         }
 
-    }
-    /**
-     * Process datatables ajax request.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getAllArticlesToSelect(Request $request)
-    {
-        \Log::info($request);
-        if ($request->ajax()) {
-            return $this->repository->getArticleSelect($request->natures_demande_id);
-        }
     }
 }

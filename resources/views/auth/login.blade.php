@@ -74,7 +74,7 @@
             <div class="carousel-item active">
                 <div class="auth-prod-slidebg bg-1"></div>
                 <div class="carousel-caption d-none d-md-block">
-                   {{--  <img src="{{ asset('/images/product/prod-1.jpg') }}" alt="product images" class="img-fluid mb-5"> --}}
+
                     <h3 class="mb-50">جامعة جندوبة</h3>
                     <p class="mb-5">منظومة متابعة الصفقات العمومية</p>
                 </div>

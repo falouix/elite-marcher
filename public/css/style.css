@@ -12325,7 +12325,7 @@ table.dataTable tbody>tr>.selected th.select-checkbox:after {
 }
 
 .auth-prod-slider .auth-prod-slidebg.bg-1 {
-    background-image: linear-gradient(to right, rgba(119, 89, 222, 0.9) 0%, rgba(33, 150, 243, 0.9) 100%);
+    background-image: linear-gradient(to right, rgb(96 128 185) 0%, rgb(50 74 134) 100%);
 }
 
 .auth-prod-slider .auth-prod-slidebg.bg-2 {
@@ -12355,13 +12355,13 @@ table.dataTable tbody>tr>.selected th.select-checkbox:after {
 }
 
 .auth-prod-slider .carousel-caption {
-    bottom: auto;
+    /* bottom: auto; */
     top: 150px;
 }
 
 .auth-prod-slider .carousel-caption img {
     border-radius: 5px;
-    border: 4px solid #fff;
+    /* border: 4px solid #fff; */
 }
 
 .auth-prod-slider .carousel-caption h5 {

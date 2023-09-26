@@ -70,6 +70,10 @@ class Notif extends Model
 		'date_traitement',
 		'services_id'
 	];
+    public function getDeletedAtAttribute()
+    {
+        return (new Carbon($this->attributes['deleted_at']))->format('Y-m-d H:m');
+    }
     public function lignes_notifs()
 	{
 		return $this->hasMany(LignesNotif::class, 'notifs_id');

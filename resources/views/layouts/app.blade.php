@@ -352,7 +352,22 @@
                                     }
 
                                 }
+                                function showNotifInternalG(nbNotifRappel, nbNotifValidation, nbNotifMessage) {
+                                    //alert("yes")
+                                    if (nbNotifValidation > 0) {
+                                        showInernalNotif("error", "إشعارات  لتثبيت المهام ",
+                                            "لديك " + nbNotifValidation + " مهام يجب إنجازها ", "", false)
+                                        }
+                                    if (nbNotifRappel > 0) {
+                                        showInernalNotif("info", 'إشعارات تذكير ', "لديك " + nbNotifRappel + " إشعارات تذكير ", "")
+                                       }
+                                    if (nbNotifMessage > 0) {
+                                        showInernalNotif("success", " إشعارات أخرى ", "لديك " + nbNotifMessage +
+                                            "إشعارات للإعلام",
+                                            "", true)
+                                          }
 
+                                }
 
                                 function showInernalNotif(type, title, desc, url, hide) {
 

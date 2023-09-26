@@ -123,6 +123,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Interfaces\INotifRepository',
             'App\Repositories\Services\NotifRepository'
         );
+         // Notif Repository
+         $this->app->bind(
+            'App\Repositories\Interfaces\ITypesDocRepository',
+            'App\Repositories\Services\TypesDocRepository'
+        );
 
         // Event Repository
         /* $this->app->bind(

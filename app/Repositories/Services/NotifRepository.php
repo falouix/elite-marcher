@@ -21,7 +21,7 @@ class NotifRepository implements INotifRepository
     }
     public function postNotifAction($id, $mode='user')
     {
-       // Log::alert("Mode Notif Action : ".$mode);
+        Log::alert("Mode Notif Action : ".$mode);
         $notif = Notif::find($id);
         if ($notif) {
             switch ($notif->type) {
@@ -50,8 +50,8 @@ class NotifRepository implements INotifRepository
     private function markNotifAsRead($id, $type)
     {
         LignesNotif::create([
-            //'read_at' => Carbon::now(),
-            'date_traitement' => Carbon::now(),
+            'read_at' => Carbon::now(),
+            //'date_traitement' => Carbon::now(),
             'users_ids' => Auth::user()->id,
             'notifs_id' => $id,
         ]);

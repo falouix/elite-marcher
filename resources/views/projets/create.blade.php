@@ -464,7 +464,7 @@
                     },
                     {
                         visible: false,
-                        targets: 1
+                        targets: [1,10]
                     }
                 ],
                 /*
@@ -680,7 +680,7 @@
                 ids,
                 lb_ids
             } = add_cp();
-             alert(JSON.stringify(lb_ids))
+             //alert(JSON.stringify(lb_ids))
             $('#lignesprjt').val(JSON.stringify(ids))
             $('#lbsoins_ids').val(lb_ids)
             $("#btn_submit").click()

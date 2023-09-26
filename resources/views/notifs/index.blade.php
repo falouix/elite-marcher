@@ -161,8 +161,8 @@
                         className: 'type_notif'
                     },
                     {
-                        data: "date_traitement",
-                        className: 'date_traitement'
+                        data: "deleted_at",
+                        className: 'deleted_at'
                     },
                     {
                         data: 'action',

@@ -41,7 +41,10 @@ class LignesNotif extends Model
 		'read_at',
 		'notifs_id'
 	];
-
+    public function getReadAtAttribute()
+    {
+        return (new Carbon($this->attributes['read_at']))->format('Y-m-d H:m');
+    }
     public function notifs()
 	{
 		return $this->belongsTo(Notifs::class, 'notifs_id');

@@ -1,4 +1,4 @@
-@if(auth::user()->user_type == 'admin')
+@if(auth::user()->user_type == 'admin' && $deleted_at == null)
     <button type="button" class="btn btn-icon btn-rounded btn-danger"
     title="تثبيت المهمة" onclick="goToAction({{ $id }})"><i
         class="icon feather icon-check-circle"></i></button>
@@ -7,8 +7,6 @@ function goToAction(id) {
     var ref = this
     if (confirm("أنت بصدد تثبيت الإشعار!" + "\n" +
             "سيقوم البرنامج بوضع علامة مقروءة وتثبيت الإشعار")) {
-
-
         // Send a POST request
         axios({
                 method: 'post',
@@ -21,14 +19,13 @@ function goToAction(id) {
             .then(function(response) {
                 console.log(response);
                 PnotifyCustom(response.data)
-                ref.getNotifs(
-                    '/getNotifs'
-                );
+                $('#article-table').DataTable().ajax.reload();
 
             })
             .catch(function(error) {
                 console.log(error);
             });
+
     }
 
 }

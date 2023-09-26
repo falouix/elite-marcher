@@ -1,75 +1,75 @@
 <div id="notif-bar-app">
-<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
 
-    <span v-if="bellIcon === 'on'" ><i class="icon feather icon-bell" style="color:red;"></i></span>
+        <span v-if="bellIcon === 'on'"><i class="icon feather icon-bell" style="color:red;"></i></span>
         <span v-else><i class="icon feather icon-bell-off"></i></span>
-</a>
+    </a>
 
 
-<div class="dropdown-menu dropdown-menu-right notification" style="overflow: auto; max-height: 500px;">
-    <div class="noti-head">
-        <h6 class="d-inline-block m-b-0">الإشعارات</h6>
-        <div class="float-right">
-            <a href="#!" class="m-r-10"></a>
-            <a href="#!"></a>
+    <div class="dropdown-menu dropdown-menu-right notification" style="overflow: auto; max-height: 500px;">
+        <div class="noti-head">
+            <h6 class="d-inline-block m-b-0">الإشعارات</h6>
+            <div class="float-right">
+                <a href="#!" class="m-r-10"></a>
+                <a href="#!"></a>
+            </div>
+        </div>
+        <ul class="noti-body">
+            <li class="n-title">
+                <p class="m-b-0">إشعارات تذكير </p>
+            </li>
+            <li class="notification" v-for="item in items.notifsRappel">
+                <div class="media">
+                    <div class="media-body">
+                        <p><strong>@{{ item.texte }}</strong>
+                            <span class="n-time text-muted"><button type="button" class="btn btn-default"
+                                    @click="goToAction(item.id)">
+                                    <i class="icon feather icon-eye m-r-10" title="تثبيت المهمة"></i> </button>
+                                <a v-if="item.action !=''" :href="item.action" title="الذهاب إلى المهمة"
+                                    target="_blank"><i class="icon feather icon-external-link"></i></a>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </li>
+            <li class="n-title">
+                <p class="m-b-0">إشعارات المهام</p>
+            </li>
+            <li class="notification" v-for="item in items.notifsValidation">
+                <div class="media">
+                    <div class="media-body">
+                        <p><strong>@{{ item.texte }}</strong>
+                            <span class="n-time text-muted"><button type="button" class="btn btn-default"
+                                    @click="goToAction(item.id)">
+                                    <i class="icon feather icon-check-circle m-r-10" title="تثبيت"></i> </button>
+                                <a v-if="item.action !=''" :href="item.action" title="الذهاب إلى المهمة"
+                                    target="_blank"><i class="icon feather icon-external-link"></i></a>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </li>
+            <li class="n-title">
+                <p class="m-b-0">إشعارات أخرى </p>
+            </li>
+            <li class="notification" v-for="item in items.notifsMessage">
+                <div class="media">
+                    <div class="media-body">
+                        <p><strong>@{{ item.texte }}</strong>
+                            <span class="n-time text-muted"><button type="button" class="btn btn-default"
+                                    @click="goToAction(item.id)">
+                                    <i class="icon feather icon-eye m-r-10"></i> </button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+        <div class="noti-footer">
+            <a href="{{ route('notifs.index') }}">عرض الكل</a>
         </div>
     </div>
-    <ul class="noti-body" >
-        <li class="n-title">
-            <p class="m-b-0">إشعارات تذكير </p>
-        </li>
-        <li class="notification" v-for="item in items.notifsRappel">
-            <div class="media">
-                <div class="media-body">
-                    <p><strong>@{{ item.texte }}</strong>
-                        <span class="n-time text-muted"><button type="button" class="btn btn-default"
-                                @click="goToAction(item.id)">
-                                <i class="icon feather icon-eye m-r-10" title="تثبيت المهمة"></i> </button>
-                            <a v-if="item.action !=''" :href="item.action" title="الذهاب إلى المهمة"
-                                target="_blank"><i class="icon feather icon-external-link"></i></a>
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </li>
-        <li class="n-title">
-            <p class="m-b-0">إشعارات المهام</p>
-        </li>
-        <li class="notification" v-for="item in items.notifsValidation">
-            <div class="media">
-                <div class="media-body">
-                    <p><strong>@{{ item.texte }}</strong>
-                        <span class="n-time text-muted"><button type="button" class="btn btn-default"
-                                @click="goToAction(item.id)">
-                                <i class="icon feather icon-check-circle m-r-10" title="تثبيت"></i> </button>
-                            <a v-if="item.action !=''" :href="item.action" title="الذهاب إلى المهمة"
-                                target="_blank"><i class="icon feather icon-external-link"></i></a>
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </li>
-        <li class="n-title">
-            <p class="m-b-0">إشعارات أخرى </p>
-        </li>
-        <li class="notification" v-for="item in items.notifsMessage">
-            <div class="media">
-                <div class="media-body">
-                    <p><strong>@{{ item.texte }}</strong>
-                        <span class="n-time text-muted"><button type="button" class="btn btn-default"
-                                @click="goToAction(item.id)">
-                                <i class="icon feather icon-eye m-r-10"></i> </button>
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </li>
-
-    </ul>
-    <div class="noti-footer">
-        <a href="{{ route('notifs.index') }}">عرض الكل</a>
-    </div>
-</div>
 </div>
 
 
@@ -95,18 +95,24 @@
                 this.getNotifs(
                     '/getNotifs'
                 );
-            }, 3000);
-
+            }, 10000);
+            this.getDesktopNotifs();
             const timerDsktop = setInterval(() => {
-               this.getDesktopNotifs();
-           }, 900000);
+                this.getDesktopNotifs();
+            }, 600000);
+            const timerInternal = setInterval(() => {
+                this.getInteralNotifs();
+            }, 300000);
 
-           this.$once("hook:beforeDestroy", () => {
-               clearInterval(timer);
-           });
-           this.$once("hook:beforeDestroy", () => {
-               clearInterval(timerDsktop);
-           });
+            this.$once("hook:beforeDestroy", () => {
+                clearInterval(timer);
+            });
+            this.$once("hook:beforeDestroy", () => {
+                clearInterval(timerDsktop);
+            });
+            this.$once("hook:beforeDestroy", () => {
+                clearInterval(timerInternal);
+            });
         },
 
         methods: {
@@ -114,11 +120,12 @@
             getNotifs(uri) {
                 axios.get(uri).then((res) => {
                     this.items = res.data
-                     let countNotif = this.items.notifsRappel.length + this.items.notifsValidation.length + this.items.notifsMessage.length
-                    if (countNotif > 0){
+                    let countNotif = this.items.notifsRappel.length + this.items.notifsValidation
+                        .length + this.items.notifsMessage.length
+                    if (countNotif > 0) {
                         this.bellIcon = 'on';
                     }
-                    console.log("count notifs :"+countNotif)
+                    console.log("count notifs :" + countNotif)
 
                 }).catch(err => {});
             },
@@ -150,19 +157,30 @@
                 }
 
             },
-            getDesktopNotifs(){
-               $.ajax({
-               url: "{{route('notifs.desktop')}}",
-               type: 'POST',
-               success: function(response) {
-                 // alert(response.notifsRappelCount)
-                 showNotifG(response.notifsRappelCount, response.notifsValidationCount, response.notifsMessageCount)
-               },
-               error: function(errors) {
-               }
-           }); // ajax end
+            getDesktopNotifs() {
+                $.ajax({
+                    url: "{{ route('notifs.desktop') }}",
+                    type: 'POST',
+                    success: function(response) {
+                        // alert(response.notifsRappelCount)
+                        showNotifG(response.notifsRappelCount, response.notifsValidationCount,
+                            response.notifsMessageCount)
+                    },
+                    error: function(errors) {}
+                })
+            },
+            getInteralNotifs() {
+                $.ajax({
+                    url: "{{ route('notifs.desktop') }}",
+                    type: 'POST',
+                    success: function(response) {
+                        // alert(response.notifsRappelCount)
+                        showNotifInternalG(response.notifsRappelCount, response
+                            .notifsValidationCount, response.notifsMessageCount)
+                    },
+                    error: function(errors) {}
+                }); // ajax end
             }
         }
     })
 </script>
-

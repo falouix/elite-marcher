@@ -41,7 +41,7 @@ $tbl_action = __('labels.tbl_action');
         <div class="card">
 
             <div class="card-header">
-                <h5>قائمة المواد</h5>
+                <h5>قائمة أنواع الوثائق</h5>
                 <div class="card-header-right">
                     {{-- @can('expense-type-create') --}}
                     <button type="button" class="btn btn-primary" href="{{ route('articles.create') }}" data-toggle="modal"
@@ -102,7 +102,7 @@ $tbl_action = __('labels.tbl_action');
                     <form id="form_id">
                         <input type="number" name="id" id="id" value="0" hidden>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">مرحلة الإنجاز </label>
                                     <select class="form-control" id="modal_type_doc" name="modal_type_doc">
@@ -248,7 +248,7 @@ $tbl_action = __('labels.tbl_action');
          $('#btn_add_article').click(() => {
 
             let libelle = $("input[name=libelle]").val();
-            let type_doc = $("modal_type_doc").val();
+            let type_doc = $("#modal_type_doc").val();
             let id = $("#id").val();
             var $url = "{{ route('types_docs.store') }}"
             var $type = "POST";
@@ -328,7 +328,7 @@ $tbl_action = __('labels.tbl_action');
         function deleteFromDataTableBtn(id) {
             //  let id = $('#tbl_btn_delete').attr('data-id');
 
-            var url = "{{ route('types_docs.destroy', ['type_doc' => ':id']) }}";
+            var url = "{{ route('types_docs.destroy', ['types_doc' => ':id']) }}";
             url = url.replace(':id', id);
             swal({
                     title: "{{ __('labels.swal_delete_title') }}",
@@ -376,107 +376,6 @@ $tbl_action = __('labels.tbl_action');
 
                     }
                 });
-        }
-
-
-        function multipleDelete(locale) {
-            var table = $('#article-table').DataTable();
-            var ids = table.rows('.selected').data();
-            if (ids.length <= 0) {
-                swal("{{ __('labels.swal_warning_title') }}", "{{ __('labels.swal_delete_users_warning_text') }}",
-                    "warning");
-                return;
-            } else {
-                if (locale == 'ar') {
-                    var stack_top_left = {
-                        "dir1": "down",
-                        "dir2": "right",
-                        "push": "top"
-                    };
-                    var PnClass = "stack-top-left bg-primary";
-                } else {
-                    var stack_top_left = {
-                        "dir1": "down",
-                        "dir2": "left",
-                        "push": "top"
-                    };
-                    var PnClass = "bg-primary";
-                }
-                // Progress loader
-                var cur_value = 1,
-                    valuePB = 1,
-                    progress;
-                var idsArr = [];
-                // Make a loader.
-                var loader = new PNotify({
-                    title: "{{ __('labels.pnotify_title') }}",
-                    text: '<div class="progress progress-striped active" style="margin:0">\
-                                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
-                                                    <span class="sr-only">0%</span>\
-                                                    </div>\
-                                                    </div>',
-                    addclass: PnClass,
-                    stack: stack_top_left,
-                    icon: 'icon-spinner4 spinner',
-                    hide: false,
-                    buttons: {
-                        closer: false,
-                        sticker: false
-                    },
-                    history: {
-                        history: false
-                    },
-                    before_open: function(PNotify) {
-                        progress = PNotify.get().find("div.progress-bar");
-                        progress.width(cur_value + "%").attr("aria-valuenow", cur_value).find("span").html(
-                            cur_value + "%");
-                        // Pretend to do something.
-                        ids.each((el) => {
-                            console.log('ids : ' + el.id)
-                            idsArr.push(el.id);
-                        })
-                        //idsArr.join(",")
-                        //console.log("id arr : " +idsArr)
-                        $.ajax({
-                            type: 'DELETE',
-                            dataType: 'JSON',
-                            url: "{{ route('natures-demandes-datatable.multidestroy') }}",
-                            data: {
-                                ids: idsArr,
-                            },
-                            success: function(response) {
-                                // refresh data or remove only tr
-                                deleteSingleRowDataTable("#article-table")
-                                $("#btn_count").html('')
-                                //console.log('id : '+ el.id, cur_value, ids.length)
-                                PnotifyCustom(response)
-                            },
-                            error: function(error) {
-                                alert(JSON.stringify(error))
-                            }
-                        });
-                        var timer = setInterval(function() {
-                            if (valuePB >= 100) {
-
-                                // Remove the interval.
-                                window.clearInterval(timer);
-                                loader.remove();
-                                return;
-                            }
-                            valuePB = ((cur_value + 1) / ids.length) * 100;
-                            cur_value += 1;
-                            progress.width(Math.round(valuePB) + "%").attr("aria-valuenow", Math.round(
-                                    valuePB))
-                                .find("span")
-                                .html(Math.round(valuePB) + "%");
-                        }, 65);
-                    }
-                });
-
-                return;
-            }
-
-
         }
     </script>
 @endsection
