@@ -249,7 +249,7 @@
                                     <th>الكمية المصادقة</th>
                                     <th>الكلفة التقديرية للوحدة</th>
                                     <th>الكلفة التقديرية الجملية</th>
-                                    <th class="not-export-col">ids</th>
+                                    <th class="not-export-col" style="display: none;">ids</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -464,7 +464,7 @@
                     },
                     {
                         visible: false,
-                        targets: [1,10]
+                        targets: [1,ç]
                     }
                 ],
                 /*

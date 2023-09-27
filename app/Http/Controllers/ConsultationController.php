@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\{DossiersAchat, LignesBesoin, LignesDossier,
     LignesDossiersAchat, Service,
      Notif, Soumissionnaire,
-     CahiersCharge, TypesDoc};
+     CahiersCharge, TypesDoc, Projet, AvisDossier};
 use App\Repositories\IFileUploadRepository;
 use App\Repositories\Interfaces\{IConsultationRepository, IDossierARepository, INotifRepository};
 use App\Traits\ApiResponser;
@@ -251,6 +251,29 @@ class ConsultationController extends Controller
         $id = decrypt($id);
         //$dossier = $this->dossierRepository->getDossierAByParam('id', $id);
         $dossier = $this->dossierRepository->getDossierWithRelations($id, ['cahiers_charges', 'avis_dossiers']);
+        $projet = Projet::select('*')->where('code_pa',$dossier->code_projet)->first();
+         if($dossier->cahierCharges == null){
+
+            $cahiers_charges= new CahiersCharge();
+            $cahiers_charges->dossiers_achats_id = $dossier->id;
+            $cahiers_charges->duree_travaux= $projet->duree_travaux_prvu;
+            $cahiers_charges->date_pub_prevu=$projet->date_cc_prvu;
+
+
+         }else{
+            $cahiers_charges= $dossier->cahierCharges;
+         }
+         if($dossier->avis_dossiers[0] == null){
+
+            $avisDossier= new AvisDossier();
+            $avisDossier->dossiers_achats_id = $dossier->id;
+            $avisDossier->date_ouverture_plis=$projet->date_op_prvu;
+
+
+         }else{
+            $avisDossier= $dossier->avis_dossiers;
+         }
+
         switch ($dossier->type_demande) {
             case '1':
                 $dossier->type_demande = 'مواد وخدمات';
@@ -266,7 +289,7 @@ class ConsultationController extends Controller
         $type_docs = DB::table('types_docs')->select('id','libelle', 'type_doc')
         ->get()->groupBy('type_doc');
 
-        return view('dossiers_achats.consultations.edit', compact('dossier','type_docs'));
+        return view('dossiers_achats.consultations.edit', compact('dossier','type_docs','projet','cahiers_charges','avisDossier'));
     }
 
     /**

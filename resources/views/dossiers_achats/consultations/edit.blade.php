@@ -12,8 +12,8 @@
     }
     $tbl_action = __('labels.tbl_action');
 
-    $avisDossier = $dossier->avis_dossiers;
-   // dd($avisDossier);
+   // $avisDossier = $dossier->avis_dossiers;
+   //dd($avisDossier);
 @endphp
 
 @extends('layouts.app')
@@ -208,9 +208,7 @@
                             <div class="row">
                                 {{--  Cahier des charges  form start --}}
                                 <div class="col-md-12">
-                                    @php
-                                        $cahiers_charges = $dossier->cahiers_charges[0];
-                                    @endphp
+
                                     <div class="form-row">
                                         <input type="number" name="cahiers_charges_id" id="cahiers_charges_id"
                                             value="{{ $cahiers_charges->id ?? '' }}" hidden>
