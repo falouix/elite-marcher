@@ -225,7 +225,7 @@
                                             <label>ثمن اقتناء كراس الشروط :</label>
                                             <input class="form-control" type="number" min=0 max=99999999999,999
                                                 id="prix_cc" name="prix_cc"
-                                                value='{{ $cahiers_charges->prix_cc ?? '' }}'>
+                                                value='{{ $cahiers_charges->prix_cc ?? '0' }}'>
                                             <label id="date_pub_prevu-error"
                                                 class="error jquery-validation-error small form-text invalid-feedback"
                                                 for="date_pub_prevu"></label>
@@ -270,7 +270,7 @@
                                             <label>قيمة الضمان الوقتي :</label>
                                             <input type="number" class="form-control" id="caution_prov"
                                                 name="caution_prov" min=1,000 max=99999999999,999
-                                                value="{{ $cahiers_charges->caution_prov ?? '' }}">
+                                                value="{{ $cahiers_charges->caution_prov ?? 'O' }}">
                                         </div>
 
                                         <div class="form-group col-md-6">

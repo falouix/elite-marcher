@@ -19,22 +19,6 @@ $mode = isset($user);
 @endphp
 
 @extends('layouts.app')
-@section('head-script')
-
-    <!-- Bootstrap datetimepicker css -->
-    <link rel="stylesheet" href="{{ asset('/plugins/bootstrap-datetimepicker/css/bootstrap-datepicker3.min.css') }}">
-    <style>
-        .datepicker>.datepicker-days {
-            display: block;
-        }
-
-        ol.linenums {
-            margin: 0 0 0 -8px;
-        }
-
-    </style>
-@endsection
-
 
 @section('breadcrumb')
     @include('layouts.partials.breadcrumb', [
@@ -118,7 +102,7 @@ $mode = isset($user);
                                 data-mask="999 9999-9999" value="@if (isset($user)) {{ $user->phone_num == null ? '' : $user->phone_num }} @else {{ old('phone_num') }} @endif">
                         </div>
                     </div>
-                  
+
 
                     <div class="col-md-6">
                         <div class="form-group">

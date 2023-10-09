@@ -97,7 +97,45 @@
                             {{-- Single delete modal --}}
                             @yield('srcipt-js')
                             <script>
+                                getDesktopNotifs();
 
+                                setInterval(() => {
+                                    getDesktopNotifs();
+                                }, 600000);
+
+                                function getDesktopNotifs() {
+                                    $.ajax({
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        url: "{{ route('notifs.desktop') }}",
+                                        type: 'POST',
+                                        success: function(response) {
+                                            //alert(response.notifsRappelCount)
+                                            showNotifG(response.notifsRappelCount, response.notifsValidationCount,
+                                                response.notifsMessageCount)
+                                        },
+                                        error: function(errors) {
+                                            console.log(errors)
+                                        }
+                                    })
+                                }
+
+                                function getInteralNotifs() {
+                                    $.ajax({
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        url: "{{ route('notifs.desktop') }}",
+                                        type: 'POST',
+                                        success: function(response) {
+                                            // alert(response.notifsRappelCount)
+                                            showNotifInternalG(response.notifsRappelCount, response
+                                                .notifsValidationCount, response.notifsMessageCount)
+                                        },
+                                        error: function(errors) {}
+                                    }); // ajax end
+                                }
                                 // Add selected row count to Mulitiple Delete Btn
                                 function SelectedRowCountBtnDelete(table) {
                                     if (table.rows('.selected').data().length > 0) {
@@ -233,10 +271,10 @@
                                                     var loader = new PNotify({
                                                         title: "{{ __('labels.pnotify_title') }}",
                                                         text: '<div class="progress progress-striped active" style="margin:0">\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span class="sr-only">0%</span>\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span class="sr-only">0%</span>\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>',
                                                         addclass: PnClass,
                                                         stack: stack_top_left,
                                                         icon: 'icon-spinner4 spinner',
@@ -311,7 +349,7 @@
                                 }
 
                                 function customnotify(title, desc, url) {
-
+                                    console.log(Notification.permission)
                                     if (Notification.permission !== "granted") {
                                         Notification.requestPermission();
                                     } else {
@@ -334,38 +372,41 @@
                                 }
 
                                 function showNotifG(nbNotifRappel, nbNotifValidation, nbNotifMessage) {
-                                    //alert("yes")
+                                    //alert("yes:" + nbNotifRappel + nbNotifValidation + nbNotifMessage)
                                     if (nbNotifValidation > 0) {
                                         showInernalNotif("error", "إشعارات  لتثبيت المهام ",
                                             "لديك " + nbNotifValidation + " مهام يجب إنجازها ", "", false)
-                                        customnotify('إشعارات المهام', "لديك " + nbNotifValidation + " مهام يجب إنجازها ", "{{route('notifs.index')}}");
+                                        customnotify('إشعارات المهام', "لديك " + nbNotifValidation + " مهام يجب إنجازها ",
+                                            "{{ route('notifs.index') }}");
                                     }
                                     if (nbNotifRappel > 0) {
                                         showInernalNotif("info", 'إشعارات تذكير ', "لديك " + nbNotifRappel + " إشعارات تذكير ", "")
-                                        customnotify('إشعارات تذكير', "لديك " + nbNotifRappel + " إشعارات تذكير ", "{{route('notifs.index')}}");
+                                        customnotify('إشعارات تذكير', "لديك " + nbNotifRappel + " إشعارات تذكير ", "{{ route('notifs.index') }}");
                                     }
                                     if (nbNotifMessage > 0) {
                                         showInernalNotif("success", " إشعارات أخرى ", "لديك " + nbNotifMessage +
                                             "إشعارات للإعلام",
                                             "", true)
-                                        customnotify('إشعارات أخرى', "لديك " + nbNotifMessage + " إشعارات أخرى للإعلام ", "{{route('notifs.index')}}");
+                                        customnotify('إشعارات أخرى', "لديك " + nbNotifMessage + " إشعارات أخرى للإعلام ",
+                                            "{{ route('notifs.index') }}");
                                     }
 
                                 }
+
                                 function showNotifInternalG(nbNotifRappel, nbNotifValidation, nbNotifMessage) {
                                     //alert("yes")
                                     if (nbNotifValidation > 0) {
                                         showInernalNotif("error", "إشعارات  لتثبيت المهام ",
                                             "لديك " + nbNotifValidation + " مهام يجب إنجازها ", "", false)
-                                        }
+                                    }
                                     if (nbNotifRappel > 0) {
                                         showInernalNotif("info", 'إشعارات تذكير ', "لديك " + nbNotifRappel + " إشعارات تذكير ", "")
-                                       }
+                                    }
                                     if (nbNotifMessage > 0) {
                                         showInernalNotif("success", " إشعارات أخرى ", "لديك " + nbNotifMessage +
                                             "إشعارات للإعلام",
                                             "", true)
-                                          }
+                                    }
 
                                 }
 

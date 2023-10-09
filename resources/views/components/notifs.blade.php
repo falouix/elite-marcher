@@ -96,22 +96,8 @@
                     '/getNotifs'
                 );
             }, 10000);
-            this.getDesktopNotifs();
-            const timerDsktop = setInterval(() => {
-                this.getDesktopNotifs();
-            }, 600000);
-            const timerInternal = setInterval(() => {
-                this.getInteralNotifs();
-            }, 300000);
-
             this.$once("hook:beforeDestroy", () => {
                 clearInterval(timer);
-            });
-            this.$once("hook:beforeDestroy", () => {
-                clearInterval(timerDsktop);
-            });
-            this.$once("hook:beforeDestroy", () => {
-                clearInterval(timerInternal);
             });
         },
 
@@ -125,7 +111,7 @@
                     if (countNotif > 0) {
                         this.bellIcon = 'on';
                     }
-                    console.log("count notifs :" + countNotif)
+                    console.log("count notifs tt:" + countNotif)
 
                 }).catch(err => {});
             },
@@ -157,30 +143,8 @@
                 }
 
             },
-            getDesktopNotifs() {
-                $.ajax({
-                    url: "{{ route('notifs.desktop') }}",
-                    type: 'POST',
-                    success: function(response) {
-                        // alert(response.notifsRappelCount)
-                        showNotifG(response.notifsRappelCount, response.notifsValidationCount,
-                            response.notifsMessageCount)
-                    },
-                    error: function(errors) {}
-                })
-            },
-            getInteralNotifs() {
-                $.ajax({
-                    url: "{{ route('notifs.desktop') }}",
-                    type: 'POST',
-                    success: function(response) {
-                        // alert(response.notifsRappelCount)
-                        showNotifInternalG(response.notifsRappelCount, response
-                            .notifsValidationCount, response.notifsMessageCount)
-                    },
-                    error: function(errors) {}
-                }); // ajax end
-            }
+
         }
     })
+
 </script>

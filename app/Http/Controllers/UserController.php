@@ -123,7 +123,7 @@ class UserController extends Controller
             'user_type' => 'required',
            // 'qin' => 'unique:users,qin,' . $id,
            // 'passport' => 'unique:users,passport,' . $id,
-            'email' => 'required|email|unique:users,email,' . $id,
+           'email' => "required|email|unique:users,email,{$id},id,deleted_at,NULL"
         ]);
        $user = $this->repository->update($request, $id);
        DB::table('model_has_roles')->where('model_id', $id)->delete();
@@ -141,7 +141,7 @@ class UserController extends Controller
         * Delete all notifs from_table : projet , from_table_id : projet_id
         * Generate new notifs for all future dates
         */
-        
+
        return redirect()->route('users.index')
            ->with('notification', $notification);
     }

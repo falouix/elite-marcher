@@ -300,12 +300,6 @@
     <script src="{{ asset('/js/axios.min.js') }}"></script>
     <script src="{{ asset('/js/vue-axios.min.js') }}"></script>
 
-    <!--
-                <script src="https://unpkg.com/vue@2.5.17/dist/vue.js"></script>
-                <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-                <script src="https://unpkg.com/vue-axios@2.1.4/dist/vue-axios.min.js"></script>
-            -->
-
     <script>
         $(document).ready(function() {
             window.axios.defaults.headers.common = {
@@ -489,7 +483,7 @@
                 wheelPropagation: 1,
                 minScrollbarLength: 40,
             });
-            */
+
 
             $.ajax({
                 url: "{{route('notifs.desktop')}}",
@@ -501,7 +495,7 @@
                 error: function(errors) {
                 }
             }); // ajax end
-
+*/
 
 
         });
