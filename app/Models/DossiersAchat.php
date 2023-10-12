@@ -9,6 +9,7 @@ namespace App\Models;
 use Auth;
 use Carbon\Carbon;
 use DB;
+use Log;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -124,7 +125,8 @@ class DossiersAchat extends Model
             }else{
                 $code = \Str::replaceFirst('{code}', str_pad($count, 4, '0', STR_PAD_LEFT), $codeDossier);
             }
-
+            Log::alert("code dossier cccc: model :".$model->type_dossier." ".$codeDossier);
+            Log::alert("code dossier : ".$code);
             $model->code_dossier = $code;
             $model->save();
         });

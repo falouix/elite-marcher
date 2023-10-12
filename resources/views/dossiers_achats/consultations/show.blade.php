@@ -286,7 +286,7 @@
                                             <label>تاريخ اعتزام نشر الإعلان :</label>
                                             <input type="date" class="form-control" id='date_pub_prevu'
                                                 name="date_pub_prevu" placeholder="أدخل التاريخ"
-                                                value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
+                                                value='{{ (isset($cahiers_charges[0]->date_pub_prevu)) ? $cahiers_charges->date_pub_prevu: '' }}' readonly>
 
                                         </div>
                                         <div class="form-group col-md-6">
