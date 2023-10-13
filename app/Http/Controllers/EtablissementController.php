@@ -36,6 +36,7 @@ class EtablissementController extends Controller
      */
     public function store(Request $request)
     {
+
          // Prevent XSS Attack
         Utility::stripXSS($request);
         $settings = Etablissement::first();
@@ -44,7 +45,23 @@ class EtablissementController extends Controller
             $mode = 'update';
         }
         $input = $request->all();
-       // dd($request);
+       // dd($input);
+       if($input["notif_duree_session_op"]==""){
+        $input["notif_duree_session_op"] = 0;
+       }
+       if($input["notif_duree_caution_provisoire"]==""){
+        $input["notif_duree_caution_provisoire"] = 0;
+       }
+       if($input["notif_duree_caution_final"]==""){
+        $input["notif_duree_caution_final"] = 0;
+       }
+       if($input["notif_duree_rp"]==""){
+        $input["notif_duree_rp"] = 0;
+       }
+       if($input["notif_duree_rd"]==""){
+        $input["notif_duree_rd"] = 0;
+       }
+
         (isset($input["ajouter_annee"]) && $input["ajouter_annee"] == "on") ? $input["ajouter_annee"] ="1" : $input["ajouter_annee"] ="0";
         (isset($input["reset_code"]) && $input["reset_code"] == "on") ? $input["reset_code"] ="1" : $input["reset_code"] ="0";
         (isset($input["notif_validation_besoins"]) && $input["notif_validation_besoins"] == "on") ? $input["notif_validation_besoins"] ="1" : $input["notif_validation_besoins"] ="0";

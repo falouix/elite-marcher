@@ -15,6 +15,9 @@
 @section('head-script')
     <!-- select2 css -->
     <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
+    <!-- pnotify css -->
+    <link rel="stylesheet" href="{{ asset('/plugins/pnotify/css/pnotify.custom.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/pages/pnotify.css') }}">
 @endsection
 
 @section('breadcrumb')
@@ -242,7 +245,7 @@
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
                                             name="notif_duree_cc" value="{{ $etablissement->notif_duree_cc }}"
-                                            min="1" max="99">
+                                            min="0" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -261,7 +264,7 @@
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
                                             name="notif_duree_pub" value="{{ $etablissement->notif_duree_pub }}"
-                                            min="1" max="99">
+                                            min="0" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -279,7 +282,7 @@
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
                                             name="notif_duree_session_op"
-                                            value="{{ $etablissement->notif_duree_session_op }}" min="1"
+                                            value="{{ $etablissement->notif_duree_session_op }}" min="0"
                                             max="99">
                                     </div>
                                 </div>
@@ -298,7 +301,7 @@
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
                                             name="notif_duree_caution_provisoire"
-                                            value="{{ $etablissement->notif_duree_caution_provisoire }}" min="1"
+                                            value="{{ $etablissement->notif_duree_caution_provisoire }}" min="0"
                                             max="99">
                                     </div>
                                 </div>
@@ -318,7 +321,7 @@
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
                                             name="notif_duree_caution_final"
-                                            value="{{ $etablissement->notif_duree_caution_final }}" min="1"
+                                            value="{{ $etablissement->notif_duree_caution_final }}" min="0"
                                             max="99">
                                     </div>
                                 </div>
@@ -338,7 +341,7 @@
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
                                             name="notif_duree_rp" value="{{ $etablissement->notif_duree_rp }}"
-                                            min="1" max="99">
+                                            min="0" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -358,7 +361,7 @@
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
                                             name="notif_duree_rd" value="{{ $etablissement->notif_duree_rd }}"
-                                            min="1" max="99">
+                                            min="0" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -549,11 +552,9 @@
     <script src="{{ asset('/plugins/inputmask/js/jquery.inputmask.min.js') }}"></script>
     <!-- form-select-custom Js -->
     <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
-    <!--rich text editor  -->
-    <script src="{{ asset('/plugins/ckeditor/ckeditor.js') }}"></script>
+
+    <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
     <script>
-        CKEDITOR.replace('entete');
-        'use strict';
         $(document).ready(function() {
             $(function() {
                 // [ Initialize validation ]
@@ -561,9 +562,7 @@
                     ignore: '.ignore, .select2-input',
                     focusInvalid: false,
                     rules: {
-                        'libelle': {
-                            required: true,
-                        },
+
                         'code_pa': {
                             required: true,
                         },
