@@ -1,14 +1,14 @@
 @php
-if ($locale == 'ar') {
-    $name = 'name_' . $locale;
-    $rtl = 'rtl';
-} else {
-    $name = 'name';
-    $rtl = 'ltr';
-}
-$breadcrumb = __('breadcrumb.bread_etablissements');
-$sub_breadcrumb = __('breadcrumb.bread_etablissements');
-//dd($etablissement);
+    if ($locale == 'ar') {
+        $name = 'name_' . $locale;
+        $rtl = 'rtl';
+    } else {
+        $name = 'name';
+        $rtl = 'ltr';
+    }
+    $breadcrumb = __('breadcrumb.bread_etablissements');
+    $sub_breadcrumb = __('breadcrumb.bread_etablissements');
+    //dd($etablissement);
 @endphp
 
 @extends('layouts.app')
@@ -69,6 +69,14 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             {{ __('labels.tbl_parametreAvertissement') }} </a>
                         <!--labels.etablissement_parametreAvertissement-->
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" id="parametreAvertissement-tab" data-toggle="tab"
+                            href="#parametreAvertissement" role="tab" aria-controls="parametreAvertissement"
+                            aria-selected="true"><i class="fas fa-file-alt m-2"></i>
+                            {{ __('labels.tbl_libelle_periode_setting') }} </a>
+                        <!--labels.etablissement_parametreAvertissement-->
+                    </li>
                 </ul>
 
                 <!-- [ Form Validation ] start -->
@@ -91,7 +99,8 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                 <div class="form-group">
                                     <label class="form-label">{{ __('labels.tbl_libelle') }}</label>
                                     <input type="text" class="form-control" name="libelle"
-                                        placeholder="{{ __('labels.tbl_libelle') }}..." value="{{ $etablissement->libelle ?? ''  }}">
+                                        placeholder="{{ __('labels.tbl_libelle') }}..."
+                                        value="{{ $etablissement->libelle ?? '' }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -99,30 +108,29 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <label class="form-label"> {{ __('labels.tbl_responsable') }}</label>
                                     <input type="responsable" class="form-control" name="responsable"
                                         placeholder=" {{ __('labels.tbl_responsable') }}..."
-                                        value="{{ $etablissement->responsable ?? ''  }}">
+                                        value="{{ $etablissement->responsable ?? '' }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label"> {{ __('labels.tbl_email') }} </label>
                                     <input type="email" class="form-control" name="email"
-                                        placeholder=" {{ __('labels.tbl_adresse') }} ..." value="{{ $etablissement->email ?? ''  }}">
+                                        placeholder=" {{ __('labels.tbl_adresse') }} ..."
+                                        value="{{ $etablissement->email ?? '' }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">الهاتف</label>
-                                    <input type="responsable" class="form-control" name="tel"
-                                        placeholder=" الهاتف..."
-                                        value="{{ $etablissement->tel ?? ''  }}">
+                                    <input type="responsable" class="form-control" name="tel" placeholder=" الهاتف..."
+                                        value="{{ $etablissement->tel ?? '' }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">الفاكس</label>
                                     <input type="responsable" class="form-control" name="fax"
-                                        placeholder=" الفاكس..."
-                                        value="{{ $etablissement->fax ?? ''  }}">
+                                        placeholder=" الفاكس..." value="{{ $etablissement->fax ?? '' }}">
                                 </div>
                             </div>
 
@@ -130,7 +138,8 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                 <div class="form-group">
                                     <label class="form-label">{{ __('labels.tbl_adresse') }}</label>
                                     <input type="text" class="form-control" name="adresse"
-                                        placeholder="{{ __('labels.tbl_adresse') }}..." value="{{ $etablissement->adresse ?? ''  }}">
+                                        placeholder="{{ __('labels.tbl_adresse') }}..."
+                                        value="{{ $etablissement->adresse ?? '' }}">
                                 </div>
                             </div>
 
@@ -139,7 +148,8 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                     </div>
                     {{-- etablissement reglagesGenerauxs Tab end --}}
                     {{-- etablissement Codifications Tab start --}}
-                    <div class="tab-pane fade show " id="codification" role="tabpanel" aria-labelledby="codification-tab">
+                    <div class="tab-pane fade show " id="codification" role="tabpanel"
+                        aria-labelledby="codification-tab">
 
                         <div class="row">
                             <div class="col-md-6">
@@ -147,7 +157,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <label class="form-label"> {{ __('labels.tbl_code_pa') }}</label>
                                     <input type="text" class="form-control" name="code_pa"
                                         placeholder=" {{ __('labels.tbl_code_pa') }}..."
-                                        value="{{ $etablissement->code_pa ?? 'PA{code}/{Annee}'  }}">
+                                        value="{{ $etablissement->code_pa ?? 'PA{code}/{Annee}' }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -161,17 +171,15 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">طلب عروض إجراءات عادية </label>
-                                    <input type="text" class="form-control" name="code_aon"
-                                        placeholder="ترقيم ..."
-                                        value="{{ $etablissement->code_aon ?? 'AON{code}/{annee}'  }}">
+                                    <input type="text" class="form-control" name="code_aon" placeholder="ترقيم ..."
+                                        value="{{ $etablissement->code_aon ?? 'AON{code}/{annee}' }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">طلب عروض إجراءات مبسطة </label>
-                                    <input type="text" class="form-control" name="code_aos"
-                                        placeholder="ترقيم ..."
-                                        value="{{ $etablissement->code_aos ?? 'AOS{code}/{annee}'  }}">
+                                    <input type="text" class="form-control" name="code_aos" placeholder="ترقيم ..."
+                                        value="{{ $etablissement->code_aos ?? 'AOS{code}/{annee}' }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -179,7 +187,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <label class="form-label">طلب عروض بالتفاوض المباشر </label>
                                     <input type="text" class="form-control" name="code_gg"
                                         placeholder="ترقيم التفاوض المباشر..."
-                                        value="{{ $etablissement->code_gg ?? 'AGG{code}/{annee}'  }}">
+                                        value="{{ $etablissement->code_gg ?? 'AGG{code}/{annee}' }}">
                                 </div>
                             </div>
                         </div>
@@ -198,7 +206,7 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                             <div class="col-sm-6 ">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="reset_code" name="reset_code"
-                                         {{ $etablissement->reset_code ? 'checked' : '' }}>
+                                        {{ $etablissement->reset_code ? 'checked' : '' }}>
                                     <label class="form-check-label" for="reset_code">
                                         {{ __('labels.tbl_reset_code') }}
                                     </label>
@@ -229,11 +237,12 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_cc" {{ $etablissement->notif_cc ? 'checked' : ''  }}>
+                                                    name="notif_cc" {{ $etablissement->notif_cc ? 'checked' : '' }}>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_cc" value="{{ $etablissement->notif_duree_cc }}" min="1" max="99">
+                                            name="notif_duree_cc" value="{{ $etablissement->notif_duree_cc }}"
+                                            min="1" max="99">
                                     </div>
                                 </div>
                             </div>
@@ -246,27 +255,32 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_avis_pub" {{ $etablissement->notif_avis_pub ? 'checked' : ''  }}>
+                                                    name="notif_avis_pub"
+                                                    {{ $etablissement->notif_avis_pub ? 'checked' : '' }}>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_pub" value="{{ $etablissement->notif_duree_pub }}" min="1" max="99">
+                                            name="notif_duree_pub" value="{{ $etablissement->notif_duree_pub }}"
+                                            min="1" max="99">
                                     </div>
                                 </div>
                             </div>
                             {{-- Fin publication --}}
                             <div class="col-sm-6 ">
                                 <div class="form-group">
-                                    <label> تفعيل تنبيه لجلسة الفرز قبل  </label>
+                                    <label> تفعيل تنبيه لجلسة الفرز قبل </label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_session_op" {{ $etablissement->notif_session_op ? 'checked' : ''  }}>
+                                                    name="notif_session_op"
+                                                    {{ $etablissement->notif_session_op ? 'checked' : '' }}>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_session_op" value="{{ $etablissement->notif_duree_session_op }}" min="1" max="99">
+                                            name="notif_duree_session_op"
+                                            value="{{ $etablissement->notif_duree_session_op }}" min="1"
+                                            max="99">
                                     </div>
                                 </div>
                             </div>
@@ -277,12 +291,15 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
-                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_caution_provisoire" {{ $etablissement->notif_caution_provisoire ? 'checked' : ''  }}>
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                    name="notif_caution_provisoire"
+                                                    {{ $etablissement->notif_caution_provisoire ? 'checked' : '' }}>
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_caution_provisoire" value="{{ $etablissement->notif_duree_caution_provisoire }}" min="1" max="99">
+                                            name="notif_duree_caution_provisoire"
+                                            value="{{ $etablissement->notif_duree_caution_provisoire }}" min="1"
+                                            max="99">
                                     </div>
                                 </div>
                             </div>
@@ -295,16 +312,19 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_date_caution_final" {{ $etablissement->notif_date_caution_final ? 'checked' : ''  }}>
-                                               </div>
+                                                    name="notif_date_caution_final"
+                                                    {{ $etablissement->notif_date_caution_final ? 'checked' : '' }}>
+                                            </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_caution_final" value="{{ $etablissement->notif_duree_caution_final }}" min="1" max="99">
+                                            name="notif_duree_caution_final"
+                                            value="{{ $etablissement->notif_duree_caution_final }}" min="1"
+                                            max="99">
                                     </div>
                                 </div>
                             </div>
                             {{-- Fin Caution final --}}
-                             {{-- Reception Provisoire --}}
+                            {{-- Reception Provisoire --}}
                             <div class="col-sm-6 ">
                                 <div class="form-group">
                                     <label>{{ __('labels.tbl_notif_duree_rp') }}</label>
@@ -312,16 +332,18 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_delais_rp" {{ $etablissement->notif_delais_rp ? 'checked' : ''  }}>
-                                             </div>
+                                                    name="notif_delais_rp"
+                                                    {{ $etablissement->notif_delais_rp ? 'checked' : '' }}>
+                                            </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_rp" value="{{ $etablissement->notif_duree_rp }}" min="1" max="99">
+                                            name="notif_duree_rp" value="{{ $etablissement->notif_duree_rp }}"
+                                            min="1" max="99">
                                     </div>
                                 </div>
                             </div>
-                             {{-- Fin Reception Provisoire --}}
-                              {{-- Reception Defenitive --}}
+                            {{-- Fin Reception Provisoire --}}
+                            {{-- Reception Defenitive --}}
                             <div class="col-sm-6 ">
                                 <div class="form-group">
                                     <label> تفعيل تنبيه بحلول آجال الإستلام النهائي قبل </label>
@@ -329,16 +351,172 @@ $sub_breadcrumb = __('breadcrumb.bread_etablissements');
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <input type="checkbox" aria-label="Checkbox for following text input"
-                                                name="notif_delais_rd" {{ $etablissement->notif_delais_rd ? 'checked' : ''  }}>
+                                                    name="notif_delais_rd"
+                                                    {{ $etablissement->notif_delais_rd ? 'checked' : '' }}>
 
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                        name="notif_duree_rd" value="{{ $etablissement->notif_duree_rd }}" min="1" max="99">
+                                            name="notif_duree_rd" value="{{ $etablissement->notif_duree_rd }}"
+                                            min="1" max="99">
                                     </div>
                                 </div>
                             </div>
-                             {{-- Fin Reception Defenitive --}}
+                            {{-- Fin Reception Defenitive --}}
+                        </div>
+
+
+
+                    </div>
+                    {{-- etablissement parametreAvertissement Tab end --}}
+                    {{-- etablissement Codif                                                                     ications Tab end --}}
+                    {{-- etablissement parametreAvertissement Tab start --}}
+                    <div class="tab-pane fade " id="parametrePeriodes" role="tabpanel"
+                        aria-labelledby="parametrePeriodes-tab">
+                        <div class="row">
+                            <div class="col-sm-4 ">
+                                <div class="form-group">
+                                    <input id="notif_validation_besoins" name="notif_validation_besoins" type="checkbox"
+                                        {{ $etablissement->notif_validation_besoins ? 'checked' : '' }}>
+                                    <label> {{ __('labels.tbl_validation_besoins') }} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {{-- CC --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label> تفعيل التنبيهات المتعلقة بكراس الشروط </label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                    name="notif_cc" {{ $etablissement->notif_cc ? 'checked' : '' }}>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                            name="notif_duree_cc" value="{{ $etablissement->notif_duree_cc }}"
+                                            min="1" max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Fin CC --}}
+                            {{-- Avis publication --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label> تفعيل تنبيه للإعلان عن المنافسة قبل</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                    name="notif_avis_pub"
+                                                    {{ $etablissement->notif_avis_pub ? 'checked' : '' }}>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                            name="notif_duree_pub" value="{{ $etablissement->notif_duree_pub }}"
+                                            min="1" max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Fin publication --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label> تفعيل تنبيه لجلسة الفرز قبل </label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                    name="notif_session_op"
+                                                    {{ $etablissement->notif_session_op ? 'checked' : '' }}>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                            name="notif_duree_session_op"
+                                            value="{{ $etablissement->notif_duree_session_op }}" min="1"
+                                            max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Caution Provisoire --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label>تفعيل تنبيه بحلول آجال الضمان الوقتي قبل </label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                    name="notif_caution_provisoire"
+                                                    {{ $etablissement->notif_caution_provisoire ? 'checked' : '' }}>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                            name="notif_duree_caution_provisoire"
+                                            value="{{ $etablissement->notif_duree_caution_provisoire }}" min="1"
+                                            max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Fin Caution Provisoire --}}
+                            {{-- Caution final --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label>تنبيه يحلول آجال الضمان النهائي قبل </label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                    name="notif_date_caution_final"
+                                                    {{ $etablissement->notif_date_caution_final ? 'checked' : '' }}>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                            name="notif_duree_caution_final"
+                                            value="{{ $etablissement->notif_duree_caution_final }}" min="1"
+                                            max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Fin Caution final --}}
+                            {{-- Reception Provisoire --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label>{{ __('labels.tbl_notif_duree_rp') }}</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                    name="notif_delais_rp"
+                                                    {{ $etablissement->notif_delais_rp ? 'checked' : '' }}>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                            name="notif_duree_rp" value="{{ $etablissement->notif_duree_rp }}"
+                                            min="1" max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Fin Reception Provisoire --}}
+                            {{-- Reception Defenitive --}}
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label> تفعيل تنبيه بحلول آجال الإستلام النهائي قبل </label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                                    name="notif_delais_rd"
+                                                    {{ $etablissement->notif_delais_rd ? 'checked' : '' }}>
+
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
+                                            name="notif_duree_rd" value="{{ $etablissement->notif_duree_rd }}"
+                                            min="1" max="99">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Fin Reception Defenitive --}}
                         </div>
 
 

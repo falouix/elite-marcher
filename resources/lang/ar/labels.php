@@ -86,6 +86,7 @@ return [
   /****** ِِCourt Table */
   'tbl_court_number' => 'عدد',
   'tbl_libelle_court' => 'التسمية',
+  'tbl_libelle_periode_setting' => 'إعدادات المدد',
 
   /*****Session Table */
   'tbl_session_libelle' => 'إسم الجلسة',

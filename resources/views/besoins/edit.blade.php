@@ -1,15 +1,15 @@
 @php
-//dd($userService);
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-    $rtl = 'rtl';
-} else {
-    $lang = '';
-}
+    //dd($userService);
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+        $rtl = 'rtl';
+    } else {
+        $lang = '';
+    }
 
-$breadcrumb = 'ضبط الحاجيات';
-$sub_breadcrumb = 'تحيين الحاجيات';
-$tbl_action = __('labels.tbl_action');
+    $breadcrumb = 'ضبط الحاجيات';
+    $sub_breadcrumb = 'تحيين الحاجيات';
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
@@ -38,7 +38,7 @@ $tbl_action = __('labels.tbl_action');
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h5>{{ $sub_breadcrumb }} [{{$besoin->service->libelle ?? '' }}]</h5>
+                <h5>{{ $sub_breadcrumb }} [{{ $besoin->service->libelle ?? '' }}]</h5>
                 <div class="card-header-right">
 
                     @if ($besoin->valider == false)
@@ -149,18 +149,17 @@ $tbl_action = __('labels.tbl_action');
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">الكلفة التقديرية للوحدة</label>
+                                <label class="form-label">الكلفة التقديرية للوحدة(بالدينار)</label>
                                 <input type="number" class="form-control" name="cout_unite_ttc"
-                                    placeholder="كلفة الوحدة..." value="0"
-                                    onchange="calculTotal()">
+                                    placeholder="كلفة الوحدة..." value="0" onchange="calculTotal()">
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">الكلفة التقديرية الجملية</label>
+                                <label class="form-label">الكلفة التقديرية الجملية(بالدينار)</label>
                                 <input type="number" class="form-control" name="cout_total_ttc"
-                                    placeholder="الكلفة التقديرية الجملية..." value="0" readonly>
+                                    placeholder="الكلفة التقديرية الجملية(بالدينار)..." value="0" readonly>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -207,8 +206,8 @@ $tbl_action = __('labels.tbl_action');
                                         <th>طبيعة الطلب</th>
                                         <th>نوع الطلب</th>
                                         <th>الكمية المطلوبة</th>
-                                        <th>الكلفة التقديرية للوحدة</th>
-                                        <th>الكلفة التقديرية الجملية</th>
+                                        <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                        <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                         <th>الملاحظات</th>
                                         <th>الملف/الوثيقة</th>
                                         <th class="not-export-col">{{ $tbl_action }}</th>
@@ -223,8 +222,8 @@ $tbl_action = __('labels.tbl_action');
                                             <th>طبيعة الطلب</th>
                                             <th>نوع الطلب</th>
                                             <th>الكمية المطلوبة</th>
-                                            <th>الكلفة التقديرية للوحدة</th>
-                                            <th>الكلفة التقديرية الجملية</th>
+                                            <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                            <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                             <th>الملاحظات</th>
                                             <th>الملف/الوثيقة</th>
                                             <th class="not-export-col">{{ $tbl_action }}</th>
@@ -881,7 +880,8 @@ $tbl_action = __('labels.tbl_action');
                     // Set selected
                     $("#type_demande").val(response.type_demande)
                     var natures_demandeSelect = $('#natures_demande');
-                    var option = new Option(response.nature_demande.libelle, response.nature_demande.id, true, true);
+                    var option = new Option(response.nature_demande.libelle, response.nature_demande.id, true,
+                        true);
                     natures_demandeSelect.append(option).trigger('selecet2');
 
                     var article_Select = $('#articles_id');

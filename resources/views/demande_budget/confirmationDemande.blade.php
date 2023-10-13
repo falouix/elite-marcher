@@ -34,8 +34,8 @@
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input type="hidden" name="valider" value="0">
-                                    <input class="form-check-input" type="checkbox" id="valider" name="valider" value="1"
-                                        {{ old('valider' ? 'checked' : '') }} checked> التحقق
+                                    <input class="form-check-input" type="checkbox" id="valider" name="valider"
+                                        value="1" {{ old('valider' ? 'checked' : '') }} checked> التحقق
                                 </label>
                             </div>
                         </div>
@@ -67,13 +67,13 @@
                                 <th>طبيعة الطلب</th>
                                 <th>الكمية المطلوبة</th>
                                 <th>الكمية المصادق عليها</th>
-                                <th>الكلفة التقديرية للوحدة</th>
-                                <th>الكلفة التقديرية الجملية</th>
+                                <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                 <th>تعديلات</th>
                             </thead>
                         </table>
                     </div>
-                        <button type="submit" class="btn btn-primary" id='saveBtn'> تسجيل </button>
+                    <button type="submit" class="btn btn-primary" id='saveBtn'> تسجيل </button>
                 </form>
             </div>
         </div>
@@ -154,7 +154,7 @@
                     }
                 });
 
-                //get data besoin to form 
+                //get data besoin to form
                 $.ajax({
                     type: "POST",
                     url: "{{ route('confirmationDemande.getBesoinSelected') }}",
@@ -178,10 +178,10 @@
                 });
                 // msg success update 'valider'
                 @if (Session::has('success'))
-                    var msg="{{ Session::get('success') }}";
-                
+                    var msg = "{{ Session::get('success') }}";
+
                     toastr.success(msg, '', {
-                    positionClass: "toast-top-left"
+                        positionClass: "toast-top-left"
                     });
                 @endif
             });

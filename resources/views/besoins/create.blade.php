@@ -1,12 +1,12 @@
 @php
-//dd($userService);
-if ($locale == 'ar') {
-    $name = 'name_' . $locale;
-} else {
-    $name = 'name';
-}
-$breadcrumb = 'ضبط الحاجيات';
-$sub_breadcrumb = 'إضافة الحاجيات';
+    //dd($userService);
+    if ($locale == 'ar') {
+        $name = 'name_' . $locale;
+    } else {
+        $name = 'name';
+    }
+    $breadcrumb = 'ضبط الحاجيات';
+    $sub_breadcrumb = 'إضافة الحاجيات';
 @endphp
 
 @extends('layouts.app')
@@ -46,7 +46,7 @@ $sub_breadcrumb = 'إضافة الحاجيات';
                     </a>
                     @can('besoins-list')
                         <a type="button" class="btn btn-primary" href="{{ route('articles.create') }}">
-                            <i class="feather icon-plus-circle"></i>  إضافة مادة جديدة
+                            <i class="feather icon-plus-circle"></i> إضافة مادة جديدة
                         </a>
                     @endcan
                 </div>
@@ -69,7 +69,13 @@ $sub_breadcrumb = 'إضافة الحاجيات';
 
 
                 {{-- Case Other Parties --}}
-                {!! Form::open(['route' => 'besoins.store', 'method' => 'POST', 'files' => 'true', 'enctype' => 'multipart/form-data', 'id' => 'validation-client_form']) !!}
+                {!! Form::open([
+                    'route' => 'besoins.store',
+                    'method' => 'POST',
+                    'files' => 'true',
+                    'enctype' => 'multipart/form-data',
+                    'id' => 'validation-client_form',
+                ]) !!}
                 <input type="hidden" name="ligne_besoin" id="ligne_besoin" value="">
                 <div class="row" style="display: none;">
                     <div class="col-md-12">
@@ -149,7 +155,7 @@ $sub_breadcrumb = 'إضافة الحاجيات';
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">الكلفة التقديرية للوحدة</label>
+                                <label class="form-label">الكلفة التقديرية للوحدة(بالدينار)</label>
                                 <input type="number" class="form-control" name="cout_unite_ttc"
                                     placeholder="كلفة الوحدة..." value="{{ old('cout_unite_ttc') }}"
                                     onchange="calculTotal()">
@@ -158,9 +164,9 @@ $sub_breadcrumb = 'إضافة الحاجيات';
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">الكلفة التقديرية الجملية</label>
+                                <label class="form-label">الكلفة التقديرية الجملية(بالدينار)</label>
                                 <input type="number" class="form-control" name="cout_total_ttc"
-                                    placeholder="الكلفة التقديرية الجملية..." value="0" readonly>
+                                    placeholder="الكلفة التقديرية الجملية(بالدينار)..." value="0" readonly>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -199,8 +205,8 @@ $sub_breadcrumb = 'إضافة الحاجيات';
                                             <thead>
                                                 <th>المادة</th>
                                                 <th>الكمية المطلوبة</th>
-                                                <th>الكلفة التقديرية للوحدة</th>
-                                                <th>الكلفة التقديرية الجملية</th>
+                                                <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                                <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                                 <th>حذف</th>
                                             </thead>
                                         </tr>

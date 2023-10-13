@@ -12,7 +12,7 @@ use App\Http\Controllers\{
     SparagrapheController,TitreController,UserController,
     DossierAchatController,ConsultationController,AOSController,
     AONController,GREGREController,NotifController,PPMController,
-    ParamBesoinsController,CustomerController,TypeDocController
+    ParamBesoinsController,CustomerController,TypeDocController,PeriodesController
 };
 use App\Http\Controllers\Auth\ClientLoginController;
 /************************************************************************* */
@@ -180,7 +180,9 @@ Route::group(
          Route::resource('aos', AOSController::class);
          // route Marché de Gré à Gré
          Route::resource('aogregre', GREGREController::class);
-
+// PeriodesController
+Route::resource('periodes', PeriodesController::class);
+Route::resource('periodes', PeriodesController::class);
          //route Notifications
         Route::resource('notifs', NotifController::class);
         Route::post('notifs/datatable', [NotifController::class, 'getAllNotifDatatable'])->name('notifs.data');

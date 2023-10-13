@@ -104,7 +104,7 @@
                         </ul>
                     </li>
                 @endcan
-                 {{--
+                {{--
                 @can('comission-ao-achat')
                     <li class="nav-item pcoded-hasmenu">
                         <a href="#!" class="nav-link">
@@ -179,11 +179,12 @@
                                             الطلبات</a></li>
                                     <li class=""><a href="{{ route('articles.index') }}" class="">المواد أو
                                             الطلبات</a></li>
-                                            <li class=""><a href="{{ route('types_docs.index') }}"
-                                                class="">أنواع
-                                                الوثائق</a></li>
+                                    <li class=""><a href="{{ route('types_docs.index') }}" class="">أنواع
+                                            الوثائق</a></li>
                                     <li class=""><a href="{{ route('soumissionnaires.index') }}"
                                             class="">المتعهدين</a></li>
+                                    <li class=""><a href="{{ route('periodes.index') }}" class="">إعدادات
+                                            المدد</a></li>
                                 </ul>
                             </li>
 

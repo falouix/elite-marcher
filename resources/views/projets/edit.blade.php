@@ -1,12 +1,12 @@
 @php
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-    $rtl = 'rtl';
-} else {
-    $lang = '';
-    $rtl = 'ltr';
-}
-$tbl_action = __('labels.tbl_action');
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+        $rtl = 'rtl';
+    } else {
+        $lang = '';
+        $rtl = 'ltr';
+    }
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
@@ -129,96 +129,96 @@ $tbl_action = __('labels.tbl_action');
                 {!! Form::close() !!}
                 {{-- Contact from company  start --}}
                 @can('besoin-add-special')
-               {{-- Contact from company  start --}}
-               <form id="cp_form" action="#">
-                <input type="hidden" name="lignebesoin_id" id="lignebesoin_id" value="0">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <h3 class="form-label"> إضافة إستثنائية للحاجيات</h3>
-                        </div>
-                    </div>
+                    {{-- Contact from company  start --}}
+                    <form id="cp_form" action="#">
+                        <input type="hidden" name="lignebesoin_id" id="lignebesoin_id" value="0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <h3 class="form-label"> إضافة إستثنائية للحاجيات</h3>
+                                </div>
+                            </div>
 
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">طبيعة الطلب</label>
-                            <select class="form-control" id="type_demande">
-                                <option value="1">مواد وخدمات</option>
-                                <option value="2">أشغال</option>
-                                <option value="3">دراسات</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">نوع الطلب</label>
-                            <select class="form-control " id="natures_demande" name="natures_demande">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">المادة (التسمية)</label>
-                            <select class="form-control " id="articles_id" name="articles_id">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">الكمية المطلوية</label>
-                            <input type="number" class="form-control" name="qte_demande" placeholder="الكمية..."
-                                value="{{ old('qte_demande') }}" onchange="calculTotal()">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">الكلفة التقديرية للوحدة</label>
-                            <input type="number" class="form-control" name="cout_unite_ttc"
-                                placeholder="كلفة الوحدة..." value="{{ old('cout_unite_ttc') }}"
-                                onchange="calculTotal()">
-                        </div>
-                    </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">طبيعة الطلب</label>
+                                    <select class="form-control" id="type_demande">
+                                        <option value="1">مواد وخدمات</option>
+                                        <option value="2">أشغال</option>
+                                        <option value="3">دراسات</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">نوع الطلب</label>
+                                    <select class="form-control " id="natures_demande" name="natures_demande">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">المادة (التسمية)</label>
+                                    <select class="form-control " id="articles_id" name="articles_id">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">الكمية المطلوية</label>
+                                    <input type="number" class="form-control" name="qte_demande" placeholder="الكمية..."
+                                        value="{{ old('qte_demande') }}" onchange="calculTotal()">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">الكلفة التقديرية للوحدة(بالدينار)</label>
+                                    <input type="number" class="form-control" name="cout_unite_ttc"
+                                        placeholder="كلفة الوحدة..." value="{{ old('cout_unite_ttc') }}"
+                                        onchange="calculTotal()">
+                                </div>
+                            </div>
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">الكلفة التقديرية الجملية</label>
-                            <input type="number" class="form-control" name="cout_total_ttc"
-                                placeholder="الكلفة التقديرية الجملية..." value="0" readonly>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">الكلفة التقديرية الجملية(بالدينار)</label>
+                                    <input type="number" class="form-control" name="cout_total_ttc"
+                                        placeholder="الكلفة التقديرية الجملية(بالدينار)..." value="0" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1"> إسم الملف المرفق (الخصائص الفنية) </label>
+                                <input type="text" class="form-control" name="file_name" id="file_name"
+                                    placeholder="إسم الملف المرفق" value="">
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1">الملف/الوثيقة</label>
+                                <input type="file" id="file" name="file" class="form-control form-control-file"
+                                    id="file">
+                                <label id="file-error" class="error jquery-validation-error small form-text invalid-feedback"
+                                    for="file"></label>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="exampleInputEmail1"> الملاحظات </label>
+                                <input type="text" class="form-control" name="description" id="description"
+                                    placeholder="الملاحظات" value="">
+
+                            </div>
+
+                            <div class="col-md-12">
+
+                                <a href="javascript:void(0);" class="btn btn-rounded btn-info" id='add'
+                                    for-table='#table-cp'>
+                                    <i class="feather icon-plus"></i>
+                                    <span class="spinner-border spinner-border-sm" role="status" hidden></span>
+                                    <span id="btn_add_poa_title">إضافة إلى الجدول</span>
+
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="exampleInputEmail1"> إسم الملف المرفق (الخصائص الفنية) </label>
-                        <input type="text" class="form-control" name="file_name" id="file_name"
-                            placeholder="إسم الملف المرفق" value="">
-
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="exampleInputEmail1">الملف/الوثيقة</label>
-                        <input type="file" id="file" name="file" class="form-control form-control-file"
-                            id="file">
-                        <label id="file-error" class="error jquery-validation-error small form-text invalid-feedback"
-                            for="file"></label>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label for="exampleInputEmail1"> الملاحظات </label>
-                        <input type="text" class="form-control" name="description" id="description"
-                            placeholder="الملاحظات" value="">
-
-                    </div>
-
-                    <div class="col-md-12">
-
-                        <a href="javascript:void(0);" class="btn btn-rounded btn-info" id='add'
-                            for-table='#table-cp'>
-                            <i class="feather icon-plus"></i>
-                            <span class="spinner-border spinner-border-sm" role="status" hidden></span>
-                            <span id="btn_add_poa_title">إضافة إلى الجدول</span>
-
-                        </a>
-                    </div>
-                </div>
-            </form>
-            {{-- Contact from company  end --}}
+                    </form>
+                    {{-- Contact from company  end --}}
                 @endcan
                 {{-- Contact from company  end --}}
 
@@ -243,8 +243,8 @@ $tbl_action = __('labels.tbl_action');
                                 <th>طبيعة الطلب</th>
                                 <th>نوع الطلب</th>
                                 <th>الكمية </th>
-                                <th>الكلفة التقديرية للوحدة</th>
-                                <th>الكلفة التقديرية الجملية</th>
+                                <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                 <th class="not-export-col">{{ $tbl_action }}</th>
                             </thead>
 
@@ -259,8 +259,8 @@ $tbl_action = __('labels.tbl_action');
                                     <th>طبيعة الطلب</th>
                                     <th>نوع الطلب</th>
                                     <th>الكمية </th>
-                                    <th>الكلفة التقديرية للوحدة</th>
-                                    <th>الكلفة التقديرية الجملية</th>
+                                    <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                    <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                     <th class="not-export-col">{{ $tbl_action }}</th>
                                 </tr>
                             </tfoot>
@@ -283,8 +283,8 @@ $tbl_action = __('labels.tbl_action');
                                 <th>نوع الطلب</th>
                                 <th>الكمية المطلوبة</th>
                                 <th>الكمية المصادقة</th>
-                                <th>الكلفة التقديرية للوحدة</th>
-                                <th>الكلفة التقديرية الجملية</th>
+                                <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                 <th>الملاحظات</th>
                                 <th class="not-export-col">{{ $tbl_action }}</th>
                             </thead>
@@ -299,8 +299,8 @@ $tbl_action = __('labels.tbl_action');
                                     <th>نوع الطلب</th>
                                     <th>الكمية المطلوبة</th>
                                     <th>الكمية المصادقة</th>
-                                    <th>الكلفة التقديرية للوحدة</th>
-                                    <th>الكلفة التقديرية الجملية</th>
+                                    <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                    <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                     <th>الملاحظات</th>
                                     <th class="not-export-col">{{ $tbl_action }}</th>
                                 </tr>
@@ -581,17 +581,17 @@ $tbl_action = __('labels.tbl_action');
                     },
                     {
                         visible: false,
-                        targets: [1,2]
+                        targets: [1, 2]
                     }
                 ],
                 drawCallback: function() {
-                        var api = this.api();
-                        $('#coutTotal').html(
-                            api.column(8, {
-                                page: 'current'
-                            }).data().sum()
-                        )
-                    },
+                    var api = this.api();
+                    $('#coutTotal').html(
+                        api.column(8, {
+                            page: 'current'
+                        }).data().sum()
+                    )
+                },
                 select: {
                     style: 'os',
                     selector: 'td:first-child'
@@ -933,7 +933,10 @@ $tbl_action = __('labels.tbl_action');
             if (verif > 0) {
                 return false
             }
-            var {ids,lb_ids} = add_cp();
+            var {
+                ids,
+                lb_ids
+            } = add_cp();
 
             $('#lignesprjt').val(JSON.stringify(ids))
             $('#lbsoins_ids').val(JSON.stringify(lb_ids))
@@ -950,7 +953,10 @@ $tbl_action = __('labels.tbl_action');
                 // console.log(item)
                 return item.ids
             });
-            return {ids,lb_ids};
+            return {
+                ids,
+                lb_ids
+            };
         }
 
 
@@ -1034,8 +1040,8 @@ $tbl_action = __('labels.tbl_action');
                             dataType: 'JSON',
                             url: url,
                             data: {
-                                id : id,
-                                projets_id : "{{ $projet->id }}",
+                                id: id,
+                                projets_id: "{{ $projet->id }}",
                             },
                             success: function(response) {
                                 console.log(response)
@@ -1067,6 +1073,5 @@ $tbl_action = __('labels.tbl_action');
                     }
                 });
         }
-
     </script>
 @endsection

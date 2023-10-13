@@ -16,16 +16,16 @@
                 <div class="dt-responsive table-responsive">
                     <table id="projet-table" class="table table-striped table-bordered nowrap">
                         <thead>
-                                <th>مشروع عدد</th>
-                                <th>التاريخ</th>
-                                <th>المصلحة/الدائرة/المؤسسة</th>
-                                <th>تاريخ اعتزام التنفيذ</th>
-                                <th>الموضوع</th>
-                                <th>طبيعة الطلب</th>
-                                <th>طريقة الإبرام</th>
-                                <th>الكلفة التقديرية الجملية للمشروع</th>
-                                <th>السنة المالية</th>
-                                <th>تعديلات</th>
+                            <th>مشروع عدد</th>
+                            <th>التاريخ</th>
+                            <th>المصلحة/الدائرة/المؤسسة</th>
+                            <th>تاريخ اعتزام التنفيذ</th>
+                            <th>الموضوع</th>
+                            <th>طبيعة الطلب</th>
+                            <th>طريقة الإبرام</th>
+                            <th>الكلفة التقديرية الجملية(بالدينار) للمشروع</th>
+                            <th>السنة المالية</th>
+                            <th>تعديلات</th>
                         </thead>
                     </table>
                 </div>
@@ -51,7 +51,7 @@
                 //serverSide: true,
                 serverMethod: 'GET',
                 ajax: {
-                    url: "{{route('projet.datatable')}}"
+                    url: "{{ route('projet.datatable') }}"
                 },
                 columns: [{
                         data: "code_pa",

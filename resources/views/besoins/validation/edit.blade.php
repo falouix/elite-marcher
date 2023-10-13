@@ -1,15 +1,15 @@
 @php
-//dd($userService);
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-    $rtl = 'rtl';
-} else {
-    $lang = '';
-}
+    //dd($userService);
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+        $rtl = 'rtl';
+    } else {
+        $lang = '';
+    }
 
-$breadcrumb = 'تحديد الحاجيات';
-$sub_breadcrumb = 'المصادقة على الحاجيات';
-$tbl_action = __('labels.tbl_action');
+    $breadcrumb = 'تحديد الحاجيات';
+    $sub_breadcrumb = 'المصادقة على الحاجيات';
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
@@ -24,7 +24,8 @@ $tbl_action = __('labels.tbl_action');
     <!-- select2 css -->
     <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
     <style>
-        .qte_valide, .cout_unite_ttc {
+        .qte_valide,
+        .cout_unite_ttc {
             background-color: lightgoldenrodyellow;
         }
 
@@ -44,6 +45,7 @@ $tbl_action = __('labels.tbl_action');
             background-color: #337ab7;
             text-decoration: none;
         }
+
         .my-cancel-class {
             padding: 3px 6px;
             font-size: 12px;
@@ -54,10 +56,12 @@ $tbl_action = __('labels.tbl_action');
             background-color: #a94442;
             text-decoration: none;
         }
+
         .error {
             border: solid 1px;
             border-color: #a94442;
         }
+
         .destroy-button {
             padding: 5px 10px 5px 10px;
             border: 1px blue solid;
@@ -137,8 +141,8 @@ $tbl_action = __('labels.tbl_action');
 
                 <div class="col-md-12">
                     <div class="dt-responsive table-responsive">
-                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span
-                            id="coutTotal"> </span></h6>
+                        <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span id="coutTotal">
+                            </span>د.ت</h6>
                         <table id="table-cp" class="table table-striped table-bordered nowrap">
                             <thead>
                                 <th class="not-export-col">id</th>
@@ -147,8 +151,8 @@ $tbl_action = __('labels.tbl_action');
                                 <th>نوع الطلب</th>
                                 <th>الكمية المطلوبة</th>
                                 <th>الكمية المصادقة</th>
-                                <th>الكلفة التقديرية للوحدة</th>
-                                <th>الكلفة التقديرية الجملية</th>
+                                <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                 <th>الملاحظات</th>
                                 <th class="not-export-col">الملف/الوثيقة</th>
                             </thead>
@@ -161,8 +165,8 @@ $tbl_action = __('labels.tbl_action');
                                     <th>نوع الطلب</th>
                                     <th>الكمية المطلوبة</th>
                                     <th>الكمية المصادقة</th>
-                                    <th>الكلفة التقديرية للوحدة</th>
-                                    <th>الكلفة التقديرية الجملية</th>
+                                    <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                    <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                     <th>الملاحظات</th>
                                     <th class="not-export-col">الملف/الوثيقة</th>
                                 </tr>
@@ -424,8 +428,8 @@ $tbl_action = __('labels.tbl_action');
         });
 
         function updateCallbackFunction(updatedCell, updatedRow, oldValue) {
-           // console.log("The new value for the cell is: " + updatedCell.data());
-           // console.log("The values for each cell in that row are: " + JSON.stringify(updatedRow.data()));
+            // console.log("The new value for the cell is: " + updatedCell.data());
+            // console.log("The values for each cell in that row are: " + JSON.stringify(updatedRow.data()));
             //ajax call to update lignebesoin by id
             $.ajax({
                 url: "{{ route('lignes_besoin_v.update') }}",
@@ -457,27 +461,26 @@ $tbl_action = __('labels.tbl_action');
                             .data()
                             .qte_demande,
                             "warning");
-                        return false;
                     }
                     break;
 
                 case ' cout_unite_ttc':
-                //console.log("On Validation; The old value for the cell [cout_unit_ttc] is: " + row.data().cout_unite_ttc);
-                //console.log("On Validation; The new value for the cell [cout_unit_ttc] is: " + newValue);
+                    //console.log("On Validation; The old value for the cell [cout_unit_ttc] is: " + row.data().cout_unite_ttc);
+                    //console.log("On Validation; The new value for the cell [cout_unit_ttc] is: " + newValue);
                     if (newValue < 0) {
                         swal("{{ __('labels.swal_warning_title') }}",
-                            'الرجاء التثبت من الكلفة التقديرية للوحدة المصادق عليها',
+                            'الرجاء التثبت من الكلفة التقديرية للوحدة(بالدينار) المصادق عليها',
                             "warning");
                         return false;
                     }
                     if ((row.data().cout_unite_ttc != 0)) {
-                        if(newValue > row.data().cout_unite_ttc){
+                        if (newValue > row.data().cout_unite_ttc) {
                             swal("{{ __('labels.swal_warning_title') }}",
-                            'الكلفة التقديرية للوحدة المصادق عليها لا يكمن ان تتجاوز : ' + row
-                            .data()
-                            .cout_unite_ttc,
-                            "warning");
-                        return false;
+                                'الكلفة التقديرية للوحدة(بالدينار) المصادق عليها لا يكمن ان تتجاوز : ' + row
+                                .data()
+                                .cout_unite_ttc,
+                                "warning");
+                            return false;
                         }
                     }
                     break;

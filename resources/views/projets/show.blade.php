@@ -121,8 +121,8 @@
                                 <th>نوع الطلب</th>
                                 <th>الكمية المطلوبة</th>
                                 <th>الكمية المصادقة</th>
-                                <th>الكلفة التقديرية للوحدة</th>
-                                <th>الكلفة التقديرية الجملية</th>
+                                <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                 <th>قرار</th>
                             </thead>
 
@@ -136,8 +136,8 @@
                                     <th>نوع الطلب</th>
                                     <th>الكمية المطلوبة</th>
                                     <th>الكمية المصادقة</th>
-                                    <th>الكلفة التقديرية للوحدة</th>
-                                    <th>الكلفة التقديرية الجملية</th>
+                                    <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                    <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                     <th>قرار</th>
                                 </tr>
                             </tfoot>
@@ -158,22 +158,22 @@
     </div>
 @endsection
 @section('srcipt-js')
-<!-- datatable Js -->
-<script src="{{ asset('/plugins/data-tables/js/datatables.min.js') }}"></script>
-<script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
-<!-- jquery-validation Js -->
-<script src="{{ asset('/plugins/jquery-validation/js/jquery.validate.min.js') }}"></script>
+    <!-- datatable Js -->
+    <script src="{{ asset('/plugins/data-tables/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
+    <!-- jquery-validation Js -->
+    <script src="{{ asset('/plugins/jquery-validation/js/jquery.validate.min.js') }}"></script>
 
-<script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
-<script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
-<script src="{{ asset('/plugins/data-tables/js/sum().js') }}"></script>`
+    <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/sum().js') }}"></script>`
 
-<!-- form-select-custom Js -->
-<script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
-<!-- sweet alert Js -->
-<script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
-<!-- pnotify Js -->
-<script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
+    <!-- form-select-custom Js -->
+    <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
+    <!-- sweet alert Js -->
+    <script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
+    <!-- pnotify Js -->
+    <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
 
     <script>
         'use strict';
@@ -307,13 +307,13 @@
                     }
                 ],
                 drawCallback: function() {
-                        var api = this.api();
-                        $('#coutTotal').html(
-                            api.column(8, {
-                                page: 'current'
-                            }).data().sum()
-                        )
-                    },
+                    var api = this.api();
+                    $('#coutTotal').html(
+                        api.column(8, {
+                            page: 'current'
+                        }).data().sum()
+                    )
+                },
                 select: {
                     style: 'os',
                     selector: 'td:first-child'

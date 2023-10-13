@@ -1,15 +1,15 @@
 @php
-//dd($userService);
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-    $rtl = 'rtl';
-} else {
-    $lang = '';
-}
+    //dd($userService);
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+        $rtl = 'rtl';
+    } else {
+        $lang = '';
+    }
 
-$breadcrumb = 'ضبط الحاجيات';
-$sub_breadcrumb = 'عرض تفاصيل الحاجيات';
-$tbl_action = __('labels.tbl_action');
+    $breadcrumb = 'ضبط الحاجيات';
+    $sub_breadcrumb = 'عرض تفاصيل الحاجيات';
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
@@ -38,7 +38,7 @@ $tbl_action = __('labels.tbl_action');
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h5>{{ $sub_breadcrumb }} [{{$besoin->service->libelle ?? '' }}]</h5>
+                <h5>{{ $sub_breadcrumb }} [{{ $besoin->service->libelle ?? '' }}]</h5>
                 <div class="card-header-right">
                     <a href="{{ route('besoins.index') }}" class="btn btn-secondary">
                         العودة لضبط الحاجيات
@@ -60,15 +60,31 @@ $tbl_action = __('labels.tbl_action');
                     </div>
                 @endif
 
-                    <input type="hidden" name="lignebesoin_id" id="lignebesoin_id" value="0">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="dt-responsive table-responsive">
-                                <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span
-                                        id="coutTotal"> </span></h6>
+                <input type="hidden" name="lignebesoin_id" id="lignebesoin_id" value="0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="dt-responsive table-responsive">
+                            <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span
+                                    id="coutTotal"> </span></h6>
 
-                                <table id="table-cp" class="table table-striped table-bordered nowrap">
-                                    <thead>
+                            <table id="table-cp" class="table table-striped table-bordered nowrap">
+                                <thead>
+                                    <th class="not-export-col" style="width: 30px"><input type="checkbox"
+                                            class="select-checkbox not-export-col" /> </th>
+                                    <th class="not-export-col">id</th>
+                                    <th>المادة</th>
+                                    <th>طبيعة الطلب</th>
+                                    <th>نوع الطلب</th>
+                                    <th>الكمية المطلوبة</th>
+                                    <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                    <th>الكلفة التقديرية الجملية(بالدينار)</th>
+                                    <th>الملاحظات</th>
+                                    <th>الملف/الوثيقة</th>
+                                    <th class="not-export-col">{{ $tbl_action }}</th>
+                                </thead>
+
+                                <tfoot>
+                                    <tr>
                                         <th class="not-export-col" style="width: 30px"><input type="checkbox"
                                                 class="select-checkbox not-export-col" /> </th>
                                         <th class="not-export-col">id</th>
@@ -76,33 +92,17 @@ $tbl_action = __('labels.tbl_action');
                                         <th>طبيعة الطلب</th>
                                         <th>نوع الطلب</th>
                                         <th>الكمية المطلوبة</th>
-                                        <th>الكلفة التقديرية للوحدة</th>
-                                        <th>الكلفة التقديرية الجملية</th>
+                                        <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                        <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                         <th>الملاحظات</th>
                                         <th>الملف/الوثيقة</th>
                                         <th class="not-export-col">{{ $tbl_action }}</th>
-                                    </thead>
-
-                                    <tfoot>
-                                        <tr>
-                                            <th class="not-export-col" style="width: 30px"><input type="checkbox"
-                                                    class="select-checkbox not-export-col" /> </th>
-                                            <th class="not-export-col">id</th>
-                                            <th>المادة</th>
-                                            <th>طبيعة الطلب</th>
-                                            <th>نوع الطلب</th>
-                                            <th>الكمية المطلوبة</th>
-                                            <th>الكلفة التقديرية للوحدة</th>
-                                            <th>الكلفة التقديرية الجملية</th>
-                                            <th>الملاحظات</th>
-                                            <th>الملف/الوثيقة</th>
-                                            <th class="not-export-col">{{ $tbl_action }}</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>

@@ -49,7 +49,7 @@
                             <div class="form-group ">
                                 <label> المصلحة/الدائرة/المؤسسة </label>
                                 <select class="form-control select2" id="libelle" name="libelle">
-                                    <option selected > إختر من القائمة </option>
+                                    <option selected> إختر من القائمة </option>
                                     @foreach ($list as $item)
                                         <option value="{{ $item->libelle }}" class="{{ $item->id }}">
                                             {{ $item->libelle }}</option>
@@ -87,8 +87,8 @@
                                 <th>طبيعة الطلب</th>
                                 <th>الكمية المطلوبة</th>
                                 <th>الكمية المصادق عليها</th>
-                                <th>الكلفة التقديرية للوحدة</th>
-                                <th>الكلفة التقديرية الجملية</th>
+                                <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                 <th>تعديلات</th>
                             </thead>
                         </table>
@@ -158,10 +158,10 @@
 
                 //get msg success
                 @if (Session::has('success'))
-                    var msg="{{ Session::get('success') }}";
-                
+                    var msg = "{{ Session::get('success') }}";
+
                     toastr.success(msg, '', {
-                    positionClass: "toast-top-left"
+                        positionClass: "toast-top-left"
                     });
                 @endif
 
@@ -197,7 +197,7 @@
                     var services_id = $("#libelle option:selected").attr("class");
                     $("#services_id").val(services_id);
                 });
-                
+
                 // delete ligneBesoin
                 $('body').on('click', '.btnDelete', function() {
                     var id = $(this).data("id");

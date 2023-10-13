@@ -237,7 +237,8 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         {{-- contenu consultation start --}}
-                        <div class="tab-pane fade show active" id="contenu" role="tabpanel" aria-labelledby="contenu-tab">
+                        <div class="tab-pane fade show active" id="contenu" role="tabpanel"
+                            aria-labelledby="contenu-tab">
                             <div class="col-md-12">
 
                                 <table id="ligneConsultation-table" class="table table-striped table-bordered nowrap">
@@ -247,8 +248,8 @@
                                         <th class="not-export-col"></th>
                                         <th>المادة</th>
                                         <th>الكمية </th>
-                                        <th>الكلفة التقديرية للوحدة</th>
-                                        <th>الكلفة التقديرية الجملية</th>
+                                        <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                        <th>الكلفة التقديرية الجملية(بالدينار)</th>
 
                                     </thead>
 
@@ -259,8 +260,8 @@
                                             <th class="not-export-col"></th>
                                             <th>المادة</th>
                                             <th>الكمية </th>
-                                            <th>الكلفة التقديرية للوحدة</th>
-                                            <th>الكلفة التقديرية الجملية</th>
+                                            <th>الكلفة التقديرية للوحدة(بالدينار)</th>
+                                            <th>الكلفة التقديرية الجملية(بالدينار)</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -271,125 +272,123 @@
                         <div class="tab-pane fade" id="cahiercharges" role="tabpanel"
                             aria-labelledby="cahiercharges-tab">
 
+                            @php
+                                $cahiers_charges = $dossier->cahiers_charges;
+                            @endphp
+                            {{--  Cahier des charges  form start --}}
+                            <div class="col-md-12">
                                 @php
                                     $cahiers_charges = $dossier->cahiers_charges;
                                 @endphp
-                                 {{--  Cahier des charges  form start --}}
-                                 <div class="col-md-12">
-                                    @php
-                                        $cahiers_charges = $dossier->cahiers_charges;
-                                    @endphp
-                                    <div class="form-row">
-                                        <input type="number" name="cahiers_charges_id" id="cahiers_charges_id"
-                                            value="{{ $cahiers_charges->id ?? '' }}" hidden>
-                                        <div class="form-group col-md-6">
-                                            <label>تاريخ اعتزام نشر الإعلان :</label>
-                                            <input type="date" class="form-control" id='date_pub_prevu'
-                                                name="date_pub_prevu" placeholder="أدخل التاريخ"
-                                                value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
+                                <div class="form-row">
+                                    <input type="number" name="cahiers_charges_id" id="cahiers_charges_id"
+                                        value="{{ $cahiers_charges->id ?? '' }}" hidden>
+                                    <div class="form-group col-md-6">
+                                        <label>تاريخ اعتزام نشر الإعلان :</label>
+                                        <input type="date" class="form-control" id='date_pub_prevu'
+                                            name="date_pub_prevu" placeholder="أدخل التاريخ"
+                                            value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
 
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>ثمن اقتناء كراس الشروط :</label>
-                                            <input class="form-control" type="number" min=0 max=99999999999,999
-                                                id="prix_cc" name="prix_cc"
-                                                value='{{ $cahiers_charges->prix_cc ?? '' }}' readonly>
-
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>طريقة قبول العروض :</label>
-                                            <select class="form-control" id="type_reception" name="type_reception" disabled>
-                                                <option value="1"
-                                                    {{ $cahiers_charges != null && $cahiers_charges->type_reception == 1 ? 'selected' : '' }}>
-                                                    منظومة الشراءات على الخط</option>
-                                                <option value="2"
-                                                    {{ $cahiers_charges != null && $cahiers_charges->type_reception == 2 ? 'selected' : '' }}>
-                                                    مكتب الضبط </option>
-                                                <option value="3"
-                                                    {{ $cahiers_charges != null && $cahiers_charges->type_reception == 3 ? 'selected' : '' }}>
-                                                    البريد </option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-md-6">
-                                            <label>طريقة فتح الظروف :</label>
-                                            <select class="form-control" id="type_overture_plis"
-                                                name="type_overture_plis" disabled>
-                                                <option value="1"
-                                                    {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 1 ? 'selected' : '' }}>
-                                                    مالية علنية </option>
-                                                <option value="2"
-                                                    {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 2 ? 'selected' : '' }}>
-                                                    مالية وفنية علنية</option>
-                                                <option value="3"
-                                                    {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 3 ? 'selected' : '' }}>
-                                                    مالية وفنية غير علنية</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>مدة الضمان الوقتي :</label>
-                                            <input type="number" class="form-control" id="duree_caution_prov"
-                                                name="duree_caution_prov" min=0 max=999
-                                                value="{{ $cahiers_charges->duree_caution_prov ?? '' }}" readonly>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>قيمة الضمان الوقتي :</label>
-                                            <input type="number" class="form-control" id="caution_prov"
-                                                name="caution_prov" min=1,000 max=99999999999,999
-                                                value="{{ $cahiers_charges->caution_prov ?? '' }}" readonly>
-                                        </div>
-
-                                        <div class="form-group col-md-6">
-                                            <label>مدة الضمان النهائي :</label>
-                                            <input type="number" class="form-control" id="duree_caution_def" min=0
-                                                max=999 value="{{ $cahiers_charges->duree_caution_def ?? '' }}" readonly>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>نسبة الضمان النهائي :</label>
-                                            <input type="number" class="form-control" id="caution_def"
-                                                name="caution_def" min=1 max=99
-                                                value="{{ $cahiers_charges->caution_def ?? '' }}" readonly>
-
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label>مدة الإنجاز باليوم : </label>
-                                            <input class="mb-3 form-control form-control-lg" type="number"
-                                                id="duree_travaux" name="duree_travaux" min=1 max=999
-                                                value="{{ $cahiers_charges->duree_travaux ?? '' }}" readonly>
-
-                                        </div>
                                     </div>
-                                    <div class="m-t-30">
-                                        <h5>الوثائق المكونة لكراس الشروط</h5>
+                                    <div class="form-group col-md-6">
+                                        <label>ثمن اقتناء كراس الشروط :</label>
+                                        <input class="form-control" type="number" min=0 max=99999999999,999
+                                            id="prix_cc" name="prix_cc" value='{{ $cahiers_charges->prix_cc ?? '' }}'
+                                            readonly>
+
                                     </div>
-                                    <div class="dt-responsive table-responsive">
-                                        <table id="table-docs-cc" class="table table-striped table-bordered nowrap"
-                                            style="width: 100%">
-                                            <thead>
+                                    <div class="form-group col-md-6">
+                                        <label>طريقة قبول العروض :</label>
+                                        <select class="form-control" id="type_reception" name="type_reception" disabled>
+                                            <option value="1"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 1 ? 'selected' : '' }}>
+                                                منظومة الشراءات على الخط</option>
+                                            <option value="2"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 2 ? 'selected' : '' }}>
+                                                مكتب الضبط </option>
+                                            <option value="3"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_reception == 3 ? 'selected' : '' }}>
+                                                البريد </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>طريقة فتح الظروف :</label>
+                                        <select class="form-control" id="type_overture_plis" name="type_overture_plis"
+                                            disabled>
+                                            <option value="1"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 1 ? 'selected' : '' }}>
+                                                مالية علنية </option>
+                                            <option value="2"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 2 ? 'selected' : '' }}>
+                                                مالية وفنية علنية</option>
+                                            <option value="3"
+                                                {{ $cahiers_charges != null && $cahiers_charges->type_overture_plis == 3 ? 'selected' : '' }}>
+                                                مالية وفنية غير علنية</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>مدة الضمان الوقتي :</label>
+                                        <input type="number" class="form-control" id="duree_caution_prov"
+                                            name="duree_caution_prov" min=0 max=999
+                                            value="{{ $cahiers_charges->duree_caution_prov ?? '' }}" readonly>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>قيمة الضمان الوقتي :</label>
+                                        <input type="number" class="form-control" id="caution_prov" name="caution_prov"
+                                            min=1,000 max=99999999999,999
+                                            value="{{ $cahiers_charges->caution_prov ?? '' }}" readonly>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>مدة الضمان النهائي :</label>
+                                        <input type="number" class="form-control" id="duree_caution_def" min=0 max=999
+                                            value="{{ $cahiers_charges->duree_caution_def ?? '' }}" readonly>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>نسبة الضمان النهائي :</label>
+                                        <input type="number" class="form-control" id="caution_def" name="caution_def"
+                                            min=1 max=99 value="{{ $cahiers_charges->caution_def ?? '' }}" readonly>
+
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>مدة الإنجاز باليوم : </label>
+                                        <input class="mb-3 form-control form-control-lg" type="number"
+                                            id="duree_travaux" name="duree_travaux" min=1 max=999
+                                            value="{{ $cahiers_charges->duree_travaux ?? '' }}" readonly>
+
+                                    </div>
+                                </div>
+                                <div class="m-t-30">
+                                    <h5>الوثائق المكونة لكراس الشروط</h5>
+                                </div>
+                                <div class="dt-responsive table-responsive">
+                                    <table id="table-docs-cc" class="table table-striped table-bordered nowrap"
+                                        style="width: 100%">
+                                        <thead>
+                                            <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
+                                            </th>
+                                            <th>id</th>
+                                            <th>{{ __('labels.tbl_file_libelle') }}</th>
+                                            <th>{{ $tbl_action }}</th>
+                                            <th>{{ __('labels.tbl_created_at') }}</th>
+                                        </thead>
+
+                                        <tfoot>
+                                            <tr>
                                                 <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
                                                 </th>
                                                 <th>id</th>
                                                 <th>{{ __('labels.tbl_file_libelle') }}</th>
                                                 <th>{{ $tbl_action }}</th>
                                                 <th>{{ __('labels.tbl_created_at') }}</th>
-                                            </thead>
-
-                                            <tfoot>
-                                                <tr>
-                                                    <th style="width: 30px"><input type="checkbox"
-                                                            class="select-checkbox" />
-                                                    </th>
-                                                    <th>id</th>
-                                                    <th>{{ __('labels.tbl_file_libelle') }}</th>
-                                                    <th>{{ $tbl_action }}</th>
-                                                    <th>{{ __('labels.tbl_created_at') }}</th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
-                                {{--  Cahier des charges form end --}}
+
+                            </div>
+                            {{--  Cahier des charges form end --}}
 
                         </div>
                         {{-- Cahier Charges Tab end --}}
@@ -408,8 +407,7 @@
 
         </div>
     </div>
-
-  @endsection
+@endsection
 @section('srcipt-js')
     <!-- datatable Js -->
     <script src="{{ asset('/plugins/data-tables/js/datatables.min.js') }}"></script>
