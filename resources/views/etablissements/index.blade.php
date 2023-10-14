@@ -75,7 +75,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link text-uppercase" id="parametreAvertissement-tab" data-toggle="tab"
-                            href="#parametreAvertissement" role="tab" aria-controls="parametreAvertissement"
+                            href="#parametrePeriodes" role="tab" aria-controls="parametrePeriodes"
                             aria-selected="true"><i class="fas fa-file-alt m-2"></i>
                             {{ __('labels.tbl_libelle_periode_setting') }} </a>
                         <!--labels.etablissement_parametreAvertissement-->
@@ -376,153 +376,153 @@
                     {{-- etablissement parametreAvertissement Tab start --}}
                     <div class="tab-pane fade " id="parametrePeriodes" role="tabpanel"
                         aria-labelledby="parametrePeriodes-tab">
-                        <div class="row">
-                            <div class="col-sm-4 ">
-                                <div class="form-group">
-                                    <input id="notif_validation_besoins" name="notif_validation_besoins" type="checkbox"
-                                        {{ $etablissement->notif_validation_besoins ? 'checked' : '' }}>
-                                    <label> {{ __('labels.tbl_validation_besoins') }} </label>
+                        <!-- Column Selector table start -->
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-header-right">
+                                        @can('besoins-list')
+                                        @endcan
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="date-cc_prvu">طريقة الابرام </label>
+                                            <select class="form-control">
+                                                <option value="1">إستشارة</option>
+                                                <option value="2">إجراءات مبسطة</option>
+                                                <option value="3">إجراءات عادية</option>
+                                                <option value="4">التفاوض المباشر</option>
+                                            </select>
+                                            @if ($errors->has('date_cc_prvu'))
+                                                <span class="text-danger">{{ $errors->first('date_cc_prvu') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h4>المدة التقديرية(باليوم) ل :</h4>
+                                        <div class="row">
+                                            <div class=" col-md-6">
+                                                <div class="form-group">
+                                                    <label for="date-cc_prvu"> إعداد كراس الشروط </label>
+                                                    <input type="number" value="{{ $periodes[0]->periode_cc_prvu }}"
+                                                        class="form-control" id='periode_cc_prvu' name="periode_cc_prvu"
+                                                        placeholder="أدخل المدة">
+                                                    @if ($errors->has('date_cc_prvu'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('date_cc_prvu') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class=" col-md-6">
+                                                <div class="form-group">
+                                                    <label for="date-date_avis_prvu">الإعلان عن المنافسة </label>
+                                                    <input type="number" value="{{ $periodes[0]->periode_avis_prvu }}"
+                                                        class="form-control" id='periode_avis_prvu'
+                                                        name="periode_avis_prvu" placeholder="أدخل المدة">
+                                                    @if ($errors->has('date_avis_prvu'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('date_avis_prvu') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class=" col-md-6">
+                                                <div class="form-group">
+                                                    <label for="date-periode_op_prvu"> فتح العروض </label>
+                                                    <input type="number" value="{{ $periodes[0]->periode_op_prvu }}"
+                                                        class="form-control" id='periode_op_prvu' name="periode_op_prvu"
+                                                        placeholder="أدخل المدة">
+                                                    @if ($errors->has('date_op_prvu'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class=" col-md-6">
+                                                <div class="form-group">
+                                                    <label for="date-date_op_prvu">تعهد لجنة الشراءات بالملف</label>
+                                                    <input type="number"
+                                                        value="{{ $periodes[0]->periode_trsfert_ca_prvu }}"
+                                                        class="form-control" id='periode_trsfert_ca_prvu'
+                                                        name="periode_trsfert_ca_prvu" placeholder="أدخل المدة">
+                                                    @if ($errors->has('date_op_prvu'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class=" col-md-6">
+                                                <div class="form-group">
+                                                    <label for="date-date_op_prvu">إحالة الملف على لجنة الصفقات</label>
+                                                    <input type="number"
+                                                        value="{{ $periodes[0]->periode_trsfert_cao_prvu }}"
+                                                        class="form-control" id='periode_trsfert_cao_prvu'
+                                                        name="periode_trsfert_cao_prvu" placeholder="أدخل المدة">
+                                                    @if ($errors->has('date_op_prvu'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class=" col-md-6">
+                                                <div class="form-group">
+                                                    <label for="date-date_op_prvu"> إجابة لجنة الصفقات </label>
+                                                    <input type="number" value="{{ $periodes[0]->periode_repca_prvu }}"
+                                                        class="form-control" id='periode_repca_prvu'
+                                                        name="periode_repca_prvu" placeholder="أدخل المدة">
+                                                    @if ($errors->has('date_op_prvu'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class=" col-md-6">
+                                                <div class="form-group">
+                                                    <label for="date-date_op_prvu"> نشر نتائج المنافسة </label>
+                                                    <input type="number"
+                                                        value="{{ $periodes[0]->periode_pub_reslt_prvu }}"
+                                                        class="form-control" id='periode_pub_reslt_prvu'
+                                                        name="periode_pub_reslt_prvu" placeholder="أدخل المدة">
+                                                    @if ($errors->has('date_op_prvu'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class=" col-md-6">
+                                                <div class="form-group">
+                                                    <label for="date-date_op_prvu"> تبليغ الصفقة</label>
+                                                    <input type="number"
+                                                        value="{{ $periodes[0]->periode_avis_soumissionaire_prvu }}"
+                                                        class="form-control" id='periode_avis_soumissionaire_prvu'
+                                                        name="periode_avis_soumissionaire_prvu" placeholder="أدخل المدة">
+                                                    @if ($errors->has('date_op_prvu'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class=" col-md-6">
+                                                <div class="form-group">
+                                                    <label for="date-date_op_prvu"> بداية الإنجاز </label>
+                                                    <input type="number"
+                                                        value="{{ $periodes[0]->periode_ordre_serv_prvu }}"
+                                                        class="form-control" id='periode_ordre_serv_prvu'
+                                                        name="periode_ordre_serv_prvu" placeholder="أدخل المدة">
+                                                    @if ($errors->has('date_op_prvu'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('date_op_prvu') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            {{-- CC --}}
-                            <div class="col-sm-6 ">
-                                <div class="form-group">
-                                    <label> تفعيل التنبيهات المتعلقة بكراس الشروط </label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input"
-                                                    name="notif_cc" {{ $etablissement->notif_cc ? 'checked' : '' }}>
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                            name="notif_duree_cc" value="{{ $etablissement->notif_duree_cc }}"
-                                            min="1" max="99">
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Fin CC --}}
-                            {{-- Avis publication --}}
-                            <div class="col-sm-6 ">
-                                <div class="form-group">
-                                    <label> تفعيل تنبيه للإعلان عن المنافسة قبل</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input"
-                                                    name="notif_avis_pub"
-                                                    {{ $etablissement->notif_avis_pub ? 'checked' : '' }}>
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                            name="notif_duree_pub" value="{{ $etablissement->notif_duree_pub }}"
-                                            min="1" max="99">
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Fin publication --}}
-                            <div class="col-sm-6 ">
-                                <div class="form-group">
-                                    <label> تفعيل تنبيه لجلسة الفرز قبل </label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input"
-                                                    name="notif_session_op"
-                                                    {{ $etablissement->notif_session_op ? 'checked' : '' }}>
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                            name="notif_duree_session_op"
-                                            value="{{ $etablissement->notif_duree_session_op }}" min="1"
-                                            max="99">
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Caution Provisoire --}}
-                            <div class="col-sm-6 ">
-                                <div class="form-group">
-                                    <label>تفعيل تنبيه بحلول آجال الضمان الوقتي قبل </label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input"
-                                                    name="notif_caution_provisoire"
-                                                    {{ $etablissement->notif_caution_provisoire ? 'checked' : '' }}>
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                            name="notif_duree_caution_provisoire"
-                                            value="{{ $etablissement->notif_duree_caution_provisoire }}" min="1"
-                                            max="99">
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Fin Caution Provisoire --}}
-                            {{-- Caution final --}}
-                            <div class="col-sm-6 ">
-                                <div class="form-group">
-                                    <label>تنبيه يحلول آجال الضمان النهائي قبل </label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input"
-                                                    name="notif_date_caution_final"
-                                                    {{ $etablissement->notif_date_caution_final ? 'checked' : '' }}>
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                            name="notif_duree_caution_final"
-                                            value="{{ $etablissement->notif_duree_caution_final }}" min="1"
-                                            max="99">
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Fin Caution final --}}
-                            {{-- Reception Provisoire --}}
-                            <div class="col-sm-6 ">
-                                <div class="form-group">
-                                    <label>{{ __('labels.tbl_notif_duree_rp') }}</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input"
-                                                    name="notif_delais_rp"
-                                                    {{ $etablissement->notif_delais_rp ? 'checked' : '' }}>
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                            name="notif_duree_rp" value="{{ $etablissement->notif_duree_rp }}"
-                                            min="1" max="99">
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Fin Reception Provisoire --}}
-                            {{-- Reception Defenitive --}}
-                            <div class="col-sm-6 ">
-                                <div class="form-group">
-                                    <label> تفعيل تنبيه بحلول آجال الإستلام النهائي قبل </label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input"
-                                                    name="notif_delais_rd"
-                                                    {{ $etablissement->notif_delais_rd ? 'checked' : '' }}>
-
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                            name="notif_duree_rd" value="{{ $etablissement->notif_duree_rd }}"
-                                            min="1" max="99">
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Fin Reception Defenitive --}}
-                        </div>
-
-
+                        <!-- Column Selector table end -->
 
                     </div>
                     {{-- etablissement parametreAvertissement Tab end --}}

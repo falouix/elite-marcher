@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Etablissement;
+use App\Models\Periodes;
+
 use App\Repositories\Interfaces\IEtablissementRepository;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponser;
@@ -24,8 +26,10 @@ class EtablissementController extends Controller
      */
     public function index()
     {
+
+        $periodes = Periodes::select('*')->get();
         $etablissement = Etablissement::first();
-        return view('etablissements.index', compact('etablissement'));
+        return view('etablissements.index', compact('etablissement','periodes'));
     }
 
     /**

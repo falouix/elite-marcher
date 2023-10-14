@@ -183,8 +183,6 @@
                                             الوثائق</a></li>
                                     <li class=""><a href="{{ route('soumissionnaires.index') }}"
                                             class="">المتعهدين</a></li>
-                                    <li class=""><a href="{{ route('periodes.index') }}" class="">إعدادات
-                                            المدد</a></li>
                                 </ul>
                             </li>
 
