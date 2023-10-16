@@ -52,14 +52,14 @@ class Periodes extends Model
 	protected $table = 'periodes';
 
 	protected $fillable = [
-		'periode_cc_prvu' ,
-	    'periode_avis_prvu' ,
-    	'periode_op_prvu' ,
+		'periode_cc_prvu',
+	    'periodeavisprvu',
+    	'periode_op_prvu',
     	'periode_trsfert_ca_prvu',
-    	'periode_trsfert_cao_prvu' ,
-    	'periode_repca_prvu' ,
-    	'periode_pub_reslt_prvu' ,
-    	'periode_avis_soumissionaire_prvu' ,
+    	'periode_trsfert_cao_prvu',
+    	'periode_repca_prvu',
+    	'periode_pub_reslt_prvu',
+    	'periode_avis_soumissionaire_prvu',
     	'periode_ordre_serv_prvu'
 	];
 

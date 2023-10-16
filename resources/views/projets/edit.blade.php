@@ -225,7 +225,7 @@
 
                 <div class="card-body">
 
-                    <h4> محتوى المسشروع</h4>
+                    <h4> محتوى المشروع</h4>
 
                     <div class="dt-responsive table-responsive">
 
@@ -270,7 +270,7 @@
 
                 <div class="card-body">
 
-                    <h4>إختيار محتوى المسشروع</h4>
+                    <h4>إختيار محتوى المشروع</h4>
 
                     <div class="dt-responsive table-responsive">
                         <table id="table-cprojet" class="table table-striped table-bordered nowrap">

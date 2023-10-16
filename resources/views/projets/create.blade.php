@@ -214,7 +214,7 @@
 
                 <div class="card-body">
 
-                    <h4>إختيار محتوى المسشروع</h4>
+                    <h4>إختيار محتوى المشروع</h4>
 
                     <div class="dt-responsive table-responsive">
 

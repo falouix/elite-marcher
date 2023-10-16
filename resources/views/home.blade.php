@@ -21,7 +21,7 @@
             <div class="col-md-12">
                 @if ($besoins_actif)
                     <div class="shadow-lg p-3 mb-1 bg-white rounded" style="text-align:center;">
-                        <span style="color:rgb(231, 29, 29); font-weight:bold; font-size:20px;">بلاغ حول ظبط الحاجيات</span>
+                        <span style="color:rgb(231, 29, 29); font-weight:bold; font-size:20px;">بلاغ حول ضبط الحاجيات</span>
                         </br>
                         <span style="color:rgb(27, 25, 25); font-weight:bold; font-size:18px;"> تم تحديد آجال ضبط الحاجيات
                             لسنة {{ strftime('%Y') }} بداية من {{ $paramBesoin->date_debut }} إلى
@@ -477,25 +477,25 @@
             });
 
             /*[ incomeing-scroll ] start
-            var px = new PerfectScrollbar('.incomeing-scroll', {
-                wheelSpeed: .5,
-                swipeEasing: 0,
-                wheelPropagation: 1,
-                minScrollbarLength: 40,
-            });
+                var px = new PerfectScrollbar('.incomeing-scroll', {
+                    wheelSpeed: .5,
+                    swipeEasing: 0,
+                    wheelPropagation: 1,
+                    minScrollbarLength: 40,
+                });
 
 
-            $.ajax({
-                url: "{{route('notifs.desktop')}}",
-                type: 'POST',
-                success: function(response) {
-                   // alert(response.notifsRappelCount)
-                    showNotifG(response.notifsRappelCount, response.notifsValidationCount, response.notifsMessageCount)
-                },
-                error: function(errors) {
-                }
-            }); // ajax end
-*/
+                $.ajax({
+                    url: "{{ route('notifs.desktop') }}",
+                    type: 'POST',
+                    success: function(response) {
+                       // alert(response.notifsRappelCount)
+                        showNotifG(response.notifsRappelCount, response.notifsValidationCount, response.notifsMessageCount)
+                    },
+                    error: function(errors) {
+                    }
+                }); // ajax end
+    */
 
 
         });

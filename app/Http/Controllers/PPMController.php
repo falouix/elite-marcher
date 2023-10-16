@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Periodes;
 use Illuminate\Http\Request;
 use App\Common\Utility;
 use App\Models\{
@@ -67,8 +68,10 @@ class PPMController extends Controller
      */
     public function edit($id)
     {
+
+        $periodes = Periodes::select('*')->get();
         $projet = Projet::select('*')->where('id', $id)->first();
-        return view('projets.ppm.edit', compact('projet'));
+        return view('projets.ppm.edit', compact('projet','periodes'));
     }
 
     /**

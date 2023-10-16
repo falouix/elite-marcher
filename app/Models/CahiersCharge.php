@@ -89,8 +89,5 @@ class CahiersCharge extends Model
 	{
 		return $this->hasMany(CcDoc::class, 'cahiers_charges_id');
 	}
-    public function getDatePubPrevuAttribute()
-    {
-        return (new Carbon($this->attributes['date_pub_prevu']))->format('Y-m-d');
-    }
+
 }

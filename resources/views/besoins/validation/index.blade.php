@@ -292,7 +292,21 @@
                     selector: 'td:first-child'
                 },
                 // select: { style: 'multi+shift' },
+                // select: { style: 'multi+shift' },
+                rowCallback: function(row, data) {
+                    // Assuming you have a column for 'service_id' in your data
+                    var serviceId = data.service_id;
 
+                    // Replace 'yourCondition' with the condition you want to check
+
+                    @if (\Auth::user()->user_type != 'admin')
+                        if ((data.services_id !== {{ \Auth::user()->services_id }})) {
+                            // Hide the row
+                            $(row).css('display', 'none');
+                        }
+                    @endif
+
+                }
             });
             table
                 .on('select', function(e, dt, type, indexes) {
@@ -335,7 +349,7 @@
             //alert(file)
             if (id != 0) {
                 var url = "{{ route('besoins-validation.valider') }}";
-                    //url = url.replace(':id', id);
+                //url = url.replace(':id', id);
                 formData.append('_method', 'PUT');
                 $.ajax({
                     url: url,

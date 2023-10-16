@@ -87,7 +87,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label class="form-label">طبيعة الطلب</label>
-                            <select class="form-control" id="type_demande" name="type_demande" >
+                            <select class="form-control" id="type_demande" name="type_demande">
                                 <option value="all">الكل</option>
                                 <option value="1" @if ($projet->type_demande == 1) selected = true @endif>مواد وخدمات
                                 </option>
@@ -123,9 +123,10 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label class="form-label">مصدر التمويل</label>
-                            <select class="form-control" id="source_finance" name="source_finance" >
+                            <select class="form-control" id="source_finance" name="source_finance">
                                 <option value="all">اختر مصدر التمويل</option>
-                                <option value="1" @if ($projet->source_finance == 1) selected = true @endif>ميزانية الدولة
+                                <option value="1" @if ($projet->source_finance == 1) selected = true @endif>ميزانية
+                                    الدولة
                                 </option>
                                 <option value="2" @if ($projet->source_finance == 2) selected = true @endif>قرض
                                 </option>
@@ -139,7 +140,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="duree_travaux_prvu">آجال الإنجاز  </label>
+                            <label for="duree_travaux_prvu">آجال الإنجاز </label>
                             <input type="number" class="form-control" id='duree_travaux_prvu' name="duree_travaux_prvu"
                                 placeholder="آجال الإنجاز" value='{{ $projet->duree_travaux_prvu ?? 0 }}'>
                             @if ($errors->has('duree_travaux_prvu'))
@@ -153,13 +154,19 @@
                 <div class="card-body">
 
                     <h4>التاريخ التقديري ل :</h4>
-
+                    @php
+                        $originalDate = \Carbon\Carbon::parse($projet->date_avis_prvu);
+                        $daysToAdd = (int) $periodes[0]->periode_cc_prvu;
+                        $newDate = $originalDate->addDays($daysToAdd);
+                    @endphp
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="date-cc_prvu"> إعداد كراس الشروط </label>
                                 <input type="date" class="form-control" id='date_cc_prvu' name="date_cc_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_cc_prvu }}">
+                                    placeholder="أدخل التاريخ" value="{{ $projet->date_cc_prvu }}"
+                                    onchange="dateHasChange('date_avis_prvu',{{ $periodes[0]->periode_cc_prvu }})"
+                                    periode="{{ $periodes[0]->periode_cc_prvu }}">
                                 @if ($errors->has('date_cc_prvu'))
                                     <span class="text-danger">{{ $errors->first('date_cc_prvu') }}</span>
                                 @endif
@@ -169,7 +176,8 @@
                             <div class="form-group">
                                 <label for="date-date_avis_prvu">الإعلان عن المنافسة </label>
                                 <input type="date" class="form-control" id='date_avis_prvu' name="date_avis_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_avis_prvu }}">
+                                    onchange="dateHasChange('date_avis_prvu',{{ $periodes[0]->periode_cc_prvu }})"
+                                    placeholder="أدخل التاريخ" value="{{ $newDate->format('Y-m-d') }}">
                                 @if ($errors->has('date_avis_prvu'))
                                     <span class="text-danger">{{ $errors->first('date_avis_prvu') }}</span>
                                 @endif
@@ -188,8 +196,9 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="date-date_trsfert_ca_prvu">تعهد لجنة الشراءات بالملف</label>
-                                <input type="date" class="form-control" id='date_trsfert_ca_prvu' name="date_trsfert_ca_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_trsfert_ca_prvu }}">
+                                <input type="date" class="form-control" id='date_trsfert_ca_prvu'
+                                    name="date_trsfert_ca_prvu" placeholder="أدخل التاريخ"
+                                    value="{{ $projet->date_trsfert_ca_prvu }}">
                                 @if ($errors->has('date_trsfert_ca_prvu'))
                                     <span class="text-danger">{{ $errors->first('date_trsfert_ca_prvu') }}</span>
                                 @endif
@@ -198,8 +207,9 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="date-date_trsfert_cao_prvu">إحالة الملف على لجنة الصفقات</label>
-                                <input type="date" class="form-control" id='date_trsfert_cao_prvu' name="date_trsfert_cao_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_trsfert_cao_prvu }}">
+                                <input type="date" class="form-control" id='date_trsfert_cao_prvu'
+                                    name="date_trsfert_cao_prvu" placeholder="أدخل التاريخ"
+                                    value="{{ $projet->date_trsfert_cao_prvu }}">
                                 @if ($errors->has('date_trsfert_cao_prvu'))
                                     <span class="text-danger">{{ $errors->first('date_trsfert_cao_prvu') }}</span>
                                 @endif
@@ -218,8 +228,9 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="date-date_pub_reslt_prvu"> نشر نتائج المنافسة </label>
-                                <input type="date" class="form-control" id='date_pub_reslt_prvu' name="date_pub_reslt_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_pub_reslt_prvu }}">
+                                <input type="date" class="form-control" id='date_pub_reslt_prvu'
+                                    name="date_pub_reslt_prvu" placeholder="أدخل التاريخ"
+                                    value="{{ $projet->date_pub_reslt_prvu }}">
                                 @if ($errors->has('date_pub_reslt_prvu'))
                                     <span class="text-danger">{{ $errors->first('date_pub_reslt_prvu') }}</span>
                                 @endif
@@ -228,8 +239,9 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="date-date_avis_soumissionaire_prvu"> لتبليغ الصفقة</label>
-                                <input type="date" class="form-control" id='date_avis_soumissionaire_prvu' name="date_avis_soumissionaire_prvu"
-                                    placeholder="أدخل التاريخ" value="{{ $projet->date_avis_soumissionaire_prvu }}">
+                                <input type="date" class="form-control" id='date_avis_soumissionaire_prvu'
+                                    name="date_avis_soumissionaire_prvu" placeholder="أدخل التاريخ"
+                                    value="{{ $projet->date_avis_soumissionaire_prvu }}">
                                 @if ($errors->has('date_avis_soumissionaire_prvu'))
                                     <span class="text-danger">{{ $errors->first('date_avis_soumissionaire_prvu') }}</span>
                                 @endif
@@ -291,5 +303,22 @@
                 }
             });
         });
+
+        function dateHasChange(tochange, daysToAdd) {
+            //$('#date_avis_prvu').val($('#date_cc_prvu').val() + 2)
+            var date_cc_prvu = $('#date_cc_prvu').val();
+
+            // Create a new Date object from the input date_cc_prvu
+            var originalDate = new Date(date_cc_prvu);
+
+            // Add two days to the originalDate
+            originalDate.setDate(originalDate.getDate() + daysToAdd);
+
+            // Format the new date as 'YYYY-MM-DD'
+            var newDate = originalDate.toISOString().slice(0, 10);
+
+            // Set the new date in the #date_avis_prvu input field
+            $('#' + tochange + '').val(newDate);
+        }
     </script>
 @endsection

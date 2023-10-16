@@ -26,7 +26,6 @@ class EtablissementController extends Controller
      */
     public function index()
     {
-
         $periodes = Periodes::select('*')->get();
         $etablissement = Etablissement::first();
         return view('etablissements.index', compact('etablissement','periodes'));
@@ -50,6 +49,19 @@ class EtablissementController extends Controller
         }
         $input = $request->all();
        // dd($input);
+       //dd($request->all());die();
+       Periodes::where('type', $request->type_periode)
+       ->update([
+        'periodeavisprvu' => $request->periodeavisprvu,
+           'periode_ordre_serv_prvu' => $request->periode_ordre_serv_prvu,
+           'periode_avis_soumissionaire_prvu' => $request->periode_avis_soumissionaire_prvu,
+           'periode_pub_reslt_prvu' => $request->periode_pub_reslt_prvu,
+           'periode_repca_prvu' => $request->periode_repca_prvu,
+           'periode_trsfert_cao_prvu' => $request->periode_trsfert_cao_prvu,
+           'periode_trsfert_ca_prvu' => $request->periode_trsfert_ca_prvu,
+           'periode_op_prvu' => $request->periode_op_prvu,
+           'periode_cc_prvu' => $request->periode_cc_prvu
+       ]);
        if($input["notif_duree_session_op"]==""){
         $input["notif_duree_session_op"] = 0;
        }

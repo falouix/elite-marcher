@@ -12,8 +12,9 @@
     }
     $tbl_action = __('labels.tbl_action');
 
-   // $avisDossier = $dossier->avis_dossiers;
-   //dd($avisDossier);
+    // $avisDossier = $dossier->avis_dossiers;
+    //dd($avisDossier);
+
 @endphp
 
 @extends('layouts.app')
@@ -135,14 +136,16 @@
 
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_enregistrementOffre"
-                                        class="btn btn-info-gradient btn-block" onclick='return showHideSteps("#card-enregistrementOffre");'>
+                                        class="btn btn-info-gradient btn-block"
+                                        onclick='return showHideSteps("#card-enregistrementOffre");'>
                                         تسجيل الصفقة
                                     </button>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mb-2">
                                     <button type="button" id="btnPartial_ordreService"
-                                        class="btn btn-dark-gradient btn-block" onclick='return showHideSteps("#card-ordreService");'>
+                                        class="btn btn-dark-gradient btn-block"
+                                        onclick='return showHideSteps("#card-ordreService");'>
                                         إذن بداية الأشغال
                                     </button>
                                 </div>
@@ -383,61 +386,72 @@
                         <div class="col-md-12">
                             <div class="row">
                                 {{--  Publication Avis  form start --}}
-                                <input type="number" name="avisPubId" id="avisPubId" value="{{$avisDossier->id ?? '0'}}" hidden>
+                                <input type="number" name="avisPubId" id="avisPubId"
+                                    value="{{ $avisDossier->id ?? '0' }}" hidden>
                                 <div class="col-md-12">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label>مرجع الإعلان</label>
                                             <input type="text" class="form-control" id='ref_avis' name="ref_avis"
-                                                placeholder="...المرجع" value="{{$avisDossier->ref_avis ?? ''}}" required>
-                                                <label id="ref_avis-error"
+                                                placeholder="...المرجع" value="{{ $avisDossier->ref_avis ?? '' }}"
+                                                required>
+                                            <label id="ref_avis-error"
                                                 class="error jquery-validation-error small form-text invalid-feedback"
                                                 for="ref_avis"></label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>موجه إلى </label>
                                             <select class="form-control" id="destination" name="destination">
-                                                <option value="1" @if($avisDossier->destination == '1') selected="selected" @endif>منظومة الشراءات على الخط</option>
-                                                <option value="2" @if($avisDossier->destination == '2') selected="selected" @endif>موقع المؤسسة</option>
-                                                <option value="3" @if($avisDossier->destination == '3') selected="selected" @endif>مواقع أخرى</option>
+                                                <option value="1"
+                                                    @if ($avisDossier->destination == '1') selected="selected" @endif>منظومة
+                                                    الشراءات على الخط</option>
+                                                <option value="2"
+                                                    @if ($avisDossier->destination == '2') selected="selected" @endif>موقع
+                                                    المؤسسة</option>
+                                                <option value="3"
+                                                    @if ($avisDossier->destination == '3') selected="selected" @endif>مواقع أخرى
+                                                </option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>نص الإعلان</label>
-                                            <textarea class="form-control" id="texte_avis" name="texte_avis" placeholder="نص الإعلان...">{{$avisDossier->texte_avis}}</textarea>
+                                            <textarea class="form-control" id="texte_avis" name="texte_avis" placeholder="نص الإعلان...">{{ $avisDossier->texte_avis }}</textarea>
                                             <label id="texte_avis-error"
-                                            class="error jquery-validation-error small form-text invalid-feedback"
-                                            for="texte_avis"></label>
+                                                class="error jquery-validation-error small form-text invalid-feedback"
+                                                for="texte_avis"></label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>تاريخ أول ظهور للإعلان </label>
                                             <input type="datetime-local" class="form-control" id='date_debut_avis'
-                                                name="date_debut_avis" placeholder="أدخل التاريخ" value="{{$avisDossier->date_debut_avis ?? ''}}" required>
-                                                <label id="date_debut_avis-error"
+                                                name="date_debut_avis" placeholder="أدخل التاريخ"
+                                                value="{{ $avisDossier->date_debut_avis ?? '' }}" required>
+                                            <label id="date_debut_avis-error"
                                                 class="error jquery-validation-error small form-text invalid-feedback"
                                                 for="date_debut_avis"></label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>مدة الإعلان باليوم</label>
                                             <input type="number" class="form-control" id="duree_avis" name="duree_avis"
-                                                min=0 max=99  value="{{$avisDossier->duree_avis ?? '0'}}" >
-                                                <label id="duree_avis-error"
+                                                min=0 max=99 value="{{ $avisDossier->duree_avis ?? '0' }}">
+                                            <label id="duree_avis-error"
                                                 class="error jquery-validation-error small form-text invalid-feedback"
                                                 for="duree_avis"></label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>آخر أجل لقبول العروض </label>
                                             <input type="datetime-local" class="form-control" id='date_validite'
-                                                name="date_validite" placeholder="أدخل التاريخ"  value="{{$avisDossier->date_validite ?? ''}}" required>
-                                                <label id="date_validite-error"
+                                                name="date_validite" placeholder="أدخل التاريخ"
+                                                value="{{ $avisDossier->date_validite ?? '' }}" required>
+                                            <label id="date_validite-error"
                                                 class="error jquery-validation-error small form-text invalid-feedback"
                                                 for="date_validite"></label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>تاريخ فتح الظروف </label>
-                                               <input type="datetime-local" class="form-control" id='date_ouverture_plis'
-                                                name="date_ouverture_plis" placeholder="أدخل التاريخ"  value="{{$avisDossier->date_ouverture_plis ?? ''}}" required>
-                                                <label id="date_ouverture_plis-error"
+                                            <input type="datetime-local" class="form-control" id='date_ouverture_plis'
+                                                name="date_ouverture_plis" placeholder="أدخل التاريخ"
+                                                value="{{ $avisDossier->date_ouverture_plis ?? '' }}" required>
+                                            <label id="date_ouverture_plis-error"
                                                 class="error jquery-validation-error small form-text invalid-feedback"
                                                 for="date_ouverture_plis"></label>
                                         </div>
@@ -478,16 +492,7 @@
                                                     class="error jquery-validation-error small form-text invalid-feedback"
                                                     for="file_name"></label>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
-                                                </label>
-                                               <select class="form-control" name="ofrres_typeDoc" id="ofrres_typeDoc">
-                                                @foreach ($type_docs['RECEPTION_OFFRES'] as $item)
-                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
-                                                @endforeach
-                                               </select>
 
-                                            </div>
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
                                                 <input type="file" id="file" name="file"
@@ -507,8 +512,8 @@
                                         </div>
                                     </div>
                                     <div class="dt-responsive table-responsive">
-                                        <table id="table-receptionOffres" class="table table-striped table-bordered nowrap"
-                                            style="width: 100%">
+                                        <table id="table-receptionOffres"
+                                            class="table table-striped table-bordered nowrap" style="width: 100%">
                                             <thead>
                                                 <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
                                                 </th>
@@ -567,16 +572,7 @@
                                                     class="error jquery-validation-error small form-text invalid-feedback"
                                                     for="file_name"></label>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
-                                                </label>
-                                               <select class="form-control" name="sessionOP_typeDoc" id="sessionOP_typeDoc">
-                                                @foreach ($type_docs['SESSION_OP'] as $item)
-                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
-                                                @endforeach
-                                               </select>
 
-                                            </div>
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
                                                 <input type="file" id="file" name="file"
@@ -596,8 +592,8 @@
                                         </div>
                                     </div>
                                     <div class="dt-responsive table-responsive">
-                                        <table id="table-comOuverturePlis" class="table table-striped table-bordered nowrap"
-                                            style="width: 100%">
+                                        <table id="table-comOuverturePlis"
+                                            class="table table-striped table-bordered nowrap" style="width: 100%">
                                             <thead>
                                                 <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
                                                 </th>
@@ -659,13 +655,15 @@
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
-                                               <select class="form-control" name="commissionOPTech_typeDoc" id="commissionOPTech_typeDoc">
-                                                @if($type_docs['COM_OPTECH'] ??  null)
-                                                @foreach ($type_docs['COM_OPTECH'] as $item)
-                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
-                                                @endforeach
-                                                @endif
-                                               </select>
+                                                <select class="form-control" name="commissionOPTech_typeDoc"
+                                                    id="commissionOPTech_typeDoc">
+                                                    @if ($type_docs['COM_OPTECH'] ?? null)
+                                                        @foreach ($type_docs['COM_OPTECH'] as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
 
                                             </div>
                                             <div class="form-group col-md-6">
@@ -687,8 +685,8 @@
                                         </div>
                                     </div>
                                     <div class="dt-responsive table-responsive">
-                                        <table id="table-comOuvertureTech" class="table table-striped table-bordered nowrap"
-                                            style="width: 100%">
+                                        <table id="table-comOuvertureTech"
+                                            class="table table-striped table-bordered nowrap" style="width: 100%">
                                             <thead>
                                                 <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
                                                 </th>
@@ -754,13 +752,15 @@
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
-                                               <select class="form-control" name="engagement_typeDoc" id="engagement_typeDoc">
-                                                @if($type_docs['ENGAGEMENT'] ??  null)
-                                                @foreach ($type_docs['ENGAGEMENT'] as $item)
-                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
-                                                @endforeach
-                                                @endif
-                                               </select>
+                                                <select class="form-control" name="engagement_typeDoc"
+                                                    id="engagement_typeDoc">
+                                                    @if ($type_docs['ENGAGEMENT'] ?? null)
+                                                        @foreach ($type_docs['ENGAGEMENT'] as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
 
                                             </div>
                                             <div class="form-group col-md-6">
@@ -836,8 +836,8 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                 <input type="text" class="form-control" name="file_name"
-                                                    id="file_name_engregistrement" placeholder="{{ __('labels.tbl_file_libelle') }}"
-                                                    value="">
+                                                    id="file_name_engregistrement"
+                                                    placeholder="{{ __('labels.tbl_file_libelle') }}" value="">
                                                 <label id="file_name_engregistrement-error"
                                                     class="error jquery-validation-error small form-text invalid-feedback"
                                                     for="file_name_engregistrement"></label>
@@ -845,13 +845,15 @@
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
-                                               <select class="form-control" name="engregistrement_typeDoc" id="engregistrement_typeDoc">
-                                                @if($type_docs['ENREGISTREMENT'] ?? null)
-                                                @foreach ($type_docs['ENREGISTREMENT'] as $item)
-                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
-                                                @endforeach
-                                                @endif
-                                               </select>
+                                                <select class="form-control" name="engregistrement_typeDoc"
+                                                    id="engregistrement_typeDoc">
+                                                    @if ($type_docs['ENREGISTREMENT'] ?? null)
+                                                        @foreach ($type_docs['ENREGISTREMENT'] as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
 
                                             </div>
                                             <div class="form-group col-md-6">
@@ -873,8 +875,8 @@
                                         </div>
                                     </div>
                                     <div class="dt-responsive table-responsive">
-                                        <table id="table-enregistrementOffre" class="table table-striped table-bordered nowrap"
-                                            style="width: 100%">
+                                        <table id="table-enregistrementOffre"
+                                            class="table table-striped table-bordered nowrap" style="width: 100%">
                                             <thead>
                                                 <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
                                                 </th>
@@ -937,8 +939,8 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>التاريخ الفعلي لبداية الأشغال :</label>
-                                            <input type="date" class="form-control" id='date_ordre'
-                                                name="date_ordre" placeholder="أدخل التاريخ"
+                                            <input type="date" class="form-control" id='date_ordre' name="date_ordre"
+                                                placeholder="أدخل التاريخ"
                                                 value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' required>
                                             <label id="date_pub_prevu-error"
                                                 class="error jquery-validation-error small form-text invalid-feedback"
@@ -951,8 +953,8 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                 <input type="text" class="form-control" name="file_name_ordreServices"
-                                                    id="file_name_ordreServices" placeholder="{{ __('labels.tbl_file_libelle') }}"
-                                                    value="">
+                                                    id="file_name_ordreServices"
+                                                    placeholder="{{ __('labels.tbl_file_libelle') }}" value="">
                                                 <label id="file_name_ordreServices-error"
                                                     class="error jquery-validation-error small form-text invalid-feedback"
                                                     for="file_name_ordreServices"></label>
@@ -960,13 +962,15 @@
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
-                                               <select class="form-control" name="ordreService_typeDoc" id="ordreService_typeDoc">
-                                                @if($type_docs['ORDRE_SERVICE'] ?? null)
-                                                @foreach ($type_docs['ORDRE_SERVICE'] as $item)
-                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
-                                                @endforeach
-                                                @endif
-                                               </select>
+                                                <select class="form-control" name="ordreService_typeDoc"
+                                                    id="ordreService_typeDoc">
+                                                    @if ($type_docs['ORDRE_SERVICE'] ?? null)
+                                                        @foreach ($type_docs['ORDRE_SERVICE'] as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
 
                                             </div>
                                             <div class="form-group col-md-6">
@@ -1022,7 +1026,7 @@
             </div>
         </div>
         {{-- ordreService Card End --}}
-        {{-- receptionProvisoire Card Start--}}
+        {{-- receptionProvisoire Card Start --}}
         <div class="row" id="card-receptionProvisoire" name="card" style="display: none;">
             <div class="col-md-12 col-sm-12">
                 <div class="card card-border-c-blue">
@@ -1038,7 +1042,7 @@
                                 <div class="col-md-12">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label>التاريخ المبرمج  للقبول الوقتي :</label>
+                                            <label>التاريخ المبرمج للقبول الوقتي :</label>
                                             <input type="date" class="form-control" id='date_receptionP_prevu'
                                                 name="date_receptionP_prevu" placeholder="أدخل التاريخ"
                                                 value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
@@ -1059,8 +1063,8 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                 <input type="text" class="form-control" name="file_name_receptionP"
-                                                    id="file_name_receptionP" placeholder="{{ __('labels.tbl_file_libelle') }}"
-                                                    value="">
+                                                    id="file_name_receptionP"
+                                                    placeholder="{{ __('labels.tbl_file_libelle') }}" value="">
                                                 <label id="file_name_receptionP-error"
                                                     class="error jquery-validation-error small form-text invalid-feedback"
                                                     for="file_name_receptionP"></label>
@@ -1068,13 +1072,15 @@
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
-                                               <select class="form-control" name="receptionP_typeDoc" id="recepionP_typeDoc">
-                                                @if($type_docs['RECEPTIONPROVISOIRE'] ?? null)
-                                                @foreach ($type_docs['RECEPTIONPROVISOIRE'] as $item)
-                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
-                                                @endforeach
-                                                @endif
-                                               </select>
+                                                <select class="form-control" name="receptionP_typeDoc"
+                                                    id="recepionP_typeDoc">
+                                                    @if ($type_docs['RECEPTIONPROVISOIRE'] ?? null)
+                                                        @foreach ($type_docs['RECEPTIONPROVISOIRE'] as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
 
                                             </div>
                                             <div class="form-group col-md-6">
@@ -1096,8 +1102,8 @@
                                         </div>
                                     </div>
                                     <div class="dt-responsive table-responsive">
-                                        <table id="table-receptionProvisoire" class="table table-striped table-bordered nowrap"
-                                            style="width: 100%">
+                                        <table id="table-receptionProvisoire"
+                                            class="table table-striped table-bordered nowrap" style="width: 100%">
                                             <thead>
                                                 <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
                                                 </th>
@@ -1146,7 +1152,7 @@
                                 <div class="col-md-12">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label>التاريخ المبرمج  للقبول النهائي :</label>
+                                            <label>التاريخ المبرمج للقبول النهائي :</label>
                                             <input type="date" class="form-control" id='date_receptionD_prevu'
                                                 name="date_receptionD_prevu" placeholder="أدخل التاريخ"
                                                 value='{{ $cahiers_charges->date_pub_prevu ?? '' }}' readonly>
@@ -1167,8 +1173,8 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                 <input type="text" class="form-control" name="file_name_receptionD"
-                                                    id="file_name_receptionD" placeholder="{{ __('labels.tbl_file_libelle') }}"
-                                                    value="">
+                                                    id="file_name_receptionD"
+                                                    placeholder="{{ __('labels.tbl_file_libelle') }}" value="">
                                                 <label id="file_name_receptionD-error"
                                                     class="error jquery-validation-error small form-text invalid-feedback"
                                                     for="file_name_receptionD"></label>
@@ -1176,13 +1182,15 @@
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
-                                               <select class="form-control" name="receptionD_typeDoc" id="receptionD_typeDoc">
-                                                @if($type_docs['RECEPTIONDEFINITIVE'] ?? null)
-                                                @foreach ($type_docs['RECEPTIONDEFINITIVE'] as $item)
-                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
-                                                @endforeach
-                                                @endif
-                                               </select>
+                                                <select class="form-control" name="receptionD_typeDoc"
+                                                    id="receptionD_typeDoc">
+                                                    @if ($type_docs['RECEPTIONDEFINITIVE'] ?? null)
+                                                        @foreach ($type_docs['RECEPTIONDEFINITIVE'] as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
 
                                             </div>
                                             <div class="form-group col-md-6">
@@ -1204,8 +1212,8 @@
                                         </div>
                                     </div>
                                     <div class="dt-responsive table-responsive">
-                                        <table id="table-receptionDefinitif" class="table table-striped table-bordered nowrap"
-                                            style="width: 100%">
+                                        <table id="table-receptionDefinitif"
+                                            class="table table-striped table-bordered nowrap" style="width: 100%">
                                             <thead>
                                                 <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
                                                 </th>
@@ -1258,8 +1266,8 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                 <input type="text" class="form-control" name="file_name_cloture"
-                                                    id="file_name_cloture" placeholder="{{ __('labels.tbl_file_libelle') }}"
-                                                    value="">
+                                                    id="file_name_cloture"
+                                                    placeholder="{{ __('labels.tbl_file_libelle') }}" value="">
                                                 <label id="file_name_cloture-error"
                                                     class="error jquery-validation-error small form-text invalid-feedback"
                                                     for="file_name_cloture"></label>
@@ -1267,13 +1275,14 @@
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
-                                               <select class="form-control" name="cloture_typeDoc" id="cloture_typeDoc">
-                                                @if($type_docs['CLOTURE'] ?? null)
-                                                @foreach ($type_docs['CLOTURE'] as $item)
-                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
-                                                @endforeach
-                                                @endif
-                                               </select>
+                                                <select class="form-control" name="cloture_typeDoc" id="cloture_typeDoc">
+                                                    @if ($type_docs['CLOTURE'] ?? null)
+                                                        @foreach ($type_docs['CLOTURE'] as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
 
                                             </div>
                                             <div class="form-group col-md-6">
@@ -1349,8 +1358,8 @@
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
                                                 <input type="text" class="form-control" name="file_name_annulation"
-                                                    id="file_name_annulation" placeholder="{{ __('labels.tbl_file_libelle') }}"
-                                                    value="">
+                                                    id="file_name_annulation"
+                                                    placeholder="{{ __('labels.tbl_file_libelle') }}" value="">
                                                 <label id="file_name_annulation-error"
                                                     class="error jquery-validation-error small form-text invalid-feedback"
                                                     for="file_name_annulation"></label>
@@ -1358,13 +1367,15 @@
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
                                                 </label>
-                                               <select class="form-control" name="annulation_typeDoc" id="annulation_typeDoc">
-                                                @if( $type_docs['ANNULATION'] ?? null)
-                                                @foreach ($type_docs['ANNULATION'] as $item)
-                                                <option value="{{$item->id}}">{{ $item->libelle }}</option>
-                                                @endforeach
-                                                @endif
-                                               </select>
+                                                <select class="form-control" name="annulation_typeDoc"
+                                                    id="annulation_typeDoc">
+                                                    @if ($type_docs['ANNULATION'] ?? null)
+                                                        @foreach ($type_docs['ANNULATION'] as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
 
                                             </div>
                                             <div class="form-group col-md-6">
@@ -1386,8 +1397,8 @@
                                         </div>
                                     </div>
                                     <div class="dt-responsive table-responsive">
-                                        <table id="table-annulationOffre" class="table table-striped table-bordered nowrap"
-                                            style="width: 100%">
+                                        <table id="table-annulationOffre"
+                                            class="table table-striped table-bordered nowrap" style="width: 100%">
                                             <thead>
                                                 <th style="width: 30px"><input type="checkbox" class="select-checkbox" />
                                                 </th>
@@ -1713,7 +1724,8 @@
                     }
                     if (errors.responseJSON.message.date_ouverture_plis != null) {
                         $('#date_ouverture_plis').addClass('is-invalid')
-                        $('#date_ouverture_plis-error').text(errors.responseJSON.message.date_ouverture_plis);
+                        $('#date_ouverture_plis-error').text(errors.responseJSON.message
+                            .date_ouverture_plis);
                     }
                 }
             }); // ajax end

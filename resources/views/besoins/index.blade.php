@@ -1,18 +1,17 @@
 @php
-$breadcrumb = __('breadcrumb.bread_besoins_list');
-if ($locale == 'ar') {
-    $lang = asset('/plugins/i18n/Arabic.json');
-    $rtl = 'rtl';
-} else {
-    $lang = '';
-    $rtl = 'ltr';
-}
-$tbl_action = __('labels.tbl_action');
+    $breadcrumb = __('breadcrumb.bread_besoins_list');
+    if ($locale == 'ar') {
+        $lang = asset('/plugins/i18n/Arabic.json');
+        $rtl = 'rtl';
+    } else {
+        $lang = '';
+        $rtl = 'ltr';
+    }
+    $tbl_action = __('labels.tbl_action');
 @endphp
 
 @extends('layouts.app')
 @section('head-script')
-
     <!-- data tables css -->
     <link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/plugins/data-tables/css/select.dataTables.min.css') }}">
@@ -20,15 +19,14 @@ $tbl_action = __('labels.tbl_action');
     <link rel="stylesheet" href="{{ asset('/plugins/pnotify/css/pnotify.custom.min.css') }}">
     <!-- pnotify-custom css -->
     <link rel="stylesheet" href="{{ asset('/css/pages/pnotify.css') }}">
-        <!-- select2 css -->
-        <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
-
+    <!-- select2 css -->
+    <link rel="stylesheet" href="{{ asset('/plugins/select2/css/select2.min.css') }}">
 @endsection
 
 @section('breadcrumb')
     @include('layouts.partials.breadcrumb', [
-    'bread_title'=> $breadcrumb,
-    'bread_subtitle'=> $breadcrumb
+        'bread_title' => $breadcrumb,
+        'bread_subtitle' => $breadcrumb,
     ])
 @endsection
 
@@ -57,31 +55,29 @@ $tbl_action = __('labels.tbl_action');
             </div>
             <div class="card-body">
                 <div class="row">
+                    @if (\Auth::user()->user_type == 'admin')
+                        <div class="col-md-3">
 
-                    @if (\Auth::user()->user_type =='admin')
-                    <div class="col-md-3">
+                            <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
 
-                        <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
-
-                        <select class="js-example-basic-multiple-limit col-sm-12" multiple="multiple" id="services_id"
-                            name="services_id">
-                            @foreach ($services as $item)
-                            <option value="{{ $item->id }}">{{ $item->libelle }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                            <select class="js-example-basic-multiple-limit col-sm-12" multiple="multiple" id="services_id"
+                                name="services_id">
+                                @foreach ($services as $item)
+                                    <option value="{{ $item->id }}">{{ $item->libelle }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     @else
-                    <div class="col-md-3">
+                        <div class="col-md-3">
 
-                        <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
+                            <label for="exampleFormControlSelect1">المؤسسة/المصلحة</label>
 
-                        <select class="col-sm-12"  id="services_id"
-                            name="services_id" readonly>
-                            @foreach ($services as $item)
-                            <option value="{{ $item->id }}" selected>{{ $item->libelle }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                            <select class="col-sm-12" id="services_id" name="services_id" readonly>
+                                @foreach ($services as $item)
+                                    <option value="{{ $item->id }}" selected>{{ $item->libelle }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     @endif
                     <div class="col-md-3">
                         <button class="btn btn-primary-gradient " id="btn_search_besoins" type="submit"
@@ -94,7 +90,8 @@ $tbl_action = __('labels.tbl_action');
                 <div class="dt-responsive table-responsive">
                     <table id="besoins-table" class="table table-striped table-bordered nowrap">
                         <thead>
-                            <th class="not-export-col" style="width: 30px"><input type="checkbox" class="select-checkbox not-export-col" /> </th>
+                            <th class="not-export-col" style="width: 30px"><input type="checkbox"
+                                    class="select-checkbox not-export-col" /> </th>
                             <th class="not-export-col">id</th>
                             <th>التاريخ</th>
                             <th>المؤسسة/المصلحة</th>
@@ -105,7 +102,8 @@ $tbl_action = __('labels.tbl_action');
 
                         <tfoot>
                             <tr>
-                                <th class="not-export-col" style="width: 30px"><input type="checkbox" class="select-checkbox not-export-col" /> </th>
+                                <th class="not-export-col" style="width: 30px"><input type="checkbox"
+                                        class="select-checkbox not-export-col" /> </th>
                                 <th class="not-export-col">id</th>
                                 <th>التاريخ</th>
                                 <th>المؤسسة/المصلحة</th>
@@ -133,10 +131,10 @@ $tbl_action = __('labels.tbl_action');
     <script src="{{ asset('/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
     <!-- pnotify Js -->
     <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
-        <!-- form-select-custom Js -->
-        <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
-        <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
-        <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
+    <!-- form-select-custom Js -->
+    <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/pdfmake.js') }}"></script>
+    <script src="{{ asset('/plugins/data-tables/js/vfs_fonts.js') }}"></script>
 
     <script>
         $(document).ready(function() {
@@ -149,7 +147,10 @@ $tbl_action = __('labels.tbl_action');
             var end_date = $('#end_date').val();
             var table = $('#besoins-table').DataTable({
                 dom: 'frltipB',
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "{{ __('labels.all')}}"]],
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "{{ __('labels.all') }}"]
+                ],
                 buttons: [{
                         text: '{{ __('inputs.btn_copy') }}',
                         extend: 'copyHtml5',
@@ -194,7 +195,7 @@ $tbl_action = __('labels.tbl_action');
                     });
                 },
                 processing: true,
-               // serverSide: true,
+                // serverSide: true,
                 serverMethod: 'POST',
                 ajax: {
                     url: "{{ route('besoin.datatable') }}",
@@ -259,7 +260,20 @@ $tbl_action = __('labels.tbl_action');
                     selector: 'td:first-child'
                 },
                 // select: { style: 'multi+shift' },
+                rowCallback: function(row, data) {
+                    // Assuming you have a column for 'service_id' in your data
+                    var serviceId = data.service_id;
 
+                    // Replace 'yourCondition' with the condition you want to check
+
+                    @if (\Auth::user()->user_type != 'admin')
+                        if ((data.services_id !== {{ \Auth::user()->services_id }})) {
+                            // Hide the row
+                            $(row).css('display', 'none');
+                        }
+                    @endif
+
+                }
             });
             table
                 .on('select', function(e, dt, type, indexes) {
@@ -292,6 +306,7 @@ $tbl_action = __('labels.tbl_action');
             $('#besoins-table').DataTable().ajax.reload();
 
         })
+
         function deleteFromDataTableBtn(id) {
             //  let id = $('#tbl_btn_delete').attr('data-id');
 
@@ -323,6 +338,5 @@ $tbl_action = __('labels.tbl_action');
                     }
                 });
         }
-
     </script>
 @endsection

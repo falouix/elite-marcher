@@ -104,7 +104,7 @@
 
                 <div class="card-body">
 
-                    <h4> محتوى المسشروع</h4>
+                    <h4> محتوى المشروع</h4>
 
                     <div class="dt-responsive table-responsive">
 

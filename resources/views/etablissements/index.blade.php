@@ -389,7 +389,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="date-cc_prvu">طريقة الابرام </label>
-                                            <select class="form-control">
+                                            <select class="form-control" id="type_periode" name="type_periode">
                                                 <option value="1">إستشارة</option>
                                                 <option value="2">إجراءات مبسطة</option>
                                                 <option value="3">إجراءات عادية</option>
@@ -408,7 +408,7 @@
                                                     <label for="date-cc_prvu"> إعداد كراس الشروط </label>
                                                     <input type="number" value="{{ $periodes[0]->periode_cc_prvu }}"
                                                         class="form-control" id='periode_cc_prvu' name="periode_cc_prvu"
-                                                        placeholder="أدخل المدة">
+                                                        placeholder="أدخل المدة" />
                                                     @if ($errors->has('date_cc_prvu'))
                                                         <span
                                                             class="text-danger">{{ $errors->first('date_cc_prvu') }}</span>
@@ -418,9 +418,9 @@
                                             <div class=" col-md-6">
                                                 <div class="form-group">
                                                     <label for="date-date_avis_prvu">الإعلان عن المنافسة </label>
-                                                    <input type="number" value="{{ $periodes[0]->periode_avis_prvu }}"
-                                                        class="form-control" id='periode_avis_prvu'
-                                                        name="periode_avis_prvu" placeholder="أدخل المدة">
+                                                    <input type="number" value="{{ $periodes[0]->periodeavisprvu }}"
+                                                        class="form-control" id='periodeavisprvu' name="periodeavisprvu"
+                                                        placeholder="أدخل المدة" />
                                                     @if ($errors->has('date_avis_prvu'))
                                                         <span
                                                             class="text-danger">{{ $errors->first('date_avis_prvu') }}</span>
@@ -444,7 +444,7 @@
                                                     <label for="date-date_op_prvu">تعهد لجنة الشراءات بالملف</label>
                                                     <input type="number"
                                                         value="{{ $periodes[0]->periode_trsfert_ca_prvu }}"
-                                                        class="form-control" id='periode_trsfert_ca_prvu'
+                                                        class="form-control" id='periode_trsfert_ca_prvu '
                                                         name="periode_trsfert_ca_prvu" placeholder="أدخل المدة">
                                                     @if ($errors->has('date_op_prvu'))
                                                         <span
@@ -482,7 +482,7 @@
                                                     <label for="date-date_op_prvu"> نشر نتائج المنافسة </label>
                                                     <input type="number"
                                                         value="{{ $periodes[0]->periode_pub_reslt_prvu }}"
-                                                        class="form-control" id='periode_pub_reslt_prvu'
+                                                        class="form-control" id='periode_pub_reslt_prvu '
                                                         name="periode_pub_reslt_prvu" placeholder="أدخل المدة">
                                                     @if ($errors->has('date_op_prvu'))
                                                         <span
