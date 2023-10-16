@@ -49,7 +49,6 @@ class RoleController extends Controller
     public function create()
     {
          // Prevent XSS Attack
-         Utility::stripXSS($request);
         $locale = LaravelLocalization::getCurrentLocale();
         if ($locale == 'en') {
             $permission = Permission::get()->groupBy('table_name_en');

@@ -492,7 +492,16 @@
                                                     class="error jquery-validation-error small form-text invalid-feedback"
                                                     for="file_name"></label>
                                             </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <select class="form-control" name="ofrres_typeDoc" id="ofrres_typeDoc">
+                                                    @foreach ($type_docs['RECEPTION_OFFRES'] as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->libelle }}</option>
+                                                    @endforeach
+                                                </select>
 
+                                            </div>
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
                                                 <input type="file" id="file" name="file"
@@ -572,7 +581,17 @@
                                                     class="error jquery-validation-error small form-text invalid-feedback"
                                                     for="file_name"></label>
                                             </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="exampleInputEmail1"> {{ __('labels.tbl_file_libelle') }}
+                                                </label>
+                                                <select class="form-control" name="sessionOP_typeDoc"
+                                                    id="sessionOP_typeDoc">
+                                                    @foreach ($type_docs['SESSION_OP'] as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->libelle }}</option>
+                                                    @endforeach
+                                                </select>
 
+                                            </div>
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1">{{ __('labels.tbl_file_file') }}</label>
                                                 <input type="file" id="file" name="file"
