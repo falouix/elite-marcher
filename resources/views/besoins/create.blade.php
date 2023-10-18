@@ -198,7 +198,7 @@
                             </a>
                             <div class="table-responsive">
                                 <h6 style="color: red; text-align: left;">الكلفة الجمليةالتقديرية للحاجيات : <span
-                                        id="coutTotal"> 0</span></h6>
+                                        id="coutTotal"> 0</span>د.ت</h6>
                                 <table class="table table-striped table-bordered" id="table-cp">
                                     <thead>
                                         <tr>

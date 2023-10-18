@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Etablissement
- * 
+ *
  * @property int $id
  * @property string|null $libelle
  * @property string|null $matricule_fiscale
@@ -147,6 +147,10 @@ class Etablissement extends Model
 		'notif_duree_pub_reslt_prvu',
 		'datedeb_besoin',
 		'datefin_besoin',
+        'periode_type1',
+        'periode_type2',
+        'periode_type3',
+        'periode_type4',
 		'created_by',
 		'updated_by'
 	];

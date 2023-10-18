@@ -390,10 +390,10 @@
                                         <div class="form-group">
                                             <label for="date-cc_prvu">طريقة الابرام </label>
                                             <select class="form-control" id="type_periode" name="type_periode">
-                                                <option value="1">إستشارة</option>
-                                                <option value="2">إجراءات مبسطة</option>
-                                                <option value="3">إجراءات عادية</option>
-                                                <option value="4">التفاوض المباشر</option>
+                                                <option value="0">إستشارة</option>
+                                                <option value="1">إجراءات مبسطة</option>
+                                                <option value="2">إجراءات عادية</option>
+                                                <option value="3">التفاوض المباشر</option>
                                             </select>
                                             @if ($errors->has('date_cc_prvu'))
                                                 <span class="text-danger">{{ $errors->first('date_cc_prvu') }}</span>
@@ -401,6 +401,14 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
+                                        <input type="hidden" id="periode_type1" name="periode_type1"
+                                            value="{{ $etablissement->periode_type1 }}" />
+                                        <input type="hidden" id="periode_type2" name="periode_type2"
+                                            value="{{ $etablissement->periode_type2 }}" />
+                                        <input type="hidden" id="periode_type3" name="periode_type3"
+                                            value="{{ $etablissement->periode_type3 }}" />
+                                        <input type="hidden" id="periode_type4" name="periode_type4"
+                                            value="{{ $etablissement->periode_type4 }}" />
                                         <h4>المدة التقديرية(باليوم) ل :</h4>
                                         <div class="row">
                                             <div class=" col-md-6">
@@ -444,7 +452,7 @@
                                                     <label for="date-date_op_prvu">تعهد لجنة الشراءات بالملف</label>
                                                     <input type="number"
                                                         value="{{ $periodes[0]->periode_trsfert_ca_prvu }}"
-                                                        class="form-control" id='periode_trsfert_ca_prvu '
+                                                        class="form-control" id='periode_trsfert_ca_prvu'
                                                         name="periode_trsfert_ca_prvu" placeholder="أدخل المدة">
                                                     @if ($errors->has('date_op_prvu'))
                                                         <span
@@ -482,7 +490,7 @@
                                                     <label for="date-date_op_prvu"> نشر نتائج المنافسة </label>
                                                     <input type="number"
                                                         value="{{ $periodes[0]->periode_pub_reslt_prvu }}"
-                                                        class="form-control" id='periode_pub_reslt_prvu '
+                                                        class="form-control" id='periode_pub_reslt_prvu'
                                                         name="periode_pub_reslt_prvu" placeholder="أدخل المدة">
                                                     @if ($errors->has('date_op_prvu'))
                                                         <span
@@ -556,6 +564,47 @@
     <script src="{{ asset('/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
     <script>
         $(document).ready(function() {
+            // setup periods value
+            var periodes = [];
+            // if ever type changed
+            $('#type_periode').on('click', function() {
+                var dataPeriodes = JSON.stringify({
+                    'type_id': $(this).val(),
+                    'periodeavisprvu': $('#periodeavisprvu').val(),
+                    'periode_ordre_serv_prvu': $('#periode_ordre_serv_prvu').val(),
+                    'periode_avis_soumissionaire_prvu': $('#periode_avis_soumissionaire_prvu')
+                        .val(),
+                    'periode_pub_reslt_prvu': $('#periode_pub_reslt_prvu').val(),
+                    'periode_repca_prvu': $('#periode_repca_prvu').val(),
+                    'periode_trsfert_cao_prvu': $('#periode_trsfert_cao_prvu').val(),
+                    'periode_trsfert_ca_prvu': $('#periode_trsfert_ca_prvu').val(),
+                    'periode_op_prvu': $('#periode_op_prvu').val(),
+                    'periode_cc_prvu': $('#periode_cc_prvu').val()
+                })
+                let index = parseInt($(this).val()) + 1
+                $('#periode_type' + index).val(dataPeriodes)
+                console.log($('#periode_type' + index).val())
+            })
+
+            $('#type_periode').on('change', function() {
+                // start ajax
+                var dataPeriodes = JSON.stringify({
+                    'type_id': $(this).val(),
+                    'periodeavisprvu': $('#periodeavisprvu').val(),
+                    'periode_ordre_serv_prvu': $('#periode_ordre_serv_prvu').val(),
+                    'periode_avis_soumissionaire_prvu': $('#periode_avis_soumissionaire_prvu')
+                        .val(),
+                    'periode_pub_reslt_prvu': $('#periode_pub_reslt_prvu').val(),
+                    'periode_repca_prvu': $('#periode_repca_prvu').val(),
+                    'periode_trsfert_cao_prvu': $('#periode_trsfert_cao_prvu').val(),
+                    'periode_trsfert_ca_prvu': $('#periode_trsfert_ca_prvu').val(),
+                    'periode_op_prvu': $('#periode_op_prvu').val(),
+                    'periode_cc_prvu': $('#periode_cc_prvu').val()
+                })
+                let index = parseInt($(this).val()) + 1
+                $('#periode_type' + index).val(dataPeriodes)
+                console.log($('#periode_type' + index).val())
+            })
             $(function() {
                 // [ Initialize validation ]
                 $('#validation-etablissement_form').validate({
@@ -591,7 +640,8 @@
 
                         $parent.append(
                             error.addClass(
-                                'jquery-validation-error small form-text invalid-feedback')
+                                'jquery-validation-error small form-text invalid-feedback'
+                            )
                         );
                     },
                     highlight: function(element) {
@@ -607,8 +657,9 @@
                         }
                     },
                     unhighlight: function(element) {
-                        $(element).parents('.form-group').find('.is-invalid').removeClass(
-                            'is-invalid');
+                        $(element).parents('.form-group').find('.is-invalid')
+                            .removeClass(
+                                'is-invalid');
                     }
                 });
             });

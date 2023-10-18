@@ -30,6 +30,12 @@ class EtablissementController extends Controller
         $etablissement = Etablissement::first();
         return view('etablissements.index', compact('etablissement','periodes'));
     }
+  /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
 
     /**
      * Store a newly created resource in storage.
@@ -39,7 +45,6 @@ class EtablissementController extends Controller
      */
     public function store(Request $request)
     {
-
          // Prevent XSS Attack
         Utility::stripXSS($request);
         $settings = Etablissement::first();
